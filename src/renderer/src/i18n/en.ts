@@ -221,6 +221,7 @@ export const en = {
     gameInput: 'This game uses GameInput. Its controller input may stop when it is not focused.',
   },
   errors: {
+    invalidBackup: 'This file is not an InputSplit backup.',
     title: 'Something went wrong',
     processNotFound: 'The game is no longer running. Start it again and choose its window.',
     selfProcess: 'InputSplit cannot isolate itself.',
@@ -390,6 +391,7 @@ export const en = {
     notRunning: '{exe} is not running. Start the game, then apply the profile again.',
     lastUsed: 'Last used {date}',
     neverUsed: 'Never used',
+    playtime: '{time} played',
     deleteTitle: 'Delete “{name}”?',
     deleteBody: 'The profile will be removed. This does not affect the game.',
     editor: {
@@ -610,6 +612,51 @@ export const en = {
     twoPlayers: 'Two players',
     twoPlayersHint:
       'Two games at once, each with its own controller. The dashboard shows a tab for each player.',
+  },
+  library: {
+    add: 'Add from library',
+    title: 'Add a game from your library',
+    subtitle: 'Installed games from Steam, Epic Games and GOG Galaxy.',
+    searching: 'Looking for installed games…',
+    search: 'Search games',
+    all: 'All',
+    emptyTitle: 'No installed games found',
+    emptyHint:
+      'InputSplit looks in Steam, Epic Games and GOG Galaxy. For other games, create a profile and choose the .exe with Browse.',
+    noMatch: 'No games match your search.',
+    hasProfile: 'Has a profile',
+    rescan: 'Search again',
+    exeHint:
+      'InputSplit picked the game file itself. If the game is not found or does not start, choose the right .exe with Browse.',
+  },
+  report: {
+    button: 'Report a problem',
+    title: 'Report a problem',
+    body: 'InputSplit saves a report to your Downloads folder and opens a new issue on GitHub with the details already filled in. Describe what happened there and attach the report file.',
+    contents:
+      'The report has the app version, your InputSplit settings, the log and the name of the game’s .exe. Window titles and your files are not included.',
+    account: 'Sending it needs a free GitHub account.',
+    create: 'Create report',
+    done: 'Report saved',
+    doneBody: 'Attach {file} to the issue on the page that just opened.',
+  },
+  backup: {
+    title: 'Backup',
+    hint: 'Save your profiles, settings and play time to a file, then load it on another PC or after reinstalling Windows.',
+    export: 'Export',
+    import: 'Import',
+    exported: 'Backup saved',
+    importTitle: 'Import backup',
+    profiles: 'Profiles in the file',
+    saved: 'Saved',
+    replaceHint:
+      'Profiles with the same name as yours are replaced by the ones from the file. Other profiles are added.',
+    includeSettings: 'Also import settings',
+    includeSettingsHint: 'Theme, language, notifications, shortcuts and default protections.',
+    importButton: 'Import',
+    imported: 'Backup imported',
+    importedBody: 'New profiles: {added}. Updated: {updated}.',
+    skipped: 'Skipped because of an invalid game file: {skipped}.',
   },
 } as const
 

@@ -219,6 +219,7 @@ export const ja: Messages = {
       'このゲームは GameInput を使用しています。フォーカスがないとコントローラー入力が止まる場合があります。',
   },
   errors: {
+    invalidBackup: 'このファイルは InputSplit のバックアップではありません。',
     title: '問題が発生しました',
     processNotFound:
       'ゲームは実行されていません。もう一度起動して、そのウィンドウを選んでください。',
@@ -399,6 +400,7 @@ export const ja: Messages = {
     notRunning: '{exe} は起動していません。ゲームを起動してから、もう一度適用してください。',
     lastUsed: '最終使用 {date}',
     neverUsed: '未使用',
+    playtime: 'プレイ時間 {time}',
     deleteTitle: '「{name}」を削除しますか？',
     deleteBody: 'プロファイルが削除されます。ゲームには影響しません。',
     editor: {
@@ -621,5 +623,49 @@ export const ja: Messages = {
     twoPlayers: '2人プレイ',
     twoPlayersHint:
       '2つのゲームを同時に、それぞれ専用のコントローラーで。ダッシュボードにプレイヤーごとのタブが表示されます。',
+  },
+  library: {
+    add: 'ライブラリから追加',
+    title: 'ライブラリからゲームを追加',
+    subtitle: 'Steam、Epic Games、GOG Galaxy にインストール済みのゲーム。',
+    searching: 'インストール済みのゲームを探しています…',
+    search: 'ゲームを検索',
+    all: 'すべて',
+    emptyTitle: 'インストール済みのゲームが見つかりません',
+    emptyHint:
+      'InputSplit は Steam、Epic Games、GOG Galaxy を探します。その他のゲームはプロファイルを作成し、「参照」で .exe を選んでください。',
+    noMatch: '検索に一致するゲームはありません。',
+    hasProfile: 'プロファイルあり',
+    rescan: '再検索',
+    exeHint:
+      'ゲームファイルは InputSplit が自動で選びました。ゲームが見つからない、または起動しない場合は「参照」で正しい .exe を選んでください。',
+  },
+  report: {
+    button: '問題を報告',
+    title: '問題を報告',
+    body: 'InputSplit がダウンロード フォルダーにレポートを保存し、詳細を入力済みの新しい Issue を GitHub で開きます。そこで何が起きたかを書き、レポート ファイルを添付してください。',
+    contents:
+      'レポートにはアプリのバージョン、InputSplit の設定、ログ、ゲームの .exe 名が含まれます。ウィンドウのタイトルやあなたのファイルは含まれません。',
+    account: '送信には無料の GitHub アカウントが必要です。',
+    create: 'レポートを作成',
+    done: 'レポートを保存しました',
+    doneBody: '開いたページの Issue に {file} を添付してください。',
+  },
+  backup: {
+    title: 'バックアップ',
+    hint: 'プロファイル、設定、プレイ時間をファイルに保存し、別の PC や Windows の再インストール後に読み込めます。',
+    export: 'エクスポート',
+    import: 'インポート',
+    exported: 'バックアップを保存しました',
+    importTitle: 'バックアップをインポート',
+    profiles: 'ファイル内のプロファイル',
+    saved: '保存日時',
+    replaceHint: '同じ名前のプロファイルはファイルのものに置き換えられます。その他は追加されます。',
+    includeSettings: '設定もインポート',
+    includeSettingsHint: 'テーマ、言語、通知、ショートカット、既定の保護。',
+    importButton: 'インポート',
+    imported: 'バックアップをインポートしました',
+    importedBody: '新しいプロファイル：{added}。更新：{updated}。',
+    skipped: 'ゲーム ファイルが無効なためスキップ：{skipped}。',
   },
 }

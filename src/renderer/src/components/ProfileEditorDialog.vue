@@ -17,7 +17,12 @@ import UiDialog from './ui/UiDialog.vue'
 import UiSelect from './ui/UiSelect.vue'
 import UiSwitch from './ui/UiSwitch.vue'
 
-const props = defineProps<{ profile: Profile | null; fromSelection?: boolean }>()
+const props = defineProps<{
+  profile: Profile | null
+  fromSelection?: boolean
+  /** A game picked from the Steam/Epic/GOG library (its .exe was guessed). */
+  prefill?: { name: string; exeName: string; exePath: string } | null
+}>()
 const open = defineModel<boolean>('open', { required: true })
 const emit = defineEmits<{ saved: [profile: Profile] }>()
 
@@ -64,6 +69,11 @@ watch(open, (isOpen) => {
     name.value = target ? target.title.split(' — ')[0]!.slice(0, 80) : ''
     exeName.value = target?.exeName ?? ''
     exePath.value = target?.exePath ?? null
+    if (props.prefill) {
+      name.value = props.prefill.name.slice(0, 80)
+      exeName.value = props.prefill.exeName
+      exePath.value = props.prefill.exePath
+    }
     controller.value = sel.controllerSlot === null ? ANY : String(sel.controllerSlot)
     display.value = sel.displayId ?? CURRENT
     moveWindow.value = props.fromSelection ? sel.moveWindow : s.moveWindowByDefault
@@ -193,6 +203,9 @@ async function save(): Promise<void> {
             $t('profiles.editor.browse')
           }}</UiButton>
         </div>
+        <p v-if="prefill && !profile" class="text-[12px] text-text-muted">
+          {{ $t('library.exeHint') }}
+        </p>
       </div>
 
       <div class="grid grid-cols-2 gap-4">

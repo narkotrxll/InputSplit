@@ -216,6 +216,7 @@ export const tr: Messages = {
     gameInput: 'Bu oyun GameInput kullanıyor. Odakta değilken kontrolcü girdisi durabilir.',
   },
   errors: {
+    invalidBackup: 'Bu dosya bir InputSplit yedeği değil.',
     title: 'Bir sorun oluştu',
     processNotFound: 'Oyun artık çalışmıyor. Yeniden başlatıp penceresini seçin.',
     selfProcess: 'InputSplit kendini yalıtamaz.',
@@ -387,6 +388,7 @@ export const tr: Messages = {
     notRunning: '{exe} çalışmıyor. Oyunu başlatın, sonra profili tekrar uygulayın.',
     lastUsed: 'Son kullanım {date}',
     neverUsed: 'Hiç kullanılmadı',
+    playtime: '{time} oynandı',
     deleteTitle: '“{name}” silinsin mi?',
     deleteBody: 'Profil kaldırılacak. Bu, oyunu etkilemez.',
     editor: {
@@ -609,5 +611,50 @@ export const tr: Messages = {
     twoPlayers: 'İki oyuncu',
     twoPlayersHint:
       'Aynı anda iki oyun, her biri kendi kontrolcüsüyle. Panelde her oyuncu için bir sekme görünür.',
+  },
+  library: {
+    add: 'Kitaplıktan ekle',
+    title: 'Kitaplığınızdan oyun ekleyin',
+    subtitle: 'Steam, Epic Games ve GOG Galaxy’den yüklü oyunlar.',
+    searching: 'Yüklü oyunlar aranıyor…',
+    search: 'Oyun ara',
+    all: 'Tümü',
+    emptyTitle: 'Yüklü oyun bulunamadı',
+    emptyHint:
+      'InputSplit, Steam, Epic Games ve GOG Galaxy’ye bakar. Diğer oyunlar için bir profil oluşturun ve .exe dosyasını Gözat ile seçin.',
+    noMatch: 'Aramayla eşleşen oyun yok.',
+    hasProfile: 'Profili var',
+    rescan: 'Yeniden ara',
+    exeHint:
+      'Oyun dosyasını InputSplit kendisi seçti. Oyun bulunamazsa veya açılmazsa doğru .exe dosyasını Gözat ile seçin.',
+  },
+  report: {
+    button: 'Sorun bildir',
+    title: 'Sorun bildir',
+    body: 'InputSplit, İndirilenler klasörüne bir rapor kaydeder ve GitHub’da ayrıntıları önceden doldurulmuş yeni bir kayıt açar. Orada ne olduğunu anlatın ve rapor dosyasını ekleyin.',
+    contents:
+      'Raporda uygulama sürümü, InputSplit ayarlarınız, günlük ve oyunun .exe adı bulunur. Pencere başlıkları ve dosyalarınız yer almaz.',
+    account: 'Göndermek için ücretsiz bir GitHub hesabı gerekir.',
+    create: 'Rapor oluştur',
+    done: 'Rapor kaydedildi',
+    doneBody: 'Az önce açılan sayfadaki kayda {file} dosyasını ekleyin.',
+  },
+  backup: {
+    title: 'Yedek',
+    hint: 'Profillerinizi, ayarlarınızı ve oyun sürenizi bir dosyaya kaydedin, sonra başka bir bilgisayarda veya Windows’u yeniden kurduktan sonra yükleyin.',
+    export: 'Dışa aktar',
+    import: 'İçe aktar',
+    exported: 'Yedek kaydedildi',
+    importTitle: 'Yedeği içe aktar',
+    profiles: 'Dosyadaki profiller',
+    saved: 'Kaydedildi',
+    replaceHint:
+      'Sizinkilerle aynı adı taşıyan profiller dosyadakilerle değiştirilir. Diğer profiller eklenir.',
+    includeSettings: 'Ayarları da içe aktar',
+    includeSettingsHint: 'Tema, dil, bildirimler, kısayollar ve varsayılan korumalar.',
+    importButton: 'İçe aktar',
+    imported: 'Yedek içe aktarıldı',
+    importedBody: 'Yeni profiller: {added}. Güncellenen: {updated}.',
+    skipped: 'Geçersiz oyun dosyası nedeniyle atlanan: {skipped}.',
   },
 }

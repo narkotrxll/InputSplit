@@ -217,6 +217,7 @@ export const pl: Messages = {
     gameInput: 'Ta gra używa GameInput. Sygnał z kontrolera może zanikać, gdy gra nie ma fokusu.',
   },
   errors: {
+    invalidBackup: 'Ten plik nie jest kopią zapasową InputSplit.',
     title: 'Coś poszło nie tak',
     processNotFound: 'Gra nie jest już uruchomiona. Uruchom ją ponownie i wybierz jej okno.',
     selfProcess: 'InputSplit nie może izolować samego siebie.',
@@ -389,6 +390,7 @@ export const pl: Messages = {
     notRunning: '{exe} nie jest uruchomiony. Uruchom grę i zastosuj profil ponownie.',
     lastUsed: 'Użyto {date}',
     neverUsed: 'Nigdy nie użyto',
+    playtime: 'Grano {time}',
     deleteTitle: 'Usunąć „{name}”?',
     deleteBody: 'Profil zostanie usunięty. Nie wpływa to na grę.',
     editor: {
@@ -613,5 +615,50 @@ export const pl: Messages = {
     twoPlayers: 'Dwóch graczy',
     twoPlayersHint:
       'Dwie gry naraz, każda z własnym kontrolerem. Panel pokazuje kartę dla każdego gracza.',
+  },
+  library: {
+    add: 'Dodaj z biblioteki',
+    title: 'Dodaj grę z biblioteki',
+    subtitle: 'Zainstalowane gry ze Steam, Epic Games i GOG Galaxy.',
+    searching: 'Szukam zainstalowanych gier…',
+    search: 'Szukaj gier',
+    all: 'Wszystkie',
+    emptyTitle: 'Nie znaleziono zainstalowanych gier',
+    emptyHint:
+      'InputSplit szuka w Steam, Epic Games i GOG Galaxy. Dla innych gier utwórz profil i wybierz plik .exe przyciskiem Przeglądaj.',
+    noMatch: 'Żadna gra nie pasuje do wyszukiwania.',
+    hasProfile: 'Ma profil',
+    rescan: 'Szukaj ponownie',
+    exeHint:
+      'InputSplit sam wybrał plik gry. Jeśli gra nie zostanie znaleziona lub się nie uruchomi, wybierz właściwy plik .exe przyciskiem Przeglądaj.',
+  },
+  report: {
+    button: 'Zgłoś problem',
+    title: 'Zgłoś problem',
+    body: 'InputSplit zapisze raport w folderze Pobrane i otworzy na GitHubie nowe zgłoszenie z już wypełnionymi szczegółami. Opisz tam, co się stało, i dołącz plik raportu.',
+    contents:
+      'Raport zawiera wersję aplikacji, twoje ustawienia InputSplit, dziennik i nazwę pliku .exe gry. Nie zawiera tytułów okien ani twoich plików.',
+    account: 'Do wysłania potrzebne jest darmowe konto GitHub.',
+    create: 'Utwórz raport',
+    done: 'Raport zapisany',
+    doneBody: 'Dołącz {file} do zgłoszenia na otwartej właśnie stronie.',
+  },
+  backup: {
+    title: 'Kopia zapasowa',
+    hint: 'Zapisz profile, ustawienia i czas gry w pliku, a potem wczytaj go na innym komputerze lub po ponownej instalacji Windows.',
+    export: 'Eksportuj',
+    import: 'Importuj',
+    exported: 'Kopia zapasowa zapisana',
+    importTitle: 'Importuj kopię zapasową',
+    profiles: 'Profile w pliku',
+    saved: 'Zapisano',
+    replaceHint:
+      'Profile o tej samej nazwie co twoje zostaną zastąpione profilami z pliku. Pozostałe zostaną dodane.',
+    includeSettings: 'Importuj też ustawienia',
+    includeSettingsHint: 'Motyw, język, powiadomienia, skróty i domyślne zabezpieczenia.',
+    importButton: 'Importuj',
+    imported: 'Kopia zapasowa zaimportowana',
+    importedBody: 'Nowe profile: {added}. Zaktualizowane: {updated}.',
+    skipped: 'Pominięte z powodu błędnego pliku gry: {skipped}.',
   },
 }

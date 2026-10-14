@@ -139,6 +139,10 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 | Settings → **Two players**, two games, two controllers | Player 1 and Player 2 tabs each start their own game; each game reacts only to its own controller and keeps it in the background. |
 | Two players, the same controller (or "Any controller") for both | Start is disabled with "the other player already uses this controller" / "choose a controller for each game". |
 | Two players, **LB + RB + View** on player 2's controller | Stops only player 2's game; pressed again, starts player 2's profile. |
+| Profiles → **Add from library** with Steam, Epic or GOG games installed | The installed games are listed (Steam ones with covers); picking one opens a new profile with the right `.exe`, and **Play** starts the game. |
+| Play a game for a few minutes, stop | The profile card shows the play time; it grows while the game is isolated. |
+| Settings → Backup → **Export**, then **Import** on another PC (or after deleting a profile) | The profiles come back; with "Also import settings" the theme and language follow too. Importing twice does not double the play time. |
+| About → **Report a problem** → **Create report** | A report file appears in Downloads, Explorer shows it, and a GitHub issue opens with the version and the last game filled in. |
 
 ## Performance (C9)
 

@@ -15,6 +15,7 @@ export const useUiStore = defineStore('ui', () => {
   const toasts = ref<Toast[]>([])
   const diagnosticsOpen = ref(false)
   const onboardingOpen = ref(false)
+  const reportOpen = ref(false)
   let nextId = 1
 
   function toast(input: Omit<Toast, 'id'>, durationMs = 4500): void {
@@ -27,5 +28,5 @@ export const useUiStore = defineStore('ui', () => {
     toasts.value = toasts.value.filter((t) => t.id !== id)
   }
 
-  return { toasts, diagnosticsOpen, onboardingOpen, toast, dismissToast }
+  return { toasts, diagnosticsOpen, onboardingOpen, reportOpen, toast, dismissToast }
 })

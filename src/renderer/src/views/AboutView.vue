@@ -7,8 +7,10 @@ import UiCallout from '../components/ui/UiCallout.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import { call } from '../api'
 import { useBackendStore } from '../stores/backend'
+import { useUiStore } from '../stores/ui'
 
 const backend = useBackendStore()
+const ui = useUiStore()
 const credits = ['noFocusLoss', 'protoInput', 'minHook', 'json', 'stack'] as const
 </script>
 
@@ -31,9 +33,7 @@ const credits = ['noFocusLoss', 'protoInput', 'minHook', 'json', 'stack'] as con
             <UiButton :icon="Code" @click="call('app:openExternal', 'repository')">{{
               $t('about.repository')
             }}</UiButton>
-            <UiButton :icon="Bug" @click="call('app:openExternal', 'issues')">{{
-              $t('about.issues')
-            }}</UiButton>
+            <UiButton :icon="Bug" @click="ui.reportOpen = true">{{ $t('report.button') }}</UiButton>
             <UiButton :icon="BookOpen" @click="call('app:openExternal', 'docs')">{{
               $t('about.docs')
             }}</UiButton>

@@ -14,6 +14,7 @@ import { useUiStore } from './stores/ui'
 import { useAutomationStore } from './stores/automation'
 import { useCompatStore } from './stores/compat'
 import { useUpdatesStore } from './stores/updates'
+import { usePlaytimeStore } from './stores/playtime'
 import { call, subscribe } from './api'
 
 async function bootstrap(): Promise<void> {
@@ -31,6 +32,7 @@ async function bootstrap(): Promise<void> {
   const automation = useAutomationStore()
   const compat = useCompatStore()
   const updates = useUpdatesStore()
+  const playtime = usePlaytimeStore()
 
   // Device events are pushed by the main process; no polling in the renderer.
   subscribe('controllers:changed', devices.setControllers)
@@ -50,6 +52,7 @@ async function bootstrap(): Promise<void> {
     automation.init(),
     compat.init(),
     updates.init(),
+    playtime.init(),
   ])
   if (backend.state?.status === 'ready') await devices.refresh().catch(() => {})
 

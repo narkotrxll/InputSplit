@@ -33,6 +33,12 @@ export interface MainTexts {
   notifyUpdateBody: string
   notifyReadyTitle: string // {version}
   notifyReadyBody: string
+  backupExportTitle: string
+  backupOpenTitle: string
+  backupFilter: string
+  reportWhat: string
+  reportExpected: string
+  reportAttach: string // {file}
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -66,6 +72,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Open InputSplit to install it.',
     notifyReadyTitle: 'InputSplit {version} is ready',
     notifyReadyBody: 'It installs when you restart InputSplit. Click to open it.',
+    backupExportTitle: 'Export profiles and settings',
+    backupOpenTitle: 'Import profiles and settings',
+    backupFilter: 'InputSplit backup',
+    reportWhat: 'What happened?',
+    reportExpected: 'What did you expect to happen?',
+    reportAttach:
+      'Please attach the report: drag {file} from the folder that just opened into this box.',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -99,6 +112,12 @@ const texts: Record<Locale, MainTexts> = {
     notifyReadyTitle: 'InputSplit {version} готовий до встановлення',
     notifyReadyBody:
       'Оновлення встановиться після перезапуску InputSplit. Натисніть, щоб відкрити.',
+    backupExportTitle: 'Експорт профілів і налаштувань',
+    backupOpenTitle: 'Імпорт профілів і налаштувань',
+    backupFilter: 'Резервна копія InputSplit',
+    reportWhat: 'Що сталося?',
+    reportExpected: 'Що мало статися?',
+    reportAttach: 'Прикріпіть звіт: перетягніть {file} з папки, що щойно відкрилася, у це поле.',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -131,6 +150,12 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Откройте InputSplit, чтобы установить её.',
     notifyReadyTitle: 'InputSplit {version} готов к установке',
     notifyReadyBody: 'Обновление установится после перезапуска InputSplit. Нажмите, чтобы открыть.',
+    backupExportTitle: 'Экспорт профилей и настроек',
+    backupOpenTitle: 'Импорт профилей и настроек',
+    backupFilter: 'Резервная копия InputSplit',
+    reportWhat: 'Что случилось?',
+    reportExpected: 'Что должно было произойти?',
+    reportAttach: 'Прикрепите отчёт: перетащите {file} из открывшейся папки в это поле.',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -162,6 +187,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Abre InputSplit para instalarla.',
     notifyReadyTitle: 'InputSplit {version} está listo',
     notifyReadyBody: 'Se instala al reiniciar InputSplit. Haz clic para abrirlo.',
+    backupExportTitle: 'Exportar perfiles y ajustes',
+    backupOpenTitle: 'Importar perfiles y ajustes',
+    backupFilter: 'Copia de seguridad de InputSplit',
+    reportWhat: '¿Qué ha pasado?',
+    reportExpected: '¿Qué esperabas que pasara?',
+    reportAttach:
+      'Adjunta el informe: arrastra {file} desde la carpeta que se acaba de abrir a este cuadro.',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -194,6 +226,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Öffne InputSplit, um es zu installieren.',
     notifyReadyTitle: 'InputSplit {version} ist bereit',
     notifyReadyBody: 'Es wird beim Neustart von InputSplit installiert. Zum Öffnen klicken.',
+    backupExportTitle: 'Profile und Einstellungen exportieren',
+    backupOpenTitle: 'Profile und Einstellungen importieren',
+    backupFilter: 'InputSplit-Sicherung',
+    reportWhat: 'Was ist passiert?',
+    reportExpected: 'Was hast du erwartet?',
+    reportAttach:
+      'Bitte hänge den Bericht an: Ziehe {file} aus dem gerade geöffneten Ordner in dieses Feld.',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -226,6 +265,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: "Ouvrez InputSplit pour l'installer.",
     notifyReadyTitle: 'InputSplit {version} est prêt',
     notifyReadyBody: "Elle s'installe au redémarrage d'InputSplit. Cliquez pour l'ouvrir.",
+    backupExportTitle: 'Exporter les profils et les réglages',
+    backupOpenTitle: 'Importer des profils et des réglages',
+    backupFilter: 'Sauvegarde InputSplit',
+    reportWhat: 'Que s’est-il passé ?',
+    reportExpected: 'Qu’attendiez-vous ?',
+    reportAttach:
+      'Joignez le rapport : faites glisser {file} depuis le dossier qui vient de s’ouvrir dans ce champ.',
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -257,6 +303,12 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Abra o InputSplit para instalar.',
     notifyReadyTitle: 'InputSplit {version} está pronto',
     notifyReadyBody: 'Ele é instalado quando você reiniciar o InputSplit. Clique para abrir.',
+    backupExportTitle: 'Exportar perfis e configurações',
+    backupOpenTitle: 'Importar perfis e configurações',
+    backupFilter: 'Backup do InputSplit',
+    reportWhat: 'O que aconteceu?',
+    reportExpected: 'O que você esperava que acontecesse?',
+    reportAttach: 'Anexe o relatório: arraste {file} da pasta que acabou de abrir para esta caixa.',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -288,6 +340,12 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Otwórz InputSplit, aby ją zainstalować.',
     notifyReadyTitle: 'InputSplit {version} jest gotowy',
     notifyReadyBody: 'Zainstaluje się po ponownym uruchomieniu InputSplit. Kliknij, aby otworzyć.',
+    backupExportTitle: 'Eksportuj profile i ustawienia',
+    backupOpenTitle: 'Importuj profile i ustawienia',
+    backupFilter: 'Kopia zapasowa InputSplit',
+    reportWhat: 'Co się stało?',
+    reportExpected: 'Czego się spodziewałeś?',
+    reportAttach: 'Dołącz raport: przeciągnij {file} z właśnie otwartego folderu do tego pola.',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -320,6 +378,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Yüklemek için InputSplit’i açın.',
     notifyReadyTitle: 'InputSplit {version} hazır',
     notifyReadyBody: 'InputSplit yeniden başlatıldığında yüklenir. Açmak için tıklayın.',
+    backupExportTitle: 'Profilleri ve ayarları dışa aktar',
+    backupOpenTitle: 'Profilleri ve ayarları içe aktar',
+    backupFilter: 'InputSplit yedeği',
+    reportWhat: 'Ne oldu?',
+    reportExpected: 'Ne olmasını bekliyordunuz?',
+    reportAttach:
+      'Lütfen raporu ekleyin: az önce açılan klasördeki {file} dosyasını bu kutuya sürükleyin.',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -350,6 +415,12 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: '打开 InputSplit 进行安装。',
     notifyReadyTitle: 'InputSplit {version} 已准备就绪',
     notifyReadyBody: '重启 InputSplit 时安装。点击打开。',
+    backupExportTitle: '导出配置文件和设置',
+    backupOpenTitle: '导入配置文件和设置',
+    backupFilter: 'InputSplit 备份',
+    reportWhat: '发生了什么？',
+    reportExpected: '你原本期望发生什么？',
+    reportAttach: '请附上报告：把刚打开的文件夹中的 {file} 拖到此框中。',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -383,6 +454,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'InputSplit を開いてインストールしてください。',
     notifyReadyTitle: 'InputSplit {version} の準備ができました',
     notifyReadyBody: 'InputSplit を再起動するとインストールされます。クリックして開きます。',
+    backupExportTitle: 'プロファイルと設定をエクスポート',
+    backupOpenTitle: 'プロファイルと設定をインポート',
+    backupFilter: 'InputSplit のバックアップ',
+    reportWhat: '何が起きましたか？',
+    reportExpected: '本来はどうなるはずでしたか？',
+    reportAttach:
+      'レポートを添付してください：開いたフォルダーから {file} をこの欄にドラッグします。',
   },
 }
 
