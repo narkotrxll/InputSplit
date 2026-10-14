@@ -578,22 +578,26 @@ export const ptBR: Messages = {
   },
   updates: {
     title: 'Atualizações',
-    auto: 'Verificar atualizações automaticamente',
+    auto: 'Atualizar automaticamente',
     autoHint:
-      'Procura uma nova versão no GitHub uma vez por dia. Nada é instalado sem o seu clique.',
+      'Verifica o GitHub a cada poucas horas e baixa novas versões em segundo plano. Elas são instaladas quando você reinicia o InputSplit.',
     check: 'Verificar agora',
     checking: 'Verificando…',
     upToDate: 'Você tem a versão mais recente ({version}).',
     available: 'A versão {version} está disponível',
     install: 'Baixar e instalar',
     downloading: 'Baixando… {percent}%',
-    installing: 'Iniciando o instalador…',
+    installing: 'Reiniciando para atualizar…',
     error:
       'Não foi possível verificar atualizações. Verifique sua conexão com a internet e tente novamente.',
     whatsNew: 'Novidades',
     devBuild:
       'Esta é uma versão de desenvolvimento: as atualizações só são instaladas no aplicativo instalado.',
     sidebar: 'Atualização disponível',
+    ready: 'A versão {version} está pronta para instalar',
+    readyHint: 'Ela também é instalada sozinha na próxima vez que você fechar o InputSplit.',
+    restart: 'Reiniciar e atualizar',
+    sidebarReady: 'Reinicie para atualizar',
   },
   seats: {
     title: 'Jogadores',

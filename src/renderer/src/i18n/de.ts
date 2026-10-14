@@ -587,22 +587,27 @@ export const de: Messages = {
   },
   updates: {
     title: 'Updates',
-    auto: 'Automatisch nach Updates suchen',
+    auto: 'Automatisch aktualisieren',
     autoHint:
-      'Sucht einmal täglich auf GitHub nach einer neuen Version. Ohne deinen Klick wird nichts installiert.',
+      'Prüft alle paar Stunden GitHub und lädt neue Versionen im Hintergrund herunter. Sie werden beim Neustart von InputSplit installiert.',
     check: 'Jetzt prüfen',
     checking: 'Wird geprüft…',
     upToDate: 'Du hast die neueste Version ({version}).',
     available: 'Version {version} ist verfügbar',
     install: 'Herunterladen und installieren',
     downloading: 'Wird heruntergeladen… {percent}%',
-    installing: 'Installationsprogramm wird gestartet…',
+    installing: 'Neustart zum Aktualisieren…',
     error:
       'Die Suche nach Updates ist fehlgeschlagen. Prüfe deine Internetverbindung und versuche es erneut.',
     whatsNew: 'Neuigkeiten',
     devBuild:
       'Dies ist ein Entwicklungsbuild: Updates werden nur in der installierten App installiert.',
     sidebar: 'Update verfügbar',
+    ready: 'Version {version} ist bereit zur Installation',
+    readyHint:
+      'Sie wird auch automatisch installiert, wenn du InputSplit das nächste Mal beendest.',
+    restart: 'Neu starten und aktualisieren',
+    sidebarReady: 'Neu starten zum Aktualisieren',
   },
   seats: {
     title: 'Spieler',

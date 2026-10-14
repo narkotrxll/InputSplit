@@ -412,6 +412,8 @@ export const UpdateStateSchema = z.object({
     'upToDate',
     'available',
     'downloading',
+    /** Downloaded and verified; installs when InputSplit restarts or quits. */
+    'ready',
     'installing',
     'error',
   ]),

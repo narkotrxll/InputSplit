@@ -110,9 +110,10 @@ Loading code into another program is also how some cheats work. InputSplit:
 
 ## Install
 
-Download `InputSplit-Setup-<version>.exe` from the
+Download `InputSplit.exe` from the
 [latest release](https://github.com/narkotrxll/InputSplit/releases/latest) and run it. No
-administrator rights are needed.
+administrator rights are needed. After that InputSplit keeps itself up to date: it downloads
+new versions in the background and installs them when you restart it (Settings → Updates).
 
 A new release is built and published automatically on every push to `main` (version
 `<major>.<minor>.<n>`: major.minor comes from `package.json`, `n` counts up). To start a new line,
