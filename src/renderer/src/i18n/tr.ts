@@ -214,6 +214,8 @@ export const tr: Messages = {
     windowsGamingInput:
       'Bu oyun Windows.Gaming.Input kullanıyor. Odakta değilken kontrolcü girdisi durabilir.',
     gameInput: 'Bu oyun GameInput kullanıyor. Odakta değilken kontrolcü girdisi durabilir.',
+    antiCheat:
+      'Bu oyun hile önleme kullanıyor. Koruma kapalı, bu yüzden InputSplit başlamadan önce yasaklanma riskini kabul etmenizi isteyecek.',
   },
   errors: {
     invalidBackup: 'Bu dosya bir InputSplit yedeği değil.',
@@ -229,7 +231,7 @@ export const tr: Messages = {
     unsupportedArchitecture:
       'Şimdilik yalnızca 64 bit oyunlar destekleniyor. 32 bit desteği planlanıyor.',
     antiCheat:
-      'Bu oyun bir hile önleme sistemiyle korunuyor. InputSplit korumalı oyunlarla asla çalışmaz, çünkü bunları değiştirmek hesabınızın yasaklanmasına yol açabilir.',
+      'Bu oyun bir hile önleme sistemiyle korunuyor. InputSplit korunan oyunları reddeder, çünkü onları değiştirmek hesabınızın yasaklanmasına yol açabilir. Hile önleme korumasını Ayarlar’dan riski size ait olmak üzere kapatabilirsiniz.',
     hookMissing: 'InputSplit’in bir parçası eksik. Lütfen uygulamayı yeniden yükleyin.',
     hookInvalid: 'InputSplit’in bir parçası bozuk. Lütfen uygulamayı yeniden yükleyin.',
     hookOutdated: 'Oyunda hâlâ eski bir InputSplit sürümü yüklü. Oyunu yeniden başlatın.',
@@ -242,6 +244,7 @@ export const tr: Messages = {
     pipeFailed: 'InputSplit oyunla bağlantı açamadı.',
     processExited: 'InputSplit başlarken oyun kapandı.',
     alreadyIsolated: 'Bu oyun zaten yalıtılmış.',
+    riskDeclined: 'Yasaklanma riski kabul edilmediği için yalıtım iptal edildi.',
     alreadyRunning: 'Yalıtım zaten çalışıyor. Önce durdurun.',
     targetChanged: 'Seçilen oyun yeniden başlatıldı. Penceresini tekrar seçin.',
     backendUnavailable: 'InputSplit hizmeti çalışmıyor.',
@@ -431,6 +434,21 @@ export const tr: Messages = {
     safety: 'Güvenlik',
     emergencyHotkey: 'Acil durdurma kısayolu',
     emergencyHotkeyHint: 'Bu pencere donmuş olsa bile tüm yalıtımları anında durdurur.',
+    antiCheatProtection: 'Hile önleme koruması',
+    antiCheatProtectionHint:
+      'InputSplit yüzünden hesabınız yasaklanmasın diye hile önleme kullanan oyunları reddeder. Önerilir.',
+    antiCheatOff:
+      'Kapalı. Yasaklanma riski size ait: InputSplit her çevrimiçi veya hile önlemeli oyundan önce uyarır.',
+    antiCheatDialogTitle: 'Hile önleme koruması kapatılsın mı?',
+    antiCheatDialogBody:
+      'InputSplit hile önleme kullanan oyunları artık reddetmez. Kendi kodunu oyuna bazı hileler gibi yükler ve bunu hile önleme sisteminden gizlemez.',
+    antiCheatDialogBan:
+      'Oyun bu yüzden hesabınızı yasaklayabilir, bazen günler sonra ve kalıcı olarak.',
+    antiCheatDialogBlock:
+      'Bazı hile önleme sistemleri yine de oyunun açılmasını engeller ya da oyunu kapatır.',
+    antiCheatDialogAsk:
+      'InputSplit her çevrimiçi veya hile önlemeli oyundan önce sizi yeniden uyarır.',
+    antiCheatDialogConfirm: 'Kapat, riski kabul ediyorum',
     hotkeyRegistered: 'Kayıtlı',
     hotkeyNotRegistered: 'Kayıtlı değil — bu kısayolu başka bir uygulama kullanıyor olabilir',
     showOnboarding: 'Karşılama rehberini tekrar göster',
@@ -464,7 +482,7 @@ export const tr: Messages = {
       'InputSplit, seçtiğiniz oyuna küçük bir bileşen yükler. Bu bileşen oyunun içinde odak değişimlerini gizler, kontrolcüyü etkin tutar ve klavyeyle fareyi engeller. Oyunun dışında hiçbir şey değişmez ve durdurduğunuzda her şey geri alınır.',
     risk: 'Sorumlu kullanın',
     riskBody:
-      'Başka bir programa kod yüklemek, bazı hilelerin de çalışma şeklidir. InputSplit hile önleme korumalı oyunları reddeder, ancak görünür koruması olmayan çevrimiçi oyunlar da bunu yasaklayabilir. Tek oyunculu veya çevrimdışı oyunlarla kullanın.',
+      'Başka bir programa kod yüklemek bazı hilelerin çalışma şeklidir. InputSplit varsayılan olarak hile önleme kullanan oyunları reddeder, ancak görünür koruması olmayan çevrimiçi oyunlar da bunu yasaklayabilir. Tek oyunculu veya çevrimdışı oyunlarla kullanın.',
     technical: 'Teknik bilgiler',
   },
   onboarding: {
@@ -479,7 +497,7 @@ export const tr: Messages = {
     risks: {
       title: 'Başlamadan önce',
       body: 'Oyunun arka planda çalışmaya devam etmesi için InputSplit oyuna küçük bir bileşen yükler.',
-      point1: 'Hesabınızı korumak için hile önleme korumalı oyunlar her zaman reddedilir.',
+      point1: 'Hesabınızı korumak için hile önleme kullanan oyunlar varsayılan olarak reddedilir.',
       point2: 'InputSplit’i tek oyunculu veya çevrimdışı oyunlarla kullanın.',
       point3: 'Bazı virüsten koruma programları bu teknik hakkında uyarı verebilir.',
       point4: 'Her şeyi durdurmak için istediğiniz zaman Ctrl+Alt+Shift+Q’ya basın.',
@@ -550,6 +568,8 @@ export const tr: Messages = {
       'Bu bir oyun başlatıcısı, oyunun kendisi değil. Oyunu buradan başlatın, ardından oyun penceresini seçin.',
     online:
       'Bu bir çevrim içi oyun gibi görünüyor. InputSplit tek oyunculu ve çevrim dışı oyunlar için tasarlandı: burada çalışmayabilir ve oyunun kuralları bunu yasaklayabilir.',
+    riskOff:
+      'Hile önleme koruması kapalı. InputSplit bu oyunu yalıtmadan önce yasaklanma riskini kabul etmenizi isteyecek.',
     badgeLauncher: 'Başlatıcı',
     badgeOnline: 'Çevrim içi',
     badgeBlocked: 'Korumalı',

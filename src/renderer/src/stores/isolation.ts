@@ -214,7 +214,12 @@ export const useIsolationStore = defineStore('isolation', () => {
     if (selection.value.target === null) return 'noTarget'
     if (checking.value) return 'checking'
     if (check.value !== null && check.value.blockers.length > 0) return 'blocked'
-    if (lookupCompat(selection.value.target.exeName)?.kind === 'blocked') return 'blocked'
+    if (
+      settingsStore.settings.antiCheatProtection &&
+      lookupCompat(selection.value.target.exeName)?.kind === 'blocked'
+    ) {
+      return 'blocked'
+    }
     if (!Object.values(effectiveFeatures.value).some(Boolean)) return 'noFeatures'
     return seatClash.value
   })
@@ -239,6 +244,14 @@ export const useIsolationStore = defineStore('isolation', () => {
       state.checking = false
     }
   }
+
+  // The helper's verdict depends on the anti-cheat protection setting.
+  watch(
+    () => settingsStore.settings.antiCheatProtection,
+    () => {
+      for (const state of seats.value) if (state.selection.target !== null) void runCheck(state)
+    },
+  )
 
   async function selectTarget(window: WindowInfo): Promise<void> {
     const state = current.value

@@ -120,7 +120,9 @@ export function registerIpc(deps: IpcDependencies): void {
     return (await backend.request('listWindows', { excludePids })).windows
   })
   handle('windows:icon', (exePath) => icons.get(exePath))
-  handle('windows:checkTarget', (pid) => backend.request('checkTarget', { pid }))
+  handle('windows:checkTarget', (pid) =>
+    backend.request('checkTarget', { pid, allowAntiCheat: !settings.get().antiCheatProtection }),
+  )
 
   handle('controllers:list', () => devices.listControllers())
   handle('controllers:startTest', async (slot) => {

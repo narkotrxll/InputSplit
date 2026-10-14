@@ -189,19 +189,21 @@ export class SimulatedBackend implements NativeBackend {
         return { displays: DISPLAYS }
       case 'checkTarget': {
         const target = WINDOWS.find((w) => w.pid === p['pid'])
-        const blockers =
-          target?.exeName.startsWith('Fortnite')
-            ? [{ code: 'antiCheat', message: 'Protected by Easy Anti-Cheat.' }]
-            : []
+        const antiCheat = target?.exeName.startsWith('Fortnite') ? 'Easy Anti-Cheat' : null
+        const finding = { code: 'antiCheat', message: 'Protected by Easy Anti-Cheat.' }
+        const allowed = p['allowAntiCheat'] === true
         return {
           pid: p['pid'],
           exePath: target?.exePath ?? null,
           architecture: 'x64',
-          blockers,
-          warnings: target?.hints.includes('steam')
-            ? [{ code: 'steamInput', message: 'Steam is running.' }]
-            : [],
-          antiCheat: blockers.length > 0 ? 'Easy Anti-Cheat' : null,
+          blockers: antiCheat && !allowed ? [finding] : [],
+          warnings: [
+            ...(antiCheat && allowed ? [finding] : []),
+            ...(target?.hints.includes('steam')
+              ? [{ code: 'steamInput', message: 'Steam is running.' }]
+              : []),
+          ],
+          antiCheat,
         }
       }
       case 'startIsolation':

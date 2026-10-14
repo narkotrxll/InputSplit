@@ -218,6 +218,8 @@ export const ptBR: Messages = {
       'Este jogo usa Windows.Gaming.Input. A entrada do controle pode parar quando ele não está em foco.',
     gameInput:
       'Este jogo usa GameInput. A entrada do controle pode parar quando ele não está em foco.',
+    antiCheat:
+      'Este jogo usa antitrapaça. A proteção está desativada, então o InputSplit vai pedir que você aceite o risco de banimento antes de começar.',
   },
   errors: {
     invalidBackup: 'Este arquivo não é um backup do InputSplit.',
@@ -233,7 +235,7 @@ export const ptBR: Messages = {
     unsupportedArchitecture:
       'Por enquanto só jogos de 64 bits são suportados. O suporte a 32 bits está planejado.',
     antiCheat:
-      'Este jogo é protegido por um sistema anti-cheat. O InputSplit nunca funciona com jogos protegidos, porque alterá-los pode fazer sua conta ser banida.',
+      'Este jogo é protegido por um sistema antitrapaça. O InputSplit recusa jogos protegidos, porque alterá-los pode fazer sua conta ser banida. Você pode desativar a proteção antitrapaça nas Configurações por sua conta e risco.',
     hookMissing: 'Uma parte do InputSplit está faltando. Reinstale o app.',
     hookInvalid: 'Uma parte do InputSplit está danificada. Reinstale o app.',
     hookOutdated: 'O jogo ainda tem uma versão antiga do InputSplit carregada. Reinicie o jogo.',
@@ -246,6 +248,7 @@ export const ptBR: Messages = {
     pipeFailed: 'O InputSplit não conseguiu abrir a conexão com o jogo.',
     processExited: 'O jogo fechou enquanto o InputSplit iniciava.',
     alreadyIsolated: 'Este jogo já está isolado.',
+    riskDeclined: 'O isolamento foi cancelado porque o risco de banimento não foi aceito.',
     alreadyRunning: 'O isolamento já está ativo. Pare-o primeiro.',
     targetChanged: 'O jogo escolhido foi reiniciado. Escolha a janela dele de novo.',
     backendUnavailable: 'O serviço do InputSplit não está ativo.',
@@ -435,6 +438,20 @@ export const ptBR: Messages = {
     safety: 'Segurança',
     emergencyHotkey: 'Atalho de parada de emergência',
     emergencyHotkeyHint: 'Para todo isolamento na hora, mesmo que esta janela trave.',
+    antiCheatProtection: 'Proteção antitrapaça',
+    antiCheatProtectionHint:
+      'Recusa jogos com antitrapaça, para que o InputSplit não faça sua conta ser banida. Recomendado.',
+    antiCheatOff:
+      'Desativada. O risco de banimento é seu: o InputSplit avisa antes de cada jogo online ou com antitrapaça.',
+    antiCheatDialogTitle: 'Desativar a proteção antitrapaça?',
+    antiCheatDialogBody:
+      'O InputSplit vai deixar de recusar jogos com antitrapaça. Ele carrega o próprio código no jogo, do mesmo jeito que alguns cheats, e não esconde isso do antitrapaça.',
+    antiCheatDialogBan:
+      'O jogo pode banir sua conta por isso, às vezes dias depois e de forma permanente.',
+    antiCheatDialogBlock: 'Alguns antitrapaças impedem o jogo de abrir mesmo assim ou o fecham.',
+    antiCheatDialogAsk:
+      'O InputSplit vai avisar de novo antes de cada jogo online ou com antitrapaça.',
+    antiCheatDialogConfirm: 'Desativar, aceito o risco',
     hotkeyRegistered: 'Registrado',
     hotkeyNotRegistered: 'Não registrado — outro app pode estar usando este atalho',
     showOnboarding: 'Mostrar o guia de boas-vindas de novo',
@@ -468,7 +485,7 @@ export const ptBR: Messages = {
       'O InputSplit carrega um pequeno componente no jogo escolhido. Dentro do jogo, ele esconde as mudanças de foco, mantém o controle ativo e bloqueia teclado e mouse. Nada fora do jogo é alterado, e tudo é desfeito quando você para.',
     risk: 'Use com responsabilidade',
     riskBody:
-      'Carregar código em outro programa é como alguns cheats funcionam. O InputSplit recusa jogos com anti-cheat, mas jogos online sem proteção visível ainda podem proibir isso. Use com jogos single-player ou offline.',
+      'Carregar código em outro programa é como alguns cheats funcionam. Por padrão o InputSplit recusa jogos com antitrapaça, mas jogos online sem proteção visível ainda podem proibir isso. Use com jogos single-player ou offline.',
     technical: 'Informações técnicas',
   },
   onboarding: {
@@ -483,7 +500,7 @@ export const ptBR: Messages = {
     risks: {
       title: 'Antes de começar',
       body: 'Para manter o jogo rodando em segundo plano, o InputSplit carrega um pequeno componente nele.',
-      point1: 'Jogos com anti-cheat são sempre recusados, para proteger sua conta.',
+      point1: 'Jogos com antitrapaça são recusados por padrão, para proteger sua conta.',
       point2: 'Use o InputSplit com jogos single-player ou offline.',
       point3: 'Alguns antivírus podem alertar sobre esta técnica.',
       point4: 'Aperte Ctrl+Alt+Shift+Q a qualquer momento para parar tudo.',
@@ -555,6 +572,8 @@ export const ptBR: Messages = {
       'Isto é um launcher, não o jogo. Inicie o jogo por ele e depois escolha a janela do jogo.',
     online:
       'Parece um jogo online. O InputSplit foi feito para jogos single-player e offline: ele pode não funcionar aqui, e as regras do jogo podem proibir isso.',
+    riskOff:
+      'A proteção antitrapaça está desativada. O InputSplit vai pedir que você aceite o risco de banimento antes de isolar este jogo.',
     badgeLauncher: 'Launcher',
     badgeOnline: 'Online',
     badgeBlocked: 'Protegido',

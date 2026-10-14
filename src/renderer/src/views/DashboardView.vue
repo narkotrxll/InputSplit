@@ -23,6 +23,7 @@ import { useAutomationStore } from '../stores/automation'
 import { useCompatStore } from '../stores/compat'
 import { useDevicesStore } from '../stores/devices'
 import { useIsolationStore } from '../stores/isolation'
+import { useSettingsStore } from '../stores/settings'
 import { useUiStore } from '../stores/ui'
 import { useWindowsStore } from '../stores/windows'
 
@@ -33,6 +34,7 @@ const windows = useWindowsStore()
 const ui = useUiStore()
 const automation = useAutomationStore()
 const compat = useCompatStore()
+const settings = useSettingsStore()
 
 const gamePicker = ref(false)
 const controllerPicker = ref(false)
@@ -327,7 +329,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           class="mt-4 flex flex-col gap-2"
         >
           <UiCallout
-            v-if="targetCompat.kind === 'blocked'"
+            v-if="targetCompat.kind === 'blocked' && settings.settings.antiCheatProtection"
             tone="danger"
             :title="$t('apps.cannotIsolate')"
           >
@@ -338,6 +340,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           </UiCallout>
           <UiCallout v-else-if="targetCompat.kind === 'online'" tone="warning">
             {{ $t('compat.online') }}
+          </UiCallout>
+          <UiCallout
+            v-if="
+              !settings.settings.antiCheatProtection &&
+              (targetCompat.kind === 'blocked' || targetCompat.kind === 'online')
+            "
+            tone="danger"
+          >
+            {{ $t('compat.riskOff') }}
           </UiCallout>
           <UiCallout
             v-if="targetCompat.lastTime && !isolation.check?.blockers.length"
