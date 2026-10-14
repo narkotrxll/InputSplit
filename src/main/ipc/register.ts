@@ -56,6 +56,7 @@ const EXTERNAL_LINKS = {
   issues: 'https://github.com/narkotrxll/InputSplit/issues',
   license: 'https://github.com/narkotrxll/InputSplit/blob/main/LICENSE',
   docs: 'https://github.com/narkotrxll/InputSplit/tree/main/docs',
+  coffee: 'https://buymeacoffee.com/narkotrxll',
 } as const
 
 export function registerIpc(deps: IpcDependencies): void {
@@ -92,6 +93,7 @@ export function registerIpc(deps: IpcDependencies): void {
     arch: process.arch,
     isPackaged: app.isPackaged,
     userDataPath: app.getPath('userData'),
+    systemLanguages: app.getPreferredSystemLanguages(),
   }))
   handle('app:openExternal', async (link) => {
     await shell.openExternal(EXTERNAL_LINKS[link])
