@@ -44,9 +44,11 @@ defineEmits<{ select: [] }>()
       </p>
       <p class="mt-0.5 text-[12.5px] text-text-muted">
         {{
-          controller.connected
-            ? $t(`controllers.kind.${controller.kind}`)
-            : $t('controllers.notConnected')
+          !controller.connected
+            ? $t('controllers.notConnected')
+            : controller.model && controller.model !== 'generic'
+              ? $t(`controllers.model.${controller.model}`)
+              : $t(`controllers.kind.${controller.kind}`)
         }}
       </p>
     </div>

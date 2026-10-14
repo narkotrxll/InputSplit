@@ -12,7 +12,7 @@ add_executable(inputsplit-helper
   system_window.cpp)
 inputsplit_common_options(inputsplit-helper)
 target_link_libraries(inputsplit-helper PRIVATE nlohmann_json::nlohmann_json
-  user32 advapi32 psapi dwmapi)
+  user32 advapi32 psapi dwmapi setupapi hid)
 if(MINGW)
   target_link_options(inputsplit-helper PRIVATE -municode)
 endif()

@@ -329,6 +329,15 @@ export const uk: Messages = {
     packets: 'Оновлень: {n}',
     emptyTitle: 'Геймпад не підключено',
     emptyHint: 'Підключіть геймпад Xbox через USB, Bluetooth або бездротовий адаптер Xbox.',
+    look: 'Вигляд',
+    lookAuto: 'Авто ({model})',
+    model: {
+      xbox: 'Геймпад Xbox',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro Controller',
+      generic: 'Звичайний геймпад',
+    },
     kind: {
       gamepad: 'Геймпад Xbox',
       wheel: 'Кермо',

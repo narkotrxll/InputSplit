@@ -315,6 +315,15 @@ export const zhCN: Messages = {
     packets: '更新次数：{n}',
     emptyTitle: '未连接手柄',
     emptyHint: '通过 USB、蓝牙或 Xbox 无线适配器连接 Xbox 手柄。',
+    look: '外观',
+    lookAuto: '自动 ({model})',
+    model: {
+      xbox: 'Xbox 手柄',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro 手柄',
+      generic: '通用手柄',
+    },
     kind: {
       gamepad: 'Xbox 手柄',
       wheel: '方向盘',

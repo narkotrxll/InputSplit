@@ -1,9 +1,14 @@
 /**
  * Controllers and displays: cached lists kept fresh by helper events (no polling here).
  */
-import type { Controller, ControllerState, Display } from '@shared/domain'
+import type { Controller, ControllerState, Display, HidGamepad } from '@shared/domain'
+import { resolveModels } from '@shared/gamepad-models'
 import type { NativeBackend } from '../native/backend'
 import { Emitter } from '../util/emitter'
+
+function withModels(list: { controllers: Controller[]; hidGamepads?: HidGamepad[] }): Controller[] {
+  return resolveModels(list.controllers, list.hidGamepads ?? [])
+}
 
 export class DeviceService {
   private controllers: Controller[] = []
@@ -15,7 +20,7 @@ export class DeviceService {
   constructor(private readonly backend: NativeBackend) {
     backend.onEvent((event) => {
       if (event.name === 'controllersChanged') {
-        this.controllers = event.data.controllers
+        this.controllers = withModels(event.data)
         this.controllersChanged.emit(this.controllers)
       } else if (event.name === 'displaysChanged') {
         this.displays = event.data.displays
@@ -37,7 +42,7 @@ export class DeviceService {
       this.backend.request('listControllers', {}),
       this.backend.request('listDisplays', {}),
     ])
-    this.controllers = controllers.controllers
+    this.controllers = withModels(controllers)
     this.displays = displays.displays
     this.controllersChanged.emit(this.controllers)
     this.displaysChanged.emit(this.displays)
@@ -45,7 +50,7 @@ export class DeviceService {
 
   async listControllers(): Promise<Controller[]> {
     if (this.backend.getState().status !== 'ready') return []
-    this.controllers = (await this.backend.request('listControllers', {})).controllers
+    this.controllers = withModels(await this.backend.request('listControllers', {}))
     return this.controllers
   }
 

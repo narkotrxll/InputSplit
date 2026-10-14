@@ -1,7 +1,25 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Controller, ControllerState, Display } from '@shared/domain'
+import type { Controller, ControllerState, Display, GamepadModel } from '@shared/domain'
+import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import { call } from '../api'
+
+const LOOKS_KEY = 'inputsplit.gamepadLooks'
+
+/** Look chosen by hand per slot, for when detection guesses wrong. Kept in this browser only. */
+function loadLooks(): Record<number, GamepadModel> {
+  try {
+    const raw = JSON.parse(localStorage.getItem(LOOKS_KEY) ?? '{}') as Record<string, unknown>
+    const out: Record<number, GamepadModel> = {}
+    for (const [slot, model] of Object.entries(raw)) {
+      if ((GAMEPAD_MODELS as readonly unknown[]).includes(model))
+        out[Number(slot)] = model as GamepadModel
+    }
+    return out
+  } catch {
+    return {}
+  }
+}
 
 export const useDevicesStore = defineStore('devices', () => {
   const controllers = ref<Controller[]>([])
@@ -9,6 +27,24 @@ export const useDevicesStore = defineStore('devices', () => {
   const testSlot = ref<number | null>(null)
   const testState = ref<ControllerState | null>(null)
   const loaded = ref(false)
+  const looks = ref<Record<number, GamepadModel>>(loadLooks())
+
+  /** What the test view draws for a slot: the hand-picked look, else the detected one. */
+  function lookOf(slot: number): GamepadModel {
+    return looks.value[slot] ?? controllers.value.find((c) => c.slot === slot)?.model ?? 'xbox'
+  }
+
+  function setLook(slot: number, model: GamepadModel | 'auto'): void {
+    const next = { ...looks.value }
+    if (model === 'auto') delete next[slot]
+    else next[slot] = model
+    looks.value = next
+    try {
+      localStorage.setItem(LOOKS_KEY, JSON.stringify(next))
+    } catch {
+      // Storage unavailable: the choice lasts until the app closes.
+    }
+  }
 
   function setControllers(list: Controller[]): void {
     controllers.value = list
@@ -55,6 +91,7 @@ export const useDevicesStore = defineStore('devices', () => {
     testSlot,
     testState,
     loaded,
+    looks,
     connected,
     setControllers,
     setDisplays,
@@ -64,5 +101,7 @@ export const useDevicesStore = defineStore('devices', () => {
     stopTest,
     isConnected,
     display,
+    lookOf,
+    setLook,
   }
 })

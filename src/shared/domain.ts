@@ -85,14 +85,36 @@ export const BatterySchema = z.object({
   level: z.enum(['empty', 'low', 'medium', 'full']),
 })
 
+/** Which controller the test view draws. */
+export const GamepadModelSchema = z.enum([
+  'xbox',
+  'dualshock4',
+  'dualsense',
+  'switchPro',
+  'generic',
+])
+export type GamepadModel = z.infer<typeof GamepadModelSchema>
+
 export const ControllerSchema = z.object({
   slot: z.number().int().min(0).max(3),
   connected: z.boolean(),
   kind: z.string(),
   wireless: z.boolean().nullable(),
   battery: BatterySchema.nullable(),
+  /** USB ids from XInputGetCapabilitiesEx; null where XInput does not report them. */
+  vendorId: z.number().int().nullable().optional(),
+  productId: z.number().int().nullable().optional(),
+  /** Filled in by the main process from the ids above (see gamepad-models.ts). */
+  model: GamepadModelSchema.optional(),
 })
 export type Controller = z.infer<typeof ControllerSchema>
+
+/** A HID game controller that is not an XInput device (PlayStation, Nintendo, …). */
+export const HidGamepadSchema = z.object({
+  vendorId: z.number().int(),
+  productId: z.number().int(),
+})
+export type HidGamepad = z.infer<typeof HidGamepadSchema>
 
 export const ControllerStateSchema = z.object({
   slot: z.number().int().min(0).max(3),

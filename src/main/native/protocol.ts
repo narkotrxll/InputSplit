@@ -10,6 +10,7 @@ import {
   ControllerSchema,
   ControllerStateSchema,
   DisplaySchema,
+  HidGamepadSchema,
   LogLevelSchema,
   RectSchema,
   SessionEndReasonSchema,
@@ -21,6 +22,12 @@ import {
 export const HELPER_PROTOCOL_VERSION = 1
 
 const empty = z.object({}).passthrough()
+
+/** `hidGamepads` came later; an older helper leaves it out. */
+const ControllerListSchema = z.object({
+  controllers: z.array(ControllerSchema),
+  hidGamepads: z.array(HidGamepadSchema).optional(),
+})
 
 export const helperMethods = {
   hello: {
@@ -42,7 +49,7 @@ export const helperMethods = {
     params: z.object({ excludePids: z.array(z.number().int()) }),
     result: z.object({ windows: z.array(WindowInfoSchema) }),
   },
-  listControllers: { params: empty, result: z.object({ controllers: z.array(ControllerSchema) }) },
+  listControllers: { params: empty, result: ControllerListSchema },
   listDisplays: { params: empty, result: z.object({ displays: z.array(DisplaySchema) }) },
   startControllerTest: { params: z.object({ slot: z.number().int() }), result: empty },
   stopControllerTest: { params: empty, result: empty },
@@ -102,7 +109,7 @@ export const helperEvents = {
     message: z.string(),
     pid: z.number().int().optional(),
   }),
-  controllersChanged: z.object({ controllers: z.array(ControllerSchema) }),
+  controllersChanged: ControllerListSchema,
   controllerState: ControllerStateSchema,
   displaysChanged: z.object({ displays: z.array(DisplaySchema) }),
   sessionStatus: SessionStatusSchema,

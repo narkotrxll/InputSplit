@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { Gamepad2, Info } from '@lucide/vue'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import type { GamepadModel } from '@shared/domain'
+import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import ControllerSlotCard from '../components/ControllerSlotCard.vue'
 import GamepadVisualizer from '../components/GamepadVisualizer.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiEmptyState from '../components/ui/UiEmptyState.vue'
+import UiSelect from '../components/ui/UiSelect.vue'
 import { useBackendStore } from '../stores/backend'
 import { useDevicesStore } from '../stores/devices'
 import { useIsolationStore } from '../stores/isolation'
@@ -17,6 +21,24 @@ const backend = useBackendStore()
 
 const testSlot = computed(() => devices.testSlot)
 const testController = computed(() => devices.controllers.find((c) => c.slot === testSlot.value))
+const { t } = useI18n()
+
+// Picture in the test view: detected automatically, or chosen by hand.
+const lookOptions = computed(() => [
+  {
+    value: 'auto' as const,
+    label: t('controllers.lookAuto', {
+      model: t(`controllers.model.${testController.value?.model ?? 'xbox'}`),
+    }),
+  },
+  ...GAMEPAD_MODELS.map((m) => ({ value: m, label: t(`controllers.model.${m}`) })),
+])
+const look = computed<GamepadModel | 'auto'>({
+  get: () => (testSlot.value === null ? 'auto' : (devices.looks[testSlot.value] ?? 'auto')),
+  set: (value) => {
+    if (testSlot.value !== null) devices.setLook(testSlot.value, value)
+  },
+})
 
 async function toggleTest(slot: number): Promise<void> {
   if (devices.testSlot === slot) await devices.stopTest()
@@ -77,8 +99,17 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
         <span class="text-[12px] text-text-faint tabular">{{
           $t('controllers.packets', { n: devices.testState?.packet ?? 0 })
         }}</span>
+        <div class="w-56">
+          <!-- keyed: the trigger keeps its first label otherwise -->
+          <UiSelect
+            :key="`${testSlot}-${testController?.model}`"
+            v-model="look"
+            :options="lookOptions"
+            :label="$t('controllers.look')"
+          />
+        </div>
       </template>
-      <GamepadVisualizer :state="devices.testState" />
+      <GamepadVisualizer :state="devices.testState" :model="devices.lookOf(testSlot)" />
     </UiCard>
 
     <UiEmptyState

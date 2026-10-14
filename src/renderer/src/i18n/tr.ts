@@ -331,6 +331,15 @@ export const tr: Messages = {
     packets: 'Güncellemeler: {n}',
     emptyTitle: 'Bağlı kontrolcü yok',
     emptyHint: 'Bir Xbox kontrolcüsünü USB, Bluetooth veya Xbox Kablosuz Adaptörü ile bağlayın.',
+    look: 'Görünüm',
+    lookAuto: 'Otomatik ({model})',
+    model: {
+      xbox: 'Xbox oyun kumandası',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro Controller',
+      generic: 'Genel oyun kumandası',
+    },
     kind: {
       gamepad: 'Xbox kontrolcüsü',
       wheel: 'Direksiyon',
