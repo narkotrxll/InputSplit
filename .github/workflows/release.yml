@@ -1,28 +1,97 @@
 name: Release
 
+# Every push to main builds the Windows installer and publishes it as a GitHub Release with a
+# new version tag (see scripts/release-version.mjs for how the version is picked). Pushing a
+# `v*` tag by hand releases exactly that version instead.
 on:
   push:
+    branches: [main]
+    # Docs-only changes don't need a new installer (tag pushes ignore this filter).
+    paths-ignore: ['**.md', 'docs/**', 'LICENSE']
     tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+# Releases are numbered from the existing tags, so two of them must never run at once.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   release:
+    name: Build installer and publish release
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
+
+      - name: Pick the version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(git tag --list 'v*' | node scripts/release-version.mjs)"
+          fi
+          echo "Releasing $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: Stamp the version into package.json
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version --allow-same-version
+
       - run: npm ci
       - run: npm test
-      - run: npm run dist:win
-      - name: Create a draft release with the installer
-        shell: bash
+      - name: Build native layer (MSVC)
+        run: npm run build:native
+      - name: Build app
+        run: npm run build
+      - name: Collect licenses
+        run: npm run licenses
+      - name: Package installer
+        run: npx electron-builder --win --x64 --publish never
+
+      - name: Write checksum and release notes
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          installer="InputSplit-Setup-$VERSION.exe"
+          (cd dist && sha256sum "$installer" > "$installer.sha256")
+          cat > release-notes.md <<EOF
+          ## Download
+
+          Download **$installer** below and run it. No administrator rights are needed.
+
+          The installer is not code-signed yet, so Windows SmartScreen may show
+          *"Windows protected your PC"*: click **More info → Run anyway**. Antivirus software may
+          also warn. \`$installer.sha256\` holds the SHA-256 checksum of the installer.
+
+          InputSplit is an early preview meant for single-player / offline games. See the
+          [README](https://github.com/$GITHUB_REPOSITORY#readme) for what works and the known
+          limitations.
+          EOF
+
+      - name: Publish the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >
-          gh release create "$GITHUB_REF_NAME" dist/InputSplit-Setup-*.exe
-          --draft --title "InputSplit $GITHUB_REF_NAME" --notes-file docs/RELEASE_NOTES.md
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            "dist/InputSplit-Setup-$VERSION.exe" \
+            "dist/InputSplit-Setup-$VERSION.exe.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "InputSplit $VERSION" \
+            --notes-file release-notes.md \
+            --generate-notes \
+            --latest

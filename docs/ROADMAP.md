@@ -78,7 +78,7 @@ must still be measured on Windows.**
 
 - ✅ README, architecture docs, third-party notices, generated license bundle
 - 🔧 GitHub Actions: lint/typecheck/tests/build on Linux, MinGW compile check, MSVC +
-  installer on Windows, draft release on tags (workflows written; first runs pending)
+  installer on Windows, GitHub release with a new version tag on every push to main
 - ✅ Release notes for 0.1.0 preview (`docs/RELEASE_NOTES.md`)
 - ⏳ Code signing (strongly recommended: injection tools trigger antivirus heuristics)
 - ⏳ Installation guide with real screenshots
