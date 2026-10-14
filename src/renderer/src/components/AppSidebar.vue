@@ -52,7 +52,7 @@ const dotClass = computed(
           :exact-active-class="item.to === '/' ? '!bg-surface-3 !text-text' : undefined"
         >
           <component :is="item.icon" class="size-4 shrink-0" aria-hidden="true" />
-          <span class="flex-1">{{ $t(`nav.${item.name}`) }}</span>
+          <span class="min-w-0 flex-1 truncate">{{ $t(`nav.${item.name}`) }}</span>
           <UiKbd class="opacity-0 transition-opacity group-hover:opacity-100"
             >Ctrl {{ item.key }}</UiKbd
           >

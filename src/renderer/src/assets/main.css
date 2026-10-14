@@ -122,6 +122,17 @@
     overflow: hidden;
   }
 
+  /* Inter has no CJK glyphs; name the Windows UI font for each script so Chinese and
+     Japanese do not fall back to each other's glyph shapes. */
+  html:lang(zh-CN) {
+    --font-sans:
+      'Inter Variable', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  }
+  html:lang(ja) {
+    word-break: auto-phrase; /* break Japanese between phrases, not inside words */
+    --font-sans: 'Inter Variable', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans JP', sans-serif;
+  }
+
   /* Text that people may want to copy (paths, logs) opts back in. */
   .selectable {
     user-select: text;

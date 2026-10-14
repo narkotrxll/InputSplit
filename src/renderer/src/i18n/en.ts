@@ -1,7 +1,8 @@
 /**
- * English UI texts. Other languages: add a file with the same shape and register it in
- * ./index.ts. Keep sentences short and free of technical jargon; technical details belong
- * in diagnostics.
+ * English UI texts, the source for every other language. Other languages: add a file typed
+ * as `Messages` and register it in ./index.ts; the type check and i18n.test.ts make sure no
+ * key or placeholder is missing. Keep sentences short and free of technical jargon;
+ * technical details belong in diagnostics.
  */
 export const en = {
   app: {
@@ -314,6 +315,7 @@ export const en = {
     test: 'Test',
     stopTest: 'Stop test',
     testTitle: 'Controller test',
+    stateLabel: 'Controller state',
     testHint: 'Press buttons and move the sticks. Everything you do appears here.',
     packets: 'Updates: {n}',
     emptyTitle: 'No controller connected',
@@ -346,6 +348,7 @@ export const en = {
     resolution: '{w} × {h}',
     refresh: '{hz} Hz',
     scale: '{percent}% scale',
+    mapLabel: 'Screens',
   },
   picker: {
     gameTitle: 'Choose a game',
@@ -396,7 +399,8 @@ export const en = {
     themeLight: 'Light',
     themeSystem: 'System',
     language: 'Language',
-    languageHint: 'More languages are planned.',
+    languageHint: 'Spotted a wrong translation? Tell us on GitHub.',
+    languageSystem: 'Same as Windows ({name})',
     defaults: 'Isolation defaults',
     defaultsHint: 'Used for new setups and new profiles.',
     moveWindowByDefault: 'Move the game to the selected screen',
@@ -492,4 +496,7 @@ export const en = {
   },
 } as const
 
-export type Messages = typeof en
+type Widen<T> = { -readonly [K in keyof T]: T[K] extends string ? string : Widen<T[K]> }
+
+/** The shape every language file must have. */
+export type Messages = Widen<typeof en>

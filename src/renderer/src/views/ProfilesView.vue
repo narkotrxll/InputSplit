@@ -19,7 +19,7 @@ import { useProfilesStore } from '../stores/profiles'
 import { useUiStore } from '../stores/ui'
 import { useWindowsStore } from '../stores/windows'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const router = useRouter()
 const profiles = useProfilesStore()
 const isolation = useIsolationStore()
@@ -127,7 +127,9 @@ onMounted(() => void profiles.load())
           <span class="text-[12px] text-text-faint">
             {{
               profile.lastUsedAt
-                ? $t('profiles.lastUsed', { date: formatRelativeDate(profile.lastUsedAt) })
+                ? $t('profiles.lastUsed', {
+                    date: formatRelativeDate(profile.lastUsedAt, Date.now(), locale),
+                  })
                 : $t('profiles.neverUsed')
             }}
           </span>

@@ -38,6 +38,7 @@ InputSplit fixes both, **inside the chosen game only**:
 | ⌨️ **Keyboard and mouse stay yours** | The game cannot see typing, mouse movement or clicks. |
 | 🖱️ **Cursor protected** | The game cannot re-centre or trap the shared mouse pointer. |
 | 🎯 **One controller per game** | The chosen controller becomes the game's player 1. |
+| 🌍 **11 languages** | English, Українська, Русский, Español, Deutsch, Français, Português (Brasil), Polski, Türkçe, 简体中文, 日本語. Follows the Windows language by default. |
 | 📺 **Right screen** | Optionally moves the game window to the TV and puts it back afterwards. |
 
 Pick the game, pick the controller, press **Start isolation**. That's it.

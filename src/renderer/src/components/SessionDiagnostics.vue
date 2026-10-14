@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Activity, Crosshair, EyeOff, Keyboard, MousePointer2 } from '@lucide/vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { IsolationView } from '@shared/domain'
 import { formatCount, formatDuration } from '../lib/format'
 import UiBadge from './ui/UiBadge.vue'
 
 const props = defineProps<{ view: IsolationView }>()
+const { locale } = useI18n()
 
 const now = ref(Date.now())
 const timer = window.setInterval(() => (now.value = Date.now()), 1000)
@@ -72,7 +74,7 @@ const rows = computed(() => [
       <p class="mt-1 flex justify-between gap-2 text-[12px] text-text-faint">
         <span>{{ $t('dashboard.counters.xinputRate') }}</span>
         <span class="tabular">{{
-          $t('dashboard.counters.total', { n: formatCount(counters.xinputReads) })
+          $t('dashboard.counters.total', { n: formatCount(counters.xinputReads, locale) })
         }}</span>
       </p>
     </div>
@@ -84,13 +86,13 @@ const rows = computed(() => [
           }}
         </dt>
         <dd class="mt-1 text-[16px] font-semibold text-text tabular">
-          {{ formatCount(row.value) }}
+          {{ formatCount(row.value, locale) }}
         </dd>
       </div>
     </dl>
     <div class="flex items-center justify-between text-[12px] text-text-faint">
       <span>{{
-        $t('dashboard.uptime', { time: formatDuration(now - (view.startedAt ?? now)) })
+        $t('dashboard.uptime', { time: formatDuration(now - (view.startedAt ?? now), locale) })
       }}</span>
     </div>
     <div v-if="view.detectedApis.length > 0">

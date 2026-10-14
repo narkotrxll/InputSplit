@@ -36,17 +36,19 @@ defineEmits<{ open: [] }>()
       />
     </span>
     <span class="flex min-w-0 items-center gap-3">
-      <slot name="visual" />
+      <span class="shrink-0"><slot name="visual" /></span>
       <span class="min-w-0">
         <span
-          class="block truncate text-[14px] font-medium"
+          class="line-clamp-2 block text-[14px] font-medium break-words"
           :class="empty ? 'text-text-muted' : 'text-text'"
         >
           {{ title }}
         </span>
-        <span v-if="subtitle" class="mt-0.5 block truncate text-[12px] text-text-faint">{{
-          subtitle
-        }}</span>
+        <span
+          v-if="subtitle"
+          class="mt-0.5 line-clamp-2 block text-[12px] break-words text-text-faint"
+          >{{ subtitle }}</span
+        >
       </span>
     </span>
     <slot />

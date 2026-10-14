@@ -138,10 +138,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <div class="mb-5 flex items-center justify-between gap-6">
           <div class="flex min-w-0 items-center gap-3">
             <StatusPill :status="isolation.uiStatus" size="lg" />
-            <p class="truncate text-[13px] text-text-muted">{{ statusDescription }}</p>
+            <p class="text-[13px] text-text-muted">{{ statusDescription }}</p>
           </div>
           <UiTooltip :text="isolation.live ? 'Ctrl+Enter' : (startDisabledReason ?? 'Ctrl+Enter')">
-            <span>
+            <span class="shrink-0">
               <UiButton
                 v-if="isolation.live"
                 variant="danger"
@@ -238,7 +238,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             :title="display?.name ?? $t('dashboard.chooseDisplay')"
             :subtitle="
               display
-                ? `${display.bounds.width}×${display.bounds.height} · ${display.refreshRate} Hz`
+                ? `${display.bounds.width}×${display.bounds.height} · ${$t('displays.refresh', { hz: display.refreshRate })}`
                 : $t('dashboard.chooseDisplayHint')
             "
             :disabled="!editable"

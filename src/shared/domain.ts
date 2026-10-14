@@ -9,6 +9,7 @@
  */
 import { z } from 'zod'
 import { FEATURE_NAMES } from './defaults'
+import { LANGUAGE_SETTINGS } from './locales'
 
 // Zod-free constants live in ./defaults so the renderer can use them without bundling Zod.
 export * from './defaults'
@@ -334,7 +335,7 @@ export const SettingsSchema = z.object({
   showAllWindows: z.boolean(),
   verboseLogging: z.boolean(),
   theme: z.enum(['dark', 'light', 'system']),
-  language: z.enum(['en']),
+  language: z.enum(LANGUAGE_SETTINGS),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 

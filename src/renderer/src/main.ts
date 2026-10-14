@@ -1,8 +1,8 @@
 import { createPinia } from 'pinia'
-import { createApp } from 'vue'
+import { createApp, watch } from 'vue'
 import App from './App.vue'
 import './assets/main.css'
-import { i18n } from './i18n'
+import { applyLanguage, i18n } from './i18n'
 import { router } from './router'
 import { useBackendStore } from './stores/backend'
 import { useDevicesStore } from './stores/devices'
@@ -32,6 +32,7 @@ async function bootstrap(): Promise<void> {
   subscribe('controllers:state', devices.setTestState)
 
   await settings.load()
+  watch(() => settings.settings.language, applyLanguage, { immediate: true })
   isolation.applyDefaults(settings.settings)
   await Promise.all([backend.init(), isolation.init(), logs.init(), profiles.load()])
   if (backend.state?.status === 'ready') await devices.refresh().catch(() => {})
