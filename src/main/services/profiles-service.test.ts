@@ -87,3 +87,27 @@ describe('ProfilesService', () => {
     expect(service.list().map((p) => p.name)).toEqual(['Hollow Knight'])
   })
 })
+
+describe('ProfilesService.importMany', () => {
+  it('adds new profiles, updates same-named ones and skips invalid ones', async () => {
+    const { service } = makeService()
+    const existing = await service.save(input())
+    const other = await service.save(
+      input({ name: 'Celeste', exeName: 'Celeste.exe', exePath: null }),
+    )
+    const incoming = [
+      { ...existing, id: 'from-other-pc', controllerSlot: 2 },
+      { ...other, id: other.id, name: 'Hollow Knight', exeName: 'hollow_knight.exe' },
+      { ...other, id: 'bad', name: 'Bad', exeName: 'run.bat' },
+    ]
+    const result = await service.importMany(incoming)
+    expect(result).toEqual({ added: 1, updated: 1, skipped: 1 })
+    const list = service.list()
+    expect(list.map((p) => p.name)).toEqual(['Celeste', 'Hollow Knight', 'Red Dead Redemption 2'])
+    const updated = list.find((p) => p.name === 'Red Dead Redemption 2')!
+    expect(updated.id).toBe(existing.id)
+    expect(updated.controllerSlot).toBe(2)
+    // The added profile's id clashed with Celeste's, so it got a new one.
+    expect(new Set(list.map((p) => p.id)).size).toBe(3)
+  })
+})

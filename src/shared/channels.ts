@@ -24,6 +24,12 @@ export const INVOKE_CHANNEL_NAMES = [
   'profiles:markUsed',
   'profiles:play',
   'profiles:pickExecutable',
+  'library:scan',
+  'library:cover',
+  'playtime:get',
+  'backup:export',
+  'backup:open',
+  'backup:import',
   'automation:get',
   'automation:cancel',
   'compat:history',
@@ -36,6 +42,7 @@ export const INVOKE_CHANNEL_NAMES = [
   'diagnostics:getLogs',
   'diagnostics:openLogFolder',
   'diagnostics:export',
+  'diagnostics:report',
 ] as const
 
 export const EVENT_CHANNEL_NAMES = [
@@ -47,6 +54,7 @@ export const EVENT_CHANNEL_NAMES = [
   'log:entry',
   'automation:changed',
   'compat:changed',
+  'playtime:changed',
   'updates:changed',
   'profiles:changed',
   'app:navigate',
