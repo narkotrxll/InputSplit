@@ -39,7 +39,8 @@ any game as supported until it passes the steps below on Windows.
 
 `InputSplitProbe.exe` is a small "game" that shows everything a game would see. Its window
 is green while it is running and red when it thinks it lost focus. Counters are logged every
-second to `%TEMP%\InputSplitProbe.log`.
+second to `%TEMP%\InputSplitProbe.log`; how to read it and a summary script:
+`docs/PROBE_LOG.md`.
 
 ### E1 — Does Windows deliver XInput to a background window at all?
 
