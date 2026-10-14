@@ -140,6 +140,11 @@ for (const viewport of viewports) {
       await check('02-onboarding-risks')
       await page.getByText(m.onboarding.risks.acknowledge).click()
       await button(exact(m.common.next)).click()
+      await page.waitForTimeout(1500) // the simulated controller "presses" a button
+      await check('03-onboarding-controller')
+      await button(exact(m.common.next)).click()
+      await check('03-onboarding-display')
+      await button(exact(m.common.next)).click()
       await check('03-onboarding-tips')
       await button(exact(m.onboarding.tips.finish)).click()
       await page.waitForTimeout(400)

@@ -57,6 +57,11 @@ export const DEFAULT_SETTINGS: Settings = {
   verboseLogging: false,
   theme: 'dark',
   language: 'system',
+  launchAtLogin: false,
+  notifications: true,
+  gamepadHotkeyEnabled: true,
+  rumbleFeedback: true,
+  checkForUpdates: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

@@ -10,6 +10,9 @@
 import { z } from 'zod'
 import {
   AppInfoSchema,
+  AutomationStateSchema,
+  CompatHistorySchema,
+  UpdateStateSchema,
   BackendStateSchema,
   ControllerSchema,
   ControllerStateSchema,
@@ -54,10 +57,25 @@ export const invokeContract = {
   'profiles:save': { input: ProfileInputSchema, output: ProfileSchema },
   'profiles:delete': { input: z.string().min(1).max(64), output: ok },
   'profiles:markUsed': { input: z.string().min(1).max(64), output: ok },
+  /** Isolate the profile's game; with `launch`, start the game first if it is not open. */
+  'profiles:play': {
+    input: z.object({ id: z.string().min(1).max(64), launch: z.boolean() }),
+    output: ok,
+  },
   'profiles:pickExecutable': {
     input: none,
     output: z.object({ exePath: z.string(), exeName: z.string() }).nullable(),
   },
+
+  'automation:get': { input: none, output: AutomationStateSchema },
+  'automation:cancel': { input: none, output: ok },
+
+  'compat:history': { input: none, output: CompatHistorySchema },
+
+  'updates:get': { input: none, output: UpdateStateSchema },
+  'updates:check': { input: none, output: UpdateStateSchema },
+  'updates:install': { input: none, output: ok },
+  'updates:openRelease': { input: none, output: ok },
 
   'settings:get': { input: none, output: SettingsSchema },
   'settings:update': { input: SettingsPatchSchema, output: SettingsSchema },
@@ -74,6 +92,10 @@ export const eventContract = {
   'controllers:state': ControllerStateSchema,
   'displays:changed': z.array(DisplaySchema),
   'log:entry': LogEntrySchema,
+  'automation:changed': AutomationStateSchema,
+  'compat:changed': CompatHistorySchema,
+  'updates:changed': UpdateStateSchema,
+  'profiles:changed': z.array(ProfileSchema),
   'app:navigate': z.enum(['dashboard', 'applications', 'controllers', 'profiles', 'settings']),
 } as const
 

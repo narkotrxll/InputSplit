@@ -2,6 +2,7 @@
 import { AppWindow, Check, SearchX, ShieldAlert } from '@lucide/vue'
 import { computed } from 'vue'
 import type { WindowInfo } from '@shared/domain'
+import { useCompatStore } from '../stores/compat'
 import { useWindowsStore } from '../stores/windows'
 import AppIcon from './AppIcon.vue'
 import UiBadge from './ui/UiBadge.vue'
@@ -19,6 +20,26 @@ const props = defineProps<{
 const emit = defineEmits<{ select: [window: WindowInfo] }>()
 
 const store = useWindowsStore()
+const compat = useCompatStore()
+
+const KIND_BADGES = {
+  blocked: { tone: 'danger', key: 'compat.badgeBlocked' },
+  online: { tone: 'warning', key: 'compat.badgeOnline' },
+  launcher: { tone: 'warning', key: 'compat.badgeLauncher' },
+} as const
+const HISTORY_BADGES = {
+  works: { tone: 'success', key: 'compat.badgeWorks' },
+  limited: { tone: 'info', key: 'compat.badgeLimited' },
+  failed: { tone: 'warning', key: 'compat.badgeFailed' },
+} as const
+
+/** One badge from what InputSplit knows about the game: built-in list first, then history. */
+function compatBadge(window: WindowInfo) {
+  const kind = compat.entry(window.exeName)?.kind
+  if (kind) return KIND_BADGES[kind]
+  const last = compat.lastTime(window.exeName)
+  return last ? HISTORY_BADGES[last.outcome] : null
+}
 
 /** Hints worth showing as badges, most informative first. */
 const BADGE_HINTS = [
@@ -97,6 +118,9 @@ function isSelected(window: WindowInfo): boolean {
             {{ $t('apps.admin') }}
           </UiBadge>
           <UiBadge v-if="window.isMinimized" tone="neutral">{{ $t('apps.minimized') }}</UiBadge>
+          <UiBadge v-if="compatBadge(window)" :tone="compatBadge(window)!.tone">{{
+            $t(compatBadge(window)!.key)
+          }}</UiBadge>
           <UiBadge v-for="hint in badges(window)" :key="hint" tone="neutral">{{
             $t(`apps.hints.${hint}`)
           }}</UiBadge>

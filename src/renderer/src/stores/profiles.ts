@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Profile, ProfileInput } from '@shared/domain'
-import { call } from '../api'
+import { call, subscribe } from '../api'
 
 export const useProfilesStore = defineStore('profiles', () => {
   const profiles = ref<Profile[]>([])
@@ -10,6 +10,14 @@ export const useProfilesStore = defineStore('profiles', () => {
   async function load(): Promise<void> {
     profiles.value = await call('profiles:list')
     loaded.value = true
+  }
+
+  /** The main process changes profiles too (last used, starts from the tray). */
+  function listen(): void {
+    subscribe('profiles:changed', (list) => {
+      profiles.value = list
+      loaded.value = true
+    })
   }
 
   async function save(input: ProfileInput): Promise<Profile> {
@@ -23,5 +31,5 @@ export const useProfilesStore = defineStore('profiles', () => {
     profiles.value = profiles.value.filter((p) => p.id !== id)
   }
 
-  return { profiles, loaded, load, save, remove }
+  return { profiles, loaded, load, listen, save, remove }
 })

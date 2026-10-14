@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { ProfileSchema, type Profile, type ProfileInput } from '@shared/domain'
 import { AppException } from '@shared/errors'
+import { Emitter } from '../util/emitter'
 import { JsonFileStore } from './json-store'
 
 const ProfilesFileSchema = z.object({
@@ -34,6 +35,8 @@ export function validateExecutable(exeName: string, exePath: string | null): voi
 export class ProfilesService {
   private profiles: Profile[] = []
   private readonly store: JsonFileStore<typeof ProfilesFileSchema>
+  /** Fires after every change (the tray menu and the automation watch the list). */
+  readonly changes = new Emitter<Profile[]>()
 
   constructor(
     path: string,
@@ -55,6 +58,18 @@ export class ProfilesService {
 
   list(): Profile[] {
     return [...this.profiles].sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  get(id: string): Profile | null {
+    return this.profiles.find((p) => p.id === id) ?? null
+  }
+
+  /** Most recently used first; never-used profiles last, by name. */
+  recent(): Profile[] {
+    return [...this.profiles].sort(
+      (a, b) =>
+        (b.lastUsedAt ?? '').localeCompare(a.lastUsedAt ?? '') || a.name.localeCompare(b.name),
+    )
   }
 
   async save(input: ProfileInput): Promise<Profile> {
@@ -99,5 +114,6 @@ export class ProfilesService {
   private async persist(profiles: Profile[]): Promise<void> {
     await this.store.write({ version: 1, profiles })
     this.profiles = profiles
+    this.changes.emit(this.list())
   }
 }

@@ -5,6 +5,8 @@
 // different slot. The UI therefore talks about "Slot 1..4".
 #pragma once
 
+#include <string>
+
 #include "rpc.h"
 
 namespace inputsplit::helper {
@@ -19,6 +21,13 @@ class ControllerMonitor {
   Json List();                // current snapshot of the four slots
   void StartTest(int slot);   // stream "controllerState" events for one slot (~60 Hz)
   void StopTest();
+
+  // Controller shortcut: emits "gamepadHotkey" {slot} when LB + RB + View are held for two
+  // seconds on any connected controller.
+  void SetHotkeyEnabled(bool enabled);
+  // Short vibration as feedback ("on" one pulse, "off" two, "error" three). Returns false
+  // when XInput cannot vibrate.
+  bool Rumble(int slot, const std::string& pattern);
 
  private:
   ControllerMonitor() = default;

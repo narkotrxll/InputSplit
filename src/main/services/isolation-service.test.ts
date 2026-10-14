@@ -1,83 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import {
-  DEFAULT_FEATURES,
-  type BackendState,
-  type SessionStatus,
-  type StartIsolationInput,
-} from '@shared/domain'
+import { DEFAULT_FEATURES, type StartIsolationInput } from '@shared/domain'
 import { AppException } from '@shared/errors'
-import { initialBackendState, type NativeBackend } from '../native/backend'
-import type { HelperEvent, HelperMethod } from '../native/protocol'
-import { Emitter } from '../util/emitter'
+import { FakeBackend, sessionStatus } from '../native/__fixtures__/fake-backend'
 import { IsolationService } from './isolation-service'
 import { Logger } from './logger'
-
-type Handler = (params: unknown) => unknown
-
-class FakeBackend implements NativeBackend {
-  readonly simulated = true
-  state: BackendState = { ...initialBackendState(true), status: 'ready' }
-  events = new Emitter<HelperEvent>()
-  states = new Emitter<BackendState>()
-  calls: { method: HelperMethod; params: unknown }[] = []
-  handlers: Partial<Record<HelperMethod, Handler>> = {}
-
-  start = vi.fn(async () => {})
-  stop = vi.fn(async () => {})
-  restart = vi.fn(async () => {})
-  setEmergencyHotkey = vi.fn(async () => {})
-  getState = () => this.state
-  onEvent = (l: (e: HelperEvent) => void) => this.events.on(l)
-  onState = (l: (s: BackendState) => void) => this.states.on(l)
-
-  async request(method: HelperMethod, params: unknown): Promise<never> {
-    this.calls.push({ method, params })
-    const handler = this.handlers[method]
-    if (!handler) throw new Error(`unexpected ${method}`)
-    return handler(params) as never
-  }
-}
-
-function sessionStatus(overrides: Partial<SessionStatus> = {}): SessionStatus {
-  return {
-    sessionId: 7,
-    pid: 42,
-    architectureBits: 64,
-    requested: [
-      'activationShield',
-      'focusSpoof',
-      'xinputBackground',
-      'xinputSlotLock',
-      'blockKeyboard',
-      'blockMouse',
-      'cursorGuard',
-    ],
-    active: [
-      'activationShield',
-      'focusSpoof',
-      'xinputBackground',
-      'xinputSlotLock',
-      'blockKeyboard',
-      'blockMouse',
-      'cursorGuard',
-    ],
-    failed: [],
-    detectedApis: ['xinput'],
-    gameWindow: 1,
-    subclassedWindows: 1,
-    xinputSlot: 0,
-    counters: {
-      xinputReads: 10,
-      blockedKeyboard: 0,
-      blockedMouse: 0,
-      swallowedFocusEvents: 0,
-      blockedCursorCalls: 0,
-      xinputEnableBlocked: 0,
-    },
-    updatedAt: 0,
-    ...overrides,
-  }
-}
 
 const input: StartIsolationInput = {
   target: { pid: 42, hwnd: 1, title: 'Game', exeName: 'game.exe', exePath: 'C:\\Games\\game.exe' },
@@ -216,5 +142,44 @@ describe('IsolationService', () => {
     const { service } = setup()
     await service.start(input)
     await expect(service.start(input)).rejects.toMatchObject({ code: 'alreadyRunning' })
+  })
+
+  it('refuses games on the built-in blocked list without asking the helper', async () => {
+    const { backend, service } = setup()
+    const view = await service.start({
+      ...input,
+      target: { ...input.target, exeName: 'cs2.exe', exePath: 'C:\\Games\\cs2.exe' },
+    })
+    expect(view.phase).toBe('failed')
+    expect(view.error?.code).toBe('antiCheat')
+    expect(backend.calls).toEqual([])
+  })
+
+  it('remembers how a session went', async () => {
+    const { backend, service } = setup()
+    const outcomes: unknown[] = []
+    service.outcomes.on((o) => outcomes.push(o))
+    await service.start(input)
+    await service.stop()
+    expect(outcomes).toEqual([{ exeName: 'game.exe', outcome: 'works' }])
+
+    backend.handlers.startIsolation = () =>
+      sessionStatus({ counters: { ...sessionStatus().counters, xinputReads: 0 } })
+    service.dismiss()
+    await service.start(input)
+    await service.stop()
+    expect(outcomes[1]).toEqual({ exeName: 'game.exe', outcome: 'limited' })
+  })
+
+  it('remembers a game that could not be injected, but not a refusal', async () => {
+    const { backend, service } = setup()
+    const outcomes: unknown[] = []
+    service.outcomes.on((o) => outcomes.push(o))
+    backend.handlers.startIsolation = () => {
+      throw new AppException('injectionFailed', 'blocked')
+    }
+    await service.start(input)
+    expect(outcomes).toEqual([{ exeName: 'game.exe', outcome: 'failed' }])
+    expect(service.lastStart()).toEqual(input)
   })
 })

@@ -171,9 +171,14 @@ NDJSON over stdio. Requests `{"id":1,"method":"listWindows","params":{}}`, respo
 
 Methods: `hello`, `listWindows`, `listControllers`, `listDisplays`, `checkTarget`,
 `startIsolation`, `stopIsolation`, `moveWindow`, `startControllerTest`,
-`stopControllerTest`, `setEmergencyHotkey`, `ping`, `shutdown`.
+`stopControllerTest`, `setEmergencyHotkey`, `setGamepadHotkey`, `rumble`, `ping`,
+`shutdown`.
 Events: `controllersChanged`, `controllerState`, `displaysChanged`, `sessionStatus`,
-`sessionEnded`, `emergencyStop`, `log`.
+`sessionEnded`, `emergencyStop`, `gamepadHotkey`, `log`.
+
+The controller shortcut is polled by the helper's controller thread (only connected slots,
+every 50 ms while enabled). The helper only reports the held combination; deciding what to
+start or stop happens in the main process (`AutomationService`).
 
 ### 7.3 Helper ↔ Hook DLL (`native/common/hook_protocol.h`)
 

@@ -20,6 +20,7 @@ import {
   type SessionStatus,
   type StartIsolationInput,
 } from '@shared/domain'
+import { lookupCompat, type CompatOutcome } from '@shared/compatibility'
 import { AppException, toAppError } from '@shared/errors'
 import { evaluateSession, isSessionLive } from '@shared/support'
 import type { NativeBackend } from '../native/backend'
@@ -35,6 +36,9 @@ interface MovedWindow {
 export class IsolationService {
   private view: IsolationView = IDLE_VIEW
   private readonly changes = new Emitter<IsolationView>()
+  /** How a session went, for the compatibility memory (one event per started session). */
+  readonly outcomes = new Emitter<{ exeName: string; outcome: CompatOutcome }>()
+  private lastInput: StartIsolationInput | null = null
   private lastStatus: SessionStatus | null = null
   private moved: MovedWindow | null = null
   private restoreOnExit = true
@@ -57,6 +61,11 @@ export class IsolationService {
     return this.changes.on(listener)
   }
 
+  /** The most recent start request (used to restart it from the controller shortcut). */
+  lastStart(): StartIsolationInput | null {
+    return this.lastInput
+  }
+
   async start(input: StartIsolationInput): Promise<IsolationView> {
     if (isSessionLive(this.view) || this.view.phase === 'checking') {
       throw new AppException('alreadyRunning', 'Isolation is already running.')
@@ -68,6 +77,7 @@ export class IsolationService {
     if (requested.length === 0)
       throw new AppException('noFeatures', 'Select at least one protection.')
 
+    this.lastInput = input
     this.lastStatus = null
     this.moved = null
     this.moveFailed = false
@@ -85,6 +95,14 @@ export class IsolationService {
       })),
     })
     this.logger.info(`Starting isolation for ${input.target.exeName} (pid ${input.target.pid})`)
+
+    const compat = lookupCompat(input.target.exeName)
+    if (compat?.kind === 'blocked') {
+      return this.fail({
+        code: 'antiCheat',
+        message: `Protected by ${compat.antiCheat ?? 'an anti-cheat system'}.`,
+      })
+    }
 
     try {
       const check = await this.backend.request('checkTarget', { pid: input.target.pid })
@@ -120,7 +138,11 @@ export class IsolationService {
       this.logger.info(`Isolation running: ${status.active.join(', ') || 'no features'}`)
       if (status.failed.length > 0) this.logger.warn(`Features failed: ${status.failed.join(', ')}`)
     } catch (error) {
-      return this.fail(toAppError(error))
+      const appError = toAppError(error)
+      if (this.view.phase === 'starting') {
+        this.outcomes.emit({ exeName: input.target.exeName, outcome: 'failed' })
+      }
+      return this.fail(appError)
     }
 
     if (input.moveWindow && input.displayId !== null) await this.moveWindow(input)
@@ -224,6 +246,9 @@ export class IsolationService {
     }
     const unexpected =
       reason === 'hookDisconnected' || reason === 'error' || reason === 'helperCrashed'
+    if (this.view.target !== null && this.view.startedAt !== null) {
+      this.outcomes.emit({ exeName: this.view.target.exeName, outcome: this.outcome() })
+    }
     this.set({
       ...this.view,
       phase: 'ended',
@@ -232,6 +257,19 @@ export class IsolationService {
       error: unexpected ? { code: reason, message: message ?? reason } : null,
       features: this.view.features.map((f) => ({ ...f, state: 'off', reason: null })),
     })
+  }
+
+  /** Judged from what the game did while it ran, not from how the session ended. */
+  private outcome(): CompatOutcome {
+    const controller = this.view.features.find((f) => f.name === 'xinputBackground')
+    const readPad = (this.view.counters?.xinputReads ?? 0) > 0
+    if (controller && controller.state !== 'off' && !readPad) return 'limited'
+    const degraded = this.view.features.some(
+      (f) => f.state === 'failed' || f.state === 'unsupported',
+    )
+    // A window that could not be moved says nothing about the game itself.
+    const limited = this.view.limitations.some((l) => l !== 'windowMoveFailed')
+    return degraded || limited ? 'limited' : 'works'
   }
 
   private fail(error: AppError): IsolationView {

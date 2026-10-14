@@ -263,6 +263,13 @@ export const de: Messages = {
     sessionNotFound: 'Diese Isolierungssitzung ist bereits beendet.',
     forbidden: 'Diese Aktion ist nicht erlaubt.',
     invalidInput: 'Die Anfrage war ungültig.',
+    gameNotRunning: 'Das Spiel läuft nicht.',
+    noExePath: 'Dieses Profil weiß nicht, wo das Spiel liegt. Wähle die Spieldatei im Profil aus.',
+    launchFailed: 'Das Spiel konnte nicht gestartet werden. Prüfe die Spieldatei im Profil.',
+    launchTimeout: 'Das Spielfenster ist nicht rechtzeitig erschienen.',
+    updateUnavailable: 'Es ist kein Update zur Installation bereit.',
+    updateDevBuild: 'Updates werden nur in der installierten App installiert.',
+    updateFailed: 'Das Update konnte nicht heruntergeladen werden. Versuche es später erneut.',
     internalError: 'Ein unerwarteter Fehler ist aufgetreten.',
     error: 'Ein unerwarteter Fehler ist aufgetreten.',
   },
@@ -501,5 +508,93 @@ export const de: Messages = {
   },
   shortcuts: {
     emergency: 'Notfall-Stopp',
+  },
+  automation: {
+    play: 'Spielen',
+    playHint: 'Startet das Spiel bei Bedarf und isoliert es, sobald sein Fenster erscheint.',
+    autoStart: 'Isolierung automatisch starten, wenn dieses Spiel geöffnet wird',
+    autoStartHint: 'Funktioniert, solange InputSplit läuft, auch versteckt im Infobereich.',
+    autoStartBadge: 'Automatisch',
+    launching: '{name} wird gestartet…',
+    waiting: 'Warte auf das Fenster von {name}…',
+    waitingHint: 'Die Isolierung startet von selbst, sobald das Spielfenster erscheint.',
+    failed: '{name} konnte nicht gestartet werden',
+  },
+  gamepadHotkey: {
+    title: 'Controller',
+    shortcut: 'Controller-Tastenkombination',
+    shortcutHint:
+      'Halte diese Tasten 2 Sekunden lang, um die Isolierung vom Sofa aus zu starten oder zu beenden. Läuft nichts, startet das zuletzt verwendete Profil, dessen Spiel geöffnet ist.',
+    rumble: 'Beim Starten und Beenden vibrieren',
+    rumbleHint:
+      'Ein langer Impuls: Isolierung aktiv. Zwei kurze: beendet. Drei: nichts zu starten.',
+  },
+  notify: {
+    launchAtLogin: 'Mit Windows starten',
+    launchAtLoginHint:
+      'Startet versteckt im Infobereich, damit automatische Profile immer bereit sind.',
+    notifications: 'Windows-Benachrichtigungen',
+    notificationsHint:
+      'Zeigt an, wenn die Isolierung startet oder endet, während InputSplit im Hintergrund läuft.',
+  },
+  compat: {
+    launcher:
+      'Das ist ein Launcher, nicht das Spiel. Starte das Spiel darüber und wähle dann das Spielfenster.',
+    online:
+      'Das sieht nach einem Online-Spiel aus. InputSplit ist für Einzelspieler- und Offline-Spiele gedacht: Hier funktioniert es eventuell nicht, und die Regeln des Spiels können es verbieten.',
+    badgeLauncher: 'Launcher',
+    badgeOnline: 'Online',
+    badgeBlocked: 'Geschützt',
+    badgeWorks: 'Lief zuletzt',
+    badgeLimited: 'Teilweise',
+    badgeFailed: 'Fehlgeschlagen',
+    lastTime: {
+      works: 'Beim letzten Mal hat auf diesem PC mit diesem Spiel alles funktioniert.',
+      limited:
+        'Beim letzten Mal haben auf diesem PC einige Schutzfunktionen mit diesem Spiel nicht funktioniert.',
+      failed: 'Beim letzten Mal konnte InputSplit auf diesem PC in diesem Spiel nicht starten.',
+    },
+    noReads: {
+      title: 'Das Spiel scheint den Controller nicht zu lesen',
+      steam:
+        'Bei Steam: Öffne die Eigenschaften des Spiels → Controller und schalte Steam Input aus.',
+      inGame:
+        'Bewege einen Stick im Spiel: Manche Spiele lesen den Controller erst in einem Menü oder Level.',
+      settings:
+        'Prüfe, ob die Controller-Unterstützung in den Einstellungen des Spiels aktiviert ist.',
+      other:
+        'Manche Spiele lesen Controller über DirectInput oder Windows.Gaming.Input. Deren Unterstützung im Hintergrund ist noch eingeschränkt.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Controller prüfen',
+    controllerBody: 'Drücke eine beliebige Taste auf dem Controller, mit dem gespielt wird.',
+    noController:
+      'Noch kein Controller verbunden. Verbinde ihn per USB, Bluetooth oder mit dem Xbox Wireless Adapter. Das geht auch später.',
+    waiting: 'Warte auf einen Tastendruck…',
+    works: 'Funktioniert! Dieser Controller wird für Spiele verwendet.',
+    displayTitle: 'Fernseher auswählen',
+    displayBody:
+      'InputSplit kann das Spiel beim Start der Isolierung auf diesen Bildschirm verschieben und danach zurücksetzen.',
+    skip: 'Überspringen',
+  },
+  updates: {
+    title: 'Updates',
+    auto: 'Automatisch nach Updates suchen',
+    autoHint:
+      'Sucht einmal täglich auf GitHub nach einer neuen Version. Ohne deinen Klick wird nichts installiert.',
+    check: 'Jetzt prüfen',
+    checking: 'Wird geprüft…',
+    upToDate: 'Du hast die neueste Version ({version}).',
+    available: 'Version {version} ist verfügbar',
+    install: 'Herunterladen und installieren',
+    downloading: 'Wird heruntergeladen… {percent}%',
+    installing: 'Installationsprogramm wird gestartet…',
+    error:
+      'Die Suche nach Updates ist fehlgeschlagen. Prüfe deine Internetverbindung und versuche es erneut.',
+    whatsNew: 'Neuigkeiten',
+    devBuild:
+      'Dies ist ein Entwicklungsbuild: Updates werden nur in der installierten App installiert.',
+    sidebar: 'Update verfügbar',
   },
 }

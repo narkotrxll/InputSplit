@@ -261,6 +261,14 @@ export const fr: Messages = {
     sessionNotFound: 'Cette session d’isolation est déjà terminée.',
     forbidden: 'Cette action n’est pas autorisée.',
     invalidInput: 'La requête n’était pas valide.',
+    gameNotRunning: "Le jeu n'est pas lancé.",
+    noExePath:
+      'Ce profil ne sait pas où se trouve le jeu. Choisissez le fichier du jeu dans le profil.',
+    launchFailed: 'Impossible de lancer le jeu. Vérifiez le fichier du jeu dans le profil.',
+    launchTimeout: "La fenêtre du jeu n'est pas apparue à temps.",
+    updateUnavailable: "Aucune mise à jour n'est prête à être installée.",
+    updateDevBuild: "Les mises à jour ne s'installent que dans l'application installée.",
+    updateFailed: 'Impossible de télécharger la mise à jour. Réessayez plus tard.',
     internalError: 'Une erreur inattendue s’est produite.',
     error: 'Une erreur inattendue s’est produite.',
   },
@@ -501,5 +509,93 @@ export const fr: Messages = {
   },
   shortcuts: {
     emergency: 'Arrêt d’urgence',
+  },
+  automation: {
+    play: 'Jouer',
+    playHint: "Lance le jeu si nécessaire et l'isole dès que sa fenêtre apparaît.",
+    autoStart: "Démarrer l'isolation automatiquement à l'ouverture de ce jeu",
+    autoStartHint:
+      'Fonctionne tant que InputSplit est ouvert, même masqué dans la zone de notification.',
+    autoStartBadge: 'Automatique',
+    launching: 'Lancement de {name}…',
+    waiting: 'En attente de la fenêtre de {name}…',
+    waitingHint: "L'isolation démarre d'elle-même dès que la fenêtre du jeu apparaît.",
+    failed: 'Impossible de lancer {name}',
+  },
+  gamepadHotkey: {
+    title: 'Manette',
+    shortcut: 'Raccourci manette',
+    shortcutHint:
+      "Maintenez ces boutons 2 secondes pour démarrer ou arrêter l'isolation depuis le canapé. Si rien ne tourne, le profil utilisé le plus récemment dont le jeu est ouvert démarre.",
+    rumble: "Vibrer au démarrage et à l'arrêt",
+    rumbleHint:
+      'Une longue impulsion : isolation activée. Deux courtes : désactivée. Trois : rien à démarrer.',
+  },
+  notify: {
+    launchAtLogin: 'Démarrer avec Windows',
+    launchAtLoginHint:
+      'Démarre masqué dans la zone de notification, pour que les profils automatiques soient toujours prêts.',
+    notifications: 'Notifications Windows',
+    notificationsHint:
+      "Indique quand l'isolation démarre ou se termine pendant que InputSplit est en arrière-plan.",
+  },
+  compat: {
+    launcher:
+      'Ceci est un lanceur, pas le jeu. Lancez le jeu depuis celui-ci, puis choisissez la fenêtre du jeu.',
+    online:
+      "Cela ressemble à un jeu en ligne. InputSplit est conçu pour les jeux solo et hors ligne : il peut ne pas fonctionner ici, et les règles du jeu peuvent l'interdire.",
+    badgeLauncher: 'Lanceur',
+    badgeOnline: 'En ligne',
+    badgeBlocked: 'Protégé',
+    badgeWorks: 'A marché',
+    badgeLimited: 'Partiel',
+    badgeFailed: 'Échec',
+    lastTime: {
+      works: 'La dernière fois sur ce PC, tout a fonctionné avec ce jeu.',
+      limited:
+        "La dernière fois sur ce PC, certaines protections n'ont pas fonctionné avec ce jeu.",
+      failed: "La dernière fois sur ce PC, InputSplit n'a pas pu démarrer dans ce jeu.",
+    },
+    noReads: {
+      title: 'Le jeu ne semble pas lire la manette',
+      steam: 'Sur Steam : ouvrez Propriétés du jeu → Manette et désactivez Steam Input.',
+      inGame:
+        "Bougez un stick dans le jeu : certains jeux ne lisent la manette qu'une fois dans un menu ou un niveau.",
+      settings:
+        'Vérifiez que la prise en charge de la manette est activée dans les paramètres du jeu.',
+      other:
+        'Certains jeux lisent la manette via DirectInput ou Windows.Gaming.Input. Leur prise en charge en arrière-plan est encore limitée.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Vérifier la manette',
+    controllerBody: "Appuyez sur n'importe quel bouton de la manette qu'utilisera le joueur.",
+    noController:
+      "Aucune manette n'est encore connectée. Connectez-en une en USB, en Bluetooth ou avec l'adaptateur sans fil Xbox. Vous pourrez aussi le faire plus tard.",
+    waiting: "En attente d'un appui sur un bouton…",
+    works: 'Ça marche ! Cette manette sera utilisée pour les jeux.',
+    displayTitle: 'Choisir la télévision',
+    displayBody:
+      "InputSplit peut déplacer le jeu sur cet écran au démarrage de l'isolation, puis le remettre en place.",
+    skip: 'Passer',
+  },
+  updates: {
+    title: 'Mises à jour',
+    auto: 'Rechercher les mises à jour automatiquement',
+    autoHint:
+      "Recherche une nouvelle version sur GitHub une fois par jour. Rien n'est installé sans votre clic.",
+    check: 'Rechercher',
+    checking: 'Recherche…',
+    upToDate: 'Vous avez la dernière version ({version}).',
+    available: 'La version {version} est disponible',
+    install: 'Télécharger et installer',
+    downloading: 'Téléchargement… {percent} %',
+    installing: "Lancement de l'installateur…",
+    error:
+      'Impossible de rechercher les mises à jour. Vérifiez votre connexion Internet et réessayez.',
+    whatsNew: 'Nouveautés',
+    devBuild:
+      "Ceci est une version de développement : les mises à jour ne s'installent que dans l'application installée.",
+    sidebar: 'Mise à jour disponible',
   },
 }

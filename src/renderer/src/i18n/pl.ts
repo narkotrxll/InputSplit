@@ -256,6 +256,13 @@ export const pl: Messages = {
     sessionNotFound: 'Ta sesja izolacji już się zakończyła.',
     forbidden: 'Ta czynność jest niedozwolona.',
     invalidInput: 'Żądanie jest nieprawidłowe.',
+    gameNotRunning: 'Gra nie jest uruchomiona.',
+    noExePath: 'Ten profil nie wie, gdzie jest gra. Wybierz plik gry w profilu.',
+    launchFailed: 'Nie udało się uruchomić gry. Sprawdź plik gry w profilu.',
+    launchTimeout: 'Okno gry nie pojawiło się na czas.',
+    updateUnavailable: 'Żadna aktualizacja nie jest gotowa do instalacji.',
+    updateDevBuild: 'Aktualizacje instalują się tylko w zainstalowanej aplikacji.',
+    updateFailed: 'Nie udało się pobrać aktualizacji. Spróbuj później.',
     internalError: 'Wystąpił nieoczekiwany błąd.',
     error: 'Wystąpił nieoczekiwany błąd.',
   },
@@ -493,5 +500,89 @@ export const pl: Messages = {
   },
   shortcuts: {
     emergency: 'Awaryjne zatrzymanie',
+  },
+  automation: {
+    play: 'Graj',
+    playHint: 'W razie potrzeby uruchamia grę i izoluje ją, gdy tylko pojawi się jej okno.',
+    autoStart: 'Włączaj izolację automatycznie po uruchomieniu tej gry',
+    autoStartHint: 'Działa, gdy InputSplit jest uruchomiony, także ukryty w zasobniku.',
+    autoStartBadge: 'Automatycznie',
+    launching: 'Uruchamianie: {name}…',
+    waiting: 'Czekam na okno: {name}…',
+    waitingHint: 'Izolacja włączy się sama, gdy pojawi się okno gry.',
+    failed: 'Nie udało się uruchomić: {name}',
+  },
+  gamepadHotkey: {
+    title: 'Kontroler',
+    shortcut: 'Skrót na kontrolerze',
+    shortcutHint:
+      'Przytrzymaj te przyciski przez 2 sekundy, aby włączyć lub wyłączyć izolację prosto z kanapy. Gdy nic nie działa, uruchamia ostatnio używany profil, którego gra jest otwarta.',
+    rumble: 'Wibracja przy włączaniu i wyłączaniu',
+    rumbleHint:
+      'Jeden długi impuls: izolacja włączona. Dwa krótkie: wyłączona. Trzy: nie ma czego uruchomić.',
+  },
+  notify: {
+    launchAtLogin: 'Uruchamiaj razem z Windows',
+    launchAtLoginHint:
+      'Uruchamia się ukryty w zasobniku, więc profile automatyczne są zawsze gotowe.',
+    notifications: 'Powiadomienia Windows',
+    notificationsHint:
+      'Informuje, gdy izolacja się włącza lub kończy, kiedy InputSplit działa w tle.',
+  },
+  compat: {
+    launcher: 'To launcher, a nie sama gra. Uruchom z niego grę, a potem wybierz okno gry.',
+    online:
+      'To wygląda na grę online. InputSplit jest przeznaczony do gier jednoosobowych i offline: tutaj może nie działać, a zasady gry mogą tego zabraniać.',
+    badgeLauncher: 'Launcher',
+    badgeOnline: 'Online',
+    badgeBlocked: 'Chroniona',
+    badgeWorks: 'Działało',
+    badgeLimited: 'Częściowo',
+    badgeFailed: 'Nie wyszło',
+    lastTime: {
+      works: 'Ostatnim razem na tym komputerze wszystko działało z tą grą.',
+      limited: 'Ostatnim razem na tym komputerze część zabezpieczeń nie zadziałała z tą grą.',
+      failed: 'Ostatnim razem na tym komputerze InputSplit nie mógł się uruchomić w tej grze.',
+    },
+    noReads: {
+      title: 'Wygląda na to, że gra nie odczytuje kontrolera',
+      steam: 'W Steam: otwórz Właściwości gry → Kontroler i wyłącz Steam Input.',
+      inGame:
+        'Porusz gałką w samej grze: niektóre gry zaczynają odczytywać kontroler dopiero w menu lub na poziomie.',
+      settings: 'Sprawdź, czy obsługa kontrolera jest włączona w ustawieniach samej gry.',
+      other:
+        'Niektóre gry odczytują kontroler przez DirectInput lub Windows.Gaming.Input. Ich obsługa w tle jest jeszcze ograniczona.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Sprawdź kontroler',
+    controllerBody: 'Naciśnij dowolny przycisk na kontrolerze, którego będzie używał gracz.',
+    noController:
+      'Nie podłączono jeszcze kontrolera. Podłącz go przez USB, Bluetooth lub bezprzewodowy adapter Xbox. Możesz to też zrobić później.',
+    waiting: 'Czekam na naciśnięcie przycisku…',
+    works: 'Działa! Ten kontroler będzie używany w grach.',
+    displayTitle: 'Wybierz telewizor',
+    displayBody:
+      'InputSplit może przenieść grę na ten ekran po włączeniu izolacji i przywrócić ją później.',
+    skip: 'Pomiń',
+  },
+  updates: {
+    title: 'Aktualizacje',
+    auto: 'Automatycznie sprawdzaj aktualizacje',
+    autoHint:
+      'Raz dziennie szuka nowej wersji na GitHubie. Nic nie zostanie zainstalowane bez Twojego kliknięcia.',
+    check: 'Sprawdź teraz',
+    checking: 'Sprawdzanie…',
+    upToDate: 'Masz najnowszą wersję ({version}).',
+    available: 'Dostępna jest wersja {version}',
+    install: 'Pobierz i zainstaluj',
+    downloading: 'Pobieranie… {percent}%',
+    installing: 'Uruchamianie instalatora…',
+    error:
+      'Nie udało się sprawdzić aktualizacji. Sprawdź połączenie z internetem i spróbuj ponownie.',
+    whatsNew: 'Co nowego',
+    devBuild:
+      'To wersja deweloperska: aktualizacje instalują się tylko w zainstalowanej aplikacji.',
+    sidebar: 'Dostępna aktualizacja',
   },
 }

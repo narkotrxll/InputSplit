@@ -307,6 +307,8 @@ export const ProfileSchema = z.object({
   moveWindow: z.boolean(),
   restoreOnExit: z.boolean(),
   features: FeatureFlagsSchema,
+  /** Start isolation automatically as soon as this game's window appears. */
+  autoStart: z.boolean().default(false),
   createdAt: z.string(),
   updatedAt: z.string(),
   lastUsedAt: z.string().nullable(),
@@ -320,7 +322,7 @@ export const ProfileInputSchema = ProfileSchema.omit({
 }).extend({ id: z.string().min(1).max(64).nullable() })
 export type ProfileInput = z.infer<typeof ProfileInputSchema>
 
-export const SettingsSchema = z.object({
+const SETTINGS_FIELDS = {
   version: z.literal(1),
   onboardingCompleted: z.boolean(),
   riskAcknowledgedAt: z.string().nullable(),
@@ -336,11 +338,81 @@ export const SettingsSchema = z.object({
   verboseLogging: z.boolean(),
   theme: z.enum(['dark', 'light', 'system']),
   language: z.enum(LANGUAGE_SETTINGS),
+}
+
+/** Settings added after 0.1.0. They get defaults below so older settings files stay valid. */
+const ADDED_SETTINGS_FIELDS = {
+  launchAtLogin: z.boolean(),
+  notifications: z.boolean(),
+  gamepadHotkeyEnabled: z.boolean(),
+  rumbleFeedback: z.boolean(),
+  checkForUpdates: z.boolean(),
+}
+
+export const SettingsSchema = z.object({
+  ...SETTINGS_FIELDS,
+  launchAtLogin: ADDED_SETTINGS_FIELDS.launchAtLogin.default(false),
+  notifications: ADDED_SETTINGS_FIELDS.notifications.default(true),
+  gamepadHotkeyEnabled: ADDED_SETTINGS_FIELDS.gamepadHotkeyEnabled.default(true),
+  rumbleFeedback: ADDED_SETTINGS_FIELDS.rumbleFeedback.default(true),
+  checkForUpdates: ADDED_SETTINGS_FIELDS.checkForUpdates.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
-export const SettingsPatchSchema = SettingsSchema.omit({ version: true }).partial()
+// Built without the defaults: Zod applies `.default()` even inside `.partial()`, so a patch
+// that omits `launchAtLogin` would otherwise silently reset it.
+export const SettingsPatchSchema = z
+  .object({ ...SETTINGS_FIELDS, ...ADDED_SETTINGS_FIELDS })
+  .omit({ version: true })
+  .partial()
 export type SettingsPatch = z.infer<typeof SettingsPatchSchema>
+
+// ---------------------------------------------------------------------------------------
+// Compatibility memory: how each game behaved the last time it was isolated on this PC
+
+export const CompatRecordSchema = z.object({
+  outcome: z.enum(['works', 'limited', 'failed']),
+  at: z.string(),
+})
+export type CompatRecord = z.infer<typeof CompatRecordSchema>
+
+/** Keyed by lower-case executable name. */
+export const CompatHistorySchema = z.record(z.string().max(260), CompatRecordSchema)
+export type CompatHistory = z.infer<typeof CompatHistorySchema>
+
+// ---------------------------------------------------------------------------------------
+// Automation (profiles started by InputSplit itself) and updates
+
+export const AutomationStateSchema = z.object({
+  /** `launching`: the game is being started; `waiting`: waiting for its window. */
+  phase: z.enum(['idle', 'launching', 'waiting']),
+  profileId: z.string().nullable(),
+  profileName: z.string().nullable(),
+  /** Why the last "Play" (tray, profile card) failed before isolation could start. */
+  error: AppErrorSchema.nullable(),
+})
+export type AutomationState = z.infer<typeof AutomationStateSchema>
+
+export const UpdateStateSchema = z.object({
+  status: z.enum([
+    'idle',
+    'checking',
+    'upToDate',
+    'available',
+    'downloading',
+    'installing',
+    'error',
+  ]),
+  currentVersion: z.string(),
+  latestVersion: z.string().nullable(),
+  releaseUrl: z.string().nullable(),
+  /** 0–100 while downloading. */
+  progress: z.number().min(0).max(100).nullable(),
+  /** Installing needs the packaged app (the installer replaces it). */
+  canInstall: z.boolean(),
+  checkedAt: z.number().nullable(),
+})
+export type UpdateState = z.infer<typeof UpdateStateSchema>
 
 // ---------------------------------------------------------------------------------------
 // Logs and app info

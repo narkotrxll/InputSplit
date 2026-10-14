@@ -31,6 +31,14 @@ games tested were not recorded yet; the tables below stay at "—" until they ar
 |------|----------------|-----------------|------|----------------------|----------|-------|-------------------|----------------|--------|---------------|
 | — | | | | | | | | | | |
 
+## Built-in list
+
+`src/shared/compatibility.ts` labels launchers and online games in the game picker and
+refuses games whose anti-cheat is invisible on disk (Valve Anti-Cheat, Roblox Hyperion).
+Per-game protection presets belong there too, but only for games verified in the table
+above. InputSplit also remembers locally how each game behaved the last time
+(`compat-history.json` in the app data folder; executable names only).
+
 ## Known incompatible by design
 
 | Category | Why |

@@ -20,12 +20,15 @@ import {
 } from '@shared/ipc-contract'
 import type { MainTexts } from '../i18n'
 import type { NativeBackend } from '../native/backend'
+import type { AutomationService } from '../services/automation-service'
+import type { CompatHistoryService } from '../services/compat-history-service'
 import type { DeviceService } from '../services/device-service'
 import type { IconService } from '../services/icon-service'
 import type { IsolationService } from '../services/isolation-service'
 import type { Logger } from '../services/logger'
 import type { ProfilesService } from '../services/profiles-service'
 import type { SettingsService } from '../services/settings-service'
+import type { UpdateService } from '../services/update-service'
 import { isTrustedSender } from './security'
 
 export interface IpcDependencies {
@@ -38,6 +41,9 @@ export interface IpcDependencies {
   icons: IconService
   logger: Logger
   texts: () => MainTexts
+  automation: AutomationService
+  compat: CompatHistoryService
+  updates: UpdateService
 }
 
 type ParsedInput<C extends InvokeChannel> = z.output<(typeof invokeContract)[C]['input']>
@@ -54,6 +60,7 @@ const EXTERNAL_LINKS = {
 
 export function registerIpc(deps: IpcDependencies): void {
   const { backend, isolation, devices, profiles, settings, icons, logger, texts } = deps
+  const { automation, compat, updates } = deps
 
   function handle<C extends InvokeChannel>(channel: C, handler: Handler<C>): void {
     ipcMain.handle(channel, async (event, raw: unknown): Promise<IpcResult<InvokeOutput<C>>> => {
@@ -134,6 +141,10 @@ export function registerIpc(deps: IpcDependencies): void {
     await profiles.markUsed(id)
     return ok
   })
+  handle('profiles:play', async ({ id, launch }) => {
+    await automation.play(id, launch)
+    return ok
+  })
   handle('profiles:pickExecutable', async () => {
     const window = deps.getWindow()
     const options = {
@@ -149,6 +160,29 @@ export function registerIpc(deps: IpcDependencies): void {
     if (!/\.exe$/i.test(exePath))
       throw new AppException('invalidExecutable', 'Please choose an .exe file.')
     return { exePath, exeName: basename(exePath) }
+  })
+
+  handle('automation:get', () => automation.get())
+  handle('automation:cancel', () => {
+    automation.cancel()
+    return ok
+  })
+
+  handle('compat:history', () => compat.get())
+
+  handle('updates:get', () => updates.get())
+  handle('updates:check', () => updates.check())
+  handle('updates:install', async () => {
+    await updates.install()
+    return ok
+  })
+  handle('updates:openRelease', async () => {
+    const url = updates.get().releaseUrl
+    // Only our own repository's release pages, never a URL from elsewhere.
+    if (url !== null && url.startsWith(`${EXTERNAL_LINKS.repository}/releases/`)) {
+      await shell.openExternal(url)
+    }
+    return ok
   })
 
   handle('settings:get', () => settings.get())

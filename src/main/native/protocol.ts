@@ -81,6 +81,13 @@ export const helperMethods = {
     params: z.object({ enabled: z.boolean() }),
     result: z.object({ registered: z.boolean(), accelerator: z.string() }),
   },
+  /** Watch every connected controller for the LB + RB + View hold (`gamepadHotkey`). */
+  setGamepadHotkey: { params: z.object({ enabled: z.boolean() }), result: empty },
+  /** Short vibration as feedback: `on` one pulse, `off` two pulses, `error` three. */
+  rumble: {
+    params: z.object({ slot: z.number().int().min(0).max(3), pattern: z.enum(['on', 'off', 'error']) }),
+    result: empty,
+  },
 } as const
 
 export type HelperMethod = keyof typeof helperMethods
@@ -106,6 +113,7 @@ export const helperEvents = {
     message: z.string().optional(),
   }),
   emergencyStop: z.object({ stoppedSessions: z.number().int() }),
+  gamepadHotkey: z.object({ slot: z.number().int().min(0).max(3) }),
 } as const
 
 export type HelperEventName = keyof typeof helperEvents

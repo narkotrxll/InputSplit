@@ -194,6 +194,9 @@ export class SimulatedBackend implements NativeBackend {
         return {}
       case 'setEmergencyHotkey':
         return { registered: true, accelerator: 'Ctrl+Alt+Shift+Q' }
+      case 'setGamepadHotkey':
+      case 'rumble':
+        return {}
       case 'hello':
         return {}
     }

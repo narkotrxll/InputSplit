@@ -4,6 +4,7 @@
  */
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { lookupCompat } from '@shared/compatibility'
 import { DEFAULT_FEATURES, IDLE_VIEW } from '@shared/defaults'
 import type {
   FeatureFlags,
@@ -63,9 +64,32 @@ export const useIsolationStore = defineStore('isolation', () => {
 
   async function init(): Promise<void> {
     subscribe('isolation:changed', (next) => {
+      // Started outside the dashboard (profile, tray, controller shortcut): show that setup.
+      if (
+        next.phase === 'checking' &&
+        next.target &&
+        next.target.pid !== selection.value.target?.pid
+      ) {
+        adoptSession(next)
+      }
       view.value = next
     })
     view.value = await call('isolation:get')
+  }
+
+  function adoptSession(next: IsolationView): void {
+    const requested = Object.fromEntries(
+      next.features.map((f) => [f.name, f.state !== 'off']),
+    ) as FeatureFlags
+    selection.value = {
+      ...selection.value,
+      target: next.target,
+      controllerSlot: next.controllerSlot ?? selection.value.controllerSlot,
+      displayId: next.displayId,
+      moveWindow: next.displayId !== null,
+      features: next.features.length > 0 ? requested : selection.value.features,
+    }
+    check.value = null
   }
 
   function applyDefaults(settings: Settings): void {
@@ -103,6 +127,7 @@ export const useIsolationStore = defineStore('isolation', () => {
     if (selection.value.target === null) return 'noTarget'
     if (checking.value) return 'checking'
     if (check.value !== null && check.value.blockers.length > 0) return 'blocked'
+    if (lookupCompat(selection.value.target.exeName)?.kind === 'blocked') return 'blocked'
     if (!Object.values(effectiveFeatures.value).some(Boolean)) return 'noFeatures'
     return null
   })

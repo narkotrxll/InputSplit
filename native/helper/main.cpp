@@ -150,6 +150,17 @@ Json Handle(const std::string& method, const Json& params) {
     bool ok = RestoreWindowRect(HwndFromJson(params.at("hwnd")), RectFromJson(params.at("rect")));
     return Json{{"restored", ok}};
   }
+  if (method == "setGamepadHotkey") {
+    ControllerMonitor::Instance().SetHotkeyEnabled(params.at("enabled").get<bool>());
+    return Json::object();
+  }
+  if (method == "rumble") {
+    if (!ControllerMonitor::Instance().Rumble(params.at("slot").get<int>(),
+                                              params.at("pattern").get<std::string>())) {
+      throw HelperError{"rumbleUnavailable", "This controller cannot vibrate."};
+    }
+    return Json::object();
+  }
   if (method == "setEmergencyHotkey") {
     bool registered = SetEmergencyHotkey(params.at("enabled").get<bool>());
     return Json{{"registered", registered}, {"accelerator", EmergencyHotkeyLabel()}};
