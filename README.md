@@ -43,6 +43,17 @@ InputSplit fixes both, **inside the chosen game only**:
 
 Pick the game, pick the controller, press **Start isolation**. That's it.
 
+Once a game has a profile, it gets even simpler:
+
+- **Play** on a profile (or in the tray menu) starts the game and isolates it as soon as its
+  window appears. Profiles can also start isolation **automatically** whenever the game opens.
+- **From the couch:** hold **LB + RB + View** for 2 seconds to start or stop isolation. The
+  controller vibrates once when isolation is on and twice when it is off.
+- **Start with Windows** (hidden in the tray), Windows notifications when isolation starts or
+  ends, and a built-in **update check** that installs new versions from GitHub on one click.
+- The game picker marks launchers, online games and games that worked (or not) the last time
+  on this PC.
+
 <table>
 <tr>
 <td><img src="docs/screenshots/game-picker.png" alt="Choosing a game" /></td>

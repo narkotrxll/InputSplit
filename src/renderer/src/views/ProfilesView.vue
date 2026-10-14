@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { Bookmark, Gamepad2, Monitor, Pencil, Play, Plus, Trash2 } from '@lucide/vue'
+import {
+  Bookmark,
+  Gamepad2,
+  Monitor,
+  Pencil,
+  Play,
+  Plus,
+  SlidersHorizontal,
+  Trash2,
+  Zap,
+} from '@lucide/vue'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -12,8 +22,10 @@ import UiButton from '../components/ui/UiButton.vue'
 import UiDialog from '../components/ui/UiDialog.vue'
 import UiEmptyState from '../components/ui/UiEmptyState.vue'
 import UiIconButton from '../components/ui/UiIconButton.vue'
+import UiTooltip from '../components/ui/UiTooltip.vue'
 import { FEATURE_META } from '../lib/features'
 import { formatRelativeDate } from '../lib/format'
+import { useAutomationStore } from '../stores/automation'
 import { useIsolationStore } from '../stores/isolation'
 import { useProfilesStore } from '../stores/profiles'
 import { useUiStore } from '../stores/ui'
@@ -23,6 +35,7 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const profiles = useProfilesStore()
 const isolation = useIsolationStore()
+const automation = useAutomationStore()
 const windows = useWindowsStore()
 const ui = useUiStore()
 
@@ -65,6 +78,12 @@ async function apply(profile: Profile): Promise<void> {
   } finally {
     applying.value = null
   }
+}
+
+/** "Play": start the game if needed and isolate it; progress shows on the dashboard. */
+async function play(profile: Profile): Promise<void> {
+  await router.push('/')
+  await automation.play(profile.id, true)
 }
 
 onMounted(() => void profiles.load())
@@ -116,6 +135,9 @@ onMounted(() => void profiles.load())
           <UiBadge :icon="Monitor">{{
             profile.displayName ?? $t('profiles.summary.currentScreen')
           }}</UiBadge>
+          <UiBadge v-if="profile.autoStart" tone="success" :icon="Zap">{{
+            $t('automation.autoStartBadge')
+          }}</UiBadge>
           <UiBadge tone="accent">
             {{ FEATURE_META.filter((f) => profile.features[f.name]).length }}/{{
               FEATURE_META.length
@@ -133,16 +155,31 @@ onMounted(() => void profiles.load())
                 : $t('profiles.neverUsed')
             }}
           </span>
-          <UiButton
-            size="sm"
-            variant="subtle"
-            :icon="Play"
-            :loading="applying === profile.id"
-            :disabled="isolation.live"
-            @click="apply(profile)"
-          >
-            {{ $t('profiles.apply') }}
-          </UiButton>
+          <div class="flex flex-wrap justify-end gap-2">
+            <UiButton
+              size="sm"
+              variant="ghost"
+              :icon="SlidersHorizontal"
+              :loading="applying === profile.id"
+              :disabled="isolation.live"
+              @click="apply(profile)"
+            >
+              {{ $t('profiles.apply') }}
+            </UiButton>
+            <UiTooltip :text="$t('automation.playHint')">
+              <span>
+                <UiButton
+                  size="sm"
+                  variant="primary"
+                  :icon="Play"
+                  :disabled="isolation.live || automation.state.phase !== 'idle'"
+                  @click="play(profile)"
+                >
+                  {{ $t('automation.play') }}
+                </UiButton>
+              </span>
+            </UiTooltip>
+          </div>
         </div>
       </article>
     </div>

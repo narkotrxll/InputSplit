@@ -52,12 +52,17 @@ must still be measured on Windows.**
 - ✅ Session state machine driven only by helper/DLL confirmations
 - ✅ Emergency hotkey handled in the helper
 - ✅ Window move to target display, restore on stop
-- ⏳ Auto-attach a profile when its executable starts (launchers, child processes)
+- 🔧 Auto-attach a profile when its executable starts (`autoStart` profiles)
 - ⏳ 32-bit games (32-bit DLL + 32-bit injector)
 - ⏳ DirectInput gamepads in background (`SetCooperativeLevel` → `DISCL_BACKGROUND`)
 - ⏳ HID gamepads via Raw Input (`RIDEV_INPUTSINK`)
 - ⏳ GameInput research: intercept `GameInputCreate`, set background focus policy
-- ⏳ Launch mode: start a game from a profile with `SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1`
+- 🔧 Launch mode: start a game from a profile with `SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1`
+- 🔧 Controller shortcut (LB + RB + View held 2 s) and rumble feedback
+- 🔧 Start with Windows, Windows notifications, profiles in the tray
+- 🔧 Update check and one-click install from GitHub Releases (SHA-256 verified)
+- 🔧 Onboarding checks the controller and picks the TV
+- 🔧 Built-in compatibility list and local per-game history
 
 ## Phase 5 — Testing ⏳
 

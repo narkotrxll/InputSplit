@@ -124,6 +124,19 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 | SDL2 | Celeste (FNA/SDL), Factorio |
 | DirectInput (expected: Limited) | older titles |
 
+## Convenience features (manual, on Windows)
+
+| Check | Pass condition |
+|-------|----------------|
+| Profile → **Play** with the game closed | The game starts, the dashboard shows "Waiting for the window", then isolation turns on by itself. |
+| Profile with automatic start, game started from Steam | Isolation turns on about 4 s after the game window appears. After **Stop** it does not turn on again until the game is restarted. |
+| Tray → **Play** → a profile | Same as Play, without opening the window. |
+| Hold **LB + RB + View** 2 s | Starts the most recent profile whose game is open (one long vibration); again stops it (two short). With nothing to start: three short vibrations and a notification. |
+| Settings → **Start with Windows**, sign out and in | InputSplit starts hidden in the tray. |
+| Notifications | With the InputSplit window in the background, starting/stopping/closing the game shows a Windows notification. None while the window has focus. |
+| Settings → **Check now** | "You have the latest version" or the new version with **Download and install**; the installer starts and InputSplit quits. |
+| Onboarding (Settings → Show the welcome guide) | The controller step turns green after a button press; the screen step preselects the TV. |
+
 ## Performance (C9)
 
 - Task Manager → Details: CPU and memory of `inputsplit-helper.exe` while idle and while a
@@ -135,5 +148,7 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 - `npm test` — Vitest unit tests (status model, settings/profile persistence, IPC schemas,
   helper protocol parsing, session state machine).
 - `npm run typecheck`, `npm run lint`.
+- `npm run build && xvfb-run -a npm run check:layout` — walks every screen in every language
+  with the simulated backend and reports text that does not fit.
 - Native: compile checks in CI (MSVC) and `native/build-mingw` (MinGW). Wine smoke tests are
   documented in `scripts/poc/` and are run manually.

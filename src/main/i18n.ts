@@ -18,6 +18,19 @@ export interface MainTexts {
   pickExeFilter: string
   exportTitle: string
   exportFilter: string
+  trayPlay: string
+  trayNoProfiles: string
+  notifyStartedTitle: string
+  notifyStartedBody: string // {game}
+  notifyEndedTitle: string
+  notifyEndedBody: string // {game}
+  notifyGameClosed: string // {game}
+  notifyFailedTitle: string // {game}
+  notifyFailedBody: string
+  notifyNothingTitle: string
+  notifyNothingBody: string
+  notifyUpdateTitle: string // {version}
+  notifyUpdateBody: string
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -36,6 +49,19 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Applications',
     exportTitle: 'Export diagnostics',
     exportFilter: 'Text',
+    trayPlay: 'Play',
+    trayNoProfiles: 'No profiles yet',
+    notifyStartedTitle: 'Isolation is on',
+    notifyStartedBody: '{game} keeps its controller. Your keyboard and mouse stay free.',
+    notifyEndedTitle: 'Isolation ended',
+    notifyEndedBody: '{game} is back to normal.',
+    notifyGameClosed: '{game} was closed, so isolation ended.',
+    notifyFailedTitle: 'Could not isolate {game}',
+    notifyFailedBody: 'Open InputSplit to see why.',
+    notifyNothingTitle: 'Nothing to start',
+    notifyNothingBody: 'Start a game that has a profile, then use the controller shortcut again.',
+    notifyUpdateTitle: 'InputSplit {version} is available',
+    notifyUpdateBody: 'Open InputSplit to install it.',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -52,6 +78,20 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Програми',
     exportTitle: 'Експорт діагностики',
     exportFilter: 'Текст',
+    trayPlay: 'Грати',
+    trayNoProfiles: 'Профілів ще немає',
+    notifyStartedTitle: 'Ізоляцію ввімкнено',
+    notifyStartedBody: '{game} зберігає геймпад. Клавіатура й миша залишаються вільними.',
+    notifyEndedTitle: 'Ізоляцію завершено',
+    notifyEndedBody: '{game} знову працює як звичайно.',
+    notifyGameClosed: '{game} закрито, тому ізоляцію завершено.',
+    notifyFailedTitle: 'Не вдалося ізолювати {game}',
+    notifyFailedBody: 'Відкрийте InputSplit, щоб дізнатися причину.',
+    notifyNothingTitle: 'Немає що запускати',
+    notifyNothingBody:
+      'Запустіть гру, для якої є профіль, і знову скористайтеся комбінацією на геймпаді.',
+    notifyUpdateTitle: 'Доступна версія InputSplit {version}',
+    notifyUpdateBody: 'Відкрийте InputSplit, щоб установити її.',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -68,6 +108,20 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Программы',
     exportTitle: 'Экспорт диагностики',
     exportFilter: 'Текст',
+    trayPlay: 'Играть',
+    trayNoProfiles: 'Профилей пока нет',
+    notifyStartedTitle: 'Изоляция включена',
+    notifyStartedBody: '{game} сохраняет геймпад. Клавиатура и мышь остаются свободными.',
+    notifyEndedTitle: 'Изоляция завершена',
+    notifyEndedBody: '{game} снова работает как обычно.',
+    notifyGameClosed: '{game} закрыта, поэтому изоляция завершена.',
+    notifyFailedTitle: 'Не удалось изолировать {game}',
+    notifyFailedBody: 'Откройте InputSplit, чтобы узнать причину.',
+    notifyNothingTitle: 'Нечего запускать',
+    notifyNothingBody:
+      'Запустите игру, для которой есть профиль, и снова используйте комбинацию на геймпаде.',
+    notifyUpdateTitle: 'Доступна версия InputSplit {version}',
+    notifyUpdateBody: 'Откройте InputSplit, чтобы установить её.',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -84,6 +138,19 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Aplicaciones',
     exportTitle: 'Exportar diagnóstico',
     exportFilter: 'Texto',
+    trayPlay: 'Jugar',
+    trayNoProfiles: 'Aún no hay perfiles',
+    notifyStartedTitle: 'Aislamiento activado',
+    notifyStartedBody: '{game} conserva su mando. El teclado y el ratón quedan libres.',
+    notifyEndedTitle: 'Aislamiento finalizado',
+    notifyEndedBody: '{game} vuelve a funcionar con normalidad.',
+    notifyGameClosed: 'Se cerró {game}, así que el aislamiento terminó.',
+    notifyFailedTitle: 'No se pudo aislar {game}',
+    notifyFailedBody: 'Abre InputSplit para ver el motivo.',
+    notifyNothingTitle: 'Nada que iniciar',
+    notifyNothingBody: 'Inicia un juego que tenga perfil y vuelve a usar el atajo del mando.',
+    notifyUpdateTitle: 'InputSplit {version} está disponible',
+    notifyUpdateBody: 'Abre InputSplit para instalarla.',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -100,6 +167,20 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Programme',
     exportTitle: 'Diagnose exportieren',
     exportFilter: 'Text',
+    trayPlay: 'Spielen',
+    trayNoProfiles: 'Noch keine Profile',
+    notifyStartedTitle: 'Isolierung aktiv',
+    notifyStartedBody: '{game} behält seinen Controller. Tastatur und Maus bleiben frei.',
+    notifyEndedTitle: 'Isolierung beendet',
+    notifyEndedBody: '{game} verhält sich wieder normal.',
+    notifyGameClosed: '{game} wurde geschlossen, daher ist die Isolierung beendet.',
+    notifyFailedTitle: '{game} konnte nicht isoliert werden',
+    notifyFailedBody: 'Öffne InputSplit, um den Grund zu sehen.',
+    notifyNothingTitle: 'Nichts zu starten',
+    notifyNothingBody:
+      'Starte ein Spiel mit Profil und nutze dann die Controller-Tastenkombination erneut.',
+    notifyUpdateTitle: 'InputSplit {version} ist verfügbar',
+    notifyUpdateBody: 'Öffne InputSplit, um es zu installieren.',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -116,6 +197,20 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Applications',
     exportTitle: 'Exporter le diagnostic',
     exportFilter: 'Texte',
+    trayPlay: 'Jouer',
+    trayNoProfiles: 'Aucun profil pour le moment',
+    notifyStartedTitle: 'Isolation activée',
+    notifyStartedBody: '{game} garde sa manette. Le clavier et la souris restent libres.',
+    notifyEndedTitle: 'Isolation terminée',
+    notifyEndedBody: '{game} fonctionne de nouveau normalement.',
+    notifyGameClosed: "{game} a été fermé, l'isolation est donc terminée.",
+    notifyFailedTitle: "Impossible d'isoler {game}",
+    notifyFailedBody: 'Ouvrez InputSplit pour en voir la raison.',
+    notifyNothingTitle: 'Rien à lancer',
+    notifyNothingBody:
+      'Lancez un jeu qui a un profil, puis utilisez à nouveau le raccourci de la manette.',
+    notifyUpdateTitle: 'InputSplit {version} est disponible',
+    notifyUpdateBody: "Ouvrez InputSplit pour l'installer.",
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -132,6 +227,19 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Aplicativos',
     exportTitle: 'Exportar diagnóstico',
     exportFilter: 'Texto',
+    trayPlay: 'Jogar',
+    trayNoProfiles: 'Nenhum perfil ainda',
+    notifyStartedTitle: 'Isolamento ativado',
+    notifyStartedBody: '{game} mantém o controle. Teclado e mouse ficam livres.',
+    notifyEndedTitle: 'Isolamento encerrado',
+    notifyEndedBody: '{game} voltou ao normal.',
+    notifyGameClosed: '{game} foi fechado, então o isolamento terminou.',
+    notifyFailedTitle: 'Não foi possível isolar {game}',
+    notifyFailedBody: 'Abra o InputSplit para ver o motivo.',
+    notifyNothingTitle: 'Nada para iniciar',
+    notifyNothingBody: 'Inicie um jogo que tenha perfil e use o atalho do controle novamente.',
+    notifyUpdateTitle: 'InputSplit {version} está disponível',
+    notifyUpdateBody: 'Abra o InputSplit para instalar.',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -148,6 +256,19 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Aplikacje',
     exportTitle: 'Eksportuj diagnostykę',
     exportFilter: 'Tekst',
+    trayPlay: 'Graj',
+    trayNoProfiles: 'Brak profili',
+    notifyStartedTitle: 'Izolacja włączona',
+    notifyStartedBody: '{game} zachowuje kontroler. Klawiatura i mysz pozostają wolne.',
+    notifyEndedTitle: 'Izolacja zakończona',
+    notifyEndedBody: '{game} działa znowu normalnie.',
+    notifyGameClosed: '{game} została zamknięta, więc izolacja się zakończyła.',
+    notifyFailedTitle: 'Nie udało się izolować: {game}',
+    notifyFailedBody: 'Otwórz InputSplit, aby zobaczyć przyczynę.',
+    notifyNothingTitle: 'Nie ma czego uruchomić',
+    notifyNothingBody: 'Uruchom grę, która ma profil, i ponownie użyj skrótu na kontrolerze.',
+    notifyUpdateTitle: 'Dostępna jest wersja InputSplit {version}',
+    notifyUpdateBody: 'Otwórz InputSplit, aby ją zainstalować.',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -164,6 +285,20 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'Uygulamalar',
     exportTitle: 'Tanılamayı dışa aktar',
     exportFilter: 'Metin',
+    trayPlay: 'Oyna',
+    trayNoProfiles: 'Henüz profil yok',
+    notifyStartedTitle: 'Yalıtım açık',
+    notifyStartedBody: '{game} oyun kumandasını koruyor. Klavye ve fare serbest kalıyor.',
+    notifyEndedTitle: 'Yalıtım sona erdi',
+    notifyEndedBody: '{game} yeniden normal çalışıyor.',
+    notifyGameClosed: '{game} kapatıldı, bu yüzden yalıtım sona erdi.',
+    notifyFailedTitle: '{game} yalıtılamadı',
+    notifyFailedBody: 'Nedenini görmek için InputSplit’i açın.',
+    notifyNothingTitle: 'Başlatılacak bir şey yok',
+    notifyNothingBody:
+      'Profili olan bir oyunu başlatın, ardından kumanda kısayolunu tekrar kullanın.',
+    notifyUpdateTitle: 'InputSplit {version} kullanılabilir',
+    notifyUpdateBody: 'Yüklemek için InputSplit’i açın.',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -179,6 +314,19 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: '应用程序',
     exportTitle: '导出诊断信息',
     exportFilter: '文本',
+    trayPlay: '开始游戏',
+    trayNoProfiles: '暂无配置',
+    notifyStartedTitle: '隔离已开启',
+    notifyStartedBody: '{game} 保留手柄输入，键盘和鼠标可自由使用。',
+    notifyEndedTitle: '隔离已结束',
+    notifyEndedBody: '{game} 已恢复正常。',
+    notifyGameClosed: '{game} 已关闭，因此隔离已结束。',
+    notifyFailedTitle: '无法隔离 {game}',
+    notifyFailedBody: '打开 InputSplit 查看原因。',
+    notifyNothingTitle: '没有可启动的内容',
+    notifyNothingBody: '请先启动一个有配置的游戏，然后再次使用手柄快捷键。',
+    notifyUpdateTitle: 'InputSplit {version} 已发布',
+    notifyUpdateBody: '打开 InputSplit 进行安装。',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -195,6 +343,21 @@ const texts: Record<Locale, MainTexts> = {
     pickExeFilter: 'アプリケーション',
     exportTitle: '診断情報をエクスポート',
     exportFilter: 'テキスト',
+    trayPlay: 'プレイ',
+    trayNoProfiles: 'プロファイルはまだありません',
+    notifyStartedTitle: '分離を開始しました',
+    notifyStartedBody:
+      '{game} はコントローラーを使い続けます。キーボードとマウスは自由に使えます。',
+    notifyEndedTitle: '分離を終了しました',
+    notifyEndedBody: '{game} は通常の状態に戻りました。',
+    notifyGameClosed: '{game} が終了したため、分離を終了しました。',
+    notifyFailedTitle: '{game} を分離できませんでした',
+    notifyFailedBody: 'InputSplit を開いて理由を確認してください。',
+    notifyNothingTitle: '開始できるものがありません',
+    notifyNothingBody:
+      'プロファイルのあるゲームを起動してから、もう一度コントローラーのショートカットを使ってください。',
+    notifyUpdateTitle: 'InputSplit {version} が利用可能です',
+    notifyUpdateBody: 'InputSplit を開いてインストールしてください。',
   },
 }
 

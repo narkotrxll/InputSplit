@@ -38,6 +38,7 @@ const controller = ref<string>(ANY)
 const display = ref<string>(CURRENT)
 const moveWindow = ref(true)
 const restoreOnExit = ref(true)
+const autoStart = ref(false)
 const features = ref<FeatureFlags>({ ...DEFAULT_FEATURES })
 const saving = ref(false)
 const error = ref<string | null>(null)
@@ -55,6 +56,7 @@ watch(open, (isOpen) => {
     display.value = p.displayId ?? CURRENT
     moveWindow.value = p.moveWindow
     restoreOnExit.value = p.restoreOnExit
+    autoStart.value = p.autoStart
     features.value = { ...p.features }
   } else {
     const sel = isolation.selection
@@ -66,6 +68,7 @@ watch(open, (isOpen) => {
     display.value = sel.displayId ?? CURRENT
     moveWindow.value = props.fromSelection ? sel.moveWindow : s.moveWindowByDefault
     restoreOnExit.value = props.fromSelection ? sel.restoreOnExit : s.restoreOnExit
+    autoStart.value = false
     features.value = { ...(props.fromSelection ? sel.features : s.defaultFeatures) }
   }
 })
@@ -131,6 +134,7 @@ async function save(): Promise<void> {
     displayName: selectedDisplay?.name ?? null,
     moveWindow: moveWindow.value,
     restoreOnExit: restoreOnExit.value,
+    autoStart: autoStart.value,
     features: features.value,
   }
   try {
@@ -229,6 +233,15 @@ async function save(): Promise<void> {
         <label class="flex items-center justify-between gap-4 px-4 py-3">
           <span class="text-[13px] text-text">{{ $t('profiles.editor.restoreOnExit') }}</span>
           <UiSwitch v-model="restoreOnExit" :label="$t('profiles.editor.restoreOnExit')" />
+        </label>
+        <label class="flex items-center justify-between gap-4 px-4 py-3">
+          <span>
+            <span class="block text-[13px] text-text">{{ $t('automation.autoStart') }}</span>
+            <span class="block text-[12px] text-text-muted">{{
+              $t('automation.autoStartHint')
+            }}</span>
+          </span>
+          <UiSwitch v-model="autoStart" :label="$t('automation.autoStart')" />
         </label>
       </div>
 

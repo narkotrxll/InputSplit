@@ -262,6 +262,14 @@ export const ja: Messages = {
     sessionNotFound: 'この分離セッションはすでに終了しています。',
     forbidden: 'この操作は許可されていません。',
     invalidInput: '要求が無効です。',
+    gameNotRunning: 'ゲームが起動していません。',
+    noExePath:
+      'このプロファイルにはゲームの場所が設定されていません。プロファイルでゲームのファイルを選択してください。',
+    launchFailed: 'ゲームを起動できませんでした。プロファイルのゲームファイルを確認してください。',
+    launchTimeout: 'ゲームのウィンドウが時間内に表示されませんでした。',
+    updateUnavailable: 'インストールできるアップデートはありません。',
+    updateDevBuild: 'アップデートはインストール版のアプリでのみインストールできます。',
+    updateFailed: 'アップデートをダウンロードできませんでした。後でもう一度お試しください。',
     internalError: '予期しないエラーが発生しました。',
     error: '予期しないエラーが発生しました。',
   },
@@ -502,5 +510,86 @@ export const ja: Messages = {
   },
   shortcuts: {
     emergency: '緊急停止',
+  },
+  automation: {
+    play: 'プレイ',
+    playHint: '必要に応じてゲームを起動し、ウィンドウが表示されたらすぐに分離します。',
+    autoStart: 'このゲームが起動したら自動で分離を開始',
+    autoStartHint: 'InputSplit の実行中（トレイに隠れている間も）に動作します。',
+    autoStartBadge: '自動',
+    launching: '{name} を起動しています…',
+    waiting: '{name} のウィンドウを待っています…',
+    waitingHint: 'ゲームのウィンドウが表示されると、分離が自動で始まります。',
+    failed: '{name} を起動できませんでした',
+  },
+  gamepadHotkey: {
+    title: 'コントローラー',
+    shortcut: 'コントローラーのショートカット',
+    shortcutHint:
+      'これらのボタンを 2 秒間押し続けると、ソファーから分離を開始・停止できます。何も実行していない場合は、ゲームが開いている中で最近使ったプロファイルを開始します。',
+    rumble: '開始時と停止時に振動',
+    rumbleHint: '長い振動 1 回：分離オン。短い振動 2 回：オフ。3 回：開始できるものがありません。',
+  },
+  notify: {
+    launchAtLogin: 'Windows と同時に起動',
+    launchAtLoginHint: 'トレイに隠れた状態で起動するので、自動プロファイルがいつでも使えます。',
+    notifications: 'Windows の通知',
+    notificationsHint: 'InputSplit がバックグラウンドにあるときに、分離の開始と終了を知らせます。',
+  },
+  compat: {
+    launcher:
+      'これはゲームランチャーで、ゲーム本体ではありません。ランチャーからゲームを起動し、ゲームのウィンドウを選択してください。',
+    online:
+      'オンラインゲームのようです。InputSplit はシングルプレイやオフラインのゲーム向けです。ここでは動作しない可能性があり、ゲームの規約で禁止されている場合もあります。',
+    badgeLauncher: 'ランチャー',
+    badgeOnline: 'オンライン',
+    badgeBlocked: '保護',
+    badgeWorks: '動作実績',
+    badgeLimited: '一部のみ',
+    badgeFailed: '失敗',
+    lastTime: {
+      works: '前回この PC では、このゲームですべて正常に動作しました。',
+      limited: '前回この PC では、このゲームで一部の保護が動作しませんでした。',
+      failed: '前回この PC では、InputSplit をこのゲーム内で開始できませんでした。',
+    },
+    noReads: {
+      title: 'ゲームがコントローラーを読み取っていないようです',
+      steam:
+        'Steam の場合：ゲームのプロパティ → コントローラーを開き、Steam Input をオフにしてください。',
+      inGame:
+        'ゲーム内でスティックを動かしてください。メニューやステージに入って初めてコントローラーを読み取るゲームもあります。',
+      settings: 'ゲーム自体の設定でコントローラー対応がオンになっているか確認してください。',
+      other:
+        'DirectInput や Windows.Gaming.Input でコントローラーを読み取るゲームもあります。これらのバックグラウンド対応はまだ限定的です。',
+    },
+  },
+  wizard: {
+    controllerTitle: 'コントローラーの確認',
+    controllerBody: 'プレイヤーが使うコントローラーのボタンをどれか押してください。',
+    noController:
+      'まだコントローラーが接続されていません。USB、Bluetooth、または Xbox ワイヤレス アダプターで接続してください。後で行うこともできます。',
+    waiting: 'ボタンが押されるのを待っています…',
+    works: '動作しました！このコントローラーをゲームに使います。',
+    displayTitle: 'テレビを選択',
+    displayBody: 'InputSplit は分離の開始時にゲームをこの画面へ移動し、終了後に元へ戻せます。',
+    skip: 'スキップ',
+  },
+  updates: {
+    title: 'アップデート',
+    auto: 'アップデートを自動で確認',
+    autoHint:
+      '1 日 1 回 GitHub で新しいバージョンを確認します。クリックしない限り何もインストールされません。',
+    check: '今すぐ確認',
+    checking: '確認しています…',
+    upToDate: '最新バージョンです（{version}）。',
+    available: 'バージョン {version} が利用可能です',
+    install: 'ダウンロードしてインストール',
+    downloading: 'ダウンロード中… {percent}%',
+    installing: 'インストーラーを起動しています…',
+    error:
+      'アップデートを確認できませんでした。インターネット接続を確認して、もう一度お試しください。',
+    whatsNew: '新機能',
+    devBuild: 'これは開発版です。アップデートはインストール版のアプリでのみインストールできます。',
+    sidebar: 'アップデートあり',
   },
 }

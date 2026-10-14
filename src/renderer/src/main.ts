@@ -11,6 +11,9 @@ import { useLogsStore } from './stores/logs'
 import { useProfilesStore } from './stores/profiles'
 import { useSettingsStore } from './stores/settings'
 import { useUiStore } from './stores/ui'
+import { useAutomationStore } from './stores/automation'
+import { useCompatStore } from './stores/compat'
+import { useUpdatesStore } from './stores/updates'
 import { subscribe } from './api'
 
 async function bootstrap(): Promise<void> {
@@ -25,6 +28,9 @@ async function bootstrap(): Promise<void> {
   const logs = useLogsStore()
   const profiles = useProfilesStore()
   const ui = useUiStore()
+  const automation = useAutomationStore()
+  const compat = useCompatStore()
+  const updates = useUpdatesStore()
 
   // Device events are pushed by the main process; no polling in the renderer.
   subscribe('controllers:changed', devices.setControllers)
@@ -34,7 +40,16 @@ async function bootstrap(): Promise<void> {
   await settings.load()
   watch(() => settings.settings.language, applyLanguage, { immediate: true })
   isolation.applyDefaults(settings.settings)
-  await Promise.all([backend.init(), isolation.init(), logs.init(), profiles.load()])
+  profiles.listen()
+  await Promise.all([
+    backend.init(),
+    isolation.init(),
+    logs.init(),
+    profiles.load(),
+    automation.init(),
+    compat.init(),
+    updates.init(),
+  ])
   if (backend.state?.status === 'ready') await devices.refresh().catch(() => {})
 
   if (!settings.settings.onboardingCompleted) ui.onboardingOpen = true

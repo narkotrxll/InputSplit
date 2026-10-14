@@ -3,13 +3,17 @@
  * be closed without stopping anything. The menu always offers "Stop isolation".
  */
 import { Menu, nativeImage, Tray } from 'electron'
-import type { IsolationView } from '@shared/domain'
+import type { IsolationView, Profile } from '@shared/domain'
 import type { MainTexts } from './i18n'
 import { isSessionLive } from '@shared/support'
 import { iconPath } from './paths'
 
+/** How many profiles the tray offers (most recently used first). */
+const TRAY_PROFILES = 6
+
 export interface TrayActions {
   show: () => void
+  playProfile: (id: string) => void
   stopIsolation: () => void
   openSettings: () => void
   quit: () => void
@@ -20,6 +24,7 @@ export class AppTray {
   private readonly idleIcon = nativeImage.createFromPath(iconPath('tray.png'))
   private readonly activeIcon = nativeImage.createFromPath(iconPath('tray-active.png'))
   private view: IsolationView | null = null
+  private profiles: Profile[] = []
 
   constructor(
     private readonly texts: () => MainTexts,
@@ -29,6 +34,12 @@ export class AppTray {
     this.tray.on('click', () => actions.show())
     this.tray.on('double-click', () => actions.show())
     this.update(null)
+  }
+
+  /** `profiles` most recently used first. */
+  setProfiles(profiles: Profile[]): void {
+    this.profiles = profiles.slice(0, TRAY_PROFILES)
+    this.refresh()
   }
 
   /** Rebuilds the menu, e.g. after the language changed. */
@@ -49,6 +60,18 @@ export class AppTray {
         { label: live && game ? isolating : text.trayNotIsolating, enabled: false },
         { type: 'separator' },
         { label: text.trayOpen, click: () => this.actions.show() },
+        {
+          label: text.trayPlay,
+          enabled: !live,
+          submenu:
+            this.profiles.length > 0
+              ? this.profiles.map((profile) => ({
+                  // "&" would become a keyboard accelerator in Windows menus.
+                  label: profile.name.replace(/&/g, '&&'),
+                  click: () => this.actions.playProfile(profile.id),
+                }))
+              : [{ label: text.trayNoProfiles, enabled: false }],
+        },
         { label: text.trayStop, enabled: live, click: () => this.actions.stopIsolation() },
         { label: text.traySettings, click: () => this.actions.openSettings() },
         { type: 'separator' },

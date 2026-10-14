@@ -18,6 +18,8 @@ import UiCallout from '../components/ui/UiCallout.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiTooltip from '../components/ui/UiTooltip.vue'
 import { errorText } from '../i18n'
+import { useAutomationStore } from '../stores/automation'
+import { useCompatStore } from '../stores/compat'
 import { useDevicesStore } from '../stores/devices'
 import { useIsolationStore } from '../stores/isolation'
 import { useUiStore } from '../stores/ui'
@@ -28,6 +30,8 @@ const isolation = useIsolationStore()
 const devices = useDevicesStore()
 const windows = useWindowsStore()
 const ui = useUiStore()
+const automation = useAutomationStore()
+const compat = useCompatStore()
 
 const gamePicker = ref(false)
 const controllerPicker = ref(false)
@@ -79,6 +83,24 @@ const errorCodeShown = computed(() =>
   view.value.phase === 'failed' ? view.value.error?.code : isolation.actionError,
 )
 
+/** Built-in knowledge and this PC's memory about the chosen game (before starting). */
+const targetCompat = computed(() => {
+  const target = sel.value.target
+  if (target === null || isolation.live) return null
+  return {
+    kind: compat.entry(target.exeName)?.kind ?? null,
+    lastTime: compat.lastTime(target.exeName),
+  }
+})
+
+/** The game never read XInput: show what usually helps. */
+const controllerUnread = computed(
+  () =>
+    isolation.live &&
+    view.value.features.some((f) => f.name === 'xinputBackground' && f.state === 'unsupported'),
+)
+const noReadsTips = ['steam', 'inGame', 'settings', 'other'] as const
+
 const featureDisabled = computed(() =>
   sel.value.controllerSlot === null ? { xinputSlotLock: t('dashboard.chooseController') } : {},
 )
@@ -111,6 +133,36 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     </PageHeader>
 
     <div class="flex flex-col gap-4">
+      <Transition name="fade">
+        <UiCallout
+          v-if="automation.state.phase !== 'idle'"
+          tone="info"
+          :title="
+            $t(
+              automation.state.phase === 'launching'
+                ? 'automation.launching'
+                : 'automation.waiting',
+              { name: automation.state.profileName ?? '' },
+            )
+          "
+        >
+          {{ $t('automation.waitingHint') }}
+          <template #actions>
+            <UiButton size="sm" variant="ghost" @click="automation.cancel()">{{
+              $t('common.cancel')
+            }}</UiButton>
+          </template>
+        </UiCallout>
+        <UiCallout
+          v-else-if="automation.state.error"
+          tone="danger"
+          :title="$t('automation.failed', { name: automation.state.profileName ?? '' })"
+          dismissible
+          @dismiss="automation.cancel()"
+        >
+          {{ errorText(automation.state.error.code, automation.state.error.message) }}
+        </UiCallout>
+      </Transition>
       <Transition name="fade">
         <UiCallout
           v-if="view.phase === 'ended' && view.endedReason"
@@ -263,22 +315,43 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <!-- Compatibility of the chosen game -->
         <div
           v-if="
-            !isolation.live &&
+            targetCompat &&
             view.phase !== 'failed' &&
-            isolation.check &&
-            (isolation.check.blockers.length || isolation.check.warnings.length)
+            (targetCompat.kind !== null ||
+              targetCompat.lastTime ||
+              (isolation.check &&
+                (isolation.check.blockers.length || isolation.check.warnings.length)))
           "
           class="mt-4 flex flex-col gap-2"
         >
           <UiCallout
-            v-for="b in isolation.check.blockers"
+            v-if="targetCompat.kind === 'blocked'"
+            tone="danger"
+            :title="$t('apps.cannotIsolate')"
+          >
+            {{ $t('errors.antiCheat') }}
+          </UiCallout>
+          <UiCallout v-else-if="targetCompat.kind === 'launcher'" tone="warning">
+            {{ $t('compat.launcher') }}
+          </UiCallout>
+          <UiCallout v-else-if="targetCompat.kind === 'online'" tone="warning">
+            {{ $t('compat.online') }}
+          </UiCallout>
+          <UiCallout
+            v-if="targetCompat.lastTime && !isolation.check?.blockers.length"
+            :tone="targetCompat.lastTime.outcome === 'works' ? 'success' : 'info'"
+          >
+            {{ $t(`compat.lastTime.${targetCompat.lastTime.outcome}`) }}
+          </UiCallout>
+          <UiCallout
+            v-for="b in isolation.check?.blockers ?? []"
             :key="b.code"
             tone="danger"
             :title="$t('apps.cannotIsolate')"
           >
             {{ errorText(b.code, b.message) }}
           </UiCallout>
-          <UiCallout v-for="w in isolation.check.warnings" :key="w.code" tone="warning">
+          <UiCallout v-for="w in isolation.check?.warnings ?? []" :key="w.code" tone="warning">
             {{ $t(`warnings.${w.code}`) }}
           </UiCallout>
         </div>
@@ -293,6 +366,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             :disabled="featureDisabled"
             @toggle="isolation.setFeature"
           />
+          <UiCallout
+            v-if="controllerUnread"
+            class="mt-4"
+            tone="warning"
+            :title="$t('compat.noReads.title')"
+          >
+            <ul class="mt-1 flex list-disc flex-col gap-1 pl-4">
+              <li v-for="tip in noReadsTips" :key="tip">{{ $t(`compat.noReads.${tip}`) }}</li>
+            </ul>
+          </UiCallout>
           <div v-if="isolation.live && view.limitations.length" class="mt-4 flex flex-col gap-2">
             <p class="text-[11.5px] font-medium tracking-wide text-text-faint uppercase">
               {{ $t('dashboard.limitations') }}

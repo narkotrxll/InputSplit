@@ -55,6 +55,10 @@ export class DeviceService {
     return this.displays
   }
 
+  connectedSlots(): number[] {
+    return this.controllers.filter((c) => c.connected).map((c) => c.slot)
+  }
+
   isSlotConnected(slot: number): boolean {
     return this.controllers.some((c) => c.slot === slot && c.connected)
   }

@@ -257,6 +257,13 @@ export const en = {
     sessionNotFound: 'This isolation session has already ended.',
     forbidden: 'This action is not allowed.',
     invalidInput: 'The request was not valid.',
+    gameNotRunning: 'The game is not running.',
+    noExePath: 'This profile does not know where the game is. Choose the game file in the profile.',
+    launchFailed: 'The game could not be started. Check the game file in the profile.',
+    launchTimeout: 'The game window did not appear in time.',
+    updateUnavailable: 'No update is ready to install.',
+    updateDevBuild: 'Updates install only in the installed app.',
+    updateFailed: 'The update could not be downloaded. Try again later.',
     internalError: 'An unexpected error occurred.',
     error: 'An unexpected error occurred.',
   },
@@ -493,6 +500,87 @@ export const en = {
   },
   shortcuts: {
     emergency: 'Emergency stop',
+  },
+  automation: {
+    play: 'Play',
+    playHint: 'Starts the game if needed and isolates it as soon as its window appears.',
+    autoStart: 'Start isolation automatically when this game opens',
+    autoStartHint: 'Works while InputSplit is running, also hidden in the tray.',
+    autoStartBadge: 'Automatic',
+    launching: 'Starting {name}…',
+    waiting: 'Waiting for the {name} window…',
+    waitingHint: 'Isolation starts by itself once the game window appears.',
+    failed: '{name} could not be started',
+  },
+  gamepadHotkey: {
+    title: 'Controller',
+    shortcut: 'Controller shortcut',
+    shortcutHint:
+      'Hold these buttons for 2 seconds to start or stop isolation from the couch. With nothing running, it starts the most recently used profile whose game is open.',
+    rumble: 'Vibrate on start and stop',
+    rumbleHint:
+      'One long pulse: isolation is on. Two short pulses: it is off. Three: nothing to start.',
+  },
+  notify: {
+    launchAtLogin: 'Start with Windows',
+    launchAtLoginHint: 'Starts hidden in the tray, so automatic profiles are always ready.',
+    notifications: 'Windows notifications',
+    notificationsHint: 'Shows when isolation starts or ends while InputSplit is in the background.',
+  },
+  compat: {
+    launcher:
+      'This is a game launcher, not the game. Start the game from it, then choose the game window.',
+    online:
+      'This looks like an online game. InputSplit is made for single-player and offline games: it may not work here, and the game’s rules may forbid it.',
+    badgeLauncher: 'Launcher',
+    badgeOnline: 'Online',
+    badgeBlocked: 'Protected',
+    badgeWorks: 'Worked before',
+    badgeLimited: 'Limited before',
+    badgeFailed: 'Failed before',
+    lastTime: {
+      works: 'Last time on this PC everything worked with this game.',
+      limited: 'Last time on this PC some protections did not work with this game.',
+      failed: 'Last time on this PC InputSplit could not start inside this game.',
+    },
+    noReads: {
+      title: 'The game does not seem to read the controller',
+      steam: 'On Steam: open the game’s Properties → Controller and turn off Steam Input.',
+      inGame:
+        'Move a stick inside the game: some games only start reading the controller in a menu or a level.',
+      settings: 'Check that controller support is turned on in the game’s own settings.',
+      other:
+        'Some games read controllers with DirectInput or Windows.Gaming.Input. Background support for those is still limited.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Check the controller',
+    controllerBody: 'Press any button on the controller the player will use.',
+    noController:
+      'No controller is connected yet. Connect one with USB, Bluetooth or the Xbox Wireless Adapter. You can also do this later.',
+    waiting: 'Waiting for a button press…',
+    works: 'It works! This controller will be used for games.',
+    displayTitle: 'Choose the TV',
+    displayBody:
+      'InputSplit can move the game to this screen when isolation starts and put it back afterwards.',
+    skip: 'Skip',
+  },
+  updates: {
+    title: 'Updates',
+    auto: 'Check for updates automatically',
+    autoHint:
+      'Looks for a new version on GitHub once a day. Nothing is installed without your click.',
+    check: 'Check now',
+    checking: 'Checking…',
+    upToDate: 'You have the latest version ({version}).',
+    available: 'Version {version} is available',
+    install: 'Download and install',
+    downloading: 'Downloading… {percent}%',
+    installing: 'Starting the installer…',
+    error: 'Could not check for updates. Check your internet connection and try again.',
+    whatsNew: 'What’s new',
+    devBuild: 'This is a development build: updates install only in the installed app.',
+    sidebar: 'Update available',
   },
 } as const
 

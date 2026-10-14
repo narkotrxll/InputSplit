@@ -17,6 +17,7 @@ function input(overrides: Partial<ProfileInput> = {}): ProfileInput {
     moveWindow: true,
     restoreOnExit: true,
     features: DEFAULT_FEATURES,
+    autoStart: false,
     ...overrides,
   }
 }

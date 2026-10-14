@@ -254,6 +254,13 @@ export const tr: Messages = {
     sessionNotFound: 'Bu yalıtım oturumu zaten sona erdi.',
     forbidden: 'Bu işleme izin verilmiyor.',
     invalidInput: 'İstek geçerli değil.',
+    gameNotRunning: 'Oyun çalışmıyor.',
+    noExePath: 'Bu profil oyunun nerede olduğunu bilmiyor. Profilde oyun dosyasını seçin.',
+    launchFailed: 'Oyun başlatılamadı. Profildeki oyun dosyasını kontrol edin.',
+    launchTimeout: 'Oyun penceresi zamanında açılmadı.',
+    updateUnavailable: 'Yüklenmeye hazır bir güncelleme yok.',
+    updateDevBuild: 'Güncellemeler yalnızca yüklü uygulamada kurulur.',
+    updateFailed: 'Güncelleme indirilemedi. Daha sonra tekrar deneyin.',
     internalError: 'Beklenmeyen bir hata oluştu.',
     error: 'Beklenmeyen bir hata oluştu.',
   },
@@ -491,5 +498,86 @@ export const tr: Messages = {
   },
   shortcuts: {
     emergency: 'Acil durdurma',
+  },
+  automation: {
+    play: 'Oyna',
+    playHint: 'Gerekirse oyunu başlatır ve penceresi açılır açılmaz yalıtır.',
+    autoStart: 'Bu oyun açıldığında yalıtımı otomatik başlat',
+    autoStartHint: 'InputSplit çalıştığı sürece, tepsiye gizlenmişken de çalışır.',
+    autoStartBadge: 'Otomatik',
+    launching: '{name} başlatılıyor…',
+    waiting: '{name} penceresi bekleniyor…',
+    waitingHint: 'Oyun penceresi açılır açılmaz yalıtım kendiliğinden başlar.',
+    failed: '{name} başlatılamadı',
+  },
+  gamepadHotkey: {
+    title: 'Oyun kumandası',
+    shortcut: 'Kumanda kısayolu',
+    shortcutHint:
+      'Yalıtımı koltuktan başlatmak veya durdurmak için bu düğmeleri 2 saniye basılı tutun. Hiçbir şey çalışmıyorsa, oyunu açık olan en son kullanılan profil başlar.',
+    rumble: 'Başlatırken ve durdururken titreş',
+    rumbleHint: 'Bir uzun titreşim: yalıtım açık. İki kısa: kapalı. Üç: başlatılacak bir şey yok.',
+  },
+  notify: {
+    launchAtLogin: 'Windows ile başlat',
+    launchAtLoginHint:
+      'Tepsiye gizlenmiş olarak başlar, böylece otomatik profiller her zaman hazır olur.',
+    notifications: 'Windows bildirimleri',
+    notificationsHint:
+      'InputSplit arka plandayken yalıtım başladığında veya bittiğinde haber verir.',
+  },
+  compat: {
+    launcher:
+      'Bu bir oyun başlatıcısı, oyunun kendisi değil. Oyunu buradan başlatın, ardından oyun penceresini seçin.',
+    online:
+      'Bu bir çevrim içi oyun gibi görünüyor. InputSplit tek oyunculu ve çevrim dışı oyunlar için tasarlandı: burada çalışmayabilir ve oyunun kuralları bunu yasaklayabilir.',
+    badgeLauncher: 'Başlatıcı',
+    badgeOnline: 'Çevrim içi',
+    badgeBlocked: 'Korumalı',
+    badgeWorks: 'Çalışmıştı',
+    badgeLimited: 'Kısmen',
+    badgeFailed: 'Başarısız',
+    lastTime: {
+      works: 'Geçen sefer bu bilgisayarda bu oyunla her şey çalıştı.',
+      limited: 'Geçen sefer bu bilgisayarda bazı korumalar bu oyunla çalışmadı.',
+      failed: 'Geçen sefer bu bilgisayarda InputSplit bu oyunun içinde başlayamadı.',
+    },
+    noReads: {
+      title: 'Oyun kumandayı okumuyor gibi görünüyor',
+      steam: 'Steam’de: oyunun Özellikler → Kumanda bölümünü açın ve Steam Input’u kapatın.',
+      inGame:
+        'Oyunun içinde bir çubuğu hareket ettirin: bazı oyunlar kumandayı yalnızca bir menüde veya bölümde okumaya başlar.',
+      settings: 'Oyunun kendi ayarlarında kumanda desteğinin açık olduğunu kontrol edin.',
+      other:
+        'Bazı oyunlar kumandayı DirectInput veya Windows.Gaming.Input ile okur. Bunların arka plan desteği henüz sınırlı.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Kumandayı kontrol edin',
+    controllerBody: 'Oyuncunun kullanacağı kumandada herhangi bir düğmeye basın.',
+    noController:
+      'Henüz bağlı bir kumanda yok. USB, Bluetooth veya Xbox Kablosuz Adaptörü ile bağlayın. Bunu daha sonra da yapabilirsiniz.',
+    waiting: 'Bir düğmeye basılması bekleniyor…',
+    works: 'Çalışıyor! Oyunlar için bu kumanda kullanılacak.',
+    displayTitle: 'Televizyonu seçin',
+    displayBody:
+      'InputSplit, yalıtım başladığında oyunu bu ekrana taşıyabilir ve sonra geri koyabilir.',
+    skip: 'Atla',
+  },
+  updates: {
+    title: 'Güncellemeler',
+    auto: 'Güncellemeleri otomatik denetle',
+    autoHint: 'Günde bir kez GitHub’da yeni sürüm arar. Siz tıklamadan hiçbir şey kurulmaz.',
+    check: 'Şimdi denetle',
+    checking: 'Denetleniyor…',
+    upToDate: 'En son sürüme sahipsiniz ({version}).',
+    available: '{version} sürümü kullanılabilir',
+    install: 'İndir ve kur',
+    downloading: 'İndiriliyor… %{percent}',
+    installing: 'Kurulum başlatılıyor…',
+    error: 'Güncellemeler denetlenemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.',
+    whatsNew: 'Yenilikler',
+    devBuild: 'Bu bir geliştirme sürümü: güncellemeler yalnızca yüklü uygulamada kurulur.',
+    sidebar: 'Güncelleme var',
   },
 }

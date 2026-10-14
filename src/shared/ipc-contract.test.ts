@@ -25,3 +25,10 @@ describe('IPC contract', () => {
     expect(invokeContract['windows:list'].input.safeParse({ any: 1 }).success).toBe(false)
   })
 })
+
+describe('settings patches', () => {
+  it('never fills in defaults for settings the patch does not mention', () => {
+    const patch = invokeContract['settings:update'].input.parse({ theme: 'light' })
+    expect(patch).toEqual({ theme: 'light' })
+  })
+})

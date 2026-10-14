@@ -7,14 +7,17 @@ import {
   LayoutDashboard,
   PanelRight,
   Settings,
+  Sparkles,
 } from '@lucide/vue'
 import { computed } from 'vue'
 import { useBackendStore } from '../stores/backend'
 import { useUiStore } from '../stores/ui'
+import { useUpdatesStore } from '../stores/updates'
 import UiKbd from './ui/UiKbd.vue'
 
 const backend = useBackendStore()
 const ui = useUiStore()
+const updates = useUpdatesStore()
 
 const items = [
   { to: '/', name: 'dashboard', icon: LayoutDashboard, key: '1' },
@@ -61,6 +64,19 @@ const dotClass = computed(
     </ul>
 
     <div class="mt-auto flex flex-col gap-2 p-2.5">
+      <RouterLink
+        v-if="updates.state?.status === 'available'"
+        to="/settings"
+        class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-1.5 text-[13px] font-medium text-accent transition-colors hover:bg-accent-soft/70"
+      >
+        <Sparkles class="size-4 shrink-0" aria-hidden="true" />
+        <span class="min-w-0 flex-1">
+          {{ $t('updates.sidebar') }}
+          <span class="block text-[11.5px] font-normal text-text-muted">{{
+            updates.state.latestVersion
+          }}</span>
+        </span>
+      </RouterLink>
       <button
         type="button"
         class="flex h-8.5 items-center gap-2.5 rounded-lg px-2.5 text-[13px] font-medium text-text-muted transition-colors hover:bg-surface-2 hover:text-text"

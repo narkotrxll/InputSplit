@@ -15,12 +15,15 @@ import LogoMark from './LogoMark.vue'
 import UiButton from './ui/UiButton.vue'
 import UiDialog from './ui/UiDialog.vue'
 import UiKbd from './ui/UiKbd.vue'
+import WizardControllerStep from './WizardControllerStep.vue'
+import WizardDisplayStep from './WizardDisplayStep.vue'
 
 const ui = useUiStore()
 const settings = useSettingsStore()
 const step = ref(0)
 const acknowledged = ref(false)
-const total = 3
+const total = 5
+const TIPS_STEP = total - 1
 
 const open = computed({
   get: () => ui.onboardingOpen,
@@ -62,9 +65,13 @@ const tips = ['tip1', 'tip2', 'tip3'] as const
   <UiDialog
     v-model:open="open"
     :title="
-      [$t('onboarding.welcome.title'), $t('onboarding.risks.title'), $t('onboarding.tips.title')][
-        step
-      ]!
+      [
+        $t('onboarding.welcome.title'),
+        $t('onboarding.risks.title'),
+        $t('wizard.controllerTitle'),
+        $t('wizard.displayTitle'),
+        $t('onboarding.tips.title'),
+      ][step]!
     "
     :dismissible="settings.settings.riskAcknowledgedAt !== null"
     width="md"
@@ -130,6 +137,9 @@ const tips = ['tip1', 'tip2', 'tip3'] as const
         </label>
       </div>
 
+      <WizardControllerStep v-else-if="step === 2" key="controller" />
+      <WizardDisplayStep v-else-if="step === 3" key="display" />
+
       <div v-else key="tips" class="flex flex-col gap-3">
         <div
           v-for="tip in tips"
@@ -153,6 +163,9 @@ const tips = ['tip1', 'tip2', 'tip3'] as const
         <span class="sr-only">{{ $t('onboarding.step', { n: step + 1, total }) }}</span>
       </div>
       <UiButton v-if="step > 0" variant="ghost" @click="step--">{{ $t('common.back') }}</UiButton>
+      <UiButton v-if="step === 2 || step === 3" variant="ghost" @click="step = TIPS_STEP">{{
+        $t('wizard.skip')
+      }}</UiButton>
       <UiButton
         v-if="step < total - 1"
         variant="primary"

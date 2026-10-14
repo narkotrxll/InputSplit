@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <xinput.h>
 
+#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
@@ -15,12 +16,14 @@ namespace {
 using GetStateFn = DWORD(WINAPI*)(DWORD, XINPUT_STATE*);
 using GetCapabilitiesFn = DWORD(WINAPI*)(DWORD, DWORD, XINPUT_CAPABILITIES*);
 using GetBatteryFn = DWORD(WINAPI*)(DWORD, BYTE, XINPUT_BATTERY_INFORMATION*);
+using SetStateFn = DWORD(WINAPI*)(DWORD, XINPUT_VIBRATION*);
 
 struct XInputApi {
   GetStateFn getState = nullptr;
   GetStateFn getStateEx = nullptr;  // ordinal 100: also reports the Guide button
   GetCapabilitiesFn getCapabilities = nullptr;
   GetBatteryFn getBattery = nullptr;
+  SetStateFn setState = nullptr;
 } g_api;
 
 constexpr WORD kGuideButton = 0x0400;  // only reported by XInputGetStateEx
@@ -47,6 +50,21 @@ SlotInfo g_slots[XUSER_MAX_COUNT];
 int g_testSlot = -1;
 bool g_running = false;
 std::thread g_thread;
+
+// Controller shortcut: LB + RB + View (Back) held for kHotkeyHoldMs on any controller.
+constexpr WORD kHotkeyMask =
+    XINPUT_GAMEPAD_LEFT_SHOULDER | XINPUT_GAMEPAD_RIGHT_SHOULDER | XINPUT_GAMEPAD_BACK;
+constexpr auto kHotkeyHoldMs = std::chrono::milliseconds(2000);
+constexpr auto kHotkeyPollMs = std::chrono::milliseconds(50);
+bool g_hotkeyEnabled = false;
+
+struct HotkeyTracker {
+  bool holding = false;
+  bool fired = false;  // once per hold: release all three buttons to arm again
+  std::chrono::steady_clock::time_point since{};
+};
+
+std::atomic<unsigned> g_rumbleGeneration{0};
 
 const char* SubTypeName(BYTE subType) {
   switch (subType) {
@@ -159,6 +177,30 @@ void EmitTestState(int slot, DWORD& lastPacket, bool& wasConnected) {
                                });
 }
 
+// Reads the buttons of every connected slot and reports a completed hold. Runs on the
+// monitor thread without the lock (XInputGetState may block briefly).
+void PollHotkey(const bool connected[XUSER_MAX_COUNT], HotkeyTracker trackers[XUSER_MAX_COUNT]) {
+  const auto now = std::chrono::steady_clock::now();
+  for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
+    HotkeyTracker& tracker = trackers[slot];
+    XINPUT_STATE state{};
+    bool pressed = connected[slot] &&
+                   g_api.getState(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS &&
+                   (state.Gamepad.wButtons & kHotkeyMask) == kHotkeyMask;
+    if (!pressed) {
+      tracker = HotkeyTracker{};
+      continue;
+    }
+    if (!tracker.holding) {
+      tracker.holding = true;
+      tracker.since = now;
+    } else if (!tracker.fired && now - tracker.since >= kHotkeyHoldMs) {
+      tracker.fired = true;
+      SendEvent("gamepadHotkey", Json{{"slot", slot}});
+    }
+  }
+}
+
 void Run() {
   using Clock = std::chrono::steady_clock;
   auto nextPresenceCheck = Clock::now();
@@ -166,6 +208,7 @@ void Run() {
   int streamedSlot = -1;
   DWORD lastPacket = 0;
   bool wasConnected = false;
+  HotkeyTracker trackers[XUSER_MAX_COUNT];
 
   std::unique_lock<std::mutex> lock(g_mutex);
   while (g_running) {
@@ -203,7 +246,23 @@ void Run() {
       lock.unlock();
       EmitTestState(slot, lastPacket, wasConnected);
       lock.lock();
+    }
+
+    // Shortcut: only connected slots are read (an empty slot is slow to poll).
+    if (g_hotkeyEnabled) {
+      bool connected[XUSER_MAX_COUNT];
+      for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) connected[slot] = g_slots[slot].connected;
+      lock.unlock();
+      PollHotkey(connected, trackers);
+      lock.lock();
+    } else {
+      for (HotkeyTracker& tracker : trackers) tracker = HotkeyTracker{};
+    }
+
+    if (streamedSlot >= 0) {
       g_wake.wait_for(lock, std::chrono::milliseconds(16));
+    } else if (g_hotkeyEnabled) {
+      g_wake.wait_until(lock, (std::min)(nextPresenceCheck, Clock::now() + kHotkeyPollMs));
     } else {
       g_wake.wait_until(lock, nextPresenceCheck);
     }
@@ -227,6 +286,7 @@ bool ControllerMonitor::Start() {
       reinterpret_cast<GetCapabilitiesFn>(GetProcAddress(module, "XInputGetCapabilities"));
   g_api.getBattery =
       reinterpret_cast<GetBatteryFn>(GetProcAddress(module, "XInputGetBatteryInformation"));
+  g_api.setState = reinterpret_cast<SetStateFn>(GetProcAddress(module, "XInputSetState"));
   if (g_api.getState == nullptr || g_api.getCapabilities == nullptr) return false;
 
   std::lock_guard<std::mutex> lock(g_mutex);
@@ -266,6 +326,33 @@ void ControllerMonitor::StopTest() {
     g_testSlot = -1;
   }
   g_wake.notify_all();
+}
+
+void ControllerMonitor::SetHotkeyEnabled(bool enabled) {
+  {
+    std::lock_guard<std::mutex> lock(g_mutex);
+    g_hotkeyEnabled = enabled;
+  }
+  g_wake.notify_all();
+}
+
+bool ControllerMonitor::Rumble(int slot, const std::string& pattern) {
+  if (g_api.setState == nullptr || slot < 0 || slot >= XUSER_MAX_COUNT) return false;
+  int pulses = pattern == "on" ? 1 : pattern == "off" ? 2 : 3;
+  auto pulseLength = std::chrono::milliseconds(pattern == "on" ? 350 : 140);
+  // A newer pattern on any slot ends the previous one early.
+  unsigned generation = ++g_rumbleGeneration;
+  std::thread([slot, pulses, pulseLength, generation] {
+    for (int i = 0; i < pulses && g_rumbleGeneration == generation; ++i) {
+      XINPUT_VIBRATION on{40000, 40000};
+      g_api.setState(static_cast<DWORD>(slot), &on);
+      std::this_thread::sleep_for(pulseLength);
+      XINPUT_VIBRATION off{0, 0};
+      g_api.setState(static_cast<DWORD>(slot), &off);
+      if (i + 1 < pulses) std::this_thread::sleep_for(std::chrono::milliseconds(120));
+    }
+  }).detach();
+  return true;
 }
 
 }  // namespace inputsplit::helper

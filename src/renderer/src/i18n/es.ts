@@ -262,6 +262,13 @@ export const es: Messages = {
     sessionNotFound: 'Esta sesión de aislamiento ya terminó.',
     forbidden: 'Esta acción no está permitida.',
     invalidInput: 'La solicitud no es válida.',
+    gameNotRunning: 'El juego no se está ejecutando.',
+    noExePath: 'Este perfil no sabe dónde está el juego. Elige el archivo del juego en el perfil.',
+    launchFailed: 'No se pudo iniciar el juego. Revisa el archivo del juego en el perfil.',
+    launchTimeout: 'La ventana del juego no apareció a tiempo.',
+    updateUnavailable: 'No hay ninguna actualización lista para instalar.',
+    updateDevBuild: 'Las actualizaciones solo se instalan en la aplicación instalada.',
+    updateFailed: 'No se pudo descargar la actualización. Inténtalo más tarde.',
     internalError: 'Se produjo un error inesperado.',
     error: 'Se produjo un error inesperado.',
   },
@@ -502,5 +509,90 @@ export const es: Messages = {
   },
   shortcuts: {
     emergency: 'Parada de emergencia',
+  },
+  automation: {
+    play: 'Jugar',
+    playHint: 'Inicia el juego si hace falta y lo aísla en cuanto aparece su ventana.',
+    autoStart: 'Activar el aislamiento automáticamente al abrir este juego',
+    autoStartHint: 'Funciona mientras InputSplit está abierto, también oculto en la bandeja.',
+    autoStartBadge: 'Automático',
+    launching: 'Iniciando {name}…',
+    waiting: 'Esperando la ventana de {name}…',
+    waitingHint: 'El aislamiento empieza solo en cuanto aparece la ventana del juego.',
+    failed: 'No se pudo iniciar {name}',
+  },
+  gamepadHotkey: {
+    title: 'Mando',
+    shortcut: 'Atajo del mando',
+    shortcutHint:
+      'Mantén estos botones 2 segundos para activar o detener el aislamiento desde el sofá. Si no hay nada en marcha, inicia el perfil usado más recientemente cuyo juego esté abierto.',
+    rumble: 'Vibrar al activar y detener',
+    rumbleHint:
+      'Un pulso largo: aislamiento activado. Dos cortos: desactivado. Tres: nada que iniciar.',
+  },
+  notify: {
+    launchAtLogin: 'Iniciar con Windows',
+    launchAtLoginHint:
+      'Se inicia oculto en la bandeja, así los perfiles automáticos siempre están listos.',
+    notifications: 'Notificaciones de Windows',
+    notificationsHint:
+      'Avisa cuando el aislamiento empieza o termina mientras InputSplit está en segundo plano.',
+  },
+  compat: {
+    launcher:
+      'Esto es un lanzador, no el juego. Inicia el juego desde él y luego elige la ventana del juego.',
+    online:
+      'Parece un juego en línea. InputSplit está pensado para juegos individuales y sin conexión: puede no funcionar aquí y las reglas del juego pueden prohibirlo.',
+    badgeLauncher: 'Lanzador',
+    badgeOnline: 'En línea',
+    badgeBlocked: 'Protegido',
+    badgeWorks: 'Funcionó',
+    badgeLimited: 'Parcial',
+    badgeFailed: 'Falló',
+    lastTime: {
+      works: 'La última vez en este PC todo funcionó con este juego.',
+      limited: 'La última vez en este PC algunas protecciones no funcionaron con este juego.',
+      failed: 'La última vez en este PC InputSplit no pudo iniciarse dentro de este juego.',
+    },
+    noReads: {
+      title: 'Parece que el juego no lee el mando',
+      steam: 'En Steam: abre Propiedades del juego → Mando y desactiva Steam Input.',
+      inGame:
+        'Mueve un stick dentro del juego: algunos juegos solo empiezan a leer el mando en un menú o en un nivel.',
+      settings:
+        'Comprueba que la compatibilidad con mandos esté activada en los ajustes del propio juego.',
+      other:
+        'Algunos juegos leen el mando con DirectInput o Windows.Gaming.Input. Su compatibilidad en segundo plano aún es limitada.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Comprueba el mando',
+    controllerBody: 'Pulsa cualquier botón del mando que usará el jugador.',
+    noController:
+      'Aún no hay ningún mando conectado. Conéctalo por USB, Bluetooth o con el Adaptador inalámbrico Xbox. También puedes hacerlo más tarde.',
+    waiting: 'Esperando que pulses un botón…',
+    works: '¡Funciona! Este mando se usará para los juegos.',
+    displayTitle: 'Elige el televisor',
+    displayBody:
+      'InputSplit puede mover el juego a esta pantalla al iniciar el aislamiento y devolverlo después.',
+    skip: 'Omitir',
+  },
+  updates: {
+    title: 'Actualizaciones',
+    auto: 'Buscar actualizaciones automáticamente',
+    autoHint: 'Busca una versión nueva en GitHub una vez al día. Nada se instala sin tu clic.',
+    check: 'Buscar ahora',
+    checking: 'Buscando…',
+    upToDate: 'Tienes la última versión ({version}).',
+    available: 'La versión {version} está disponible',
+    install: 'Descargar e instalar',
+    downloading: 'Descargando… {percent}%',
+    installing: 'Iniciando el instalador…',
+    error:
+      'No se pudieron buscar actualizaciones. Revisa tu conexión a internet e inténtalo de nuevo.',
+    whatsNew: 'Novedades',
+    devBuild:
+      'Esta es una versión de desarrollo: las actualizaciones solo se instalan en la aplicación instalada.',
+    sidebar: 'Actualización disponible',
   },
 }

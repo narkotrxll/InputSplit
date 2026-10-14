@@ -258,6 +258,13 @@ export const ptBR: Messages = {
     sessionNotFound: 'Esta sessão de isolamento já terminou.',
     forbidden: 'Esta ação não é permitida.',
     invalidInput: 'A solicitação não é válida.',
+    gameNotRunning: 'O jogo não está em execução.',
+    noExePath: 'Este perfil não sabe onde está o jogo. Escolha o arquivo do jogo no perfil.',
+    launchFailed: 'Não foi possível iniciar o jogo. Verifique o arquivo do jogo no perfil.',
+    launchTimeout: 'A janela do jogo não apareceu a tempo.',
+    updateUnavailable: 'Nenhuma atualização está pronta para instalar.',
+    updateDevBuild: 'As atualizações só são instaladas no aplicativo instalado.',
+    updateFailed: 'Não foi possível baixar a atualização. Tente novamente mais tarde.',
     internalError: 'Ocorreu um erro inesperado.',
     error: 'Ocorreu um erro inesperado.',
   },
@@ -495,5 +502,90 @@ export const ptBR: Messages = {
   },
   shortcuts: {
     emergency: 'Parada de emergência',
+  },
+  automation: {
+    play: 'Jogar',
+    playHint: 'Inicia o jogo se necessário e o isola assim que a janela dele aparecer.',
+    autoStart: 'Iniciar o isolamento automaticamente quando este jogo abrir',
+    autoStartHint: 'Funciona enquanto o InputSplit estiver aberto, inclusive oculto na bandeja.',
+    autoStartBadge: 'Automático',
+    launching: 'Iniciando {name}…',
+    waiting: 'Aguardando a janela de {name}…',
+    waitingHint: 'O isolamento começa sozinho assim que a janela do jogo aparecer.',
+    failed: 'Não foi possível iniciar {name}',
+  },
+  gamepadHotkey: {
+    title: 'Controle',
+    shortcut: 'Atalho do controle',
+    shortcutHint:
+      'Segure estes botões por 2 segundos para iniciar ou parar o isolamento do sofá. Se nada estiver rodando, inicia o perfil usado mais recentemente cujo jogo esteja aberto.',
+    rumble: 'Vibrar ao iniciar e parar',
+    rumbleHint:
+      'Um pulso longo: isolamento ativado. Dois curtos: desativado. Três: nada para iniciar.',
+  },
+  notify: {
+    launchAtLogin: 'Iniciar com o Windows',
+    launchAtLoginHint:
+      'Inicia oculto na bandeja, assim os perfis automáticos ficam sempre prontos.',
+    notifications: 'Notificações do Windows',
+    notificationsHint:
+      'Avisa quando o isolamento começa ou termina enquanto o InputSplit está em segundo plano.',
+  },
+  compat: {
+    launcher:
+      'Isto é um launcher, não o jogo. Inicie o jogo por ele e depois escolha a janela do jogo.',
+    online:
+      'Parece um jogo online. O InputSplit foi feito para jogos single-player e offline: ele pode não funcionar aqui, e as regras do jogo podem proibir isso.',
+    badgeLauncher: 'Launcher',
+    badgeOnline: 'Online',
+    badgeBlocked: 'Protegido',
+    badgeWorks: 'Funcionou',
+    badgeLimited: 'Parcial',
+    badgeFailed: 'Falhou',
+    lastTime: {
+      works: 'Da última vez neste PC tudo funcionou com este jogo.',
+      limited: 'Da última vez neste PC algumas proteções não funcionaram com este jogo.',
+      failed: 'Da última vez neste PC o InputSplit não conseguiu iniciar dentro deste jogo.',
+    },
+    noReads: {
+      title: 'Parece que o jogo não está lendo o controle',
+      steam: 'Na Steam: abra Propriedades do jogo → Controle e desative o Steam Input.',
+      inGame:
+        'Mova um analógico dentro do jogo: alguns jogos só começam a ler o controle em um menu ou fase.',
+      settings: 'Verifique se o suporte a controle está ativado nas configurações do próprio jogo.',
+      other:
+        'Alguns jogos leem o controle por DirectInput ou Windows.Gaming.Input. O suporte em segundo plano para eles ainda é limitado.',
+    },
+  },
+  wizard: {
+    controllerTitle: 'Verifique o controle',
+    controllerBody: 'Pressione qualquer botão no controle que o jogador vai usar.',
+    noController:
+      'Nenhum controle conectado ainda. Conecte um por USB, Bluetooth ou pelo Adaptador sem fio Xbox. Você também pode fazer isso depois.',
+    waiting: 'Aguardando um botão ser pressionado…',
+    works: 'Funciona! Este controle será usado nos jogos.',
+    displayTitle: 'Escolha a TV',
+    displayBody:
+      'O InputSplit pode mover o jogo para esta tela quando o isolamento começar e devolvê-lo depois.',
+    skip: 'Pular',
+  },
+  updates: {
+    title: 'Atualizações',
+    auto: 'Verificar atualizações automaticamente',
+    autoHint:
+      'Procura uma nova versão no GitHub uma vez por dia. Nada é instalado sem o seu clique.',
+    check: 'Verificar agora',
+    checking: 'Verificando…',
+    upToDate: 'Você tem a versão mais recente ({version}).',
+    available: 'A versão {version} está disponível',
+    install: 'Baixar e instalar',
+    downloading: 'Baixando… {percent}%',
+    installing: 'Iniciando o instalador…',
+    error:
+      'Não foi possível verificar atualizações. Verifique sua conexão com a internet e tente novamente.',
+    whatsNew: 'Novidades',
+    devBuild:
+      'Esta é uma versão de desenvolvimento: as atualizações só são instaladas no aplicativo instalado.',
+    sidebar: 'Atualização disponível',
   },
 }
