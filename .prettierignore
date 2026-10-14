@@ -1,0 +1,7 @@
+node_modules
+out
+dist
+native
+coverage
+*.md
+package-lock.json
