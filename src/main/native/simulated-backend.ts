@@ -84,14 +84,42 @@ function display(
   }
 }
 
+/** Buttons the simulated test stream holds, one second each (XInput masks). */
+const PRESS_CYCLE = [
+  0x1000, // A
+  0x2000, // B
+  0x8000 | 0x0001 | 0x0100, // Y + d-pad up + left bumper
+  0x4000 | 0x0008 | 0x0200, // X + d-pad right + right bumper
+  0x0020 | 0x0040, // back + left stick click
+  0x0010 | 0x0080, // start + right stick click
+  0, // guide
+]
+
 export class SimulatedBackend implements NativeBackend {
   readonly simulated = true
   private state: BackendState = initialBackendState(true)
   private readonly events = new Emitter<HelperEvent>()
   private readonly states = new Emitter<BackendState>()
   private controllers: Controller[] = [
-    { slot: 0, connected: true, kind: 'gamepad', wireless: true, battery: { type: 'nimh', level: 'medium' } },
-    { slot: 1, connected: false, kind: 'unknown', wireless: null, battery: null },
+    {
+      slot: 0,
+      connected: true,
+      kind: 'gamepad',
+      wireless: true,
+      battery: { type: 'nimh', level: 'medium' },
+      vendorId: 0x045e, // Xbox Wireless Controller
+      productId: 0x0b12,
+    },
+    // A DualSense through Steam Input: a virtual pad in XInput, the real one in hidGamepads.
+    {
+      slot: 1,
+      connected: true,
+      kind: 'gamepad',
+      wireless: false,
+      battery: null,
+      vendorId: 0x28de,
+      productId: 0x11ff,
+    },
     { slot: 2, connected: false, kind: 'unknown', wireless: null, battery: null },
     { slot: 3, connected: false, kind: 'unknown', wireless: null, battery: null },
   ]
@@ -153,7 +181,10 @@ export class SimulatedBackend implements NativeBackend {
       case 'listWindows':
         return { windows: WINDOWS }
       case 'listControllers':
-        return { controllers: this.controllers }
+        return {
+          controllers: this.controllers,
+          hidGamepads: [{ vendorId: 0x054c, productId: 0x0ce6 }],
+        }
       case 'listDisplays':
         return { displays: DISPLAYS }
       case 'checkTarget': {
@@ -277,15 +308,15 @@ export class SimulatedBackend implements NativeBackend {
         return
       }
       packet += 1
-      const phase = Math.floor(t) % 4
+      const phase = Math.floor(t) % PRESS_CYCLE.length
       this.events.emit({
         name: 'controllerState',
         data: {
           slot,
           connected: true,
           packet,
-          buttons: [0x1000, 0x2000, 0x4000, 0x8000][phase] ?? 0,
-          guide: false,
+          buttons: PRESS_CYCLE[phase] ?? 0,
+          guide: phase === PRESS_CYCLE.length - 1,
           leftTrigger: Math.round(127 + 127 * Math.sin(t * 2)),
           rightTrigger: Math.round(127 + 127 * Math.cos(t * 2)),
           thumbLX: Math.round(26000 * Math.cos(t * 1.7)),

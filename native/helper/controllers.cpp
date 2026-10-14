@@ -2,6 +2,11 @@
 
 #include <windows.h>
 #include <xinput.h>
+#include <setupapi.h>
+// Older MinGW headers declare the HID functions without C linkage.
+extern "C" {
+#include <hidsdi.h>
+}
 
 #include <algorithm>
 #include <atomic>
@@ -9,6 +14,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <vector>
 
 namespace inputsplit::helper {
 namespace {
@@ -18,10 +24,23 @@ using GetCapabilitiesFn = DWORD(WINAPI*)(DWORD, DWORD, XINPUT_CAPABILITIES*);
 using GetBatteryFn = DWORD(WINAPI*)(DWORD, BYTE, XINPUT_BATTERY_INFORMATION*);
 using SetStateFn = DWORD(WINAPI*)(DWORD, XINPUT_VIBRATION*);
 
+// XInputGetCapabilitiesEx (xinput1_4 ordinal 108): the documented capabilities plus the
+// controller's USB ids. Undocumented, but stable since Windows 8 (SDL relies on it too).
+struct XInputCapabilitiesEx {
+  XINPUT_CAPABILITIES capabilities;
+  WORD vendorId;
+  WORD productId;
+  WORD versionNumber;
+  WORD unknown1;
+  DWORD unknown2;
+};
+using GetCapabilitiesExFn = DWORD(WINAPI*)(DWORD, DWORD, DWORD, XInputCapabilitiesEx*);
+
 struct XInputApi {
   GetStateFn getState = nullptr;
   GetStateFn getStateEx = nullptr;  // ordinal 100: also reports the Guide button
   GetCapabilitiesFn getCapabilities = nullptr;
+  GetCapabilitiesExFn getCapabilitiesEx = nullptr;  // ordinal 108, xinput1_4 only
   GetBatteryFn getBattery = nullptr;
   SetStateFn setState = nullptr;
 } g_api;
@@ -32,12 +51,15 @@ struct SlotInfo {
   bool connected = false;
   BYTE subType = 0;
   WORD flags = 0;
+  WORD vendorId = 0;  // 0 = not reported
+  WORD productId = 0;
   BYTE batteryType = BATTERY_TYPE_DISCONNECTED;
   BYTE batteryLevel = BATTERY_LEVEL_EMPTY;
   bool hasBattery = false;
 
   bool operator==(const SlotInfo& o) const {
     return connected == o.connected && subType == o.subType && flags == o.flags &&
+           vendorId == o.vendorId && productId == o.productId &&
            batteryType == o.batteryType && batteryLevel == o.batteryLevel &&
            hasBattery == o.hasBattery;
   }
@@ -47,6 +69,11 @@ struct SlotInfo {
 std::mutex g_mutex;
 std::condition_variable g_wake;
 SlotInfo g_slots[XUSER_MAX_COUNT];
+struct HidPad {
+  WORD vendorId;
+  WORD productId;
+};
+std::vector<HidPad> g_hidPads;
 int g_testSlot = -1;
 bool g_running = false;
 std::thread g_thread;
@@ -112,6 +139,12 @@ SlotInfo ReadSlot(DWORD slot, bool withBattery, const SlotInfo& previous) {
     info.subType = caps.SubType;
     info.flags = caps.Flags;
   }
+  XInputCapabilitiesEx capsEx{};
+  if (g_api.getCapabilitiesEx != nullptr &&
+      g_api.getCapabilitiesEx(1, slot, XINPUT_FLAG_GAMEPAD, &capsEx) == ERROR_SUCCESS) {
+    info.vendorId = capsEx.vendorId;
+    info.productId = capsEx.productId;
+  }
   if (withBattery && g_api.getBattery != nullptr) {
     XINPUT_BATTERY_INFORMATION battery{};
     if (g_api.getBattery(slot, BATTERY_DEVTYPE_GAMEPAD, &battery) == ERROR_SUCCESS) {
@@ -127,6 +160,49 @@ SlotInfo ReadSlot(DWORD slot, bool withBattery, const SlotInfo& previous) {
   return info;
 }
 
+// HID game controllers that are not XInput devices (an XInput device has "IG_" in its
+// path). PlayStation and Nintendo pads appear here; when Steam Input or DS4Windows drives
+// them, XInput only sees a virtual Xbox controller, and this list says what is behind it.
+std::vector<HidPad> ListHidGamepads() {
+  std::vector<HidPad> pads;
+  GUID hidGuid;
+  HidD_GetHidGuid(&hidGuid);
+  HDEVINFO set = SetupDiGetClassDevsW(&hidGuid, nullptr, nullptr,
+                                      DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+  if (set == INVALID_HANDLE_VALUE) return pads;
+  SP_DEVICE_INTERFACE_DATA iface{};
+  iface.cbSize = sizeof(iface);
+  for (DWORD i = 0; SetupDiEnumDeviceInterfaces(set, nullptr, &hidGuid, i, &iface); ++i) {
+    DWORD size = 0;
+    SetupDiGetDeviceInterfaceDetailW(set, &iface, nullptr, 0, &size, nullptr);
+    if (size == 0) continue;
+    std::vector<BYTE> buffer(size);
+    auto* detail = reinterpret_cast<SP_DEVICE_INTERFACE_DETAIL_DATA_W*>(buffer.data());
+    detail->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+    if (!SetupDiGetDeviceInterfaceDetailW(set, &iface, detail, size, nullptr, nullptr)) continue;
+    std::wstring path = detail->DevicePath;
+    if (path.find(L"IG_") != std::wstring::npos || path.find(L"ig_") != std::wstring::npos)
+      continue;
+    // No access rights: enough for attributes, and works while another app owns the pad.
+    HANDLE device = CreateFileW(path.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                                OPEN_EXISTING, 0, nullptr);
+    if (device == INVALID_HANDLE_VALUE) continue;
+    HIDD_ATTRIBUTES attributes{};
+    attributes.Size = sizeof(attributes);
+    PHIDP_PREPARSED_DATA preparsed = nullptr;
+    if (HidD_GetAttributes(device, &attributes) && HidD_GetPreparsedData(device, &preparsed)) {
+      HIDP_CAPS caps{};
+      bool gamepad = HidP_GetCaps(preparsed, &caps) == HIDP_STATUS_SUCCESS &&
+                     caps.UsagePage == 0x01 && (caps.Usage == 0x04 || caps.Usage == 0x05);
+      if (gamepad) pads.push_back({attributes.VendorID, attributes.ProductID});
+      HidD_FreePreparsedData(preparsed);
+    }
+    CloseHandle(device);
+  }
+  SetupDiDestroyDeviceInfoList(set);
+  return pads;
+}
+
 Json SlotToJson(int slot, const SlotInfo& info) {
   Json battery = nullptr;
   if (info.connected && info.hasBattery) {
@@ -140,13 +216,19 @@ Json SlotToJson(int slot, const SlotInfo& info) {
       // XINPUT_CAPS_WIRELESS (0x0002) is reported by xinput1_4 only.
       {"wireless", info.connected ? Json((info.flags & 0x0002) != 0) : Json(nullptr)},
       {"battery", battery},
+      {"vendorId", info.connected && info.vendorId != 0 ? Json(info.vendorId) : Json(nullptr)},
+      {"productId", info.connected && info.vendorId != 0 ? Json(info.productId) : Json(nullptr)},
   };
 }
 
 Json SnapshotLocked() {
   Json list = Json::array();
   for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) list.push_back(SlotToJson(slot, g_slots[slot]));
-  return Json{{"controllers", list}};
+  Json pads = Json::array();
+  for (const HidPad& pad : g_hidPads) {
+    pads.push_back(Json{{"vendorId", pad.vendorId}, {"productId", pad.productId}});
+  }
+  return Json{{"controllers", list}, {"hidGamepads", pads}};
 }
 
 void EmitTestState(int slot, DWORD& lastPacket, bool& wasConnected) {
@@ -208,6 +290,7 @@ void Run() {
   int streamedSlot = -1;
   DWORD lastPacket = 0;
   bool wasConnected = false;
+  bool hidListed = false;
   HotkeyTracker trackers[XUSER_MAX_COUNT];
 
   std::unique_lock<std::mutex> lock(g_mutex);
@@ -226,10 +309,26 @@ void Run() {
       for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
         fresh[slot] = ReadSlot(static_cast<DWORD>(slot), withBattery, previous[slot]);
       }
+      bool replugged = !hidListed;
+      for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
+        if (fresh[slot].connected != previous[slot].connected ||
+            fresh[slot].vendorId != previous[slot].vendorId) {
+          replugged = true;
+        }
+      }
+      // HID enumeration is slower than XInput, so it runs only when a slot changes owner:
+      // a translator creates its virtual slot when the physical pad connects.
+      std::vector<HidPad> pads;
+      if (replugged) pads = ListHidGamepads();
       lock.lock();
       for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
         if (fresh[slot] != g_slots[slot]) changed = true;
         g_slots[slot] = fresh[slot];
+      }
+      if (replugged) {
+        hidListed = true;
+        changed = true;
+        g_hidPads = std::move(pads);
       }
       if (changed) SendEvent("controllersChanged", SnapshotLocked());
       nextPresenceCheck = now + std::chrono::seconds(1);
@@ -284,6 +383,8 @@ bool ControllerMonitor::Start() {
   g_api.getStateEx = reinterpret_cast<GetStateFn>(GetProcAddress(module, MAKEINTRESOURCEA(100)));
   g_api.getCapabilities =
       reinterpret_cast<GetCapabilitiesFn>(GetProcAddress(module, "XInputGetCapabilities"));
+  g_api.getCapabilitiesEx =
+      reinterpret_cast<GetCapabilitiesExFn>(GetProcAddress(module, MAKEINTRESOURCEA(108)));
   g_api.getBattery =
       reinterpret_cast<GetBatteryFn>(GetProcAddress(module, "XInputGetBatteryInformation"));
   g_api.setState = reinterpret_cast<SetStateFn>(GetProcAddress(module, "XInputSetState"));

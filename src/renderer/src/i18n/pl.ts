@@ -333,6 +333,15 @@ export const pl: Messages = {
     packets: 'Aktualizacje: {n}',
     emptyTitle: 'Brak podłączonego kontrolera',
     emptyHint: 'Podłącz kontroler Xbox przez USB, Bluetooth lub adapter bezprzewodowy Xbox.',
+    look: 'Wygląd',
+    lookAuto: 'Automatycznie ({model})',
+    model: {
+      xbox: 'Kontroler Xbox',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro Controller',
+      generic: 'Zwykły kontroler',
+    },
     kind: {
       gamepad: 'Kontroler Xbox',
       wheel: 'Kierownica',

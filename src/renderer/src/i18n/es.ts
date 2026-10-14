@@ -340,6 +340,15 @@ export const es: Messages = {
     emptyTitle: 'No hay ningún mando conectado',
     emptyHint:
       'Conecta un mando de Xbox por USB, Bluetooth o con el adaptador inalámbrico de Xbox.',
+    look: 'Aspecto',
+    lookAuto: 'Automático ({model})',
+    model: {
+      xbox: 'Mando de Xbox',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Mando Pro de Switch',
+      generic: 'Mando genérico',
+    },
     kind: {
       gamepad: 'Mando de Xbox',
       wheel: 'Volante',

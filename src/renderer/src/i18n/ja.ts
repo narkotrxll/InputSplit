@@ -343,6 +343,15 @@ export const ja: Messages = {
     emptyTitle: 'コントローラーが接続されていません',
     emptyHint:
       'Xbox コントローラーを USB、Bluetooth、または Xbox ワイヤレス アダプターで接続してください。',
+    look: '表示',
+    lookAuto: '自動 ({model})',
+    model: {
+      xbox: 'Xbox コントローラー',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro コントローラー',
+      generic: '汎用コントローラー',
+    },
     kind: {
       gamepad: 'Xbox コントローラー',
       wheel: 'ハンドル',

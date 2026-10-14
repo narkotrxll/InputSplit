@@ -340,6 +340,15 @@ export const de: Messages = {
     packets: 'Updates: {n}',
     emptyTitle: 'Kein Controller verbunden',
     emptyHint: 'Verbinde einen Xbox-Controller per USB, Bluetooth oder Xbox Wireless Adapter.',
+    look: 'Ansicht',
+    lookAuto: 'Automatisch ({model})',
+    model: {
+      xbox: 'Xbox-Controller',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro Controller',
+      generic: 'Standard-Controller',
+    },
     kind: {
       gamepad: 'Xbox-Controller',
       wheel: 'Lenkrad',

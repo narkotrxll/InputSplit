@@ -340,6 +340,15 @@ export const fr: Messages = {
     emptyTitle: 'Aucune manette connectée',
     emptyHint:
       'Connectez une manette Xbox en USB, en Bluetooth ou avec l’adaptateur sans fil Xbox.',
+    look: 'Apparence',
+    lookAuto: 'Automatique ({model})',
+    model: {
+      xbox: 'Manette Xbox',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Manette Pro Switch',
+      generic: 'Manette générique',
+    },
     kind: {
       gamepad: 'Manette Xbox',
       wheel: 'Volant',

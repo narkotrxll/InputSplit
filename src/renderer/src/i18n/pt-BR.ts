@@ -335,6 +335,15 @@ export const ptBR: Messages = {
     packets: 'Atualizações: {n}',
     emptyTitle: 'Nenhum controle conectado',
     emptyHint: 'Conecte um controle Xbox por USB, Bluetooth ou pelo Adaptador Sem Fio Xbox.',
+    look: 'Aparência',
+    lookAuto: 'Automático ({model})',
+    model: {
+      xbox: 'Controle Xbox',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Controle Pro do Switch',
+      generic: 'Controle genérico',
+    },
     kind: {
       gamepad: 'Controle Xbox',
       wheel: 'Volante',

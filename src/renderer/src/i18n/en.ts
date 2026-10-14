@@ -334,6 +334,15 @@ export const en = {
     packets: 'Updates: {n}',
     emptyTitle: 'No controller connected',
     emptyHint: 'Connect an Xbox controller with USB, Bluetooth or the Xbox Wireless Adapter.',
+    look: 'Look',
+    lookAuto: 'Auto ({model})',
+    model: {
+      xbox: 'Xbox controller',
+      dualshock4: 'DualShock 4',
+      dualsense: 'DualSense',
+      switchPro: 'Switch Pro Controller',
+      generic: 'Generic controller',
+    },
     kind: {
       gamepad: 'Xbox controller',
       wheel: 'Racing wheel',
