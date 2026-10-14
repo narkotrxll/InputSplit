@@ -438,7 +438,7 @@ function showOnboarding(): void {
               @update:model-value="store.update({ verboseLogging: $event })"
             />
           </label>
-          <div class="flex items-center gap-2 px-5 py-3.5">
+          <div class="flex flex-wrap items-center gap-2 px-5 py-3.5">
             <UiButton :icon="FolderOpen" @click="call('diagnostics:openLogFolder')">{{
               $t('settings.openLogs')
             }}</UiButton>
