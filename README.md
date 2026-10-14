@@ -118,7 +118,8 @@ Loading code into another program is also how some cheats work. InputSplit:
 
 Download `InputSplit.exe` from the
 [latest release](https://github.com/narkotrxll/InputSplit/releases/latest) and run it. No
-administrator rights are needed. After that InputSplit keeps itself up to date.
+administrator rights are needed. After that InputSplit keeps itself up to date: it downloads
+new versions in the background and installs them when you restart it (Settings → Updates).
 
 Windows SmartScreen or an antivirus may warn about the installer because it is not code-signed
 yet. Choose **More info → Run anyway** if you downloaded it from the link above.

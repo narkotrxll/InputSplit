@@ -587,21 +587,26 @@ export const es: Messages = {
   },
   updates: {
     title: 'Actualizaciones',
-    auto: 'Buscar actualizaciones automáticamente',
-    autoHint: 'Busca una versión nueva en GitHub una vez al día. Nada se instala sin tu clic.',
+    auto: 'Actualizar automáticamente',
+    autoHint:
+      'Revisa GitHub cada pocas horas y descarga las versiones nuevas en segundo plano. Se instalan al reiniciar InputSplit.',
     check: 'Buscar ahora',
     checking: 'Buscando…',
     upToDate: 'Tienes la última versión ({version}).',
     available: 'La versión {version} está disponible',
     install: 'Descargar e instalar',
     downloading: 'Descargando… {percent}%',
-    installing: 'Iniciando el instalador…',
+    installing: 'Reiniciando para actualizar…',
     error:
       'No se pudieron buscar actualizaciones. Revisa tu conexión a internet e inténtalo de nuevo.',
     whatsNew: 'Novedades',
     devBuild:
       'Esta es una versión de desarrollo: las actualizaciones solo se instalan en la aplicación instalada.',
     sidebar: 'Actualización disponible',
+    ready: 'La versión {version} está lista para instalarse',
+    readyHint: 'También se instala sola la próxima vez que cierres InputSplit.',
+    restart: 'Reiniciar y actualizar',
+    sidebarReady: 'Reinicia para actualizar',
   },
   seats: {
     title: 'Jugadores',

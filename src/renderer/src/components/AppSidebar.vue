@@ -6,6 +6,7 @@ import {
   Info,
   LayoutDashboard,
   PanelRight,
+  RotateCw,
   Settings,
   Sparkles,
 } from '@lucide/vue'
@@ -64,8 +65,22 @@ const dotClass = computed(
     </ul>
 
     <div class="mt-auto flex flex-col gap-2 p-2.5">
+      <button
+        v-if="updates.state?.status === 'ready' && updates.state.canInstall"
+        type="button"
+        class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-1.5 text-left text-[13px] font-medium text-accent transition-colors hover:bg-accent-soft/70"
+        @click="updates.install()"
+      >
+        <RotateCw class="size-4 shrink-0" aria-hidden="true" />
+        <span class="min-w-0 flex-1">
+          {{ $t('updates.sidebarReady') }}
+          <span class="block text-[11.5px] font-normal text-text-muted">{{
+            updates.state.latestVersion
+          }}</span>
+        </span>
+      </button>
       <RouterLink
-        v-if="updates.state?.status === 'available'"
+        v-else-if="updates.state?.status === 'available' || updates.state?.status === 'ready'"
         to="/settings"
         class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-1.5 text-[13px] font-medium text-accent transition-colors hover:bg-accent-soft/70"
       >

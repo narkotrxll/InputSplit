@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto'
-import { readFile } from 'node:fs/promises'
+import { mkdtemp, readFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { Logger } from './logger'
 import { compareVersions, RELEASES_API, UpdateService } from './update-service'
@@ -16,7 +18,7 @@ describe('compareVersions', () => {
 const installer = Buffer.from('fake installer bytes')
 const sha = createHash('sha256').update(installer).digest('hex')
 
-function release(tag: string) {
+function release(tag: string, installerName = 'InputSplit.exe') {
   return {
     tag_name: tag,
     html_url: `https://github.com/narkotrxll/InputSplit/releases/tag/${tag}`,
@@ -24,12 +26,12 @@ function release(tag: string) {
     prerelease: false,
     assets: [
       {
-        name: `InputSplit-Setup-${tag.slice(1)}.exe`,
+        name: installerName,
         browser_download_url: 'https://example.test/setup.exe',
         size: installer.length,
       },
       {
-        name: `InputSplit-Setup-${tag.slice(1)}.exe.sha256`,
+        name: `${installerName}.sha256`,
         browser_download_url: 'https://example.test/setup.exe.sha256',
         size: 64,
       },
@@ -37,58 +39,101 @@ function release(tag: string) {
   }
 }
 
-function fakeFetch(tag: string, checksum = sha) {
+interface Fake {
+  tag: string
+  checksum?: string
+  installerName?: string
+  canInstall?: boolean
+}
+
+function fakeFetch({ tag, checksum = sha, installerName }: Fake) {
   return vi.fn(async (url: string | URL | Request) => {
     const href = String(url)
-    if (href === RELEASES_API) return Response.json(release(tag))
+    if (href === RELEASES_API) return Response.json(release(tag, installerName))
     if (href.endsWith('.sha256')) return new Response(`${checksum}  setup.exe\n`)
     return new Response(installer)
   }) as unknown as typeof fetch
 }
 
-function service(tag: string, checksum?: string) {
+async function service(fake: Fake) {
   const runInstaller = vi.fn(async (_path: string) => {})
+  const fetch = fakeFetch(fake)
   const updates = new UpdateService({
     currentVersion: '0.1.0',
-    canInstall: true,
+    canInstall: fake.canInstall ?? true,
     logger: new Logger(null),
-    fetch: fakeFetch(tag, checksum),
+    fetch,
+    downloadDir: await mkdtemp(join(tmpdir(), 'inputsplit-update-test-')),
     runInstaller,
   })
-  return { updates, runInstaller }
+  return { updates, runInstaller, fetch }
 }
 
 describe('UpdateService', () => {
-  it('finds a newer release once', async () => {
-    const { updates } = service('v0.2.0')
-    const found: string[] = []
+  it('downloads a newer release in the background and announces it once', async () => {
+    const { updates, runInstaller } = await service({ tag: 'v0.2.0' })
+    const found: unknown[] = []
     updates.found.on((v) => found.push(v))
-    expect((await updates.check()).status).toBe('available')
+    expect((await updates.check()).status).toBe('ready')
+    expect(await readFile(updates.readyInstaller()!)).toEqual(installer)
+    expect(updates.readyInstaller()).toMatch(/InputSplit\.exe$/)
     await updates.check()
+    expect(updates.get().status).toBe('ready')
     expect(updates.get().latestVersion).toBe('0.2.0')
-    expect(found).toEqual(['0.2.0'])
+    expect(found).toEqual([{ version: '0.2.0', ready: true }])
+    expect(runInstaller).not.toHaveBeenCalled()
+  })
+
+  it('downloads only once per version', async () => {
+    const { updates, fetch } = await service({ tag: 'v0.2.0' })
+    await updates.check()
+    await updates.check()
+    const downloads = vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('.exe'))
+    expect(downloads).toHaveLength(1)
+  })
+
+  it('still finds installers with the old InputSplit-Setup-<version>.exe name', async () => {
+    const { updates } = await service({
+      tag: 'v0.2.0',
+      installerName: 'InputSplit-Setup-0.2.0.exe',
+    })
+    expect((await updates.check()).status).toBe('ready')
+    expect(updates.readyInstaller()).toMatch(/InputSplit-Setup-0\.2\.0\.exe$/)
   })
 
   it('reports up to date for the same version', async () => {
-    const { updates } = service('v0.1.0')
+    const { updates } = await service({ tag: 'v0.1.0' })
     expect((await updates.check()).status).toBe('upToDate')
+    expect(updates.readyInstaller()).toBeNull()
   })
 
-  it('downloads, verifies the checksum and runs the installer', async () => {
-    const { updates, runInstaller } = service('v0.2.0')
+  it('runs the downloaded installer on "Restart and update"', async () => {
+    const { updates, runInstaller } = await service({ tag: 'v0.2.0' })
     await updates.check()
+    const path = updates.readyInstaller()
     await updates.install()
-    const path = runInstaller.mock.calls[0]?.[0]
-    expect(path).toMatch(/InputSplit-Setup-0\.2\.0\.exe$/)
-    expect(await readFile(path!)).toEqual(installer)
+    expect(runInstaller).toHaveBeenCalledWith(path)
     expect(updates.get().status).toBe('installing')
   })
 
-  it('refuses an installer whose checksum does not match', async () => {
-    const { updates, runInstaller } = service('v0.2.0', '0'.repeat(64))
-    await updates.check()
+  it('keeps an installer whose checksum does not match from being ready', async () => {
+    const { updates, runInstaller } = await service({ tag: 'v0.2.0', checksum: '0'.repeat(64) })
+    const found: unknown[] = []
+    updates.found.on((v) => found.push(v))
+    expect((await updates.check()).status).toBe('available')
+    expect(updates.readyInstaller()).toBeNull()
     await expect(updates.install()).rejects.toMatchObject({ code: 'updateFailed' })
     expect(runInstaller).not.toHaveBeenCalled()
     expect(updates.get().status).toBe('available')
+    expect(found).toEqual([])
+  })
+
+  it('only reports a new version in a development build', async () => {
+    const { updates } = await service({ tag: 'v0.2.0', canInstall: false })
+    const found: unknown[] = []
+    updates.found.on((v) => found.push(v))
+    expect((await updates.check()).status).toBe('available')
+    expect(found).toEqual([{ version: '0.2.0', ready: false }])
+    await expect(updates.install()).rejects.toMatchObject({ code: 'updateDevBuild' })
   })
 })

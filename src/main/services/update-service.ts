@@ -1,14 +1,15 @@
 /**
- * Update check against GitHub Releases (the release workflow publishes every version
- * there with `InputSplit-Setup-<version>.exe` and its `.sha256`).
+ * Updates from GitHub Releases (the release workflow publishes every version there as
+ * `InputSplit.exe` with its `.sha256`).
  *
- * Nothing happens without the user's click: "install" downloads the installer into the
- * temp folder, verifies its SHA-256 checksum, starts it and quits InputSplit so the
- * installer can replace the files.
+ * In the installed app a check that finds a newer version downloads its installer in the
+ * background and verifies its SHA-256 checksum; the state is then `ready`. Nothing is
+ * installed until InputSplit restarts: "Restart and update" quits, runs the installer
+ * silently and starts the new version, and a plain quit installs it on the way out.
  */
 import { createHash } from 'node:crypto'
 import { createWriteStream } from 'node:fs'
-import { mkdtemp } from 'node:fs/promises'
+import { mkdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { z } from 'zod'
@@ -18,8 +19,11 @@ import { Emitter } from '../util/emitter'
 import type { Logger } from './logger'
 
 export const RELEASES_API = 'https://api.github.com/repos/narkotrxll/InputSplit/releases/latest'
-const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000
+const CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000
 const FIRST_CHECK_DELAY_MS = 15_000
+
+/** `InputSplit.exe`; releases up to 0.1.4 called it `InputSplit-Setup-<version>.exe`. */
+const INSTALLER_ASSET = /^InputSplit(-Setup-[\w.-]+)?\.exe$/i
 
 const ReleaseSchema = z.object({
   tag_name: z.string(),
@@ -62,22 +66,34 @@ export interface UpdateServiceOptions {
   canInstall: boolean
   logger: Logger
   fetch?: typeof globalThis.fetch
-  /** Runs the downloaded installer and quits the app. */
+  /** Where installers are downloaded (emptied before each download). */
+  downloadDir?: string
+  /** Quits the app and runs the downloaded installer, which starts the new version. */
   runInstaller: (path: string) => Promise<void>
+}
+
+/** Fired once per version: when it is downloaded (`ready`), or found by a dev build. */
+export interface UpdateFound {
+  version: string
+  ready: boolean
 }
 
 export class UpdateService {
   private state: UpdateState
   readonly changes = new Emitter<UpdateState>()
-  /** Fires once per newly found version (for the Windows notification). */
-  readonly found = new Emitter<string>()
+  /** For the Windows notification. */
+  readonly found = new Emitter<UpdateFound>()
   private installer: Installer | null = null
+  /** The verified installer on disk and its version. */
+  private downloaded: { path: string; version: string } | null = null
   private timer: NodeJS.Timeout | null = null
   private announced: string | null = null
   private readonly fetch: typeof globalThis.fetch
+  private readonly downloadDir: string
 
   constructor(private readonly options: UpdateServiceOptions) {
     this.fetch = options.fetch ?? globalThis.fetch
+    this.downloadDir = options.downloadDir ?? join(tmpdir(), 'InputSplit-update')
     this.state = {
       status: 'idle',
       currentVersion: options.currentVersion,
@@ -93,7 +109,12 @@ export class UpdateService {
     return this.state
   }
 
-  /** Automatic checks: shortly after start, then once a day. */
+  /** The verified installer of a newer version, when one is waiting to be installed. */
+  readyInstaller(): string | null {
+    return this.state.status === 'ready' ? (this.downloaded?.path ?? null) : null
+  }
+
+  /** Automatic checks: shortly after start, then every few hours. */
   setAutomatic(enabled: boolean): void {
     if (this.timer) clearTimeout(this.timer)
     this.timer = null
@@ -106,16 +127,19 @@ export class UpdateService {
     schedule(FIRST_CHECK_DELAY_MS)
   }
 
+  /** Looks for a newer release and, in the installed app, downloads it right away. */
   async check(): Promise<UpdateState> {
-    if (this.state.status === 'checking' || this.state.status === 'downloading') return this.state
-    if (this.state.status === 'installing') return this.state
+    const { status } = this.state
+    if (status === 'checking' || status === 'downloading' || status === 'installing') {
+      return this.state
+    }
     this.set({ ...this.state, status: 'checking' })
     try {
       const response = await this.fetch(RELEASES_API, {
         headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'InputSplit' },
       })
       if (response.status === 404) {
-        // No published release yet.
+        // No published release yet, or the repository is not public.
         this.set({ ...this.state, status: 'upToDate', checkedAt: Date.now() })
         return this.state
       }
@@ -126,7 +150,7 @@ export class UpdateService {
         !release.draft &&
         !release.prerelease &&
         compareVersions(latest, this.options.currentVersion) > 0
-      const exe = release.assets.find((a) => /^InputSplit-Setup-.*\.exe$/i.test(a.name))
+      const exe = release.assets.find((a) => INSTALLER_ASSET.test(a.name))
       const sum = exe ? release.assets.find((a) => a.name === `${exe.name}.sha256`) : undefined
       this.installer = exe
         ? {
@@ -136,50 +160,62 @@ export class UpdateService {
             checksumUrl: sum?.browser_download_url ?? null,
           }
         : null
+      const alreadyReady = newer && this.downloaded?.version === latest
       this.set({
         ...this.state,
-        status: newer ? 'available' : 'upToDate',
+        status: alreadyReady ? 'ready' : newer ? 'available' : 'upToDate',
         latestVersion: latest,
         releaseUrl: release.html_url,
         checkedAt: Date.now(),
       })
-      if (newer && this.announced !== latest) {
-        this.announced = latest
+      if (!newer && this.options.canInstall) {
+        // The installer of an update that has been installed since.
+        this.downloaded = null
+        await rm(this.downloadDir, { recursive: true, force: true }).catch(() => {})
+      }
+      if (newer && !alreadyReady) {
         this.options.logger.info(`Update available: ${latest}`)
-        this.found.emit(latest)
+        if (this.options.canInstall && this.installer !== null) {
+          // A failure leaves the state `available`; the next check or a click retries.
+          await this.download(latest).catch(() => {})
+        }
+        this.announce(latest)
       }
     } catch (error) {
       this.options.logger.warn(`Update check failed: ${String(error)}`)
-      this.set({ ...this.state, status: 'error', checkedAt: Date.now() })
+      // An update that is already downloaded stays ready.
+      const next = this.downloaded !== null ? 'ready' : 'error'
+      this.set({ ...this.state, status: next, checkedAt: Date.now() })
     }
     return this.state
   }
 
+  /**
+   * "Restart and update": quits and runs the downloaded installer. Downloads it first when
+   * the background download has not happened or failed.
+   */
   async install(): Promise<void> {
-    const installer = this.installer
-    if (this.state.status !== 'available' || installer === null) {
-      throw new AppException('updateUnavailable', 'No update is ready to install.')
-    }
     if (!this.options.canInstall) {
       throw new AppException('updateDevBuild', 'Updates install only in the installed app.')
     }
-    this.set({ ...this.state, status: 'downloading', progress: 0 })
-    try {
-      const folder = await mkdtemp(join(tmpdir(), 'inputsplit-update-'))
-      const path = join(folder, installer.name)
-      const hash = await this.download(installer, path)
-      if (installer.checksumUrl !== null) {
-        const response = await this.fetch(installer.checksumUrl)
-        if (!response.ok) throw new Error(`Checksum download failed (${response.status})`)
-        const expected = (await response.text()).trim().split(/\s+/)[0]?.toLowerCase()
-        if (expected !== hash) throw new Error('The installer checksum does not match')
+    if (this.state.status === 'available' && this.installer !== null) {
+      try {
+        await this.download(this.state.latestVersion ?? '')
+      } catch (error) {
+        throw new AppException('updateFailed', String(error))
       }
-      this.options.logger.info(`Starting installer ${installer.name}`)
-      this.set({ ...this.state, status: 'installing', progress: 100 })
+    }
+    const path = this.readyInstaller()
+    if (path === null) {
+      throw new AppException('updateUnavailable', 'No update is ready to install.')
+    }
+    this.options.logger.info(`Restarting to install ${this.state.latestVersion ?? ''}`)
+    this.set({ ...this.state, status: 'installing', progress: null })
+    try {
       await this.options.runInstaller(path)
     } catch (error) {
       this.options.logger.error(`Update failed: ${String(error)}`)
-      this.set({ ...this.state, status: 'available', progress: null })
+      this.set({ ...this.state, status: 'ready' })
       throw new AppException('updateFailed', String(error))
     }
   }
@@ -188,7 +224,44 @@ export class UpdateService {
     if (this.timer) clearTimeout(this.timer)
   }
 
-  private async download(installer: Installer, path: string): Promise<string> {
+  private announce(version: string): void {
+    if (this.announced === version) return
+    const ready = this.state.status === 'ready'
+    // The installed app speaks up once the update is downloaded; a failed download stays
+    // quiet until a later check gets it.
+    if (!ready && this.options.canInstall) return
+    this.announced = version
+    this.found.emit({ version, ready })
+  }
+
+  /** Downloads and verifies the installer: `ready` on success, back to `available` if not. */
+  private async download(version: string): Promise<void> {
+    const installer = this.installer
+    if (installer === null) throw new Error('The release has no installer')
+    this.set({ ...this.state, status: 'downloading', progress: 0 })
+    try {
+      await rm(this.downloadDir, { recursive: true, force: true })
+      await mkdir(this.downloadDir, { recursive: true })
+      const path = join(this.downloadDir, installer.name)
+      const hash = await this.fetchTo(installer, path)
+      if (installer.checksumUrl !== null) {
+        const response = await this.fetch(installer.checksumUrl)
+        if (!response.ok) throw new Error(`Checksum download failed (${response.status})`)
+        const expected = (await response.text()).trim().split(/\s+/)[0]?.toLowerCase()
+        if (expected !== hash) throw new Error('The installer checksum does not match')
+      }
+      this.downloaded = { path, version }
+      this.options.logger.info(`Update ${version} downloaded and verified`)
+      this.set({ ...this.state, status: 'ready', progress: null })
+    } catch (error) {
+      this.downloaded = null
+      this.options.logger.warn(`Update download failed: ${String(error)}`)
+      this.set({ ...this.state, status: 'available', progress: null })
+      throw error
+    }
+  }
+
+  private async fetchTo(installer: Installer, path: string): Promise<string> {
     const response = await this.fetch(installer.url)
     if (!response.ok || response.body === null) {
       throw new Error(`Download failed (${response.status})`)

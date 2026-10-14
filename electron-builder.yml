@@ -31,7 +31,8 @@ win:
   icon: resources/icons/icon.ico
   # InputSplit never needs administrator rights.
   requestedExecutionLevel: asInvoker
-  artifactName: InputSplit-Setup-${version}.${ext}
+  # The installer is just InputSplit.exe; the version is in its file properties.
+  artifactName: ${productName}.${ext}
 nsis:
   oneClick: false
   perMachine: false
@@ -43,4 +44,6 @@ nsis:
   uninstallDisplayName: InputSplit
   license: LICENSE
   deleteAppDataOnUninstall: false
+  # Finds a running InputSplit although the installer has the same file name.
+  include: resources/installer.nsh
 publish: null

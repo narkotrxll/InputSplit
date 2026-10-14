@@ -51,6 +51,11 @@ export class Notifier {
     this.show(fill(text.notifyUpdateTitle, { version }), text.notifyUpdateBody, true)
   }
 
+  updateReady(version: string): void {
+    const text = this.options.texts()
+    this.show(fill(text.notifyReadyTitle, { version }), text.notifyReadyBody, true)
+  }
+
   private show(title: string, body: string, evenWhenFocused = false): void {
     if (!this.options.enabled() || !Notification.isSupported()) return
     if (!evenWhenFocused && this.options.windowFocused()) return

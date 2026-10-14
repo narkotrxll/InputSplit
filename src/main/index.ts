@@ -40,6 +40,10 @@ let tray: AppTray | null = null
 let quitting = false
 let shutdownDone = false
 let trayHintShown = false
+/** Windows is logging off or shutting down: no update is started then. */
+let sessionEnding = false
+/** "Restart and update" was clicked. */
+let installOnExit: { path: string; relaunch: boolean } | null = null
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
@@ -47,6 +51,25 @@ if (!app.requestSingleInstanceLock()) {
   app.setAppUserModelId('io.github.narkotrxll.inputsplit')
   app.on('second-instance', () => showWindow(mainWindow))
   void app.whenReady().then(main)
+}
+
+/**
+ * Runs a downloaded update as InputSplit exits: silently (`/S`) into the existing install
+ * folder, and starting the new version afterwards after "Restart and update".
+ */
+function startPendingUpdate(updates: UpdateService, logger: Logger): void {
+  const pending =
+    installOnExit ?? (sessionEnding ? null : { path: updates.readyInstaller(), relaunch: false })
+  if (!pending?.path) return
+  const args = ['/S', '--updated', ...(pending.relaunch ? ['--force-run'] : [])]
+  try {
+    const child = spawn(pending.path, args, { detached: true, stdio: 'ignore' })
+    child.on('error', () => {})
+    child.unref()
+    logger.info(`Installing the update (${pending.relaunch ? 'restart' : 'on exit'})`)
+  } catch (error) {
+    logger.error(`Could not start the update: ${String(error)}`)
+  }
 }
 
 async function main(): Promise<void> {
@@ -84,8 +107,8 @@ async function main(): Promise<void> {
     // Chromium's network stack: uses the Windows proxy settings and certificate store.
     fetch: (input, init) => net.fetch(input instanceof URL ? input.href : input, init),
     runInstaller: async (path) => {
-      // The installer replaces this app, so it must run on its own and InputSplit must quit.
-      spawn(path, [], { detached: true, stdio: 'ignore' }).unref()
+      // The installer replaces this app, so it runs once InputSplit has shut down.
+      installOnExit = { path, relaunch: true }
       app.quit()
     },
   })
@@ -191,7 +214,9 @@ async function main(): Promise<void> {
     tray?.setProfiles(profiles.recent())
   })
   updates.changes.on((state) => broadcast('updates:changed', state))
-  updates.found.on((version) => notifier.updateAvailable(version))
+  updates.found.on(({ version, ready }) =>
+    ready ? notifier.updateReady(version) : notifier.updateAvailable(version),
+  )
   devices.controllersChanged.on((list) => broadcast('controllers:changed', list))
   devices.displaysChanged.on((list) => broadcast('displays:changed', list))
   devices.controllerState.on((state) => broadcast('controllers:state', state))
@@ -249,6 +274,9 @@ async function main(): Promise<void> {
       trayHintShown = true
     }
   })
+  mainWindow.on('session-end', () => {
+    sessionEnding = true
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -287,6 +315,7 @@ async function main(): Promise<void> {
         logger.error(`Shutdown problem: ${String(error)}`)
       } finally {
         shutdownDone = true
+        startPendingUpdate(updates, logger)
         logger.info('InputSplit stopped')
         logger.close()
         tray?.destroy()

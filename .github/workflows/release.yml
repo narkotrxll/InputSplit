@@ -65,12 +65,13 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          installer="InputSplit-Setup-$VERSION.exe"
+          installer="InputSplit.exe"
           (cd dist && sha256sum "$installer" > "$installer.sha256")
           cat > release-notes.md <<EOF
           ## Download
 
           Download **$installer** below and run it. No administrator rights are needed.
+          Installed copies download new versions by themselves and install them on restart.
 
           The installer is not code-signed yet, so Windows SmartScreen may show
           *"Windows protected your PC"*: click **More info → Run anyway**. Antivirus software may
@@ -88,8 +89,8 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           gh release create "$TAG" \
-            "dist/InputSplit-Setup-$VERSION.exe" \
-            "dist/InputSplit-Setup-$VERSION.exe.sha256" \
+            dist/InputSplit.exe \
+            dist/InputSplit.exe.sha256 \
             --target "$GITHUB_SHA" \
             --title "InputSplit $VERSION" \
             --notes-file release-notes.md \

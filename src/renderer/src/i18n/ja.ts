@@ -585,21 +585,25 @@ export const ja: Messages = {
   },
   updates: {
     title: 'アップデート',
-    auto: 'アップデートを自動で確認',
+    auto: '自動でアップデート',
     autoHint:
-      '1 日 1 回 GitHub で新しいバージョンを確認します。クリックしない限り何もインストールされません。',
+      '数時間ごとに GitHub を確認し、新しいバージョンをバックグラウンドでダウンロードします。InputSplit の再起動時にインストールされます。',
     check: '今すぐ確認',
     checking: '確認しています…',
     upToDate: '最新バージョンです（{version}）。',
     available: 'バージョン {version} が利用可能です',
     install: 'ダウンロードしてインストール',
     downloading: 'ダウンロード中… {percent}%',
-    installing: 'インストーラーを起動しています…',
+    installing: 'アップデートのため再起動しています…',
     error:
       'アップデートを確認できませんでした。インターネット接続を確認して、もう一度お試しください。',
     whatsNew: '新機能',
     devBuild: 'これは開発版です。アップデートはインストール版のアプリでのみインストールできます。',
     sidebar: 'アップデートあり',
+    ready: 'バージョン {version} をインストールする準備ができました',
+    readyHint: '次に InputSplit を終了したときにも自動でインストールされます。',
+    restart: '再起動してアップデート',
+    sidebarReady: '再起動してアップデート',
   },
   seats: {
     title: 'プレイヤー',

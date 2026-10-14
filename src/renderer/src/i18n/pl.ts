@@ -576,22 +576,26 @@ export const pl: Messages = {
   },
   updates: {
     title: 'Aktualizacje',
-    auto: 'Automatycznie sprawdzaj aktualizacje',
+    auto: 'Aktualizuj automatycznie',
     autoHint:
-      'Raz dziennie szuka nowej wersji na GitHubie. Nic nie zostanie zainstalowane bez Twojego kliknięcia.',
+      'Co kilka godzin sprawdza GitHuba i pobiera nowe wersje w tle. Instalują się po ponownym uruchomieniu InputSplit.',
     check: 'Sprawdź teraz',
     checking: 'Sprawdzanie…',
     upToDate: 'Masz najnowszą wersję ({version}).',
     available: 'Dostępna jest wersja {version}',
     install: 'Pobierz i zainstaluj',
     downloading: 'Pobieranie… {percent}%',
-    installing: 'Uruchamianie instalatora…',
+    installing: 'Ponowne uruchamianie w celu aktualizacji…',
     error:
       'Nie udało się sprawdzić aktualizacji. Sprawdź połączenie z internetem i spróbuj ponownie.',
     whatsNew: 'Co nowego',
     devBuild:
       'To wersja deweloperska: aktualizacje instalują się tylko w zainstalowanej aplikacji.',
     sidebar: 'Dostępna aktualizacja',
+    ready: 'Wersja {version} jest gotowa do instalacji',
+    readyHint: 'Zainstaluje się też sama, gdy następnym razem zamkniesz InputSplit.',
+    restart: 'Uruchom ponownie i zaktualizuj',
+    sidebarReady: 'Uruchom ponownie, by zaktualizować',
   },
   seats: {
     title: 'Gracze',
