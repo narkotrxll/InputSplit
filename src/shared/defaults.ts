@@ -56,7 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
   showAllWindows: false,
   verboseLogging: false,
   theme: 'dark',
-  language: 'en',
+  language: 'system',
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

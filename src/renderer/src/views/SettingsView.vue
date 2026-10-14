@@ -3,15 +3,17 @@ import { Download, FolderOpen, RotateCcw } from '@lucide/vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { FeatureName } from '@shared/domain'
+import { LOCALE_NAMES, LOCALES, type LanguageSetting } from '@shared/locales'
 import FeatureList from '../components/FeatureList.vue'
 import PageHeader from '../components/PageHeader.vue'
-import UiBadge from '../components/ui/UiBadge.vue'
 import UiButton from '../components/ui/UiButton.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiKbd from '../components/ui/UiKbd.vue'
 import UiSegmented from '../components/ui/UiSegmented.vue'
+import UiSelect from '../components/ui/UiSelect.vue'
 import UiSwitch from '../components/ui/UiSwitch.vue'
 import { call } from '../api'
+import { systemLocale } from '../i18n'
 import { useBackendStore } from '../stores/backend'
 import { useSettingsStore } from '../stores/settings'
 import { useUiStore } from '../stores/ui'
@@ -26,6 +28,18 @@ const theme = computed({
   get: () => s.value.theme,
   set: (value) => void store.update({ theme: value }),
 })
+
+const language = computed({
+  get: () => s.value.language,
+  set: (value: LanguageSetting) => void store.update({ language: value }),
+})
+const languageOptions = computed(() => [
+  {
+    value: 'system' as LanguageSetting,
+    label: t('settings.languageSystem', { name: LOCALE_NAMES[systemLocale()] }),
+  },
+  ...LOCALES.map((locale) => ({ value: locale as LanguageSetting, label: LOCALE_NAMES[locale] })),
+])
 
 function setDefault(name: FeatureName, value: boolean): void {
   void store.update({ defaultFeatures: { ...s.value.defaultFeatures, [name]: value } })
@@ -87,7 +101,13 @@ function showOnboarding(): void {
                 $t('settings.languageHint')
               }}</span>
             </span>
-            <UiBadge>English</UiBadge>
+            <div class="w-60 shrink-0">
+              <UiSelect
+                v-model="language"
+                :label="$t('settings.language')"
+                :options="languageOptions"
+              />
+            </div>
           </div>
         </div>
       </UiCard>

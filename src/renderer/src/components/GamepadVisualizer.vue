@@ -41,7 +41,7 @@ const accent = 'var(--app-accent)'
       viewBox="0 0 320 200"
       class="w-full max-w-[440px]"
       role="img"
-      aria-label="Controller state"
+      :aria-label="$t('controllers.stateLabel')"
     >
       <!-- bumpers -->
       <rect

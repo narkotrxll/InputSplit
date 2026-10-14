@@ -18,4 +18,11 @@ describe('format', () => {
     expect(formatRelativeDate('2026-10-14T11:55:00Z', now)).toBe('5 minutes ago')
     expect(formatRelativeDate('2026-10-12T12:00:00Z', now)).toBe('2 days ago')
   })
+
+  it('uses the UI locale', () => {
+    expect(formatCount(1234, 'de')).toBe('1.234')
+    expect(formatDuration(125_000, 'ru')).toBe('2 мин 05 с')
+    const now = Date.parse('2026-10-14T12:00:00Z')
+    expect(formatRelativeDate('2026-10-12T12:00:00Z', now, 'es')).toBe('anteayer')
+  })
 })

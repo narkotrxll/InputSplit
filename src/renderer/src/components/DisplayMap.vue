@@ -40,7 +40,7 @@ const layout = computed(() => {
     :viewBox="layout.viewBox"
     class="h-44 w-full"
     role="listbox"
-    aria-label="Screens"
+    :aria-label="$t('displays.mapLabel')"
   >
     <g
       v-for="r in layout.rects"

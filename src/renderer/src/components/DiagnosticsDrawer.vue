@@ -21,7 +21,7 @@ import { useUiStore } from '../stores/ui'
 import UiButton from './ui/UiButton.vue'
 import UiSegmented from './ui/UiSegmented.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const ui = useUiStore()
 const logs = useLogsStore()
 const backend = useBackendStore()
@@ -64,7 +64,7 @@ async function copy(text: string): Promise<void> {
 }
 
 function time(ms: number): string {
-  return new Date(ms).toLocaleTimeString('en-GB', { hour12: false })
+  return new Date(ms).toLocaleTimeString(locale.value, { hour12: false })
 }
 
 async function exportFile(): Promise<void> {

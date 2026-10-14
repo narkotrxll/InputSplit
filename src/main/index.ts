@@ -7,6 +7,7 @@
  */
 import { join } from 'node:path'
 import { app, nativeTheme, type BrowserWindow } from 'electron'
+import { resolveLocale } from '@shared/locales'
 import { HelperClient } from './native/helper-client'
 import { SimulatedBackend } from './native/simulated-backend'
 import type { NativeBackend } from './native/backend'
@@ -19,6 +20,7 @@ import { IsolationService } from './services/isolation-service'
 import { Logger } from './services/logger'
 import { ProfilesService } from './services/profiles-service'
 import { SettingsService } from './services/settings-service'
+import { mainTexts } from './i18n'
 import { AppTray } from './tray'
 import { createMainWindow, showWindow, titleBarColors } from './window'
 
@@ -49,6 +51,8 @@ async function main(): Promise<void> {
   const profiles = new ProfilesService(join(userData, 'profiles.json'), (w) => logger.warn(w))
   await Promise.all([settings.load(), profiles.load()])
   logger.setVerbose(settings.get().verboseLogging)
+  const texts = () =>
+    mainTexts(resolveLocale(settings.get().language, app.getPreferredSystemLanguages()))
 
   const backend: NativeBackend = useSimulatedBackend
     ? new SimulatedBackend()
@@ -61,7 +65,17 @@ async function main(): Promise<void> {
   const getWindow = () => mainWindow
   const broadcast = createBroadcaster(getWindow)
 
-  registerIpc({ getWindow, backend, isolation, devices, profiles, settings, icons, logger })
+  registerIpc({
+    getWindow,
+    backend,
+    isolation,
+    devices,
+    profiles,
+    settings,
+    icons,
+    logger,
+    texts,
+  })
 
   let previousStatus = backend.getState().status
   backend.onState((state) => {
@@ -97,6 +111,7 @@ async function main(): Promise<void> {
   settings.onChange((next) => {
     applyTheme(next.theme)
     logger.setVerbose(next.verboseLogging)
+    tray?.refresh()
     if (backend.getState().status === 'ready') {
       void backend.setEmergencyHotkey(next.emergencyHotkeyEnabled).catch(() => {})
     }
@@ -119,7 +134,7 @@ async function main(): Promise<void> {
     mainWindow = null
   })
 
-  tray = new AppTray({
+  tray = new AppTray(texts, {
     show: () => showWindow(mainWindow),
     stopIsolation: () => void isolation.stop(),
     openSettings: () => {

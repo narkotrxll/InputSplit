@@ -18,6 +18,7 @@ import {
   type InvokeOutput,
   type IpcResult,
 } from '@shared/ipc-contract'
+import type { MainTexts } from '../i18n'
 import type { NativeBackend } from '../native/backend'
 import type { DeviceService } from '../services/device-service'
 import type { IconService } from '../services/icon-service'
@@ -36,6 +37,7 @@ export interface IpcDependencies {
   settings: SettingsService
   icons: IconService
   logger: Logger
+  texts: () => MainTexts
 }
 
 type ParsedInput<C extends InvokeChannel> = z.output<(typeof invokeContract)[C]['input']>
@@ -51,7 +53,7 @@ const EXTERNAL_LINKS = {
 } as const
 
 export function registerIpc(deps: IpcDependencies): void {
-  const { backend, isolation, devices, profiles, settings, icons, logger } = deps
+  const { backend, isolation, devices, profiles, settings, icons, logger, texts } = deps
 
   function handle<C extends InvokeChannel>(channel: C, handler: Handler<C>): void {
     ipcMain.handle(channel, async (event, raw: unknown): Promise<IpcResult<InvokeOutput<C>>> => {
@@ -135,9 +137,9 @@ export function registerIpc(deps: IpcDependencies): void {
   handle('profiles:pickExecutable', async () => {
     const window = deps.getWindow()
     const options = {
-      title: 'Choose the game executable',
+      title: texts().pickExeTitle,
       properties: ['openFile' as const],
-      filters: [{ name: 'Applications', extensions: ['exe'] }],
+      filters: [{ name: texts().pickExeFilter, extensions: ['exe'] }],
     }
     const result = window
       ? await dialog.showOpenDialog(window, options)
@@ -160,9 +162,9 @@ export function registerIpc(deps: IpcDependencies): void {
   handle('diagnostics:export', async () => {
     const window = deps.getWindow()
     const options = {
-      title: 'Export diagnostics',
+      title: texts().exportTitle,
       defaultPath: `inputsplit-diagnostics-${new Date().toISOString().slice(0, 10)}.txt`,
-      filters: [{ name: 'Text', extensions: ['txt'] }],
+      filters: [{ name: texts().exportFilter, extensions: ['txt'] }],
     }
     const result = window
       ? await dialog.showSaveDialog(window, options)

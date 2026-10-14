@@ -82,7 +82,6 @@ must still be measured on Windows.**
 
 - Multiple simultaneous sessions (two games, two controllers) — the helper and protocol
   already key everything by session id.
-- More languages (vue-i18n is in place).
 - Per-game compatibility profiles shipped with the app (data-driven feature presets).
 
 ---
