@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {
   Bookmark,
+  Clock,
   Gamepad2,
+  Library,
   Monitor,
   Pencil,
   Play,
@@ -10,11 +12,12 @@ import {
   Trash2,
   Zap,
 } from '@lucide/vue'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import type { Profile } from '@shared/domain'
+import type { LibraryGame, Profile } from '@shared/domain'
 import AppIcon from '../components/AppIcon.vue'
+import LibraryDialog from '../components/LibraryDialog.vue'
 import PageHeader from '../components/PageHeader.vue'
 import ProfileEditorDialog from '../components/ProfileEditorDialog.vue'
 import UiBadge from '../components/ui/UiBadge.vue'
@@ -24,9 +27,10 @@ import UiEmptyState from '../components/ui/UiEmptyState.vue'
 import UiIconButton from '../components/ui/UiIconButton.vue'
 import UiTooltip from '../components/ui/UiTooltip.vue'
 import { FEATURE_META } from '../lib/features'
-import { formatRelativeDate } from '../lib/format'
+import { formatPlaytime, formatRelativeDate } from '../lib/format'
 import { useAutomationStore } from '../stores/automation'
 import { useIsolationStore } from '../stores/isolation'
+import { usePlaytimeStore } from '../stores/playtime'
 import { useProfilesStore } from '../stores/profiles'
 import { useUiStore } from '../stores/ui'
 import { useWindowsStore } from '../stores/windows'
@@ -38,16 +42,44 @@ const isolation = useIsolationStore()
 const automation = useAutomationStore()
 const windows = useWindowsStore()
 const ui = useUiStore()
+const playtime = usePlaytimeStore()
 
 const editorOpen = ref(false)
 const editing = ref<Profile | null>(null)
+const libraryOpen = ref(false)
+const prefill = ref<{ name: string; exeName: string; exePath: string } | null>(null)
 const deleting = ref<Profile | null>(null)
 const deleteOpen = ref(false)
 const applying = ref<string | null>(null)
 
 function edit(profile: Profile | null): void {
   editing.value = profile
+  prefill.value = null
   editorOpen.value = true
+}
+
+/** A game from the library: its profile if it has one, otherwise a new pre-filled profile. */
+function fromLibrary(game: LibraryGame): void {
+  const exe = game.exeName.toLowerCase()
+  const existing = profiles.profiles.find((p) => p.exeName.toLowerCase() === exe)
+  if (existing) return edit(existing)
+  editing.value = null
+  prefill.value = { name: game.name, exeName: game.exeName, exePath: game.exePath }
+  editorOpen.value = true
+}
+
+// Play time includes the session that is running right now; refreshed every half minute.
+const now = ref(Date.now())
+const ticker = window.setInterval(() => (now.value = Date.now()), 30_000)
+onBeforeUnmount(() => window.clearInterval(ticker))
+
+function playedMs(profile: Profile): number {
+  const exe = profile.exeName.toLowerCase()
+  const running = isolation.views
+    .filter((v) => v.phase === 'running' && v.startedAt !== null)
+    .filter((v) => v.target?.exeName.toLowerCase() === exe)
+    .reduce((sum, v) => sum + Math.max(0, now.value - v.startedAt!), 0)
+  return (playtime.forExe(profile.exeName)?.totalMs ?? 0) + running
 }
 
 function askDelete(profile: Profile): void {
@@ -88,12 +120,22 @@ async function play(profile: Profile): Promise<void> {
   await automation.play(profile.id, true)
 }
 
+// Profiles of games that are not running still get their icon.
+watch(
+  () => profiles.profiles,
+  (list) => {
+    for (const profile of list) if (profile.exePath) void windows.loadIcon(profile.exePath)
+  },
+  { immediate: true },
+)
+
 onMounted(() => void profiles.load())
 </script>
 
 <template>
   <div>
     <PageHeader :title="$t('profiles.title')" :subtitle="$t('profiles.subtitle')">
+      <UiButton :icon="Library" @click="libraryOpen = true">{{ $t('library.add') }}</UiButton>
       <UiButton variant="primary" :icon="Plus" @click="edit(null)">{{
         $t('profiles.new')
       }}</UiButton>
@@ -136,6 +178,9 @@ onMounted(() => void profiles.load())
           </UiBadge>
           <UiBadge :icon="Monitor">{{
             profile.displayName ?? $t('profiles.summary.currentScreen')
+          }}</UiBadge>
+          <UiBadge v-if="playedMs(profile) >= 60_000" :icon="Clock">{{
+            $t('profiles.playtime', { time: formatPlaytime(playedMs(profile), locale) })
           }}</UiBadge>
           <UiBadge v-if="profile.autoStart" tone="success" :icon="Zap">{{
             $t('automation.autoStartBadge')
@@ -192,13 +237,15 @@ onMounted(() => void profiles.load())
         :title="$t('profiles.empty')"
         :description="$t('profiles.emptyHint')"
       >
+        <UiButton :icon="Library" @click="libraryOpen = true">{{ $t('library.add') }}</UiButton>
         <UiButton variant="primary" :icon="Plus" @click="edit(null)">{{
           $t('profiles.new')
         }}</UiButton>
       </UiEmptyState>
     </div>
 
-    <ProfileEditorDialog v-model:open="editorOpen" :profile="editing" />
+    <ProfileEditorDialog v-model:open="editorOpen" :profile="editing" :prefill="prefill" />
+    <LibraryDialog v-model:open="libraryOpen" @pick="fromLibrary" />
     <UiDialog
       v-model:open="deleteOpen"
       :title="$t('profiles.deleteTitle', { name: deleting?.name ?? '' })"

@@ -111,6 +111,47 @@ export class ProfilesService {
     )
   }
 
+  /**
+   * Adds profiles from a backup. A profile with the same name as an existing one replaces
+   * its settings (keeping its id and history); profiles with an invalid executable are skipped.
+   */
+  async importMany(
+    incoming: readonly Profile[],
+  ): Promise<{ added: number; updated: number; skipped: number }> {
+    const timestamp = this.now().toISOString()
+    const next = [...this.profiles]
+    const counts = { added: 0, updated: 0, skipped: 0 }
+    for (const profile of incoming) {
+      try {
+        validateExecutable(profile.exeName, profile.exePath)
+      } catch {
+        counts.skipped++
+        continue
+      }
+      const index = next.findIndex((p) => p.name.toLowerCase() === profile.name.toLowerCase())
+      const existing = index >= 0 ? next[index]! : undefined
+      if (existing) {
+        next[index] = {
+          ...profile,
+          id: existing.id,
+          createdAt: existing.createdAt,
+          updatedAt: timestamp,
+          lastUsedAt:
+            (existing.lastUsedAt ?? '') > (profile.lastUsedAt ?? '')
+              ? existing.lastUsedAt
+              : profile.lastUsedAt,
+        }
+        counts.updated++
+      } else {
+        const idTaken = next.some((p) => p.id === profile.id)
+        next.push({ ...profile, id: idTaken ? randomUUID() : profile.id, updatedAt: timestamp })
+        counts.added++
+      }
+    }
+    if (counts.added + counts.updated > 0) await this.persist(next)
+    return counts
+  }
+
   private async persist(profiles: Profile[]): Promise<void> {
     await this.store.write({ version: 1, profiles })
     this.profiles = profiles

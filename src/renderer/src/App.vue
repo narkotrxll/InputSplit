@@ -7,6 +7,7 @@ import AppTitleBar from './components/AppTitleBar.vue'
 import BackendBanner from './components/BackendBanner.vue'
 import DiagnosticsDrawer from './components/DiagnosticsDrawer.vue'
 import OnboardingDialog from './components/OnboardingDialog.vue'
+import ReportProblemDialog from './components/ReportProblemDialog.vue'
 import ToastHost from './components/ToastHost.vue'
 import { subscribe } from './api'
 import { useSettingsStore } from './stores/settings'
@@ -69,6 +70,7 @@ onBeforeUnmount(() => {
     </div>
     <OnboardingDialog />
     <DiagnosticsDrawer />
+    <ReportProblemDialog />
     <ToastHost />
   </TooltipProvider>
 </template>

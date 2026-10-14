@@ -224,6 +224,7 @@ export const de: Messages = {
       'Dieses Spiel nutzt Anti-Cheat. Der Schutz ist aus, daher fragt InputSplit vor dem Start, ob du das Sperrrisiko akzeptierst.',
   },
   errors: {
+    invalidBackup: 'Diese Datei ist keine InputSplit-Sicherung.',
     title: 'Etwas ist schiefgelaufen',
     processNotFound: 'Das Spiel läuft nicht mehr. Starte es erneut und wähle sein Fenster.',
     selfProcess: 'InputSplit kann sich nicht selbst isolieren.',
@@ -398,6 +399,7 @@ export const de: Messages = {
     notRunning: '{exe} läuft nicht. Starte das Spiel und wende das Profil erneut an.',
     lastUsed: 'Zuletzt {date}',
     neverUsed: 'Nie verwendet',
+    playtime: '{time} gespielt',
     deleteTitle: '„{name}“ löschen?',
     deleteBody: 'Das Profil wird entfernt. Das Spiel ist davon nicht betroffen.',
     editor: {
@@ -645,5 +647,51 @@ export const de: Messages = {
     twoPlayers: 'Zwei Spieler',
     twoPlayersHint:
       'Zwei Spiele gleichzeitig, jedes mit eigenem Controller. Die Übersicht zeigt einen Tab pro Spieler.',
+  },
+  library: {
+    add: 'Aus Bibliothek',
+    title: 'Spiel aus deiner Bibliothek hinzufügen',
+    subtitle: 'Installierte Spiele aus Steam, Epic Games und GOG Galaxy.',
+    searching: 'Suche installierte Spiele…',
+    search: 'Spiele suchen',
+    all: 'Alle',
+    emptyTitle: 'Keine installierten Spiele gefunden',
+    emptyHint:
+      'InputSplit sucht in Steam, Epic Games und GOG Galaxy. Für andere Spiele erstelle ein Profil und wähle die .exe über Durchsuchen.',
+    noMatch: 'Keine Spiele passen zur Suche.',
+    hasProfile: 'Hat ein Profil',
+    rescan: 'Erneut suchen',
+    exeHint:
+      'InputSplit hat die Spieldatei selbst gewählt. Wenn das Spiel nicht gefunden wird oder nicht startet, wähle die richtige .exe über Durchsuchen.',
+  },
+  report: {
+    button: 'Problem melden',
+    title: 'Problem melden',
+    body: 'InputSplit speichert einen Bericht in deinem Downloads-Ordner und öffnet auf GitHub ein neues Issue mit bereits ausgefüllten Details. Beschreibe dort, was passiert ist, und hänge die Berichtsdatei an.',
+    contents:
+      'Der Bericht enthält die App-Version, deine InputSplit-Einstellungen, das Protokoll und den Namen der .exe des Spiels. Fenstertitel und deine Dateien sind nicht enthalten.',
+    account: 'Zum Senden brauchst du ein kostenloses GitHub-Konto.',
+    create: 'Bericht erstellen',
+    done: 'Bericht gespeichert',
+    doneBody: 'Hänge {file} auf der gerade geöffneten Seite an das Issue an.',
+  },
+  backup: {
+    title: 'Sicherung',
+    hint: 'Speichere Profile, Einstellungen und Spielzeit in einer Datei und lade sie auf einem anderen PC oder nach einer Neuinstallation von Windows.',
+    export: 'Exportieren',
+    import: 'Importieren',
+    exported: 'Sicherung gespeichert',
+    importTitle: 'Sicherung importieren',
+    profiles: 'Profile in der Datei',
+    saved: 'Gespeichert',
+    replaceHint:
+      'Profile mit demselben Namen wie deine werden durch die aus der Datei ersetzt. Andere Profile werden hinzugefügt.',
+    includeSettings: 'Auch Einstellungen importieren',
+    includeSettingsHint:
+      'Design, Sprache, Benachrichtigungen, Tastenkürzel und Standard-Schutzfunktionen.',
+    importButton: 'Importieren',
+    imported: 'Sicherung importiert',
+    importedBody: 'Neue Profile: {added}. Aktualisiert: {updated}.',
+    skipped: 'Wegen einer ungültigen Spieldatei übersprungen: {skipped}.',
   },
 }

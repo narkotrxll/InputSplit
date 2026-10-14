@@ -39,6 +39,12 @@ export interface MainTexts {
   riskDetail: string
   riskContinue: string
   riskCancel: string
+  backupExportTitle: string
+  backupOpenTitle: string
+  backupFilter: string
+  reportWhat: string
+  reportExpected: string
+  reportAttach: string // {file}
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -79,6 +85,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit loads its code into the game, the same way some cheats do. The game can ban your account for it, sometimes days later and permanently. Some anti-cheats also stop the game from starting or close it. Go ahead only if you accept that risk.',
     riskContinue: 'Isolate anyway',
     riskCancel: 'Cancel',
+    backupExportTitle: 'Export profiles and settings',
+    backupOpenTitle: 'Import profiles and settings',
+    backupFilter: 'InputSplit backup',
+    reportWhat: 'What happened?',
+    reportExpected: 'What did you expect to happen?',
+    reportAttach:
+      'Please attach the report: drag {file} from the folder that just opened into this box.',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -119,6 +132,12 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit завантажує свій код у гру так само, як це роблять деякі чити. Гра може заблокувати ваш акаунт, іноді через кілька днів і назавжди. Деякі античити також не дають грі запуститися або закривають її. Продовжуйте, лише якщо приймаєте цей ризик.',
     riskContinue: 'Все одно ізолювати',
     riskCancel: 'Скасувати',
+    backupExportTitle: 'Експорт профілів і налаштувань',
+    backupOpenTitle: 'Імпорт профілів і налаштувань',
+    backupFilter: 'Резервна копія InputSplit',
+    reportWhat: 'Що сталося?',
+    reportExpected: 'Що мало статися?',
+    reportAttach: 'Прикріпіть звіт: перетягніть {file} з папки, що щойно відкрилася, у це поле.',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -158,6 +177,12 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit загружает свой код в игру так же, как это делают некоторые читы. Игра может заблокировать ваш аккаунт, иногда спустя несколько дней и навсегда. Некоторые античиты также не дают игре запуститься или закрывают её. Продолжайте, только если принимаете этот риск.',
     riskContinue: 'Всё равно изолировать',
     riskCancel: 'Отмена',
+    backupExportTitle: 'Экспорт профилей и настроек',
+    backupOpenTitle: 'Импорт профилей и настроек',
+    backupFilter: 'Резервная копия InputSplit',
+    reportWhat: 'Что случилось?',
+    reportExpected: 'Что должно было произойти?',
+    reportAttach: 'Прикрепите отчёт: перетащите {file} из открывшейся папки в это поле.',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -196,6 +221,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit carga su código en el juego, igual que algunos trucos. El juego puede banear tu cuenta por ello, a veces días después y de forma permanente. Algunos antitrampas también impiden que el juego se inicie o lo cierran. Continúa solo si aceptas ese riesgo.',
     riskContinue: 'Aislar de todos modos',
     riskCancel: 'Cancelar',
+    backupExportTitle: 'Exportar perfiles y ajustes',
+    backupOpenTitle: 'Importar perfiles y ajustes',
+    backupFilter: 'Copia de seguridad de InputSplit',
+    reportWhat: '¿Qué ha pasado?',
+    reportExpected: '¿Qué esperabas que pasara?',
+    reportAttach:
+      'Adjunta el informe: arrastra {file} desde la carpeta que se acaba de abrir a este cuadro.',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -235,6 +267,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit lädt seinen Code in das Spiel, so wie es manche Cheats tun. Das Spiel kann dein Konto dafür sperren, manchmal erst Tage später und dauerhaft. Manche Anti-Cheats verhindern außerdem den Spielstart oder beenden das Spiel. Fahre nur fort, wenn du dieses Risiko akzeptierst.',
     riskContinue: 'Trotzdem isolieren',
     riskCancel: 'Abbrechen',
+    backupExportTitle: 'Profile und Einstellungen exportieren',
+    backupOpenTitle: 'Profile und Einstellungen importieren',
+    backupFilter: 'InputSplit-Sicherung',
+    reportWhat: 'Was ist passiert?',
+    reportExpected: 'Was hast du erwartet?',
+    reportAttach:
+      'Bitte hänge den Bericht an: Ziehe {file} aus dem gerade geöffneten Ordner in dieses Feld.',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -274,6 +313,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit charge son code dans le jeu, comme le font certains logiciels de triche. Le jeu peut bannir votre compte pour cela, parfois des jours plus tard et définitivement. Certains anti-triches empêchent aussi le jeu de démarrer ou le ferment. Ne continuez que si vous acceptez ce risque.',
     riskContinue: 'Isoler quand même',
     riskCancel: 'Annuler',
+    backupExportTitle: 'Exporter les profils et les réglages',
+    backupOpenTitle: 'Importer des profils et des réglages',
+    backupFilter: 'Sauvegarde InputSplit',
+    reportWhat: 'Que s’est-il passé ?',
+    reportExpected: 'Qu’attendiez-vous ?',
+    reportAttach:
+      'Joignez le rapport : faites glisser {file} depuis le dossier qui vient de s’ouvrir dans ce champ.',
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -312,6 +358,12 @@ const texts: Record<Locale, MainTexts> = {
       'O InputSplit carrega o próprio código no jogo, do mesmo jeito que alguns cheats. O jogo pode banir sua conta por isso, às vezes dias depois e de forma permanente. Alguns antitrapaças também impedem o jogo de abrir ou o fecham. Continue só se aceitar esse risco.',
     riskContinue: 'Isolar mesmo assim',
     riskCancel: 'Cancelar',
+    backupExportTitle: 'Exportar perfis e configurações',
+    backupOpenTitle: 'Importar perfis e configurações',
+    backupFilter: 'Backup do InputSplit',
+    reportWhat: 'O que aconteceu?',
+    reportExpected: 'O que você esperava que acontecesse?',
+    reportAttach: 'Anexe o relatório: arraste {file} da pasta que acabou de abrir para esta caixa.',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -350,6 +402,12 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit ładuje swój kod do gry, tak jak robią to niektóre cheaty. Gra może za to zbanować twoje konto, czasem po kilku dniach i na stałe. Niektóre anti-cheaty nie pozwalają też uruchomić gry albo ją zamykają. Kontynuuj tylko, jeśli akceptujesz to ryzyko.',
     riskContinue: 'Mimo to izoluj',
     riskCancel: 'Anuluj',
+    backupExportTitle: 'Eksportuj profile i ustawienia',
+    backupOpenTitle: 'Importuj profile i ustawienia',
+    backupFilter: 'Kopia zapasowa InputSplit',
+    reportWhat: 'Co się stało?',
+    reportExpected: 'Czego się spodziewałeś?',
+    reportAttach: 'Dołącz raport: przeciągnij {file} z właśnie otwartego folderu do tego pola.',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -389,6 +447,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit kendi kodunu oyuna yükler; bazı hileler de aynı şekilde çalışır. Oyun bu yüzden hesabınızı yasaklayabilir, bazen günler sonra ve kalıcı olarak. Bazı hile önleme sistemleri oyunun açılmasını da engeller ya da oyunu kapatır. Yalnızca bu riski kabul ediyorsanız devam edin.',
     riskContinue: 'Yine de yalıt',
     riskCancel: 'İptal',
+    backupExportTitle: 'Profilleri ve ayarları dışa aktar',
+    backupOpenTitle: 'Profilleri ve ayarları içe aktar',
+    backupFilter: 'InputSplit yedeği',
+    reportWhat: 'Ne oldu?',
+    reportExpected: 'Ne olmasını bekliyordunuz?',
+    reportAttach:
+      'Lütfen raporu ekleyin: az önce açılan klasördeki {file} dosyasını bu kutuya sürükleyin.',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -426,6 +491,12 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit 会把自己的代码加载到游戏中，部分外挂也是这样做的。游戏可能因此封禁你的账号，有时在几天后才封，而且是永久封禁。有些反作弊还会阻止游戏启动或直接关闭游戏。只有在你接受这一风险时才继续。',
     riskContinue: '仍要隔离',
     riskCancel: '取消',
+    backupExportTitle: '导出配置文件和设置',
+    backupOpenTitle: '导入配置文件和设置',
+    backupFilter: 'InputSplit 备份',
+    reportWhat: '发生了什么？',
+    reportExpected: '你原本期望发生什么？',
+    reportAttach: '请附上报告：把刚打开的文件夹中的 {file} 拖到此框中。',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -467,6 +538,13 @@ const texts: Record<Locale, MainTexts> = {
       'InputSplit はゲームに自身のコードを読み込みます。これは一部のチートと同じ方法です。そのためゲームがアカウントを BAN することがあり、数日後に永久 BAN になる場合もあります。アンチチートによってはゲームの起動を妨げたり、ゲームを終了させたりします。このリスクを受け入れる場合のみ続行してください。',
     riskContinue: 'それでも分離',
     riskCancel: 'キャンセル',
+    backupExportTitle: 'プロファイルと設定をエクスポート',
+    backupOpenTitle: 'プロファイルと設定をインポート',
+    backupFilter: 'InputSplit のバックアップ',
+    reportWhat: '何が起きましたか？',
+    reportExpected: '本来はどうなるはずでしたか？',
+    reportAttach:
+      'レポートを添付してください：開いたフォルダーから {file} をこの欄にドラッグします。',
   },
 }
 

@@ -460,6 +460,78 @@ export const UpdateStateSchema = z.object({
 export type UpdateState = z.infer<typeof UpdateStateSchema>
 
 // ---------------------------------------------------------------------------------------
+// Installed games found in the Steam, Epic Games and GOG Galaxy libraries
+
+export const LibraryStoreSchema = z.enum(['steam', 'epic', 'gog'])
+export type LibraryStore = z.infer<typeof LibraryStoreSchema>
+
+export const LibraryGameSchema = z.object({
+  /** `<store>:<store's own id>`; the cover is fetched by this id. */
+  id: z.string(),
+  store: LibraryStoreSchema,
+  name: z.string(),
+  exeName: z.string(),
+  exePath: z.string(),
+  hasCover: z.boolean(),
+})
+export type LibraryGame = z.infer<typeof LibraryGameSchema>
+
+// ---------------------------------------------------------------------------------------
+// Play time: how long each game was isolated, keyed by lower-case executable name
+
+export const PlaytimeRecordSchema = z.object({
+  totalMs: z.number().nonnegative(),
+  sessions: z.number().int().nonnegative(),
+  lastPlayedAt: z.string(),
+})
+export type PlaytimeRecord = z.infer<typeof PlaytimeRecordSchema>
+
+export const PlaytimeSchema = z.record(z.string().max(260), PlaytimeRecordSchema)
+export type Playtime = z.infer<typeof PlaytimeSchema>
+
+// ---------------------------------------------------------------------------------------
+// Backup file: profiles, settings and play time, to move to another PC
+
+/** Settings that belong to the person, not to this PC (no onboarding, last controller…). */
+export const BACKUP_SETTINGS_KEYS = [
+  'closeToTray',
+  'startMinimized',
+  'launchAtLogin',
+  'notifications',
+  'emergencyHotkeyEnabled',
+  'gamepadHotkeyEnabled',
+  'rumbleFeedback',
+  'checkForUpdates',
+  'twoPlayers',
+  'defaultFeatures',
+  'moveWindowByDefault',
+  'restoreOnExit',
+  'showAllWindows',
+  'verboseLogging',
+  'theme',
+  'language',
+  'languageChosen',
+] as const satisfies readonly (keyof SettingsPatch)[]
+
+export const BackupSchema = z.object({
+  format: z.literal('inputsplit-backup'),
+  version: z.literal(1),
+  exportedAt: z.string(),
+  appVersion: z.string(),
+  profiles: z.array(ProfileSchema).max(1000),
+  settings: SettingsPatchSchema.optional(),
+  playtime: PlaytimeSchema.optional(),
+})
+export type Backup = z.infer<typeof BackupSchema>
+
+export const BackupImportResultSchema = z.object({
+  added: z.number().int(),
+  updated: z.number().int(),
+  skipped: z.number().int(),
+})
+export type BackupImportResult = z.infer<typeof BackupImportResultSchema>
+
+// ---------------------------------------------------------------------------------------
 // Logs and app info
 
 export const LogLevelSchema = z.enum(['debug', 'info', 'warn', 'error'])

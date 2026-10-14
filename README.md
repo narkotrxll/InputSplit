@@ -49,6 +49,8 @@ walks you through it the first time.
 
 Once a game has a profile, it gets even simpler:
 
+- **Add from library** on the Profiles page lists the games installed through Steam, Epic
+  Games and GOG Galaxy, so you pick a game instead of hunting for its `.exe`.
 - **Play** on a profile (or in the tray menu) starts the game and isolates it as soon as its
   window appears. Profiles can also start isolation **automatically** whenever the game opens.
 - **From the couch:** hold **LB + RB + View** for 2 seconds to start or stop isolation. The
@@ -59,6 +61,11 @@ Once a game has a profile, it gets even simpler:
 - **Updates:** InputSplit checks GitHub for new versions and installs them for you.
 - The game picker marks launchers, online games and games that worked (or not) the last time
   on this PC.
+- Each profile shows how long the game has been **played** with InputSplit.
+- **Backup:** Settings → Backup exports profiles, settings and play time to a file and imports
+  them on another PC.
+- **Report a problem** (About or Settings) saves a diagnostics report and opens a GitHub issue
+  with the details filled in.
 - **Two players:** turn on Settings → Controllers → **Two players** to isolate two games at
   once, each locked to its own controller. The dashboard gets a tab per player, and each
   player's controller shortcut starts or stops their own game.

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {
+  ArchiveRestore,
+  Bug,
   Download,
   ExternalLink,
+  FileDown,
   FolderOpen,
   RefreshCw,
   RotateCcw,
@@ -21,7 +24,9 @@ import UiKbd from '../components/ui/UiKbd.vue'
 import UiSegmented from '../components/ui/UiSegmented.vue'
 import UiSelect from '../components/ui/UiSelect.vue'
 import UiSwitch from '../components/ui/UiSwitch.vue'
-import { call } from '../api'
+import type { Backup } from '@shared/domain'
+import { call, errorCode } from '../api'
+import { formatRelativeDate } from '../lib/format'
 import { systemLocale } from '../i18n'
 import { errorText } from '../i18n'
 import { useBackendStore } from '../stores/backend'
@@ -29,7 +34,7 @@ import { useUpdatesStore } from '../stores/updates'
 import { useSettingsStore } from '../stores/settings'
 import { useUiStore } from '../stores/ui'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const store = useSettingsStore()
 const backend = useBackendStore()
 const ui = useUiStore()
@@ -72,6 +77,56 @@ function setAntiCheatProtection(on: boolean): void {
 function turnOffAntiCheatProtection(): void {
   antiCheatDialog.value = false
   void store.update({ antiCheatProtection: false })
+}
+
+// Backup: export everything to a file, or load one (with a confirmation step).
+const backup = ref<Backup | null>(null)
+const backupOpen = ref(false)
+const backupSettings = ref(false)
+const importing = ref(false)
+
+async function exportBackup(): Promise<void> {
+  try {
+    const result = await call('backup:export')
+    if (result.saved) ui.toast({ tone: 'success', title: t('backup.exported') })
+  } catch (e) {
+    ui.toast({ tone: 'danger', title: t('errors.title'), body: errorText(errorCode(e)) })
+  }
+}
+
+async function openBackup(): Promise<void> {
+  try {
+    const loaded = await call('backup:open')
+    if (!loaded) return
+    backup.value = loaded
+    backupSettings.value = false
+    backupOpen.value = true
+  } catch (e) {
+    ui.toast({ tone: 'danger', title: t('errors.title'), body: errorText(errorCode(e)) })
+  }
+}
+
+async function importBackup(): Promise<void> {
+  if (!backup.value) return
+  importing.value = true
+  try {
+    const result = await call('backup:import', {
+      backup: backup.value,
+      settings: backupSettings.value,
+    })
+    backupOpen.value = false
+    const body = [
+      t('backup.importedBody', { added: result.added, updated: result.updated }),
+      result.skipped > 0 ? t('backup.skipped', { skipped: result.skipped }) : '',
+    ]
+      .filter(Boolean)
+      .join(' ')
+    ui.toast({ tone: 'success', title: t('backup.imported'), body })
+  } catch (e) {
+    ui.toast({ tone: 'danger', title: t('errors.title'), body: errorText(errorCode(e)) })
+  } finally {
+    importing.value = false
+  }
 }
 
 function showOnboarding(): void {
@@ -386,6 +441,18 @@ function showOnboarding(): void {
         </div>
       </UiCard>
 
+      <UiCard :title="$t('backup.title')" :padded="false">
+        <div class="flex items-center justify-between gap-6 px-5 py-3.5">
+          <span class="text-[12.5px] text-text-muted">{{ $t('backup.hint') }}</span>
+          <span class="flex shrink-0 gap-2">
+            <UiButton :icon="FileDown" @click="exportBackup">{{ $t('backup.export') }}</UiButton>
+            <UiButton :icon="ArchiveRestore" @click="openBackup">{{
+              $t('backup.import')
+            }}</UiButton>
+          </span>
+        </div>
+      </UiCard>
+
       <UiCard :title="$t('settings.diagnostics')" :padded="false">
         <div class="divide-y divide-line">
           <label class="flex items-center justify-between gap-6 px-5 py-3.5">
@@ -401,13 +468,14 @@ function showOnboarding(): void {
               @update:model-value="store.update({ verboseLogging: $event })"
             />
           </label>
-          <div class="flex items-center gap-2 px-5 py-3.5">
+          <div class="flex flex-wrap items-center gap-2 px-5 py-3.5">
             <UiButton :icon="FolderOpen" @click="call('diagnostics:openLogFolder')">{{
               $t('settings.openLogs')
             }}</UiButton>
             <UiButton :icon="Download" @click="exportDiagnostics">{{
               $t('settings.exportDiagnostics')
             }}</UiButton>
+            <UiButton :icon="Bug" @click="ui.reportOpen = true">{{ $t('report.button') }}</UiButton>
           </div>
         </div>
       </UiCard>
@@ -429,6 +497,42 @@ function showOnboarding(): void {
         <UiButton variant="danger" :icon="ShieldOff" @click="turnOffAntiCheatProtection">{{
           $t('settings.antiCheatDialogConfirm')
         }}</UiButton>
+      </template>
+    </UiDialog>
+
+    <UiDialog v-model:open="backupOpen" :title="$t('backup.importTitle')" width="md">
+      <div v-if="backup" class="flex flex-col gap-4">
+        <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[13px]">
+          <dt class="text-text-faint">{{ $t('backup.profiles') }}</dt>
+          <dd class="text-text">{{ backup.profiles.length }}</dd>
+          <dt class="text-text-faint">{{ $t('backup.saved') }}</dt>
+          <dd class="text-text">
+            {{ formatRelativeDate(backup.exportedAt, Date.now(), locale) }}
+          </dd>
+        </dl>
+        <p class="text-[12.5px] text-text-muted">{{ $t('backup.replaceHint') }}</p>
+        <label
+          v-if="backup.settings"
+          class="flex items-center justify-between gap-4 rounded-lg border border-line px-4 py-3"
+        >
+          <span>
+            <span class="block text-[13px] text-text">{{ $t('backup.includeSettings') }}</span>
+            <span class="block text-[12px] text-text-muted">{{
+              $t('backup.includeSettingsHint')
+            }}</span>
+          </span>
+          <UiSwitch v-model="backupSettings" :label="$t('backup.includeSettings')" />
+        </label>
+      </div>
+      <template #footer>
+        <UiButton variant="ghost" @click="backupOpen = false">{{ $t('common.cancel') }}</UiButton>
+        <UiButton
+          variant="primary"
+          :icon="ArchiveRestore"
+          :loading="importing"
+          @click="importBackup"
+          >{{ $t('backup.importButton') }}</UiButton
+        >
       </template>
     </UiDialog>
   </div>

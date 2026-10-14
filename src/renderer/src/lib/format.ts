@@ -21,6 +21,17 @@ export function formatDuration(ms: number, locale = 'en'): string {
   return unit(locale, seconds, 'second')
 }
 
+/** Total play time: hours and minutes, never seconds ("12 h 5 min", "45 min"). */
+export function formatPlaytime(ms: number, locale = 'en'): string {
+  const minutes = Math.max(1, Math.floor(ms / 60_000))
+  const hours = Math.floor(minutes / 60)
+  const rest = minutes % 60
+  if (hours === 0) return unit(locale, minutes, 'minute')
+  return rest === 0
+    ? unit(locale, hours, 'hour')
+    : `${unit(locale, hours, 'hour')} ${unit(locale, rest, 'minute')}`
+}
+
 export function formatCount(value: number, locale = 'en'): string {
   return value >= 10_000
     ? new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 }).format(value)
