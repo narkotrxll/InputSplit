@@ -53,13 +53,17 @@ export const helperMethods = {
   listDisplays: { params: empty, result: z.object({ displays: z.array(DisplaySchema) }) },
   startControllerTest: { params: z.object({ slot: z.number().int() }), result: empty },
   stopControllerTest: { params: empty, result: empty },
-  checkTarget: { params: z.object({ pid: z.number().int() }), result: TargetCheckSchema },
+  checkTarget: {
+    params: z.object({ pid: z.number().int(), allowAntiCheat: z.boolean().optional() }),
+    result: TargetCheckSchema,
+  },
   startIsolation: {
     params: z.object({
       pid: z.number().int(),
       hwnd: z.number().int().nullable(),
       features: z.record(z.string(), z.boolean()),
       xinputSlot: z.number().int().nullable(),
+      allowAntiCheat: z.boolean().optional(),
     }),
     result: SessionStatusSchema,
   },

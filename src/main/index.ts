@@ -7,7 +7,7 @@
  */
 import { spawn } from 'node:child_process'
 import { join } from 'node:path'
-import { app, nativeTheme, net, type BrowserWindow } from 'electron'
+import { app, dialog, nativeTheme, net, type BrowserWindow } from 'electron'
 import type { IsolationView } from '@shared/domain'
 import { resolveLocale } from '@shared/locales'
 import { HelperClient } from './native/helper-client'
@@ -20,6 +20,7 @@ import { AutomationService } from './services/automation-service'
 import { CompatHistoryService } from './services/compat-history-service'
 import { DeviceService } from './services/device-service'
 import { IconService } from './services/icon-service'
+import type { RiskInfo } from './services/isolation-service'
 import { LibraryService } from './services/library-service'
 import { PlaytimeService } from './services/playtime-service'
 import { SeatsService } from './services/seats-service'
@@ -96,7 +97,32 @@ async function main(): Promise<void> {
     : new HelperClient({ executablePath: helperExecutablePath(), logger })
   if (useSimulatedBackend) logger.warn('Using the SIMULATED backend (development only)')
 
-  const seats = new SeatsService(backend, logger, () => settings.get().twoPlayers)
+  /** Asked before every online or anti-cheat game while anti-cheat protection is off. */
+  const confirmRisk = async ({ game, antiCheat }: RiskInfo): Promise<boolean> => {
+    const t = texts()
+    const options = {
+      type: 'warning' as const,
+      title: t.riskTitle,
+      message: t.riskMessage.replace('{game}', game),
+      detail: [antiCheat ? t.riskAntiCheat.replace('{name}', antiCheat) : '', t.riskDetail]
+        .filter(Boolean)
+        .join('\n\n'),
+      buttons: [t.riskCancel, t.riskContinue],
+      defaultId: 0,
+      cancelId: 0,
+      noLink: true,
+    }
+    // A hidden window (tray, automatic start) would hide its modal dialog too.
+    const parent = mainWindow?.isVisible() ? mainWindow : null
+    const { response } = parent
+      ? await dialog.showMessageBox(parent, options)
+      : await dialog.showMessageBox(options)
+    return response === 1
+  }
+  const seats = new SeatsService(backend, logger, () => settings.get().twoPlayers, {
+    protection: () => settings.get().antiCheatProtection,
+    confirmRisk,
+  })
   const devices = new DeviceService(backend)
   const icons = new IconService()
   const library = new LibraryService(logger, useSimulatedBackend)

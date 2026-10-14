@@ -28,6 +28,22 @@ import type { HelperEvent } from '../native/protocol'
 import { Emitter } from '../util/emitter'
 import type { Logger } from './logger'
 
+/** What the ban-risk warning names when anti-cheat protection is off. */
+export interface RiskInfo {
+  game: string
+  /** The detected or known anti-cheat, if any. */
+  antiCheat: string | null
+}
+
+export interface AntiCheatSafety {
+  /** Settings → anti-cheat protection (on by default). */
+  protection: () => boolean
+  /** Shows the ban-risk warning; resolves true only when the user chooses to go ahead. */
+  confirmRisk: (risk: RiskInfo) => Promise<boolean>
+}
+
+const PROTECTED: AntiCheatSafety = { protection: () => true, confirmRisk: async () => false }
+
 interface MovedWindow {
   hwnd: number
   previous: Rect
@@ -50,6 +66,7 @@ export class IsolationService {
     private readonly now: () => number = Date.now,
     /** Refuses a start that clashes with another seat's session (two players). */
     private readonly conflict: (input: StartIsolationInput) => AppError | null = () => null,
+    private readonly safety: AntiCheatSafety = PROTECTED,
   ) {
     backend.onEvent((event) => this.onHelperEvent(event))
     backend.onState((state) => this.onBackendState(state))
@@ -99,7 +116,8 @@ export class IsolationService {
     this.logger.info(`Starting isolation for ${input.target.exeName} (pid ${input.target.pid})`)
 
     const compat = lookupCompat(input.target.exeName)
-    if (compat?.kind === 'blocked') {
+    const protection = this.safety.protection()
+    if (compat?.kind === 'blocked' && protection) {
       return this.fail({
         code: 'antiCheat',
         message: `Protected by ${compat.antiCheat ?? 'an anti-cheat system'}.`,
@@ -110,7 +128,10 @@ export class IsolationService {
     if (clash !== null) return this.fail(clash)
 
     try {
-      const check = await this.backend.request('checkTarget', { pid: input.target.pid })
+      const check = await this.backend.request('checkTarget', {
+        pid: input.target.pid,
+        allowAntiCheat: !protection,
+      })
       const blocker = check.blockers[0]
       if (blocker) return this.fail({ code: blocker.code, message: blocker.message })
       if (
@@ -119,6 +140,24 @@ export class IsolationService {
         check.exePath.toLowerCase() !== input.target.exePath.toLowerCase()
       ) {
         return this.fail({ code: 'targetChanged', message: 'The selected process was replaced.' })
+      }
+      // Protection off: online and anti-cheat games need the user's go-ahead on every start.
+      const antiCheat = check.antiCheat ?? (compat?.kind === 'blocked' ? compat.antiCheat : null)
+      if (
+        !protection &&
+        (antiCheat != null || compat?.kind === 'blocked' || compat?.kind === 'online')
+      ) {
+        const accepted = await this.safety.confirmRisk({
+          game: input.target.title || input.target.exeName,
+          antiCheat: antiCheat ?? null,
+        })
+        if (!accepted) {
+          return this.fail({ code: 'riskDeclined', message: 'The ban risk was not accepted.' })
+        }
+        this.logger.warn(
+          `Anti-cheat protection is off: the user accepted the ban risk for ${input.target.exeName}` +
+            (antiCheat ? ` (${antiCheat})` : ''),
+        )
       }
       this.set({ ...this.view, phase: 'starting', warnings: check.warnings })
 
@@ -129,6 +168,7 @@ export class IsolationService {
           hwnd: input.target.hwnd,
           features: { ...input.features },
           xinputSlot: input.features.xinputSlotLock ? input.controllerSlot : null,
+          allowAntiCheat: !protection,
         },
         30_000,
       )

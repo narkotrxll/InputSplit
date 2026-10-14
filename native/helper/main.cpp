@@ -111,7 +111,8 @@ Json Handle(const std::string& method, const Json& params) {
   }
   if (method == "checkTarget") {
     return VerdictToJson(CheckTarget(params.at("pid").get<DWORD>(),
-                                     SessionManager::Instance().hookDllPath()));
+                                     SessionManager::Instance().hookDllPath(),
+                                     params.value("allowAntiCheat", false)));
   }
   if (method == "startIsolation") {
     StartRequest request;
@@ -119,6 +120,7 @@ Json Handle(const std::string& method, const Json& params) {
     request.window = params.contains("hwnd") ? HwndFromJson(params["hwnd"]) : nullptr;
     request.features = FeaturesFromJson(params.at("features"));
     request.xinputSlot = SlotFromJson(params);
+    request.allowAntiCheat = params.value("allowAntiCheat", false);
     HelperError error;
     Json status = SessionManager::Instance().Start(request, error);
     if (status.is_null()) throw error;

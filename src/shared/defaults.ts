@@ -64,6 +64,7 @@ export const DEFAULT_SETTINGS: Settings = {
   checkForUpdates: true,
   twoPlayers: false,
   languageChosen: false,
+  antiCheatProtection: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

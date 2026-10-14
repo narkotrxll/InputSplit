@@ -482,7 +482,7 @@ SessionManager& SessionManager::Instance() {
 
 Json SessionManager::Start(const StartRequest& request, HelperError& error) {
   // The UI ran checkTarget already; this repeat is the authoritative one.
-  TargetVerdict verdict = CheckTarget(request.pid, hookDllPath_);
+  TargetVerdict verdict = CheckTarget(request.pid, hookDllPath_, request.allowAntiCheat);
   if (!verdict.blockers.empty()) {
     error = {verdict.blockers.front().code, verdict.blockers.front().message};
     return nullptr;
