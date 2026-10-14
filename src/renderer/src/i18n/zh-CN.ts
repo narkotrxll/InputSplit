@@ -13,6 +13,7 @@ export const zhCN: Messages = {
     settings: '设置',
     about: '关于',
     diagnostics: '诊断',
+    coffee: '请作者喝杯咖啡',
   },
   status: {
     notConfigured: '未设置',
@@ -446,7 +447,6 @@ export const zhCN: Messages = {
     repository: '源代码',
     issues: '报告问题',
     docs: '文档',
-    coffee: '请作者喝杯咖啡',
     credits: '基于以下项目',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss：防止失去焦点的技术（公有领域）。',

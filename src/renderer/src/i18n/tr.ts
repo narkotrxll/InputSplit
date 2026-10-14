@@ -13,6 +13,7 @@ export const tr: Messages = {
     settings: 'Ayarlar',
     about: 'Hakkında',
     diagnostics: 'Tanılama',
+    coffee: 'Bir kahve ısmarla',
   },
   status: {
     notConfigured: 'Ayarlanmadı',
@@ -468,7 +469,6 @@ export const tr: Messages = {
     repository: 'Kaynak kodu',
     issues: 'Sorun bildir',
     docs: 'Belgeler',
-    coffee: 'Bir kahve ısmarla',
     credits: 'Şunların çalışmalarına dayanır',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — odak kaybı tekniği (kamu malı).',

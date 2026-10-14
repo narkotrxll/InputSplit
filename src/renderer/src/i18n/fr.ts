@@ -13,6 +13,7 @@ export const fr: Messages = {
     settings: 'Paramètres',
     about: 'À propos',
     diagnostics: 'Diagnostic',
+    coffee: 'Offrir un café',
   },
   status: {
     notConfigured: 'Non configuré',
@@ -478,7 +479,6 @@ export const fr: Messages = {
     repository: 'Code source',
     issues: 'Signaler un problème',
     docs: 'Documentation',
-    coffee: 'Offrir un café',
     credits: 'Basé sur le travail de',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — la technique anti-perte de focus (domaine public).',
