@@ -4,6 +4,14 @@ Only results observed on real Windows hardware are listed here. Procedure: `docs
 
 Legend: ✅ works · ⚠️ partially · ❌ does not work · — not tested
 
+## Owner report (2026-10-14)
+
+The project owner ran the procedure from `docs/TESTING.md` on real Windows with an Xbox
+controller. Summary as reported: **everything works, but only in single-player games**, which
+matches the documented scope (anti-cheat protected and online multiplayer games are refused or
+not supported, see the last section). Per-experiment results, the Windows build and the exact
+games tested were not recorded yet; the tables below stay at "—" until they are.
+
 ## Windows behaviour (Probe)
 
 | Experiment | Windows 10 | Windows 11 | Notes |
