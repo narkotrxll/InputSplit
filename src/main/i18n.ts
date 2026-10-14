@@ -31,6 +31,8 @@ export interface MainTexts {
   notifyNothingBody: string
   notifyUpdateTitle: string // {version}
   notifyUpdateBody: string
+  notifyReadyTitle: string // {version}
+  notifyReadyBody: string
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -62,6 +64,8 @@ const texts: Record<Locale, MainTexts> = {
     notifyNothingBody: 'Start a game that has a profile, then use the controller shortcut again.',
     notifyUpdateTitle: 'InputSplit {version} is available',
     notifyUpdateBody: 'Open InputSplit to install it.',
+    notifyReadyTitle: 'InputSplit {version} is ready',
+    notifyReadyBody: 'It installs when you restart InputSplit. Click to open it.',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -92,6 +96,9 @@ const texts: Record<Locale, MainTexts> = {
       'Запустіть гру, для якої є профіль, і знову скористайтеся комбінацією на геймпаді.',
     notifyUpdateTitle: 'Доступна версія InputSplit {version}',
     notifyUpdateBody: 'Відкрийте InputSplit, щоб установити її.',
+    notifyReadyTitle: 'InputSplit {version} готовий до встановлення',
+    notifyReadyBody:
+      'Оновлення встановиться після перезапуску InputSplit. Натисніть, щоб відкрити.',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -122,6 +129,8 @@ const texts: Record<Locale, MainTexts> = {
       'Запустите игру, для которой есть профиль, и снова используйте комбинацию на геймпаде.',
     notifyUpdateTitle: 'Доступна версия InputSplit {version}',
     notifyUpdateBody: 'Откройте InputSplit, чтобы установить её.',
+    notifyReadyTitle: 'InputSplit {version} готов к установке',
+    notifyReadyBody: 'Обновление установится после перезапуска InputSplit. Нажмите, чтобы открыть.',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -151,6 +160,8 @@ const texts: Record<Locale, MainTexts> = {
     notifyNothingBody: 'Inicia un juego que tenga perfil y vuelve a usar el atajo del mando.',
     notifyUpdateTitle: 'InputSplit {version} está disponible',
     notifyUpdateBody: 'Abre InputSplit para instalarla.',
+    notifyReadyTitle: 'InputSplit {version} está listo',
+    notifyReadyBody: 'Se instala al reiniciar InputSplit. Haz clic para abrirlo.',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -181,6 +192,8 @@ const texts: Record<Locale, MainTexts> = {
       'Starte ein Spiel mit Profil und nutze dann die Controller-Tastenkombination erneut.',
     notifyUpdateTitle: 'InputSplit {version} ist verfügbar',
     notifyUpdateBody: 'Öffne InputSplit, um es zu installieren.',
+    notifyReadyTitle: 'InputSplit {version} ist bereit',
+    notifyReadyBody: 'Es wird beim Neustart von InputSplit installiert. Zum Öffnen klicken.',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -211,6 +224,8 @@ const texts: Record<Locale, MainTexts> = {
       'Lancez un jeu qui a un profil, puis utilisez à nouveau le raccourci de la manette.',
     notifyUpdateTitle: 'InputSplit {version} est disponible',
     notifyUpdateBody: "Ouvrez InputSplit pour l'installer.",
+    notifyReadyTitle: 'InputSplit {version} est prêt',
+    notifyReadyBody: "Elle s'installe au redémarrage d'InputSplit. Cliquez pour l'ouvrir.",
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -240,6 +255,8 @@ const texts: Record<Locale, MainTexts> = {
     notifyNothingBody: 'Inicie um jogo que tenha perfil e use o atalho do controle novamente.',
     notifyUpdateTitle: 'InputSplit {version} está disponível',
     notifyUpdateBody: 'Abra o InputSplit para instalar.',
+    notifyReadyTitle: 'InputSplit {version} está pronto',
+    notifyReadyBody: 'Ele é instalado quando você reiniciar o InputSplit. Clique para abrir.',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -269,6 +286,8 @@ const texts: Record<Locale, MainTexts> = {
     notifyNothingBody: 'Uruchom grę, która ma profil, i ponownie użyj skrótu na kontrolerze.',
     notifyUpdateTitle: 'Dostępna jest wersja InputSplit {version}',
     notifyUpdateBody: 'Otwórz InputSplit, aby ją zainstalować.',
+    notifyReadyTitle: 'InputSplit {version} jest gotowy',
+    notifyReadyBody: 'Zainstaluje się po ponownym uruchomieniu InputSplit. Kliknij, aby otworzyć.',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -299,6 +318,8 @@ const texts: Record<Locale, MainTexts> = {
       'Profili olan bir oyunu başlatın, ardından kumanda kısayolunu tekrar kullanın.',
     notifyUpdateTitle: 'InputSplit {version} kullanılabilir',
     notifyUpdateBody: 'Yüklemek için InputSplit’i açın.',
+    notifyReadyTitle: 'InputSplit {version} hazır',
+    notifyReadyBody: 'InputSplit yeniden başlatıldığında yüklenir. Açmak için tıklayın.',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -327,6 +348,8 @@ const texts: Record<Locale, MainTexts> = {
     notifyNothingBody: '请先启动一个有配置的游戏，然后再次使用手柄快捷键。',
     notifyUpdateTitle: 'InputSplit {version} 已发布',
     notifyUpdateBody: '打开 InputSplit 进行安装。',
+    notifyReadyTitle: 'InputSplit {version} 已准备就绪',
+    notifyReadyBody: '重启 InputSplit 时安装。点击打开。',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -358,6 +381,8 @@ const texts: Record<Locale, MainTexts> = {
       'プロファイルのあるゲームを起動してから、もう一度コントローラーのショートカットを使ってください。',
     notifyUpdateTitle: 'InputSplit {version} が利用可能です',
     notifyUpdateBody: 'InputSplit を開いてインストールしてください。',
+    notifyReadyTitle: 'InputSplit {version} の準備ができました',
+    notifyReadyBody: 'InputSplit を再起動するとインストールされます。クリックして開きます。',
   },
 }
 

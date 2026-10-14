@@ -458,6 +458,7 @@ export const fr: Messages = {
     repository: 'Code source',
     issues: 'Signaler un problème',
     docs: 'Documentation',
+    coffee: 'Offrir un café',
     credits: 'Basé sur le travail de',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — la technique anti-perte de focus (domaine public).',
@@ -597,22 +598,26 @@ export const fr: Messages = {
   },
   updates: {
     title: 'Mises à jour',
-    auto: 'Rechercher les mises à jour automatiquement',
+    auto: 'Mettre à jour automatiquement',
     autoHint:
-      "Recherche une nouvelle version sur GitHub une fois par jour. Rien n'est installé sans votre clic.",
+      "Vérifie GitHub toutes les quelques heures et télécharge les nouvelles versions en arrière-plan. Elles s'installent au redémarrage d'InputSplit.",
     check: 'Rechercher',
     checking: 'Recherche…',
     upToDate: 'Vous avez la dernière version ({version}).',
     available: 'La version {version} est disponible',
     install: 'Télécharger et installer',
     downloading: 'Téléchargement… {percent} %',
-    installing: "Lancement de l'installateur…",
+    installing: 'Redémarrage pour la mise à jour…',
     error:
       'Impossible de rechercher les mises à jour. Vérifiez votre connexion Internet et réessayez.',
     whatsNew: 'Nouveautés',
     devBuild:
       "Ceci est une version de développement : les mises à jour ne s'installent que dans l'application installée.",
     sidebar: 'Mise à jour disponible',
+    ready: 'La version {version} est prête à être installée',
+    readyHint: "Elle s'installe aussi d'elle-même la prochaine fois que vous quittez InputSplit.",
+    restart: 'Redémarrer et mettre à jour',
+    sidebarReady: 'Redémarrer pour mettre à jour',
   },
   seats: {
     title: 'Joueurs',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Download, ExternalLink, FolderOpen, RefreshCw, RotateCcw } from '@lucide/vue'
+import { Download, ExternalLink, FolderOpen, RefreshCw, RotateCcw, RotateCw } from '@lucide/vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { FeatureName } from '@shared/domain'
@@ -274,6 +274,12 @@ function showOnboarding(): void {
               <span v-if="u.status === 'available'" class="font-medium text-accent">{{
                 $t('updates.available', { version: u.latestVersion ?? '' })
               }}</span>
+              <span v-else-if="u.status === 'ready'" class="font-medium text-accent">
+                {{ $t('updates.ready', { version: u.latestVersion ?? '' }) }}
+                <span class="mt-0.5 block text-[12px] font-normal text-text-muted">{{
+                  $t('updates.readyHint')
+                }}</span>
+              </span>
               <span v-else-if="u.status === 'downloading'" class="text-text">{{
                 $t('updates.downloading', { percent: u.progress ?? 0 })
               }}</span>
@@ -300,7 +306,10 @@ function showOnboarding(): void {
             </span>
             <span class="flex flex-wrap gap-2">
               <UiButton
-                v-if="u.releaseUrl && (u.status === 'available' || u.status === 'upToDate')"
+                v-if="
+                  u.releaseUrl &&
+                  (u.status === 'available' || u.status === 'ready' || u.status === 'upToDate')
+                "
                 size="sm"
                 variant="ghost"
                 :icon="ExternalLink"
@@ -308,7 +317,15 @@ function showOnboarding(): void {
                 >{{ $t('updates.whatsNew') }}</UiButton
               >
               <UiButton
-                v-if="u.status === 'available' && u.canInstall"
+                v-if="u.status === 'ready' && u.canInstall"
+                size="sm"
+                variant="primary"
+                :icon="RotateCw"
+                @click="updates.install()"
+                >{{ $t('updates.restart') }}</UiButton
+              >
+              <UiButton
+                v-else-if="u.status === 'available' && u.canInstall"
                 size="sm"
                 variant="primary"
                 :icon="Download"

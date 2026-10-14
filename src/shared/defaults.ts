@@ -63,6 +63,7 @@ export const DEFAULT_SETTINGS: Settings = {
   rumbleFeedback: true,
   checkForUpdates: true,
   twoPlayers: false,
+  languageChosen: false,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

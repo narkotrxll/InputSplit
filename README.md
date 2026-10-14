@@ -8,16 +8,19 @@
 
 Free and open source · Windows 10/11 · MIT License
 
+[**Download InputSplit.exe**](https://github.com/narkotrxll/InputSplit/releases/latest) ·
+[Buy me a coffee ☕](https://buymeacoffee.com/narkotrxll)
+
 </div>
 
 ![InputSplit dashboard with an active isolation](docs/screenshots/dashboard-active.png)
 
 > [!IMPORTANT]
-> **Status: early preview (0.1.0).** The app, the native helper and the hook DLL are
-> implemented and their plumbing is tested, but behaviour with real games has **not yet been
-> verified on Windows hardware**. Screenshots come from a development build with a simulated
-> backend. See [docs/TESTING.md](docs/TESTING.md) and the
-> [compatibility matrix](docs/COMPATIBILITY.md) before relying on it.
+> **Status: early preview (0.1.x).** The first tests on real Windows with an Xbox controller
+> went well: the game keeps its controller in the background. This works in
+> **single-player games only**; games with anti-cheat are refused and online games are not
+> supported (see [Use responsibly](#use-responsibly)). Per-game results are collected in the
+> [compatibility matrix](docs/COMPATIBILITY.md). Screenshots come from a development build.
 
 ## What it does
 
@@ -38,10 +41,11 @@ InputSplit fixes both, **inside the chosen game only**:
 | ⌨️ **Keyboard and mouse stay yours** | The game cannot see typing, mouse movement or clicks. |
 | 🖱️ **Cursor protected** | The game cannot re-centre or trap the shared mouse pointer. |
 | 🎯 **One controller per game** | The chosen controller becomes the game's player 1. |
-| 🌍 **11 languages** | English, Українська, Русский, Español, Deutsch, Français, Português (Brasil), Polski, Türkçe, 简体中文, 日本語. Follows the Windows language by default. |
+| 🌍 **11 languages** | English, Українська, Русский, Español, Deutsch, Français, Português (Brasil), Polski, Türkçe, 简体中文, 日本語. Uses your Windows language by default; change it in Settings. |
 | 📺 **Right screen** | Optionally moves the game window to the TV and puts it back afterwards. |
 
-Pick the game, pick the controller, press **Start isolation**. That's it.
+Pick the game, pick the controller, press **Start isolation**. That's it. A short setup wizard
+walks you through it the first time.
 
 Once a game has a profile, it gets even simpler:
 
@@ -49,8 +53,10 @@ Once a game has a profile, it gets even simpler:
   window appears. Profiles can also start isolation **automatically** whenever the game opens.
 - **From the couch:** hold **LB + RB + View** for 2 seconds to start or stop isolation. The
   controller vibrates once when isolation is on and twice when it is off.
-- **Start with Windows** (hidden in the tray), Windows notifications when isolation starts or
-  ends, and a built-in **update check** that installs new versions from GitHub on one click.
+- **Tray:** closing the window keeps InputSplit in the tray, where you can start a profile,
+  stop isolation or quit. It can also **start with Windows**, hidden in the tray.
+- Windows **notifications** when isolation starts or ends.
+- **Updates:** InputSplit checks GitHub for new versions and installs them for you.
 - The game picker marks launchers, online games and games that worked (or not) the last time
   on this PC.
 - **Two players:** turn on Settings → Controllers → **Two players** to isolate two games at
@@ -92,7 +98,7 @@ Loading code into another program is also how some cheats work. InputSplit:
 
 - **refuses** games protected by anti-cheat systems (Easy Anti-Cheat, BattlEye, Vanguard,
   FACEIT, nProtect, XIGNCODE, …) and explains why — it never tries to hide from them;
-- is meant for **single-player / offline** games;
+- works only in **single-player / offline** games;
 - may be flagged by antivirus software until releases are code-signed.
 
 ## Known limitations
@@ -110,9 +116,13 @@ Loading code into another program is also how some cheats work. InputSplit:
 
 ## Install
 
-Download `InputSplit-Setup-<version>.exe` from the
+Download `InputSplit.exe` from the
 [latest release](https://github.com/narkotrxll/InputSplit/releases/latest) and run it. No
-administrator rights are needed.
+administrator rights are needed. After that InputSplit keeps itself up to date: it downloads
+new versions in the background and installs them when you restart it (Settings → Updates).
+
+Windows SmartScreen or an antivirus may warn about the installer because it is not code-signed
+yet. Choose **More info → Run anyway** if you downloaded it from the link above.
 
 A new release is built and published automatically on every push to `main` (version
 `<major>.<minor>.<n>`: major.minor comes from `package.json`, `n` counts up). To start a new line,
@@ -165,6 +175,12 @@ and [ProtoInput](https://github.com/Ilyaki/ProtoInput) (input redirection techni
 and uses [MinHook](https://github.com/TsudaKageyu/minhook) and
 [nlohmann/json](https://github.com/nlohmann/json). See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Support
+
+InputSplit is free. If it saves your evenings on the couch, you can
+[buy me a coffee ☕](https://buymeacoffee.com/narkotrxll). There is also a button for it in
+**About** inside the app.
 
 ## License
 
