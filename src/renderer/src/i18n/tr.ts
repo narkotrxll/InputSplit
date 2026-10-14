@@ -439,6 +439,7 @@ export const tr: Messages = {
     repository: 'Kaynak kodu',
     issues: 'Sorun bildir',
     docs: 'Belgeler',
+    coffee: 'Bir kahve ısmarla',
     credits: 'Şunların çalışmalarına dayanır',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — odak kaybı tekniği (kamu malı).',

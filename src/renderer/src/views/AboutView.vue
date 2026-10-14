@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, Bug, Code } from '@lucide/vue'
+import { BookOpen, Bug, Code, Coffee } from '@lucide/vue'
 import LogoMark from '../components/LogoMark.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
@@ -36,6 +36,9 @@ const credits = ['noFocusLoss', 'protoInput', 'minHook', 'json', 'stack'] as con
             }}</UiButton>
             <UiButton :icon="BookOpen" @click="call('app:openExternal', 'docs')">{{
               $t('about.docs')
+            }}</UiButton>
+            <UiButton :icon="Coffee" @click="call('app:openExternal', 'coffee')">{{
+              $t('about.coffee')
             }}</UiButton>
           </div>
         </div>

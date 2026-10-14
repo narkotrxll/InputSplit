@@ -448,6 +448,7 @@ export const de: Messages = {
     repository: 'Quellcode',
     issues: 'Problem melden',
     docs: 'Dokumentation',
+    coffee: 'Einen Kaffee spendieren',
     credits: 'Basiert auf der Arbeit von',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss – die Technik gegen Fokusverlust (gemeinfrei).',

@@ -358,6 +358,8 @@ const ADDED_SETTINGS_FIELDS = {
   rumbleFeedback: z.boolean(),
   checkForUpdates: z.boolean(),
   twoPlayers: z.boolean(),
+  /** True once the language was picked in Settings (see SettingsService.load). */
+  languageChosen: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -368,6 +370,7 @@ export const SettingsSchema = z.object({
   rumbleFeedback: ADDED_SETTINGS_FIELDS.rumbleFeedback.default(true),
   checkForUpdates: ADDED_SETTINGS_FIELDS.checkForUpdates.default(true),
   twoPlayers: ADDED_SETTINGS_FIELDS.twoPlayers.default(false),
+  languageChosen: ADDED_SETTINGS_FIELDS.languageChosen.default(false),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -451,5 +454,7 @@ export const AppInfoSchema = z.object({
   arch: z.string(),
   isPackaged: z.boolean(),
   userDataPath: z.string(),
+  /** Windows' preferred languages, most preferred first ("Same as Windows" follows them). */
+  systemLanguages: z.array(z.string()),
 })
 export type AppInfo = z.infer<typeof AppInfoSchema>

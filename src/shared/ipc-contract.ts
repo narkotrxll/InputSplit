@@ -34,7 +34,10 @@ const ok = z.object({ ok: z.literal(true) })
 
 export const invokeContract = {
   'app:getInfo': { input: none, output: AppInfoSchema },
-  'app:openExternal': { input: z.enum(['repository', 'issues', 'license', 'docs']), output: ok },
+  'app:openExternal': {
+    input: z.enum(['repository', 'issues', 'license', 'docs', 'coffee']),
+    output: ok,
+  },
 
   'backend:getState': { input: none, output: BackendStateSchema },
   'backend:restart': { input: none, output: ok },

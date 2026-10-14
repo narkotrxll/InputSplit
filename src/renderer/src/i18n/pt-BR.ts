@@ -443,6 +443,7 @@ export const ptBR: Messages = {
     repository: 'Código-fonte',
     issues: 'Relatar um problema',
     docs: 'Documentação',
+    coffee: 'Pagar um café',
     credits: 'Baseado no trabalho de',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — a técnica contra perda de foco (domínio público).',
