@@ -2,7 +2,7 @@ import { createPinia } from 'pinia'
 import { createApp, watch } from 'vue'
 import App from './App.vue'
 import './assets/main.css'
-import { applyLanguage, i18n } from './i18n'
+import { applyLanguage, i18n, setSystemLanguages } from './i18n'
 import { router } from './router'
 import { useBackendStore } from './stores/backend'
 import { useDevicesStore } from './stores/devices'
@@ -14,7 +14,7 @@ import { useUiStore } from './stores/ui'
 import { useAutomationStore } from './stores/automation'
 import { useCompatStore } from './stores/compat'
 import { useUpdatesStore } from './stores/updates'
-import { subscribe } from './api'
+import { call, subscribe } from './api'
 
 async function bootstrap(): Promise<void> {
   const app = createApp(App)
@@ -37,7 +37,8 @@ async function bootstrap(): Promise<void> {
   subscribe('displays:changed', devices.setDisplays)
   subscribe('controllers:state', devices.setTestState)
 
-  await settings.load()
+  const [info] = await Promise.all([call('app:getInfo').catch(() => null), settings.load()])
+  if (info) setSystemLanguages(info.systemLanguages)
   watch(() => settings.settings.language, applyLanguage, { immediate: true })
   isolation.applyDefaults(settings.settings)
   profiles.listen()

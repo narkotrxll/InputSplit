@@ -451,6 +451,7 @@ export const ja: Messages = {
     repository: 'ソースコード',
     issues: '問題を報告',
     docs: 'ドキュメント',
+    coffee: 'コーヒーをおごる',
     credits: '以下の成果を基にしています',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss：フォーカス喪失を防ぐ手法（パブリックドメイン）。',

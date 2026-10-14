@@ -35,9 +35,17 @@ export const i18n = createI18n({
   fallbackWarn: false,
 })
 
-/** The locale "Same as Windows" stands for (Electron reports the OS languages). */
+// Windows' preferred languages from the main process (the tray uses the same list).
+// `navigator.languages` only covers the Windows display language, so it is just a fallback.
+let systemLanguages: readonly string[] = navigator.languages
+
+export function setSystemLanguages(languages: readonly string[]): void {
+  if (languages.length > 0) systemLanguages = languages
+}
+
+/** The locale "Same as Windows" stands for. */
 export function systemLocale(): Locale {
-  return resolveLocale('system', navigator.languages)
+  return resolveLocale('system', systemLanguages)
 }
 
 /** Switches the interface language; `lang` on <html> picks the right CJK font. */
