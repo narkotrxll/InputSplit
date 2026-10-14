@@ -95,12 +95,14 @@ Loading code into another program is also how some cheats work. InputSplit:
 
 ## Install
 
-Download `InputSplit-Setup-<version>.exe` from
-[Releases](https://github.com/narkotrxll/InputSplit/releases) (once published) and run it. No
+Download `InputSplit-Setup-<version>.exe` from the
+[latest release](https://github.com/narkotrxll/InputSplit/releases/latest) and run it. No
 administrator rights are needed.
 
-Until then, every CI run on Windows produces the installer and the native test binaries as
-build artifacts (Actions → latest run → *inputsplit-installer* / *inputsplit-native*).
+A new release is built and published automatically on every push to `main` (version
+`<major>.<minor>.<n>`: major.minor comes from `package.json`, `n` counts up). To start a new line,
+bump `version` in `package.json` (e.g. to `0.2.0`); to release a specific version, push a tag such
+as `v0.2.0`.
 
 ## Build from source
 
