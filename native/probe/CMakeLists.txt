@@ -1,0 +1,6 @@
+add_executable(InputSplitProbe WIN32 main.cpp)
+inputsplit_common_options(InputSplitProbe)
+target_link_libraries(InputSplitProbe PRIVATE user32 gdi32)
+if(MINGW)
+  target_link_options(InputSplitProbe PRIVATE -municode)
+endif()

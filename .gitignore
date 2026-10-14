@@ -426,3 +426,13 @@ FodyWeavers.xsd
 
 # Official VS Code C# Dev Kit Extension exclusion
 #*.lscache
+
+# ---- InputSplit ----
+node_modules/
+out/
+dist/
+native/build*/
+*.tsbuildinfo
+.vite/
+coverage/
+resources/native/
