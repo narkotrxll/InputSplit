@@ -213,12 +213,10 @@ export function registerIpc(deps: IpcDependencies): void {
       },
       backend: backend.getState(),
       // Window titles are personal data; only the executable name is exported.
-      isolation: seats
-        .all()
-        .map((view) => ({
-          ...view,
-          target: view.target ? { exeName: view.target.exeName } : null,
-        })),
+      isolation: seats.all().map((view) => ({
+        ...view,
+        target: view.target ? { exeName: view.target.exeName } : null,
+      })),
       settings: settings.get(),
       logs: logger
         .all()
