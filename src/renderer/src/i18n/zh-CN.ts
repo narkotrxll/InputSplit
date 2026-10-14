@@ -117,6 +117,9 @@ export const zhCN: Messages = {
       blocked: '此游戏无法隔离。',
       checking: '正在检查游戏…',
       noFeatures: '请至少开启一项保护。',
+      sameGame: '另一位玩家已在玩这个游戏。',
+      controllerShared: '双人模式下，请为每个游戏选择一个手柄。',
+      controllerInUse: '另一位玩家已在使用这个手柄。',
     },
     ended: {
       stopped: '隔离已停止。游戏已恢复正常。',
@@ -246,6 +249,9 @@ export const zhCN: Messages = {
     updateUnavailable: '没有可安装的更新。',
     updateDevBuild: '更新只能在已安装的应用中安装。',
     updateFailed: '无法下载更新，请稍后重试。',
+    sameGame: '另一位玩家已在玩这个游戏。',
+    controllerShared: '两个游戏都会读取所有手柄。请为每位玩家选择一个指定的手柄。',
+    controllerInUse: '另一位玩家已在使用这个手柄。请选择其他手柄。',
     internalError: '发生了意外错误。',
     error: '发生了意外错误。',
   },
@@ -556,5 +562,12 @@ export const zhCN: Messages = {
     whatsNew: '新功能',
     devBuild: '这是开发版本：更新只能在已安装的应用中安装。',
     sidebar: '有可用更新',
+  },
+  seats: {
+    title: '玩家',
+    player: '玩家 {n}',
+    noGame: '未选择游戏',
+    twoPlayers: '双人模式',
+    twoPlayersHint: '同时运行两个游戏，各用自己的手柄。主页会为每位玩家显示一个标签页。',
   },
 }

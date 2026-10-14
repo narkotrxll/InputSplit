@@ -123,6 +123,9 @@ export const ja: Messages = {
       blocked: 'このゲームは分離できません。',
       checking: 'ゲームを確認しています…',
       noFeatures: '保護機能を 1 つ以上オンにしてください。',
+      sameGame: 'もう一人のプレイヤーがこのゲームをプレイ中です。',
+      controllerShared: '2人プレイでは、ゲームごとにコントローラーを選んでください。',
+      controllerInUse: 'このコントローラーはもう一人のプレイヤーが使用中です。',
     },
     ended: {
       stopped: '分離を停止しました。ゲームは元に戻りました。',
@@ -270,6 +273,11 @@ export const ja: Messages = {
     updateUnavailable: 'インストールできるアップデートはありません。',
     updateDevBuild: 'アップデートはインストール版のアプリでのみインストールできます。',
     updateFailed: 'アップデートをダウンロードできませんでした。後でもう一度お試しください。',
+    sameGame: 'もう一人のプレイヤーがこのゲームをプレイ中です。',
+    controllerShared:
+      '両方のゲームがすべてのコントローラーを読み取ってしまいます。プレイヤーごとにコントローラーを選んでください。',
+    controllerInUse:
+      'このコントローラーはもう一人のプレイヤーが使用中です。別のものを選んでください。',
     internalError: '予期しないエラーが発生しました。',
     error: '予期しないエラーが発生しました。',
   },
@@ -591,5 +599,13 @@ export const ja: Messages = {
     whatsNew: '新機能',
     devBuild: 'これは開発版です。アップデートはインストール版のアプリでのみインストールできます。',
     sidebar: 'アップデートあり',
+  },
+  seats: {
+    title: 'プレイヤー',
+    player: 'プレイヤー {n}',
+    noGame: 'ゲーム未選択',
+    twoPlayers: '2人プレイ',
+    twoPlayersHint:
+      '2つのゲームを同時に、それぞれ専用のコントローラーで。ダッシュボードにプレイヤーごとのタブが表示されます。',
   },
 }

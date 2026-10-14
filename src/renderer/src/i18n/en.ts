@@ -125,6 +125,9 @@ export const en = {
       blocked: 'This game cannot be isolated.',
       checking: 'Checking the game…',
       noFeatures: 'Turn on at least one protection.',
+      sameGame: 'The other player is already playing this game.',
+      controllerShared: 'With two players, choose a controller for each game.',
+      controllerInUse: 'The other player already uses this controller.',
     },
     ended: {
       stopped: 'Isolation stopped. The game is back to normal.',
@@ -264,6 +267,10 @@ export const en = {
     updateUnavailable: 'No update is ready to install.',
     updateDevBuild: 'Updates install only in the installed app.',
     updateFailed: 'The update could not be downloaded. Try again later.',
+    sameGame: 'The other player is already playing this game.',
+    controllerShared:
+      'Both games would read every controller. Choose a specific controller for each player.',
+    controllerInUse: 'The other player already uses this controller. Choose another one.',
     internalError: 'An unexpected error occurred.',
     error: 'An unexpected error occurred.',
   },
@@ -581,6 +588,14 @@ export const en = {
     whatsNew: 'What’s new',
     devBuild: 'This is a development build: updates install only in the installed app.',
     sidebar: 'Update available',
+  },
+  seats: {
+    title: 'Players',
+    player: 'Player {n}',
+    noGame: 'No game chosen',
+    twoPlayers: 'Two players',
+    twoPlayersHint:
+      'Two games at once, each with its own controller. The dashboard shows a tab for each player.',
   },
 } as const
 

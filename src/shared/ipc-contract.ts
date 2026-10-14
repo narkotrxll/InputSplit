@@ -18,6 +18,7 @@ import {
   ControllerStateSchema,
   DisplaySchema,
   IsolationViewSchema,
+  SeatSchema,
   LogEntrySchema,
   ProfileInputSchema,
   ProfileSchema,
@@ -48,10 +49,11 @@ export const invokeContract = {
 
   'displays:list': { input: none, output: z.array(DisplaySchema) },
 
-  'isolation:get': { input: none, output: IsolationViewSchema },
+  /** One view per seat (player 1, player 2). */
+  'isolation:get': { input: none, output: z.array(IsolationViewSchema) },
   'isolation:start': { input: StartIsolationInputSchema, output: IsolationViewSchema },
-  'isolation:stop': { input: none, output: IsolationViewSchema },
-  'isolation:dismiss': { input: none, output: IsolationViewSchema },
+  'isolation:stop': { input: SeatSchema, output: IsolationViewSchema },
+  'isolation:dismiss': { input: SeatSchema, output: IsolationViewSchema },
 
   'profiles:list': { input: none, output: z.array(ProfileSchema) },
   'profiles:save': { input: ProfileInputSchema, output: ProfileSchema },
@@ -87,7 +89,7 @@ export const invokeContract = {
 
 export const eventContract = {
   'backend:state': BackendStateSchema,
-  'isolation:changed': IsolationViewSchema,
+  'isolation:changed': z.object({ seat: SeatSchema, view: IsolationViewSchema }),
   'controllers:changed': z.array(ControllerSchema),
   'controllers:state': ControllerStateSchema,
   'displays:changed': z.array(DisplaySchema),

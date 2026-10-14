@@ -10,6 +10,7 @@
 import { z } from 'zod'
 import { FEATURE_NAMES } from './defaults'
 import { LANGUAGE_SETTINGS } from './locales'
+import { SEAT_COUNT } from './seats'
 
 // Zod-free constants live in ./defaults so the renderer can use them without bundling Zod.
 export * from './defaults'
@@ -257,7 +258,16 @@ export const IsolationViewSchema = z.object({
 })
 export type IsolationView = z.infer<typeof IsolationViewSchema>
 
+/** Two players, two games: each seat runs its own session (0 = player 1). */
+export const SeatSchema = z
+  .number()
+  .int()
+  .min(0)
+  .max(SEAT_COUNT - 1)
+export type Seat = z.infer<typeof SeatSchema>
+
 export const StartIsolationInputSchema = z.object({
+  seat: SeatSchema.default(0),
   target: TargetRefSchema,
   controllerSlot: z.number().int().min(0).max(3).nullable(),
   displayId: z.string().max(64).nullable(),
@@ -347,6 +357,7 @@ const ADDED_SETTINGS_FIELDS = {
   gamepadHotkeyEnabled: z.boolean(),
   rumbleFeedback: z.boolean(),
   checkForUpdates: z.boolean(),
+  twoPlayers: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -356,6 +367,7 @@ export const SettingsSchema = z.object({
   gamepadHotkeyEnabled: ADDED_SETTINGS_FIELDS.gamepadHotkeyEnabled.default(true),
   rumbleFeedback: ADDED_SETTINGS_FIELDS.rumbleFeedback.default(true),
   checkForUpdates: ADDED_SETTINGS_FIELDS.checkForUpdates.default(true),
+  twoPlayers: ADDED_SETTINGS_FIELDS.twoPlayers.default(false),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 

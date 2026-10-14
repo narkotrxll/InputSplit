@@ -121,6 +121,9 @@ export const tr: Messages = {
       blocked: 'Bu oyun yalıtılamaz.',
       checking: 'Oyun kontrol ediliyor…',
       noFeatures: 'En az bir korumayı açın.',
+      sameGame: 'Diğer oyuncu bu oyunu zaten oynuyor.',
+      controllerShared: 'İki oyuncuyla her oyun için bir kontrolcü seçin.',
+      controllerInUse: 'Diğer oyuncu bu kontrolcüyü zaten kullanıyor.',
     },
     ended: {
       stopped: 'Yalıtım durduruldu. Oyun normale döndü.',
@@ -261,6 +264,10 @@ export const tr: Messages = {
     updateUnavailable: 'Yüklenmeye hazır bir güncelleme yok.',
     updateDevBuild: 'Güncellemeler yalnızca yüklü uygulamada kurulur.',
     updateFailed: 'Güncelleme indirilemedi. Daha sonra tekrar deneyin.',
+    sameGame: 'Diğer oyuncu bu oyunu zaten oynuyor.',
+    controllerShared:
+      'İki oyun da tüm kontrolcüleri okurdu. Her oyuncu için ayrı bir kontrolcü seçin.',
+    controllerInUse: 'Diğer oyuncu bu kontrolcüyü zaten kullanıyor. Başka birini seçin.',
     internalError: 'Beklenmeyen bir hata oluştu.',
     error: 'Beklenmeyen bir hata oluştu.',
   },
@@ -579,5 +586,13 @@ export const tr: Messages = {
     whatsNew: 'Yenilikler',
     devBuild: 'Bu bir geliştirme sürümü: güncellemeler yalnızca yüklü uygulamada kurulur.',
     sidebar: 'Güncelleme var',
+  },
+  seats: {
+    title: 'Oyuncular',
+    player: 'Oyuncu {n}',
+    noGame: 'Oyun seçilmedi',
+    twoPlayers: 'İki oyuncu',
+    twoPlayersHint:
+      'Aynı anda iki oyun, her biri kendi kontrolcüsüyle. Panelde her oyuncu için bir sekme görünür.',
   },
 }

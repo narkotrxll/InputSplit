@@ -219,6 +219,14 @@ for (const viewport of viewports) {
       await button(exact(m.dashboard.stop)).click()
       await page.waitForTimeout(1500)
       await check('22-stopped')
+
+      // Two players: tabs on the dashboard, then player 2's empty setup.
+      await page.keyboard.press('Control+5')
+      await page.getByRole('switch', { name: exact(m.seats.twoPlayers) }).click()
+      await page.keyboard.press('Control+1')
+      await check('23-two-players')
+      await page.getByRole('tab', { name: contains(m.seats.player.replace('{n}', '2')) }).click()
+      await check('24-player-two')
     } catch (error) {
       failures++
       console.error(`${locale} ${viewport.width}px: walk failed: ${error.message.split('\n')[0]}`)

@@ -6,6 +6,7 @@ import { IsolationService } from './isolation-service'
 import { Logger } from './logger'
 
 const input: StartIsolationInput = {
+  seat: 0,
   target: { pid: 42, hwnd: 1, title: 'Game', exeName: 'game.exe', exePath: 'C:\\Games\\game.exe' },
   controllerSlot: 0,
   displayId: '\\\\.\\DISPLAY3',

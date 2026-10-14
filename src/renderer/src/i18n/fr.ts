@@ -123,6 +123,9 @@ export const fr: Messages = {
       blocked: 'Ce jeu ne peut pas être isolé.',
       checking: 'Vérification du jeu…',
       noFeatures: 'Activez au moins une protection.',
+      sameGame: "L'autre joueur joue déjà à ce jeu.",
+      controllerShared: 'À deux joueurs, choisissez une manette pour chaque jeu.',
+      controllerInUse: "L'autre joueur utilise déjà cette manette.",
     },
     ended: {
       stopped: 'Isolation arrêtée. Le jeu est revenu à la normale.',
@@ -269,6 +272,10 @@ export const fr: Messages = {
     updateUnavailable: "Aucune mise à jour n'est prête à être installée.",
     updateDevBuild: "Les mises à jour ne s'installent que dans l'application installée.",
     updateFailed: 'Impossible de télécharger la mise à jour. Réessayez plus tard.',
+    sameGame: "L'autre joueur joue déjà à ce jeu.",
+    controllerShared:
+      'Les deux jeux liraient toutes les manettes. Choisissez une manette précise pour chaque joueur.',
+    controllerInUse: "L'autre joueur utilise déjà cette manette. Choisissez-en une autre.",
     internalError: 'Une erreur inattendue s’est produite.',
     error: 'Une erreur inattendue s’est produite.',
   },
@@ -597,5 +604,13 @@ export const fr: Messages = {
     devBuild:
       "Ceci est une version de développement : les mises à jour ne s'installent que dans l'application installée.",
     sidebar: 'Mise à jour disponible',
+  },
+  seats: {
+    title: 'Joueurs',
+    player: 'Joueur {n}',
+    noGame: 'Aucun jeu choisi',
+    twoPlayers: 'Deux joueurs',
+    twoPlayersHint:
+      'Deux jeux en même temps, chacun avec sa manette. Le tableau de bord affiche un onglet par joueur.',
   },
 }

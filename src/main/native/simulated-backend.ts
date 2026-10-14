@@ -95,8 +95,9 @@ export class SimulatedBackend implements NativeBackend {
     { slot: 2, connected: false, kind: 'unknown', wireless: null, battery: null },
     { slot: 3, connected: false, kind: 'unknown', wireless: null, battery: null },
   ]
-  private session: SessionStatus | null = null
-  private sessionTimer: NodeJS.Timeout | null = null
+  /** Two players: several sessions at once, like the real helper. */
+  private readonly sessions = new Map<number, { status: SessionStatus; timer: NodeJS.Timeout }>()
+  private nextSessionId = 1
   private testTimer: NodeJS.Timeout | null = null
 
   getState(): BackendState {
@@ -125,7 +126,7 @@ export class SimulatedBackend implements NativeBackend {
   }
 
   async stop(): Promise<void> {
-    this.stopSession('helperShutdown')
+    for (const id of [...this.sessions.keys()]) this.stopSession(id, 'helperShutdown')
     if (this.testTimer) clearInterval(this.testTimer)
   }
 
@@ -175,7 +176,7 @@ export class SimulatedBackend implements NativeBackend {
       case 'startIsolation':
         return this.startSession(p)
       case 'stopIsolation':
-        this.stopSession('stopped')
+        this.stopSession(Number(p['sessionId']), 'stopped')
         return {}
       case 'updateIsolation':
         return {}
@@ -203,12 +204,17 @@ export class SimulatedBackend implements NativeBackend {
   }
 
   private startSession(p: Record<string, unknown>): SessionStatus {
-    if (this.session !== null) throw new AppException('alreadyIsolated', 'Simulated: already running')
+    for (const { status } of this.sessions.values()) {
+      if (status.pid === p['pid']) {
+        throw new AppException('alreadyIsolated', 'Simulated: already running')
+      }
+    }
     const features = p['features'] as Record<string, boolean>
     const requested = Object.keys(features).filter((k) => features[k]) as SessionStatus['requested']
     const isUnity = WINDOWS.find((w) => w.pid === p['pid'])?.hints.includes('unity') ?? false
-    this.session = {
-      sessionId: 1,
+    const sessionId = this.nextSessionId++
+    const status: SessionStatus = {
+      sessionId,
       pid: Number(p['pid']),
       architectureBits: 64,
       requested,
@@ -228,11 +234,12 @@ export class SimulatedBackend implements NativeBackend {
       },
       updatedAt: Date.now(),
     }
-    this.sessionTimer = setInterval(() => {
-      if (this.session === null) return
-      const c = this.session.counters
-      this.session = {
-        ...this.session,
+    const timer = setInterval(() => {
+      const session = this.sessions.get(sessionId)
+      if (session === undefined) return
+      const c = session.status.counters
+      session.status = {
+        ...session.status,
         counters: {
           ...c,
           xinputReads: c.xinputReads + 60,
@@ -243,17 +250,18 @@ export class SimulatedBackend implements NativeBackend {
         },
         updatedAt: Date.now(),
       }
-      this.events.emit({ name: 'sessionStatus', data: this.session })
+      this.events.emit({ name: 'sessionStatus', data: session.status })
     }, 1000)
-    return this.session
+    this.sessions.set(sessionId, { status, timer })
+    return status
   }
 
-  private stopSession(reason: 'stopped' | 'helperShutdown'): void {
-    if (this.sessionTimer) clearInterval(this.sessionTimer)
-    this.sessionTimer = null
-    if (this.session === null) return
-    const { sessionId, pid } = this.session
-    this.session = null
+  private stopSession(sessionId: number, reason: 'stopped' | 'helperShutdown'): void {
+    const session = this.sessions.get(sessionId)
+    if (session === undefined) return
+    clearInterval(session.timer)
+    this.sessions.delete(sessionId)
+    const { pid } = session.status
     setTimeout(() => this.events.emit({ name: 'sessionEnded', data: { sessionId, pid, reason } }), 50)
   }
 

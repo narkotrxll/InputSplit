@@ -197,6 +197,19 @@ function showOnboarding(): void {
               @update:model-value="store.update({ rumbleFeedback: $event })"
             />
           </label>
+          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
+            <span>
+              <span class="block text-[13.5px] text-text">{{ $t('seats.twoPlayers') }}</span>
+              <span class="block text-[12.5px] text-text-muted">{{
+                $t('seats.twoPlayersHint')
+              }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.twoPlayers"
+              :label="$t('seats.twoPlayers')"
+              @update:model-value="store.update({ twoPlayers: $event })"
+            />
+          </label>
         </div>
       </UiCard>
 

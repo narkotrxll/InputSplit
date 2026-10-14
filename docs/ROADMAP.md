@@ -63,6 +63,7 @@ must still be measured on Windows.**
 - 🔧 Update check and one-click install from GitHub Releases (SHA-256 verified)
 - 🔧 Onboarding checks the controller and picks the TV
 - 🔧 Built-in compatibility list and local per-game history
+- 🔧 Two players: two games at once, each locked to its own controller (needs Windows testing)
 
 ## Phase 5 — Testing ⏳
 
@@ -85,8 +86,6 @@ must still be measured on Windows.**
 
 ## Later
 
-- Multiple simultaneous sessions (two games, two controllers) — the helper and protocol
-  already key everything by session id.
 - Per-game compatibility profiles shipped with the app (data-driven feature presets).
 
 ---
