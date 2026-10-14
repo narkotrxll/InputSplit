@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Lint, typecheck, test, build (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  native-mingw:
+    name: Native compile check (MinGW cross-compile)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends mingw-w64
+      - run: cmake -S native -B native/build-mingw -DCMAKE_TOOLCHAIN_FILE=native/cmake/mingw-w64-x86_64.cmake -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build native/build-mingw --parallel
+
+  windows:
+    name: Windows build (MSVC native + installer)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build native layer (MSVC)
+        run: npm run build:native
+      - name: Build app
+        run: npm run build
+      - name: Collect licenses
+        run: npm run licenses
+      - name: Package installer
+        run: npx electron-builder --win --x64 --publish never
+      - name: Upload native binaries (for the Phase 1 experiments)
+        uses: actions/upload-artifact@v4
+        with:
+          name: inputsplit-native
+          path: |
+            native/build/bin/inputsplit-helper.exe
+            native/build/bin/InputSplitHook64.dll
+            native/build/bin/InputSplitProbe.exe
+            scripts/poc/isolate.ps1
+            docs/TESTING.md
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: inputsplit-installer
+          path: dist/InputSplit-Setup-*.exe

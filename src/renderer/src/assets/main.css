@@ -32,7 +32,8 @@
   --color-orange: var(--app-orange);
   --color-orange-soft: var(--app-orange-soft);
 
-  --font-sans: 'Inter Variable', 'Segoe UI Variable', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    'Inter Variable', 'Segoe UI Variable', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
 
   --radius-sm: 6px;

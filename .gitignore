@@ -436,3 +436,4 @@ native/build*/
 .vite/
 coverage/
 resources/native/
+resources/licenses/

@@ -3,6 +3,7 @@
 #include <psapi.h>
 
 #include <algorithm>
+#include <iterator>
 
 #include "util.h"
 

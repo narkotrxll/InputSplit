@@ -12,6 +12,7 @@ void SyncShield(bool wanted);  // subclass (or restore) all top-level windows of
 uint32_t ShieldWindowCount();
 bool ShieldCovers(HWND hwnd);
 HWND FindMainWindow();  // largest visible, unowned top-level window of this process
+void WakeGame(HWND game);  // one-time "you are active" for a game that already paused
 
 // focus_spoof.cpp
 bool InstallFocusSpoofHooks();

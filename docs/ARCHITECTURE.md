@@ -110,7 +110,7 @@ every call. Pass-through costs one atomic load.
 
 | Feature flag | Module | What it does | Origin |
 |--------------|--------|--------------|--------|
-| `ACTIVATION_SHIELD` | `activation_shield.cpp` | Subclasses **all** top-level windows of the process (re-scanned every second). Swallows `WM_ACTIVATE(WA_INACTIVE)`, `WM_ACTIVATEAPP(FALSE)`, `WM_KILLFOCUS`, `WM_IME_SETCONTEXT(FALSE)`; lets `WM_NCACTIVATE(FALSE)` reach `DefWindowProc` but not the game. | NoFocusLoss, fixed N1/N2 |
+| `ACTIVATION_SHIELD` | `activation_shield.cpp` | Subclasses **all** top-level windows of the process (re-scanned every second). Swallows `WM_ACTIVATE(WA_INACTIVE)`, `WM_ACTIVATEAPP(FALSE)`, `WM_KILLFOCUS`, `WM_IME_SETCONTEXT(FALSE)`; lets `WM_NCACTIVATE(FALSE)` reach `DefWindowProc` but not the game. When it turns on while the game is already in the background (the user just clicked *Start* in InputSplit), it posts one `WM_ACTIVATEAPP(TRUE)` / `WM_ACTIVATE` / `WM_SETFOCUS` so an already-paused game resumes — once, not in a loop. | NoFocusLoss, fixed N1/N2 |
 | `FOCUS_SPOOF` | `focus_spoof.cpp` | `GetForegroundWindow`, `GetActiveWindow`, `GetFocus` return the game window. | NoFocusLoss + ProtoInput |
 | `XINPUT_BACKGROUND` | `xinput_bridge.cpp` | Pre-loads all XInput DLL variants and hooks them (incl. ordinal 100 `XInputGetStateEx`). `XInputEnable(FALSE)` is ignored while active. Counts calls (proof that the game reads the pad). | ProtoInput + ours |
 | `XINPUT_SLOT_LOCK` | `xinput_bridge.cpp` | Game user index 0 → chosen physical slot; indexes 1–3 → "not connected". | ProtoInput |
@@ -147,6 +147,12 @@ infers success.
 ## 7. Contracts
 
 ### 7.1 Renderer ↔ Main (`src/shared/ipc-contract.ts`)
+
+- Responses cross the context bridge as plain `{ ok, data }` / `{ ok: false, error }`
+  objects (custom `Error` properties do not survive the bridge); the renderer's `call()`
+  turns failures into `ApiError` with the original `code`.
+- Values the renderer needs at runtime (defaults, constants) live in `src/shared/defaults.ts`
+  so the UI bundle does not include Zod.
 
 - Every channel is declared once with a Zod schema for its input and output.
 - `preload` exposes exactly these functions on `window.inputsplit`; there is no generic

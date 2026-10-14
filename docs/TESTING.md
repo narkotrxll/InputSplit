@@ -14,6 +14,7 @@ the step-by-step procedure. Results go into `docs/COMPATIBILITY.md`.
 | Status stream every second; XInput reads counted from the Probe | Wine 9 | ✅ |
 | Stop → DLL confirms pass-through; restart re-attaches to the already loaded DLL | Wine 9 | ✅ |
 | Fail-safe: helper killed with SIGKILL → DLL disables everything; new helper re-attaches | Wine 9 | ✅ |
+| Probe paused behind Notepad (`running=0`) → after Start it runs in background (`background=1 running=1`) → after the helper exits it pauses again | Wine 9 | ✅ |
 | **Everything involving real focus changes, real controllers, real games** | **Windows 10/11** | ⏳ **needs you** |
 
 Wine proves the plumbing works; it does not prove Windows focus behaviour. Do not treat

@@ -25,6 +25,11 @@ watch(open, (isOpen) => {
   }
 })
 
+function openApplications(): void {
+  open.value = false
+  void router.push('/applications')
+}
+
 async function choose(window: WindowInfo): Promise<void> {
   open.value = false
   await isolation.selectTarget(window)
@@ -71,14 +76,7 @@ async function choose(window: WindowInfo): Promise<void> {
       </template>
     </WindowList>
     <template #footer>
-      <UiButton
-        variant="ghost"
-        @click="
-          open = false
-          router.push('/applications')
-        "
-        >{{ $t('picker.browseAll') }}</UiButton
-      >
+      <UiButton variant="ghost" @click="openApplications">{{ $t('picker.browseAll') }}</UiButton>
     </template>
   </UiDialog>
 </template>

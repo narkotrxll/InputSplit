@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from '@lucide/vue'
-import { useUiStore } from '../stores/ui'
+import { useUiStore, type Toast } from '../stores/ui'
 
 const ui = useUiStore()
+
+function runAction(toast: Toast): void {
+  toast.action?.run()
+  ui.dismissToast(toast.id)
+}
 const icons = { neutral: Info, success: CircleCheck, warning: TriangleAlert, danger: CircleAlert }
 const colors = {
   neutral: 'text-info',
@@ -35,10 +40,7 @@ const colors = {
             v-if="toast.action"
             type="button"
             class="mt-1.5 text-[12.5px] font-medium text-accent hover:text-accent-hover"
-            @click="
-              toast.action.run()
-              ui.dismissToast(toast.id)
-            "
+            @click="runAction(toast)"
           >
             {{ toast.action.label }}
           </button>

@@ -51,9 +51,7 @@ async function choose(id: string | null): Promise<void> {
               display.name
             }}</span>
             <span class="block text-[12px] text-text-faint tabular">
-              {{
-                $t('displays.resolution', { w: display.bounds.width, h: display.bounds.height })
-              }}
+              {{ $t('displays.resolution', { w: display.bounds.width, h: display.bounds.height }) }}
               · {{ $t('displays.refresh', { hz: display.refreshRate }) }} ·
               {{ $t('displays.scale', { percent: Math.round(display.scale * 100) }) }}
             </span>

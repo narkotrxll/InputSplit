@@ -254,6 +254,23 @@ bool ShieldCovers(HWND hwnd) {
   return hwnd != nullptr && Lookup(hwnd, entry) && entry.inChain;
 }
 
+void WakeGame(HWND game) {
+  // When the user presses "Start" in InputSplit, the game has *already* been told that it
+  // lost focus and is probably paused. The shield only hides future deactivations, so the
+  // game is told once that it is active again. This is a single set of posted messages,
+  // not a loop (ProtoInput's FocusMessageLoop re-sends them every 5 ms).
+  if (game == nullptr) return;
+  // GetForegroundWindow is spoofed inside this process; GetGUIThreadInfo is not hooked and
+  // tells the truth about the real foreground window.
+  GUITHREADINFO info{};
+  info.cbSize = sizeof(info);
+  if (GetGUIThreadInfo(0, &info) && IsOwnWindow(info.hwndActive)) return;  // already in front
+  PostMessageW(game, WM_ACTIVATEAPP, TRUE, 0);
+  PostMessageW(game, WM_ACTIVATE, WA_ACTIVE, 0);
+  PostMessageW(game, WM_SETFOCUS, 0, 0);
+  Log(LogLevel::Info, "Told the game it is active again");
+}
+
 HWND FindMainWindow() {
   LargestContext context{GetCurrentProcessId(), nullptr, 0};
   EnumWindows(&LargestCallback, reinterpret_cast<LPARAM>(&context));

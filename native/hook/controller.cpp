@@ -97,6 +97,7 @@ void ApplyConfiguration(uint32_t features, uint32_t xinputSlot, HWND requestedWi
   if (turnedOn & proto::kFeatureXInputBackground) OnXInputBackgroundEnabled();
   if (turnedOff & proto::kFeatureXInputBackground) OnXInputBackgroundDisabled();
   if (turnedOn & proto::kFeatureCursorGuard) ReleaseGameCursorClip();
+  if (turnedOn & proto::kFeatureActivationShield) WakeGame(GameWindow());
 
   Log(LogLevel::Info, "Configured: requested=0x%02X active=0x%02X failed=0x%02X slot=%u",
       features, active, failed, xinputSlot);
