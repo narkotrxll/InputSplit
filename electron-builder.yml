@@ -1,0 +1,46 @@
+# Windows installer (NSIS). Build with `npm run dist:win` on Windows.
+appId: io.github.narkotrxll.inputsplit
+productName: InputSplit
+copyright: Copyright (c) 2026 narkotrxll
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - out/**
+  - package.json
+  # Everything the app needs is bundled by Vite; no node_modules are shipped.
+  - '!node_modules/**'
+asar: true
+extraResources:
+  # CreateProcess/LoadLibrary need real files, so native binaries live outside app.asar.
+  - from: resources/native
+    to: native
+    filter: ['inputsplit-helper.exe', 'InputSplitHook64.dll']
+  - from: resources/icons
+    to: icons
+  - from: resources/licenses
+    to: licenses
+  - from: THIRD_PARTY_NOTICES.md
+    to: licenses/THIRD_PARTY_NOTICES.md
+  - from: LICENSE
+    to: licenses/LICENSE.txt
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: resources/icons/icon.ico
+  # InputSplit never needs administrator rights.
+  requestedExecutionLevel: asInvoker
+  artifactName: InputSplit-Setup-${version}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: InputSplit
+  uninstallDisplayName: InputSplit
+  license: LICENSE
+  deleteAppDataOnUninstall: false
+publish: null
