@@ -1,7 +1,5 @@
 #include "displays.h"
 
-#include <shellscalingapi.h>
-
 #include <algorithm>
 #include <map>
 #include <vector>
@@ -10,6 +8,24 @@
 
 namespace inputsplit::helper {
 namespace {
+
+// GetDpiForMonitor lives in shcore.dll. It is loaded at run time because its header
+// (shellscalingapi.h) pulls in RPC headers that break under WIN32_LEAN_AND_MEAN with MSVC.
+UINT EffectiveDpi(HMONITOR monitor) {
+  using GetDpiForMonitorFn = HRESULT(WINAPI*)(HMONITOR, int, UINT*, UINT*);
+  constexpr int kEffectiveDpi = 0;  // MDT_EFFECTIVE_DPI
+  static auto getDpiForMonitor = [] {
+    HMODULE shcore = LoadLibraryW(L"shcore.dll");
+    return shcore ? reinterpret_cast<GetDpiForMonitorFn>(GetProcAddress(shcore, "GetDpiForMonitor"))
+                  : nullptr;
+  }();
+  UINT dpiX = 96;
+  UINT dpiY = 96;
+  if (getDpiForMonitor == nullptr || FAILED(getDpiForMonitor(monitor, kEffectiveDpi, &dpiX, &dpiY))) {
+    return 96;
+  }
+  return dpiX;
+}
 
 struct TargetInfo {
   std::wstring friendlyName;
@@ -94,9 +110,7 @@ Json ListDisplays() {
   int index = 0;
   for (const MonitorEntry& monitor : Monitors()) {
     ++index;
-    UINT dpiX = 96;
-    UINT dpiY = 96;
-    GetDpiForMonitor(monitor.handle, MDT_EFFECTIVE_DPI, &dpiX, &dpiY);
+    UINT dpiX = EffectiveDpi(monitor.handle);
     DEVMODEW mode{};
     mode.dmSize = sizeof(mode);
     int refresh = 0;

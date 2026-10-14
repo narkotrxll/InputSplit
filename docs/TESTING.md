@@ -25,12 +25,10 @@ any game as supported until it passes the steps below on Windows.
 1. Windows 10 (21H2+) or Windows 11, x64, an Xbox controller, ideally two monitors.
 2. Get the binaries — either:
    - download the `inputsplit-native` artifact from the latest GitHub Actions run, **or**
-   - build them: install *Visual Studio 2022 Build Tools* (C++ workload) and CMake, then in
-     a "Developer PowerShell":
-     ```powershell
-     cmake -S native -B native\build -A x64
-     cmake --build native\build --config Release
-     ```
+   - build them: install *Visual Studio 2022 Build Tools* with the C++ workload
+     (`winget install Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"`),
+     then in the repository run `npm ci` and `npm run build:native`. CMake does not need to
+     be on `PATH`: the script uses the copy bundled with Visual Studio.
      Output: `native\build\bin\` → `inputsplit-helper.exe`, `InputSplitHook64.dll`,
      `InputSplitProbe.exe`.
 3. Windows Defender may flag `InputSplitHook64.dll` (it is injected into another process).

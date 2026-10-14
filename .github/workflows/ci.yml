@@ -14,8 +14,8 @@ jobs:
     name: Lint, typecheck, test, build (Linux)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -32,17 +32,17 @@ jobs:
     name: Native compile check (MinGW cross-compile)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends mingw-w64
-      - run: cmake -S native -B native/build-mingw -DCMAKE_TOOLCHAIN_FILE=native/cmake/mingw-w64-x86_64.cmake -DCMAKE_BUILD_TYPE=Release
+      - run: cmake -S native -B native/build-mingw -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/native/cmake/mingw-w64-x86_64.cmake" -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build native/build-mingw --parallel
 
   windows:
     name: Windows build (MSVC native + installer)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
