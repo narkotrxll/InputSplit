@@ -13,6 +13,7 @@ export const ru: Messages = {
     settings: 'Настройки',
     about: 'О программе',
     diagnostics: 'Диагностика',
+    coffee: 'Угостить кофе',
   },
   status: {
     notConfigured: 'Не настроено',
@@ -446,7 +447,6 @@ export const ru: Messages = {
     repository: 'Исходный код',
     issues: 'Сообщить о проблеме',
     docs: 'Документация',
-    coffee: 'Угостить кофе',
     credits: 'Основано на работе',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — техника подавления потери фокуса (общественное достояние).',

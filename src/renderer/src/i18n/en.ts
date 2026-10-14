@@ -17,6 +17,7 @@ export const en = {
     settings: 'Settings',
     about: 'About',
     diagnostics: 'Diagnostics',
+    coffee: 'Buy me a coffee',
   },
   status: {
     notConfigured: 'Not set up',
@@ -450,7 +451,6 @@ export const en = {
     repository: 'Source code',
     issues: 'Report a problem',
     docs: 'Documentation',
-    coffee: 'Buy me a coffee',
     credits: 'Built on the work of',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — the focus-loss technique (public domain).',

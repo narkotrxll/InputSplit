@@ -13,6 +13,7 @@ export const ja: Messages = {
     settings: '設定',
     about: 'アプリ情報',
     diagnostics: '診断',
+    coffee: 'コーヒーをおごる',
   },
   status: {
     notConfigured: '未設定',
@@ -460,7 +461,6 @@ export const ja: Messages = {
     repository: 'ソースコード',
     issues: '問題を報告',
     docs: 'ドキュメント',
-    coffee: 'コーヒーをおごる',
     credits: '以下の成果を基にしています',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss：フォーカス喪失を防ぐ手法（パブリックドメイン）。',

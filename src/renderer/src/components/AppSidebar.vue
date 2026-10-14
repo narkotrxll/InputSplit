@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   AppWindow,
+  Coffee,
   Bookmark,
   Gamepad2,
   Info,
@@ -11,6 +12,7 @@ import {
   Sparkles,
 } from '@lucide/vue'
 import { computed } from 'vue'
+import { call } from '../api'
 import { useBackendStore } from '../stores/backend'
 import { useUiStore } from '../stores/ui'
 import { useUpdatesStore } from '../stores/updates'
@@ -92,6 +94,15 @@ const dotClass = computed(
           }}</span>
         </span>
       </RouterLink>
+      <!-- Buy Me a Coffee's own button look: brand yellow with black text in both themes. -->
+      <button
+        type="button"
+        class="flex h-8.5 items-center gap-2.5 rounded-lg bg-[#ffdd00] px-2.5 text-[13px] font-semibold text-black shadow-sm transition-colors hover:bg-[#ffe633] active:bg-[#f2d200]"
+        @click="call('app:openExternal', 'coffee')"
+      >
+        <Coffee class="size-4 shrink-0" aria-hidden="true" />
+        <span class="min-w-0 flex-1 truncate text-left">{{ $t('nav.coffee') }}</span>
+      </button>
       <button
         type="button"
         class="flex h-8.5 items-center gap-2.5 rounded-lg px-2.5 text-[13px] font-medium text-text-muted transition-colors hover:bg-surface-2 hover:text-text"

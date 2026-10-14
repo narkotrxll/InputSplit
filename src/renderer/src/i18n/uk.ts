@@ -13,6 +13,7 @@ export const uk: Messages = {
     settings: 'Налаштування',
     about: 'Про програму',
     diagnostics: 'Діагностика',
+    coffee: 'Пригостити кавою',
   },
   status: {
     notConfigured: 'Не налаштовано',
@@ -446,7 +447,6 @@ export const uk: Messages = {
     repository: 'Вихідний код',
     issues: 'Повідомити про проблему',
     docs: 'Документація',
-    coffee: 'Пригостити кавою',
     credits: 'Створено на основі',
     creditsItems: {
       noFocusLoss: 'NoFocusLoss — техніка придушення втрати фокуса (суспільне надбання).',
