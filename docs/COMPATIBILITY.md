@@ -43,7 +43,7 @@ above. InputSplit also remembers locally how each game behaved the last time
 
 | Category | Why |
 |----------|-----|
-| Anti-cheat protected games (EAC, BattlEye, Vanguard, …) | InputSplit refuses to inject. |
+| Anti-cheat protected games (EAC, BattlEye, Vanguard, …) | InputSplit refuses to inject while anti-cheat protection is on (the default). With it off, the user is warned about bans before every start. |
 | Games reading controllers only via Windows.Gaming.Input | The API delivers input to the focused window only. |
 | Games using GameInput without background focus policy | No background input by default. |
 | Exclusive fullscreen | Windows leaves exclusive fullscreen on focus loss; use Borderless Windowed. |

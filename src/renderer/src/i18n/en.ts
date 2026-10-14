@@ -218,6 +218,8 @@ export const en = {
     windowsGamingInput:
       'This game uses Windows.Gaming.Input. Its controller input may stop when it is not focused.',
     gameInput: 'This game uses GameInput. Its controller input may stop when it is not focused.',
+    antiCheat:
+      'This game uses anti-cheat. Anti-cheat protection is off, so InputSplit will ask you to accept the ban risk before it starts.',
   },
   errors: {
     title: 'Something went wrong',
@@ -230,7 +232,7 @@ export const en = {
     appContainer: 'This is a sandboxed Store app. InputSplit cannot work with it.',
     unsupportedArchitecture: 'Only 64-bit games are supported for now. 32-bit support is planned.',
     antiCheat:
-      'This game is protected by an anti-cheat system. InputSplit never works with protected games, because changing them can get your account banned.',
+      'This game is protected by an anti-cheat system. InputSplit refuses protected games, because changing them can get your account banned. You can turn off anti-cheat protection in Settings at your own risk.',
     hookMissing: 'A part of InputSplit is missing. Please reinstall the app.',
     hookInvalid: 'A part of InputSplit is damaged. Please reinstall the app.',
     hookOutdated: 'The game still has an older InputSplit version loaded. Restart the game.',
@@ -243,6 +245,7 @@ export const en = {
     pipeFailed: 'InputSplit could not open its connection to the game.',
     processExited: 'The game exited while InputSplit was starting.',
     alreadyIsolated: 'This game is already isolated.',
+    riskDeclined: 'Isolation was cancelled because the ban risk was not accepted.',
     alreadyRunning: 'Isolation is already running. Stop it first.',
     targetChanged: 'The selected game was restarted. Choose its window again.',
     backendUnavailable: 'The InputSplit service is not running.',
@@ -431,6 +434,19 @@ export const en = {
     safety: 'Safety',
     emergencyHotkey: 'Emergency stop shortcut',
     emergencyHotkeyHint: 'Stops every isolation immediately, even if this window is frozen.',
+    antiCheatProtection: 'Anti-cheat protection',
+    antiCheatProtectionHint:
+      'Refuses games with anti-cheat, so InputSplit cannot get your account banned. Recommended.',
+    antiCheatOff:
+      'Off. You take the ban risk: InputSplit warns you before every online or anti-cheat game.',
+    antiCheatDialogTitle: 'Turn off anti-cheat protection?',
+    antiCheatDialogBody:
+      'InputSplit will stop refusing games with anti-cheat. It loads its code into the game, the same way some cheats do, and it does not hide this from the anti-cheat.',
+    antiCheatDialogBan:
+      'The game can ban your account for it, sometimes days later and permanently.',
+    antiCheatDialogBlock: 'Some anti-cheats stop the game from starting or close it anyway.',
+    antiCheatDialogAsk: 'InputSplit will warn you again before every online or anti-cheat game.',
+    antiCheatDialogConfirm: 'Turn off, I accept the risk',
     hotkeyRegistered: 'Registered',
     hotkeyNotRegistered: 'Not registered — another app may be using this shortcut',
     showOnboarding: 'Show the welcome guide again',
@@ -464,7 +480,7 @@ export const en = {
       'InputSplit loads a small component into the game you choose. Inside the game it hides focus changes, keeps the controller active and blocks the keyboard and mouse. Nothing outside the game is changed, and everything is undone when you stop.',
     risk: 'Use responsibly',
     riskBody:
-      'Loading code into another program is how some cheats work. InputSplit refuses games with anti-cheat protection, but online games without visible protection may still forbid it. Use it with single-player or offline games.',
+      'Loading code into another program is how some cheats work. By default InputSplit refuses games with anti-cheat protection, but online games without visible protection may still forbid it. Use it with single-player or offline games.',
     technical: 'Technical information',
   },
   onboarding: {
@@ -479,7 +495,7 @@ export const en = {
     risks: {
       title: 'Before you start',
       body: 'To keep the game running in the background, InputSplit loads a small component into it.',
-      point1: 'Games with anti-cheat protection are always refused, to protect your account.',
+      point1: 'Games with anti-cheat protection are refused by default, to protect your account.',
       point2: 'Use InputSplit with single-player or offline games.',
       point3: 'Some antivirus programs may warn about this technique.',
       point4: 'Press Ctrl+Alt+Shift+Q at any time to stop everything.',
@@ -549,6 +565,8 @@ export const en = {
       'This is a game launcher, not the game. Start the game from it, then choose the game window.',
     online:
       'This looks like an online game. InputSplit is made for single-player and offline games: it may not work here, and the game’s rules may forbid it.',
+    riskOff:
+      'Anti-cheat protection is off. InputSplit will ask you to accept the ban risk before isolating this game.',
     badgeLauncher: 'Launcher',
     badgeOnline: 'Online',
     badgeBlocked: 'Protected',

@@ -9,7 +9,7 @@ import type { CompatOutcome } from '@shared/compatibility'
 import { SEAT_COUNT, isSeatTaken, seatConflict } from '@shared/seats'
 import type { NativeBackend } from '../native/backend'
 import { Emitter } from '../util/emitter'
-import { IsolationService } from './isolation-service'
+import { IsolationService, type AntiCheatSafety } from './isolation-service'
 import type { Logger } from './logger'
 
 export interface SeatChange {
@@ -33,12 +33,17 @@ export class SeatsService {
     backend: NativeBackend,
     logger: Logger,
     private readonly twoPlayers: () => boolean,
+    safety?: AntiCheatSafety,
     now: () => number = Date.now,
   ) {
     this.seats = Array.from({ length: SEAT_COUNT }, (_, index) => {
       const seat = index as Seat
-      const service = new IsolationService(backend, logger, now, (input) =>
-        this.conflictFor(seat, input),
+      const service = new IsolationService(
+        backend,
+        logger,
+        now,
+        (input) => this.conflictFor(seat, input),
+        safety,
       )
       service.onChange((view) => this.changes.emit({ seat, view }))
       service.outcomes.on((outcome) => this.outcomes.emit(outcome))

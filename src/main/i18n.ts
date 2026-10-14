@@ -33,6 +33,12 @@ export interface MainTexts {
   notifyUpdateBody: string
   notifyReadyTitle: string // {version}
   notifyReadyBody: string
+  riskTitle: string
+  riskMessage: string // {game}
+  riskAntiCheat: string // {name}
+  riskDetail: string
+  riskContinue: string
+  riskCancel: string
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -66,6 +72,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Open InputSplit to install it.',
     notifyReadyTitle: 'InputSplit {version} is ready',
     notifyReadyBody: 'It installs when you restart InputSplit. Click to open it.',
+    riskTitle: 'Anti-cheat protection is off',
+    riskMessage: '{game} is an online game or uses anti-cheat. Isolate it anyway?',
+    riskAntiCheat: 'Detected anti-cheat: {name}.',
+    riskDetail:
+      'InputSplit loads its code into the game, the same way some cheats do. The game can ban your account for it, sometimes days later and permanently. Some anti-cheats also stop the game from starting or close it. Go ahead only if you accept that risk.',
+    riskContinue: 'Isolate anyway',
+    riskCancel: 'Cancel',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -99,6 +112,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyReadyTitle: 'InputSplit {version} готовий до встановлення',
     notifyReadyBody:
       'Оновлення встановиться після перезапуску InputSplit. Натисніть, щоб відкрити.',
+    riskTitle: 'Захист від античитів вимкнено',
+    riskMessage: '{game} — онлайн-гра або гра з античитом. Все одно ізолювати її?',
+    riskAntiCheat: 'Виявлено античит: {name}.',
+    riskDetail:
+      'InputSplit завантажує свій код у гру так само, як це роблять деякі чити. Гра може заблокувати ваш акаунт, іноді через кілька днів і назавжди. Деякі античити також не дають грі запуститися або закривають її. Продовжуйте, лише якщо приймаєте цей ризик.',
+    riskContinue: 'Все одно ізолювати',
+    riskCancel: 'Скасувати',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -131,6 +151,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Откройте InputSplit, чтобы установить её.',
     notifyReadyTitle: 'InputSplit {version} готов к установке',
     notifyReadyBody: 'Обновление установится после перезапуска InputSplit. Нажмите, чтобы открыть.',
+    riskTitle: 'Защита от античитов выключена',
+    riskMessage: '{game} — онлайн-игра или игра с античитом. Всё равно изолировать её?',
+    riskAntiCheat: 'Обнаружен античит: {name}.',
+    riskDetail:
+      'InputSplit загружает свой код в игру так же, как это делают некоторые читы. Игра может заблокировать ваш аккаунт, иногда спустя несколько дней и навсегда. Некоторые античиты также не дают игре запуститься или закрывают её. Продолжайте, только если принимаете этот риск.',
+    riskContinue: 'Всё равно изолировать',
+    riskCancel: 'Отмена',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -162,6 +189,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Abre InputSplit para instalarla.',
     notifyReadyTitle: 'InputSplit {version} está listo',
     notifyReadyBody: 'Se instala al reiniciar InputSplit. Haz clic para abrirlo.',
+    riskTitle: 'La protección antitrampas está desactivada',
+    riskMessage: '{game} es un juego online o usa antitrampas. ¿Aislarlo de todos modos?',
+    riskAntiCheat: 'Antitrampas detectado: {name}.',
+    riskDetail:
+      'InputSplit carga su código en el juego, igual que algunos trucos. El juego puede banear tu cuenta por ello, a veces días después y de forma permanente. Algunos antitrampas también impiden que el juego se inicie o lo cierran. Continúa solo si aceptas ese riesgo.',
+    riskContinue: 'Aislar de todos modos',
+    riskCancel: 'Cancelar',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -194,6 +228,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Öffne InputSplit, um es zu installieren.',
     notifyReadyTitle: 'InputSplit {version} ist bereit',
     notifyReadyBody: 'Es wird beim Neustart von InputSplit installiert. Zum Öffnen klicken.',
+    riskTitle: 'Anti-Cheat-Schutz ist aus',
+    riskMessage: '{game} ist ein Online-Spiel oder nutzt Anti-Cheat. Trotzdem isolieren?',
+    riskAntiCheat: 'Erkanntes Anti-Cheat: {name}.',
+    riskDetail:
+      'InputSplit lädt seinen Code in das Spiel, so wie es manche Cheats tun. Das Spiel kann dein Konto dafür sperren, manchmal erst Tage später und dauerhaft. Manche Anti-Cheats verhindern außerdem den Spielstart oder beenden das Spiel. Fahre nur fort, wenn du dieses Risiko akzeptierst.',
+    riskContinue: 'Trotzdem isolieren',
+    riskCancel: 'Abbrechen',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -226,6 +267,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: "Ouvrez InputSplit pour l'installer.",
     notifyReadyTitle: 'InputSplit {version} est prêt',
     notifyReadyBody: "Elle s'installe au redémarrage d'InputSplit. Cliquez pour l'ouvrir.",
+    riskTitle: 'La protection anti-triche est désactivée',
+    riskMessage: '{game} est un jeu en ligne ou utilise un anti-triche. L’isoler quand même ?',
+    riskAntiCheat: 'Anti-triche détecté : {name}.',
+    riskDetail:
+      'InputSplit charge son code dans le jeu, comme le font certains logiciels de triche. Le jeu peut bannir votre compte pour cela, parfois des jours plus tard et définitivement. Certains anti-triches empêchent aussi le jeu de démarrer ou le ferment. Ne continuez que si vous acceptez ce risque.',
+    riskContinue: 'Isoler quand même',
+    riskCancel: 'Annuler',
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -257,6 +305,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Abra o InputSplit para instalar.',
     notifyReadyTitle: 'InputSplit {version} está pronto',
     notifyReadyBody: 'Ele é instalado quando você reiniciar o InputSplit. Clique para abrir.',
+    riskTitle: 'A proteção antitrapaça está desativada',
+    riskMessage: '{game} é um jogo online ou usa antitrapaça. Isolar mesmo assim?',
+    riskAntiCheat: 'Antitrapaça detectado: {name}.',
+    riskDetail:
+      'O InputSplit carrega o próprio código no jogo, do mesmo jeito que alguns cheats. O jogo pode banir sua conta por isso, às vezes dias depois e de forma permanente. Alguns antitrapaças também impedem o jogo de abrir ou o fecham. Continue só se aceitar esse risco.',
+    riskContinue: 'Isolar mesmo assim',
+    riskCancel: 'Cancelar',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -288,6 +343,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Otwórz InputSplit, aby ją zainstalować.',
     notifyReadyTitle: 'InputSplit {version} jest gotowy',
     notifyReadyBody: 'Zainstaluje się po ponownym uruchomieniu InputSplit. Kliknij, aby otworzyć.',
+    riskTitle: 'Ochrona przed anti-cheatami jest wyłączona',
+    riskMessage: '{game} to gra online lub gra z anti-cheatem. Mimo to izolować?',
+    riskAntiCheat: 'Wykryty anti-cheat: {name}.',
+    riskDetail:
+      'InputSplit ładuje swój kod do gry, tak jak robią to niektóre cheaty. Gra może za to zbanować twoje konto, czasem po kilku dniach i na stałe. Niektóre anti-cheaty nie pozwalają też uruchomić gry albo ją zamykają. Kontynuuj tylko, jeśli akceptujesz to ryzyko.',
+    riskContinue: 'Mimo to izoluj',
+    riskCancel: 'Anuluj',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -320,6 +382,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'Yüklemek için InputSplit’i açın.',
     notifyReadyTitle: 'InputSplit {version} hazır',
     notifyReadyBody: 'InputSplit yeniden başlatıldığında yüklenir. Açmak için tıklayın.',
+    riskTitle: 'Hile önleme koruması kapalı',
+    riskMessage: '{game} çevrimiçi bir oyun veya hile önleme kullanıyor. Yine de yalıtılsın mı?',
+    riskAntiCheat: 'Algılanan hile önleme: {name}.',
+    riskDetail:
+      'InputSplit kendi kodunu oyuna yükler; bazı hileler de aynı şekilde çalışır. Oyun bu yüzden hesabınızı yasaklayabilir, bazen günler sonra ve kalıcı olarak. Bazı hile önleme sistemleri oyunun açılmasını da engeller ya da oyunu kapatır. Yalnızca bu riski kabul ediyorsanız devam edin.',
+    riskContinue: 'Yine de yalıt',
+    riskCancel: 'İptal',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -350,6 +419,13 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: '打开 InputSplit 进行安装。',
     notifyReadyTitle: 'InputSplit {version} 已准备就绪',
     notifyReadyBody: '重启 InputSplit 时安装。点击打开。',
+    riskTitle: '反作弊保护已关闭',
+    riskMessage: '{game} 是联网游戏或使用了反作弊。仍要隔离吗？',
+    riskAntiCheat: '检测到的反作弊：{name}。',
+    riskDetail:
+      'InputSplit 会把自己的代码加载到游戏中，部分外挂也是这样做的。游戏可能因此封禁你的账号，有时在几天后才封，而且是永久封禁。有些反作弊还会阻止游戏启动或直接关闭游戏。只有在你接受这一风险时才继续。',
+    riskContinue: '仍要隔离',
+    riskCancel: '取消',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -383,6 +459,14 @@ const texts: Record<Locale, MainTexts> = {
     notifyUpdateBody: 'InputSplit を開いてインストールしてください。',
     notifyReadyTitle: 'InputSplit {version} の準備ができました',
     notifyReadyBody: 'InputSplit を再起動するとインストールされます。クリックして開きます。',
+    riskTitle: 'アンチチート保護がオフです',
+    riskMessage:
+      '{game} はオンラインゲーム、またはアンチチートを使用しています。それでも分離しますか？',
+    riskAntiCheat: '検出されたアンチチート: {name}。',
+    riskDetail:
+      'InputSplit はゲームに自身のコードを読み込みます。これは一部のチートと同じ方法です。そのためゲームがアカウントを BAN することがあり、数日後に永久 BAN になる場合もあります。アンチチートによってはゲームの起動を妨げたり、ゲームを終了させたりします。このリスクを受け入れる場合のみ続行してください。',
+    riskContinue: 'それでも分離',
+    riskCancel: 'キャンセル',
   },
 }
 

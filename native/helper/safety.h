@@ -3,6 +3,10 @@
 // This check lives in native code on purpose: the UI only *displays* the verdict. Even a
 // modified UI cannot make the helper inject into a refused process, because
 // startIsolation runs the same check again before injecting.
+//
+// Anti-cheat protection is on by default. With `allowAntiCheat` (the user turned the
+// protection off in Settings and accepted the ban risk) a detected anti-cheat becomes a
+// warning instead of a blocker. Nothing is hidden from the anti-cheat either way.
 #pragma once
 
 #include <optional>
@@ -26,7 +30,8 @@ struct TargetVerdict {
   std::optional<std::string> antiCheat;
 };
 
-TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath);
+TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath,
+                          bool allowAntiCheat = false);
 
 Json VerdictToJson(const TargetVerdict& verdict);
 

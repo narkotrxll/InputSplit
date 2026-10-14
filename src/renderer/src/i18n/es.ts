@@ -217,6 +217,8 @@ export const es: Messages = {
       'Este juego usa Windows.Gaming.Input. La entrada del mando puede detenerse cuando no tiene el foco.',
     gameInput:
       'Este juego usa GameInput. La entrada del mando puede detenerse cuando no tiene el foco.',
+    antiCheat:
+      'Este juego usa antitrampas. La protección está desactivada, así que InputSplit te pedirá aceptar el riesgo de baneo antes de empezar.',
   },
   errors: {
     title: 'Algo salió mal',
@@ -232,7 +234,7 @@ export const es: Messages = {
     unsupportedArchitecture:
       'De momento solo se admiten juegos de 64 bits. El soporte de 32 bits está previsto.',
     antiCheat:
-      'Este juego está protegido por un sistema antitrampas. InputSplit nunca trabaja con juegos protegidos, porque modificarlos puede hacer que te baneen la cuenta.',
+      'Este juego está protegido por un sistema antitrampas. InputSplit rechaza los juegos protegidos, porque modificarlos puede hacer que baneen tu cuenta. Puedes desactivar la protección antitrampas en Ajustes bajo tu propio riesgo.',
     hookMissing: 'Falta una parte de InputSplit. Reinstala la aplicación.',
     hookInvalid: 'Una parte de InputSplit está dañada. Reinstala la aplicación.',
     hookOutdated:
@@ -247,6 +249,7 @@ export const es: Messages = {
     pipeFailed: 'InputSplit no pudo abrir su conexión con el juego.',
     processExited: 'El juego se cerró mientras InputSplit se iniciaba.',
     alreadyIsolated: 'Este juego ya está aislado.',
+    riskDeclined: 'Se canceló el aislamiento porque no se aceptó el riesgo de baneo.',
     alreadyRunning: 'El aislamiento ya está activo. Detenlo primero.',
     targetChanged: 'El juego elegido se reinició. Vuelve a elegir su ventana.',
     backendUnavailable: 'El servicio de InputSplit no está activo.',
@@ -439,6 +442,21 @@ export const es: Messages = {
     emergencyHotkey: 'Atajo de parada de emergencia',
     emergencyHotkeyHint:
       'Detiene todo aislamiento al instante, aunque esta ventana esté bloqueada.',
+    antiCheatProtection: 'Protección antitrampas',
+    antiCheatProtectionHint:
+      'Rechaza los juegos con antitrampas para que InputSplit no haga que baneen tu cuenta. Recomendado.',
+    antiCheatOff:
+      'Desactivada. El riesgo de baneo es tuyo: InputSplit te avisa antes de cada juego online o con antitrampas.',
+    antiCheatDialogTitle: '¿Desactivar la protección antitrampas?',
+    antiCheatDialogBody:
+      'InputSplit dejará de rechazar los juegos con antitrampas. Carga su código en el juego, igual que algunos trucos, y no lo oculta del antitrampas.',
+    antiCheatDialogBan:
+      'El juego puede banear tu cuenta por ello, a veces días después y de forma permanente.',
+    antiCheatDialogBlock:
+      'Algunos antitrampas impiden igualmente que el juego se inicie o lo cierran.',
+    antiCheatDialogAsk:
+      'InputSplit te avisará de nuevo antes de cada juego online o con antitrampas.',
+    antiCheatDialogConfirm: 'Desactivar, acepto el riesgo',
     hotkeyRegistered: 'Registrado',
     hotkeyNotRegistered: 'No registrado: puede que otra aplicación use este atajo',
     showOnboarding: 'Volver a mostrar la guía de bienvenida',
@@ -473,7 +491,7 @@ export const es: Messages = {
       'InputSplit carga un pequeño componente en el juego que elijas. Dentro del juego oculta los cambios de foco, mantiene activo el mando y bloquea el teclado y el ratón. Fuera del juego no cambia nada, y todo se deshace al detenerlo.',
     risk: 'Úsalo con responsabilidad',
     riskBody:
-      'Cargar código en otro programa es como funcionan algunos trucos. InputSplit rechaza los juegos con antitrampas, pero los juegos en línea sin protección visible pueden prohibirlo igualmente. Úsalo con juegos para un jugador o sin conexión.',
+      'Cargar código en otro programa es como funcionan algunos trucos. Por defecto InputSplit rechaza los juegos con antitrampas, pero los juegos online sin protección visible pueden prohibirlo igualmente. Úsalo con juegos para un jugador o sin conexión.',
     technical: 'Información técnica',
   },
   onboarding: {
@@ -488,7 +506,7 @@ export const es: Messages = {
     risks: {
       title: 'Antes de empezar',
       body: 'Para que el juego siga funcionando en segundo plano, InputSplit carga en él un pequeño componente.',
-      point1: 'Los juegos con antitrampas siempre se rechazan, para proteger tu cuenta.',
+      point1: 'Los juegos con antitrampas se rechazan por defecto, para proteger tu cuenta.',
       point2: 'Usa InputSplit con juegos para un jugador o sin conexión.',
       point3: 'Algunos antivirus pueden avisar sobre esta técnica.',
       point4: 'Pulsa Ctrl+Alt+Shift+Q en cualquier momento para detenerlo todo.',
@@ -560,6 +578,8 @@ export const es: Messages = {
       'Esto es un lanzador, no el juego. Inicia el juego desde él y luego elige la ventana del juego.',
     online:
       'Parece un juego en línea. InputSplit está pensado para juegos individuales y sin conexión: puede no funcionar aquí y las reglas del juego pueden prohibirlo.',
+    riskOff:
+      'La protección antitrampas está desactivada. InputSplit te pedirá aceptar el riesgo de baneo antes de aislar este juego.',
     badgeLauncher: 'Lanzador',
     badgeOnline: 'En línea',
     badgeBlocked: 'Protegido',

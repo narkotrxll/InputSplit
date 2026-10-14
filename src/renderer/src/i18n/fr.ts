@@ -216,6 +216,8 @@ export const fr: Messages = {
     windowsGamingInput:
       'Ce jeu utilise Windows.Gaming.Input. Les entrées manette peuvent s’arrêter sans le focus.',
     gameInput: 'Ce jeu utilise GameInput. Les entrées manette peuvent s’arrêter sans le focus.',
+    antiCheat:
+      'Ce jeu utilise un anti-triche. La protection est désactivée : InputSplit vous demandera d’accepter le risque de bannissement avant de démarrer.',
   },
   errors: {
     title: 'Un problème est survenu',
@@ -231,7 +233,7 @@ export const fr: Messages = {
     unsupportedArchitecture:
       'Seuls les jeux 64 bits sont pris en charge pour l’instant. Le 32 bits est prévu.',
     antiCheat:
-      'Ce jeu est protégé par un anti-triche. InputSplit ne fonctionne jamais avec les jeux protégés, car les modifier peut entraîner le bannissement de votre compte.',
+      'Ce jeu est protégé par un système anti-triche. InputSplit refuse les jeux protégés, car les modifier peut faire bannir votre compte. Vous pouvez désactiver la protection anti-triche dans les Paramètres à vos risques.',
     hookMissing: 'Une partie d’InputSplit est manquante. Réinstallez l’application.',
     hookInvalid: 'Une partie d’InputSplit est endommagée. Réinstallez l’application.',
     hookOutdated:
@@ -245,6 +247,7 @@ export const fr: Messages = {
     pipeFailed: 'InputSplit n’a pas pu ouvrir sa connexion avec le jeu.',
     processExited: 'Le jeu s’est fermé pendant le démarrage d’InputSplit.',
     alreadyIsolated: 'Ce jeu est déjà isolé.',
+    riskDeclined: 'L’isolation a été annulée, car le risque de bannissement n’a pas été accepté.',
     alreadyRunning: 'L’isolation est déjà en cours. Arrêtez-la d’abord.',
     targetChanged: 'Le jeu choisi a redémarré. Choisissez à nouveau sa fenêtre.',
     backendUnavailable: 'Le service InputSplit n’est pas actif.',
@@ -438,6 +441,21 @@ export const fr: Messages = {
     safety: 'Sécurité',
     emergencyHotkey: 'Raccourci d’arrêt d’urgence',
     emergencyHotkeyHint: 'Arrête immédiatement toute isolation, même si cette fenêtre est figée.',
+    antiCheatProtection: 'Protection anti-triche',
+    antiCheatProtectionHint:
+      'Refuse les jeux avec anti-triche, pour qu’InputSplit ne fasse pas bannir votre compte. Recommandé.',
+    antiCheatOff:
+      'Désactivée. Le risque de bannissement est pour vous : InputSplit vous avertit avant chaque jeu en ligne ou avec anti-triche.',
+    antiCheatDialogTitle: 'Désactiver la protection anti-triche ?',
+    antiCheatDialogBody:
+      'InputSplit ne refusera plus les jeux avec anti-triche. Il charge son code dans le jeu, comme certains logiciels de triche, et ne le cache pas à l’anti-triche.',
+    antiCheatDialogBan:
+      'Le jeu peut bannir votre compte pour cela, parfois des jours plus tard et définitivement.',
+    antiCheatDialogBlock:
+      'Certains anti-triches empêchent quand même le jeu de démarrer ou le ferment.',
+    antiCheatDialogAsk:
+      'InputSplit vous avertira à nouveau avant chaque jeu en ligne ou avec anti-triche.',
+    antiCheatDialogConfirm: 'Désactiver, j’accepte le risque',
     hotkeyRegistered: 'Enregistré',
     hotkeyNotRegistered: 'Non enregistré — une autre application utilise peut-être ce raccourci',
     showOnboarding: 'Revoir le guide de bienvenue',
@@ -472,7 +490,7 @@ export const fr: Messages = {
       'InputSplit charge un petit composant dans le jeu choisi. Dans le jeu, il masque les changements de focus, garde la manette active et bloque le clavier et la souris. Rien n’est modifié en dehors du jeu, et tout est annulé à l’arrêt.',
     risk: 'À utiliser de façon responsable',
     riskBody:
-      'Charger du code dans un autre programme, c’est aussi ainsi que fonctionnent certains cheats. InputSplit refuse les jeux protégés par un anti-triche, mais les jeux en ligne sans protection visible peuvent quand même l’interdire. Utilisez-le avec des jeux solo ou hors ligne.',
+      'Charger du code dans un autre programme, c’est ainsi que fonctionnent certains logiciels de triche. Par défaut, InputSplit refuse les jeux avec anti-triche, mais les jeux en ligne sans protection visible peuvent quand même l’interdire. Utilisez-le avec des jeux solo ou hors ligne.',
     technical: 'Informations techniques',
   },
   onboarding: {
@@ -488,7 +506,7 @@ export const fr: Messages = {
     risks: {
       title: 'Avant de commencer',
       body: 'Pour que le jeu continue en arrière-plan, InputSplit y charge un petit composant.',
-      point1: 'Les jeux avec anti-triche sont toujours refusés, pour protéger votre compte.',
+      point1: 'Les jeux avec anti-triche sont refusés par défaut, pour protéger votre compte.',
       point2: 'Utilisez InputSplit avec des jeux solo ou hors ligne.',
       point3: 'Certains antivirus peuvent signaler cette technique.',
       point4: 'Appuyez sur Ctrl+Alt+Maj+Q à tout moment pour tout arrêter.',
@@ -561,6 +579,8 @@ export const fr: Messages = {
       'Ceci est un lanceur, pas le jeu. Lancez le jeu depuis celui-ci, puis choisissez la fenêtre du jeu.',
     online:
       "Cela ressemble à un jeu en ligne. InputSplit est conçu pour les jeux solo et hors ligne : il peut ne pas fonctionner ici, et les règles du jeu peuvent l'interdire.",
+    riskOff:
+      'La protection anti-triche est désactivée. InputSplit vous demandera d’accepter le risque de bannissement avant d’isoler ce jeu.',
     badgeLauncher: 'Lanceur',
     badgeOnline: 'En ligne',
     badgeBlocked: 'Protégé',

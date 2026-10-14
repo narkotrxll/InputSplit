@@ -133,7 +133,8 @@ std::optional<std::string> FindAntiCheatInFolders(const std::wstring& exePath) {
   return std::nullopt;
 }
 
-TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath) {
+TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath,
+                          bool allowAntiCheat) {
   TargetVerdict verdict;
   verdict.process = QueryProcess(pid, true);
   const ProcessDetails& process = verdict.process;
@@ -178,7 +179,10 @@ TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath) {
   if (!verdict.antiCheat && !process.exePath.empty()) {
     verdict.antiCheat = FindAntiCheatInFolders(process.exePath);
   }
-  if (verdict.antiCheat) {
+  if (verdict.antiCheat && allowAntiCheat) {
+    warn("antiCheat", "Protected by " + *verdict.antiCheat +
+                          ". Anti-cheat protection is off: the user accepted the ban risk.");
+  } else if (verdict.antiCheat) {
     block("antiCheat", "Protected by " + *verdict.antiCheat +
                            ". InputSplit never injects into anti-cheat protected games.");
   }

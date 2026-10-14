@@ -18,8 +18,8 @@ Free and open source · Windows 10/11 · MIT License
 > [!IMPORTANT]
 > **Status: early preview (0.1.x).** The first tests on real Windows with an Xbox controller
 > went well: the game keeps its controller in the background. This works in
-> **single-player games only**; games with anti-cheat are refused and online games are not
-> supported (see [Use responsibly](#use-responsibly)). Per-game results are collected in the
+> **single-player games only**; games with anti-cheat are refused by default and online games
+> are not supported (see [Use responsibly](#use-responsibly)). Per-game results are collected in the
 > [compatibility matrix](docs/COMPATIBILITY.md). Screenshots come from a development build.
 
 ## What it does
@@ -97,8 +97,18 @@ again. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#3-fail-safe-chain-th
 Loading code into another program is also how some cheats work. InputSplit:
 
 - **refuses** games protected by anti-cheat systems (Easy Anti-Cheat, BattlEye, Vanguard,
-  FACEIT, nProtect, XIGNCODE, …) and explains why — it never tries to hide from them;
-- works only in **single-player / offline** games;
+  FACEIT, nProtect, XIGNCODE, …) and games known to ban for it (Counter-Strike 2, Dota 2,
+  Team Fortress 2, Deadlock, Roblox), and explains why. This **anti-cheat protection** is on
+  by default;
+- never tries to hide from an anti-cheat or get around it;
+- works reliably only in **single-player / offline** games.
+
+You can turn anti-cheat protection off in **Settings → Safety** if you want to decide for
+yourself. InputSplit then shows a warning when you switch it off, and again before every start
+of an online game or a game with anti-cheat. Read it carefully: **the game can ban your
+account, sometimes days later and permanently**, and some anti-cheats stop the game from
+starting or close it anyway. Nothing about how InputSplit works changes, so the anti-cheat sees
+exactly what it would see with the protection on. You take that risk yourself.
 - may be flagged by antivirus software until releases are code-signed.
 
 ## Known limitations

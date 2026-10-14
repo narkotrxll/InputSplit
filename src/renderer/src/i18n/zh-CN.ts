@@ -202,6 +202,7 @@ export const zhCN: Messages = {
       'Steam 正在运行。如果此游戏开启了 Steam 输入，游戏在后台时手柄可能会移动鼠标。请在 Steam 的游戏属性中关闭 Steam 输入。',
     windowsGamingInput: '此游戏使用 Windows.Gaming.Input。失去焦点时手柄输入可能会停止。',
     gameInput: '此游戏使用 GameInput。失去焦点时手柄输入可能会停止。',
+    antiCheat: '此游戏使用了反作弊。保护已关闭，因此开始前 InputSplit 会请你确认接受封号风险。',
   },
   errors: {
     title: '出了点问题',
@@ -213,7 +214,7 @@ export const zhCN: Messages = {
     appContainer: '这是沙盒化的应用商店应用。InputSplit 无法处理它。',
     unsupportedArchitecture: '目前仅支持 64 位游戏。32 位支持已在计划中。',
     antiCheat:
-      '此游戏受反作弊系统保护。InputSplit 从不处理受保护的游戏，因为修改它们可能导致你的账号被封禁。',
+      '此游戏受反作弊系统保护。InputSplit 会拒绝受保护的游戏，因为修改它们可能导致账号被封。你可以在“设置”中自行承担风险关闭反作弊保护。',
     hookMissing: 'InputSplit 缺少部分组件。请重新安装。',
     hookInvalid: 'InputSplit 的部分组件已损坏。请重新安装。',
     hookOutdated: '游戏中仍加载着旧版 InputSplit。请重启游戏。',
@@ -225,6 +226,7 @@ export const zhCN: Messages = {
     pipeFailed: 'InputSplit 无法打开与游戏的连接。',
     processExited: 'InputSplit 启动期间游戏退出了。',
     alreadyIsolated: '此游戏已在隔离中。',
+    riskDeclined: '由于未接受封号风险，隔离已取消。',
     alreadyRunning: '隔离已在运行。请先停止。',
     targetChanged: '所选游戏已重新启动。请重新选择它的窗口。',
     backendUnavailable: 'InputSplit 服务未运行。',
@@ -412,6 +414,17 @@ export const zhCN: Messages = {
     safety: '安全',
     emergencyHotkey: '紧急停止快捷键',
     emergencyHotkeyHint: '立即停止所有隔离，即使此窗口无响应也有效。',
+    antiCheatProtection: '反作弊保护',
+    antiCheatProtectionHint: '拒绝带反作弊的游戏，避免你的账号因 InputSplit 被封。建议开启。',
+    antiCheatOff:
+      '已关闭。封号风险由你承担：每次启动联网或带反作弊的游戏前，InputSplit 都会提醒你。',
+    antiCheatDialogTitle: '要关闭反作弊保护吗？',
+    antiCheatDialogBody:
+      'InputSplit 将不再拒绝带反作弊的游戏。它会像部分外挂一样把自己的代码加载到游戏中，并且不会对反作弊隐藏这一点。',
+    antiCheatDialogBan: '游戏可能因此封禁你的账号，有时在几天后才封，而且是永久封禁。',
+    antiCheatDialogBlock: '有些反作弊仍会阻止游戏启动或直接关闭游戏。',
+    antiCheatDialogAsk: '每次启动联网或带反作弊的游戏前，InputSplit 都会再次提醒你。',
+    antiCheatDialogConfirm: '关闭，我接受风险',
     hotkeyRegistered: '已注册',
     hotkeyNotRegistered: '未注册：其他应用可能正在使用此快捷键',
     showOnboarding: '再次显示欢迎指南',
@@ -445,7 +458,7 @@ export const zhCN: Messages = {
       'InputSplit 会将一个小组件加载到你选择的游戏中。它在游戏内隐藏焦点变化、保持手柄可用，并屏蔽键盘和鼠标。游戏之外的一切都不会改变，停止后所有更改都会撤销。',
     risk: '请负责任地使用',
     riskBody:
-      '将代码加载到其他程序中也是某些外挂的工作方式。InputSplit 会拒绝带有反作弊保护的游戏，但没有明显保护的在线游戏也可能禁止这种做法。请在单人或离线游戏中使用。',
+      '把代码加载到其他程序中是部分外挂的工作方式。InputSplit 默认拒绝带反作弊保护的游戏，但没有明显保护的联网游戏也可能禁止这样做。请在单人或离线游戏中使用。',
     technical: '技术信息',
   },
   onboarding: {
@@ -460,7 +473,7 @@ export const zhCN: Messages = {
     risks: {
       title: '开始之前',
       body: '为了让游戏在后台继续运行，InputSplit 会向其中加载一个小组件。',
-      point1: '为保护你的账号，带反作弊的游戏一律会被拒绝。',
+      point1: '为保护你的账号，带反作弊保护的游戏默认会被拒绝。',
       point2: '请在单人或离线游戏中使用 InputSplit。',
       point3: '部分杀毒软件可能会对此技术发出警告。',
       point4: '随时按 Ctrl+Alt+Shift+Q 即可停止一切。',
@@ -527,6 +540,7 @@ export const zhCN: Messages = {
     launcher: '这是游戏启动器，而不是游戏本身。请从中启动游戏，然后选择游戏窗口。',
     online:
       '这看起来是一款在线游戏。InputSplit 专为单人和离线游戏设计：在这里可能无法使用，且游戏规则可能禁止这样做。',
+    riskOff: '反作弊保护已关闭。隔离此游戏前，InputSplit 会请你确认接受封号风险。',
     badgeLauncher: '启动器',
     badgeOnline: '在线',
     badgeBlocked: '受保护',

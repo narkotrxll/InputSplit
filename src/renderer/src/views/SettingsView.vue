@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import { Download, ExternalLink, FolderOpen, RefreshCw, RotateCcw, RotateCw } from '@lucide/vue'
-import { computed } from 'vue'
+import {
+  Download,
+  ExternalLink,
+  FolderOpen,
+  RefreshCw,
+  RotateCcw,
+  RotateCw,
+  ShieldOff,
+} from '@lucide/vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { FeatureName } from '@shared/domain'
 import { LOCALE_NAMES, LOCALES, type LanguageSetting } from '@shared/locales'
@@ -8,6 +16,7 @@ import FeatureList from '../components/FeatureList.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
 import UiCard from '../components/ui/UiCard.vue'
+import UiDialog from '../components/ui/UiDialog.vue'
 import UiKbd from '../components/ui/UiKbd.vue'
 import UiSegmented from '../components/ui/UiSegmented.vue'
 import UiSelect from '../components/ui/UiSelect.vue'
@@ -52,6 +61,17 @@ function setDefault(name: FeatureName, value: boolean): void {
 async function exportDiagnostics(): Promise<void> {
   const result = await call('diagnostics:export')
   if (result.saved) ui.toast({ tone: 'success', title: t('settings.exported') })
+}
+
+/** Turning anti-cheat protection off always goes through the risk warning. */
+const antiCheatDialog = ref(false)
+function setAntiCheatProtection(on: boolean): void {
+  if (on) void store.update({ antiCheatProtection: true })
+  else antiCheatDialog.value = true
+}
+function turnOffAntiCheatProtection(): void {
+  antiCheatDialog.value = false
+  void store.update({ antiCheatProtection: false })
 }
 
 function showOnboarding(): void {
@@ -217,6 +237,24 @@ function showOnboarding(): void {
         <div class="divide-y divide-line">
           <label class="flex items-center justify-between gap-6 px-5 py-3.5">
             <span>
+              <span class="block text-[13.5px] text-text">{{
+                $t('settings.antiCheatProtection')
+              }}</span>
+              <span class="block text-[12.5px] text-text-muted">{{
+                $t('settings.antiCheatProtectionHint')
+              }}</span>
+              <span v-if="!s.antiCheatProtection" class="mt-1 block text-[12px] text-danger">{{
+                $t('settings.antiCheatOff')
+              }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.antiCheatProtection"
+              :label="$t('settings.antiCheatProtection')"
+              @update:model-value="setAntiCheatProtection"
+            />
+          </label>
+          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
+            <span>
               <span class="flex items-center gap-2 text-[13.5px] text-text">
                 {{ $t('settings.emergencyHotkey') }}
                 <span class="flex gap-0.5"
@@ -374,5 +412,24 @@ function showOnboarding(): void {
         </div>
       </UiCard>
     </div>
+
+    <UiDialog
+      v-model:open="antiCheatDialog"
+      :title="$t('settings.antiCheatDialogTitle')"
+      width="sm"
+    >
+      <p class="text-[13px] text-text">{{ $t('settings.antiCheatDialogBody') }}</p>
+      <ul class="mt-3 flex list-disc flex-col gap-1.5 pl-5 text-[13px] text-text">
+        <li class="font-medium text-danger">{{ $t('settings.antiCheatDialogBan') }}</li>
+        <li>{{ $t('settings.antiCheatDialogBlock') }}</li>
+        <li>{{ $t('settings.antiCheatDialogAsk') }}</li>
+      </ul>
+      <template #footer>
+        <UiButton @click="antiCheatDialog = false">{{ $t('common.cancel') }}</UiButton>
+        <UiButton variant="danger" :icon="ShieldOff" @click="turnOffAntiCheatProtection">{{
+          $t('settings.antiCheatDialogConfirm')
+        }}</UiButton>
+      </template>
+    </UiDialog>
   </div>
 </template>

@@ -30,6 +30,7 @@ struct StartRequest {
   HWND window = nullptr;
   uint32_t features = 0;
   uint32_t xinputSlot = proto::kNoSlot;
+  bool allowAntiCheat = false;  // see CheckTarget
 };
 
 class Session;

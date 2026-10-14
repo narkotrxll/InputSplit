@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { DEFAULT_FEATURES, type StartIsolationInput } from '@shared/domain'
 import { AppException } from '@shared/errors'
 import { FakeBackend, sessionStatus } from '../native/__fixtures__/fake-backend'
-import { IsolationService } from './isolation-service'
+import { IsolationService, type RiskInfo } from './isolation-service'
 import { Logger } from './logger'
 
 const input: StartIsolationInput = {
@@ -182,5 +182,78 @@ describe('IsolationService', () => {
     await service.start(input)
     expect(outcomes).toEqual([{ exeName: 'game.exe', outcome: 'failed' }])
     expect(service.lastStart()).toEqual(input)
+  })
+
+  describe('with anti-cheat protection off', () => {
+    function unprotected(accept: boolean) {
+      const t = setup()
+      const asked: RiskInfo[] = []
+      const service = new IsolationService(t.backend, new Logger(null), () => 100_000, undefined, {
+        protection: () => false,
+        confirmRisk: async (risk) => {
+          asked.push(risk)
+          return accept
+        },
+      })
+      return { ...t, service, asked }
+    }
+    const vacGame: StartIsolationInput = {
+      ...input,
+      target: { ...input.target, title: 'Counter-Strike 2', exeName: 'cs2.exe' },
+    }
+
+    it('asks before a blocked game and starts once the risk is accepted', async () => {
+      const { backend, service, asked } = unprotected(true)
+      backend.handlers.checkTarget = () => ({
+        pid: 42,
+        exePath: 'C:\\Games\\game.exe',
+        architecture: 'x64',
+        blockers: [],
+        warnings: [],
+        antiCheat: null,
+      })
+      const view = await service.start(vacGame)
+      expect(view.phase).toBe('running')
+      expect(asked).toEqual([{ game: 'Counter-Strike 2', antiCheat: 'Valve Anti-Cheat (VAC)' }])
+      const check = backend.calls.find((c) => c.method === 'checkTarget')
+      const start = backend.calls.find((c) => c.method === 'startIsolation')
+      expect(check?.params).toMatchObject({ allowAntiCheat: true })
+      expect(start?.params).toMatchObject({ allowAntiCheat: true })
+    })
+
+    it('does not inject when the risk is declined', async () => {
+      const { backend, service } = unprotected(false)
+      const view = await service.start(vacGame)
+      expect(view.phase).toBe('failed')
+      expect(view.error?.code).toBe('riskDeclined')
+      expect(backend.calls.map((c) => c.method)).not.toContain('startIsolation')
+    })
+
+    it('asks for an anti-cheat the helper found', async () => {
+      const { backend, service, asked } = unprotected(true)
+      backend.handlers.checkTarget = () => ({
+        pid: 42,
+        exePath: 'C:\\Games\\game.exe',
+        architecture: 'x64',
+        blockers: [],
+        warnings: [{ code: 'antiCheat', message: 'Protected by BattlEye.' }],
+        antiCheat: 'BattlEye',
+      })
+      await service.start(input)
+      expect(asked).toEqual([{ game: 'Game', antiCheat: 'BattlEye' }])
+    })
+
+    it('asks before an online game', async () => {
+      const { service, asked } = unprotected(true)
+      await service.start({ ...input, target: { ...input.target, exeName: 'Among Us.exe' } })
+      expect(asked).toEqual([{ game: 'Game', antiCheat: null }])
+    })
+
+    it('does not ask for a single-player game', async () => {
+      const { service, asked } = unprotected(false)
+      const view = await service.start(input)
+      expect(view.phase).toBe('running')
+      expect(asked).toEqual([])
+    })
   })
 })

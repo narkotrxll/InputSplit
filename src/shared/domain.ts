@@ -382,6 +382,11 @@ const ADDED_SETTINGS_FIELDS = {
   twoPlayers: z.boolean(),
   /** True once the language was picked in Settings (see SettingsService.load). */
   languageChosen: z.boolean(),
+  /**
+   * Refuse games with anti-cheat and the built-in blocked titles. The user may turn it off
+   * and accept the ban risk; risky games then need a confirmation on every start.
+   */
+  antiCheatProtection: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -393,6 +398,7 @@ export const SettingsSchema = z.object({
   checkForUpdates: ADDED_SETTINGS_FIELDS.checkForUpdates.default(true),
   twoPlayers: ADDED_SETTINGS_FIELDS.twoPlayers.default(false),
   languageChosen: ADDED_SETTINGS_FIELDS.languageChosen.default(false),
+  antiCheatProtection: ADDED_SETTINGS_FIELDS.antiCheatProtection.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 

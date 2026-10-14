@@ -216,6 +216,8 @@ export const ja: Messages = {
       'このゲームは Windows.Gaming.Input を使用しています。フォーカスがないとコントローラー入力が止まる場合があります。',
     gameInput:
       'このゲームは GameInput を使用しています。フォーカスがないとコントローラー入力が止まる場合があります。',
+    antiCheat:
+      'このゲームはアンチチートを使用しています。保護がオフのため、開始前に BAN のリスクを受け入れるか確認します。',
   },
   errors: {
     title: '問題が発生しました',
@@ -232,7 +234,7 @@ export const ja: Messages = {
     unsupportedArchitecture:
       '現在は 64 ビットのゲームのみ対応しています。32 ビット対応は予定しています。',
     antiCheat:
-      'このゲームはチート対策システムで保護されています。保護されたゲームを変更するとアカウントが停止される可能性があるため、InputSplit は扱いません。',
+      'このゲームはチート対策システムで保護されています。保護されたゲームを変更するとアカウントが BAN される可能性があるため、InputSplit は拒否します。アンチチート保護は自己責任で設定からオフにできます。',
     hookMissing: 'InputSplit の一部が見つかりません。アプリを再インストールしてください。',
     hookInvalid: 'InputSplit の一部が破損しています。アプリを再インストールしてください。',
     hookOutdated:
@@ -247,6 +249,7 @@ export const ja: Messages = {
     pipeFailed: 'InputSplit はゲームとの接続を開けませんでした。',
     processExited: 'InputSplit の起動中にゲームが終了しました。',
     alreadyIsolated: 'このゲームはすでに分離されています。',
+    riskDeclined: 'BAN のリスクが受け入れられなかったため、分離を中止しました。',
     alreadyRunning: '分離はすでに実行中です。先に停止してください。',
     targetChanged: '選択したゲームが再起動されました。もう一度ウィンドウを選んでください。',
     backendUnavailable: 'InputSplit サービスが動作していません。',
@@ -440,6 +443,21 @@ export const ja: Messages = {
     safety: '安全',
     emergencyHotkey: '緊急停止ショートカット',
     emergencyHotkeyHint: 'このウィンドウが固まっていても、すべての分離をすぐに停止します。',
+    antiCheatProtection: 'アンチチート保護',
+    antiCheatProtectionHint:
+      'InputSplit が原因でアカウントが BAN されないよう、アンチチートのあるゲームを拒否します。推奨。',
+    antiCheatOff:
+      'オフ。BAN のリスクはご自身の責任です。オンラインまたはアンチチートのあるゲームの前に毎回警告します。',
+    antiCheatDialogTitle: 'アンチチート保護をオフにしますか？',
+    antiCheatDialogBody:
+      'InputSplit はアンチチートのあるゲームを拒否しなくなります。一部のチートと同じ方法でゲームに自身のコードを読み込み、それをアンチチートから隠すことはしません。',
+    antiCheatDialogBan:
+      'そのためゲームがアカウントを BAN することがあり、数日後に永久 BAN になる場合もあります。',
+    antiCheatDialogBlock:
+      'アンチチートによっては、それでもゲームの起動を妨げたり、ゲームを終了させたりします。',
+    antiCheatDialogAsk:
+      'オンラインまたはアンチチートのあるゲームの前に、InputSplit は毎回あらためて警告します。',
+    antiCheatDialogConfirm: 'オフにする（リスクを受け入れる）',
     hotkeyRegistered: '登録済み',
     hotkeyNotRegistered: '未登録：他のアプリがこのショートカットを使っている可能性があります',
     showOnboarding: 'ようこそガイドをもう一度表示',
@@ -474,7 +492,7 @@ export const ja: Messages = {
       'InputSplit は選んだゲームに小さなコンポーネントを読み込みます。ゲーム内でフォーカスの変化を隠し、コントローラーを有効なまま保ち、キーボードとマウスをブロックします。ゲームの外は何も変更せず、停止するとすべて元に戻ります。',
     risk: '責任を持ってご利用ください',
     riskBody:
-      '他のプログラムにコードを読み込む手法は、一部のチートでも使われています。InputSplit はチート対策のあるゲームを拒否しますが、目に見える保護のないオンラインゲームでも禁止されている場合があります。シングルプレイやオフラインのゲームでご利用ください。',
+      '他のプログラムにコードを読み込むのは、一部のチートと同じ手法です。InputSplit は既定でチート対策のあるゲームを拒否しますが、目に見える保護のないオンラインゲームでも禁止されている場合があります。シングルプレイまたはオフラインのゲームで使用してください。',
     technical: '技術情報',
   },
   onboarding: {
@@ -490,7 +508,7 @@ export const ja: Messages = {
     risks: {
       title: '始める前に',
       body: 'ゲームをバックグラウンドで動かし続けるため、InputSplit はゲームに小さなコンポーネントを読み込みます。',
-      point1: 'アカウントを守るため、チート対策のあるゲームは常に拒否されます。',
+      point1: 'アカウントを守るため、チート対策のあるゲームは既定で拒否されます。',
       point2: 'InputSplit はシングルプレイやオフラインのゲームで使ってください。',
       point3: '一部のウイルス対策ソフトがこの手法について警告する場合があります。',
       point4: 'Ctrl+Alt+Shift+Q を押せば、いつでもすべてを停止できます。',
@@ -559,6 +577,8 @@ export const ja: Messages = {
       'これはゲームランチャーで、ゲーム本体ではありません。ランチャーからゲームを起動し、ゲームのウィンドウを選択してください。',
     online:
       'オンラインゲームのようです。InputSplit はシングルプレイやオフラインのゲーム向けです。ここでは動作しない可能性があり、ゲームの規約で禁止されている場合もあります。',
+    riskOff:
+      'アンチチート保護がオフです。このゲームを分離する前に、BAN のリスクを受け入れるか確認します。',
     badgeLauncher: 'ランチャー',
     badgeOnline: 'オンライン',
     badgeBlocked: '保護',

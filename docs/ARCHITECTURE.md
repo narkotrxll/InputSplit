@@ -201,6 +201,11 @@ overlapped I/O on one worker thread: it waits for commands and sends `STATUS` ev
 - Refuse: anti-cheat detected (modules in the process, or anti-cheat files in the game
   folder), 32-bit target (not yet supported), elevated target while we are not elevated,
   AppContainer / protected process, system processes (`%WINDIR%`), InputSplit itself.
+- Anti-cheat refusal is a user setting (Settings → Safety, on by default). When it is off,
+  the app passes `allowAntiCheat` to `checkTarget` / `startIsolation`, the helper reports the
+  anti-cheat as a warning instead of a blocker, and the main process asks the user to accept
+  the ban risk (native dialog) before every online or anti-cheat game. Injection itself is
+  unchanged; nothing is hidden from the anti-cheat.
 - No global hooks (`SetWindowsHookEx`), no input locking, no Explorer manipulation.
 - Emergency hotkey uses `RegisterHotKey` (does not see or block any other keys).
 - No administrator rights requested. No display configuration changes; moving a game
