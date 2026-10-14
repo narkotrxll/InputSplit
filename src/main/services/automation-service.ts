@@ -4,22 +4,30 @@
  *  - "Play" on a profile (or in the tray): start the game if needed, wait for its window,
  *    then isolate it;
  *  - profiles with `autoStart`: isolate the game as soon as its window appears;
- *  - the controller shortcut: stop the running isolation, or start the most recent profile
- *    whose game is open.
+ *  - the controller shortcut: stop the pressing player's isolation, or start the most recent
+ *    profile whose game is open.
+ *
+ * With "Two players" on, each of these takes the first free seat.
  *
  * Each game process is started automatically at most once: after the user stops it, the
  * same process is left alone until it exits.
  */
 import { spawn } from 'node:child_process'
 import { dirname } from 'node:path'
-import type { AutomationState, Profile, StartIsolationInput, WindowInfo } from '@shared/domain'
+import type {
+  AutomationState,
+  Profile,
+  Seat,
+  StartIsolationInput,
+  WindowInfo,
+} from '@shared/domain'
 import { AppException, toAppError } from '@shared/errors'
-import { isSessionLive } from '@shared/support'
+import { isSeatTaken } from '@shared/seats'
 import type { NativeBackend } from '../native/backend'
 import { Emitter } from '../util/emitter'
-import type { IsolationService } from './isolation-service'
 import type { Logger } from './logger'
 import type { ProfilesService } from './profiles-service'
+import type { SeatsService } from './seats-service'
 
 /** How often windows are listed while a profile has automatic start (cheap in the helper). */
 const WATCH_INTERVAL_MS = 3000
@@ -30,7 +38,7 @@ const LAUNCH_TIMEOUT_MS = 180_000
 
 export interface AutomationOptions {
   backend: NativeBackend
-  isolation: IsolationService
+  seats: SeatsService
   profiles: ProfilesService
   logger: Logger
   /** InputSplit's own processes, never offered as targets. */
@@ -55,8 +63,14 @@ export function bestWindow(windows: readonly WindowInfo[], exeName: string): Win
   return candidates[0] ?? null
 }
 
-export function startInputFor(profile: Profile, window: WindowInfo): StartIsolationInput {
+export function startInputFor(
+  profile: Profile,
+  window: WindowInfo,
+  seat: Seat = 0,
+  controllerSlot: number | null = profile.controllerSlot,
+): StartIsolationInput {
   return {
+    seat,
     target: {
       pid: window.pid,
       hwnd: window.hwnd,
@@ -64,14 +78,14 @@ export function startInputFor(profile: Profile, window: WindowInfo): StartIsolat
       exeName: window.exeName,
       exePath: window.exePath,
     },
-    controllerSlot: profile.controllerSlot,
+    controllerSlot,
     displayId: profile.displayId,
     moveWindow: profile.moveWindow && profile.displayId !== null,
     restoreOnExit: profile.restoreOnExit,
     // "Any controller" means there is no slot to lock to (same rule as the dashboard).
     features: {
       ...profile.features,
-      xinputSlotLock: profile.features.xinputSlotLock && profile.controllerSlot !== null,
+      xinputSlotLock: profile.features.xinputSlotLock && controllerSlot !== null,
     },
   }
 }
@@ -117,7 +131,7 @@ export class AutomationService {
     this.launch = options.launch ?? launchExecutable
     this.now = options.now ?? Date.now
     this.sleep = options.sleep ?? ((ms) => new Promise((resolve) => setTimeout(resolve, ms)))
-    options.isolation.onChange((view) => {
+    options.seats.changes.on(({ view }) => {
       if (view.target !== null && view.phase !== 'idle') this.handledPids.add(view.target.pid)
     })
   }
@@ -159,10 +173,10 @@ export class AutomationService {
   }
 
   private async playProfile(profileId: string, launch: boolean): Promise<void> {
-    const { profiles, isolation, backend } = this.options
+    const { profiles, seats, backend } = this.options
     const profile = profiles.get(profileId)
     if (profile === null) throw new AppException('profileNotFound', 'The profile no longer exists.')
-    if (isSessionLive(isolation.get()) || isolation.get().phase === 'checking') {
+    if (seats.freeSeat() === null) {
       throw new AppException('alreadyRunning', 'Isolation is already running.')
     }
     if (this.state.phase !== 'idle') {
@@ -215,55 +229,89 @@ export class AutomationService {
   }
 
   /**
-   * The controller shortcut. Returns what happened, so the caller can give feedback
-   * (vibration, notification).
+   * The controller shortcut, pressed on `slot`. Returns what happened, so the caller can
+   * give feedback (vibration, notification).
    */
-  async toggle(): Promise<'started' | 'stopped' | 'failed' | 'nothing'> {
-    const { isolation, profiles, backend } = this.options
-    if (isSessionLive(isolation.get())) {
-      await isolation.stop()
+  async toggle(slot: number | null = null): Promise<'started' | 'stopped' | 'failed' | 'nothing'> {
+    const { seats, profiles, backend } = this.options
+    const own = this.seatToStop(slot)
+    if (own !== null) {
+      await seats.stop(own)
       return 'stopped'
     }
     if (this.state.phase !== 'idle') {
       this.cancel()
       return 'stopped'
     }
-    if (backend.getState().status !== 'ready' || isolation.get().phase === 'checking') {
-      return 'nothing'
-    }
+    const busy = seats.all().some((v) => v.phase === 'checking' || v.phase === 'starting')
+    if (backend.getState().status !== 'ready' || busy) return 'nothing'
+    const seat = seats.freeSeat()
+    if (seat === null) return 'nothing'
+    // Next to another player, a profile for "any controller" takes the pressing controller.
+    const otherTaken = seats.all().some(isSeatTaken)
+    const slotFor = (profile: Profile) =>
+      profile.controllerSlot === null && otherTaken ? slot : profile.controllerSlot
     const windows = await this.listWindows()
-    for (const profile of profiles.recent()) {
+    const taken = new Set(
+      seats
+        .all()
+        .filter(isSeatTaken)
+        .map((v) => v.target?.pid),
+    )
+    const candidates = profiles
+      .recent()
+      // The pressing player's own profiles first.
+      .sort((a, b) => Number(b.controllerSlot === slot) - Number(a.controllerSlot === slot))
+    for (const profile of candidates) {
       const window = bestWindow(windows, profile.exeName)
-      if (window === null) continue
-      await this.startFor(profile, window)
-      return isolation.get().phase === 'failed' ? 'failed' : 'started'
+      if (window === null || taken.has(window.pid)) continue
+      await this.startFor(profile, window, slotFor(profile))
+      return seats.get(seat).phase === 'failed' ? 'failed' : 'started'
     }
     // No profile matches: repeat the last manual setup if that game is still open.
-    const last = isolation.lastStart()
-    if (last !== null && windows.some((w) => w.pid === last.target.pid)) {
-      await isolation.start(last)
-      return isolation.get().phase === 'failed' ? 'failed' : 'started'
+    const last = seats.lastStart()
+    if (last !== null && !taken.has(last.target.pid)) {
+      if (windows.some((w) => w.pid === last.target.pid)) {
+        await seats.start({ ...last, seat })
+        return seats.get(seat).phase === 'failed' ? 'failed' : 'started'
+      }
     }
     return 'nothing'
+  }
+
+  /** The seat the shortcut on `slot` stops: that player's game, or the only one running. */
+  private seatToStop(slot: number | null): Seat | null {
+    const { seats } = this.options
+    const views = seats.all()
+    if (slot !== null) {
+      const own = seats.seatForSlot(slot)
+      if (own !== null) return own
+    }
+    // A game reading every controller belongs to whoever presses.
+    const shared = views.findIndex((v) => isSeatTaken(v) && v.controllerSlot === null)
+    if (shared >= 0) return shared as Seat
+    // A single player: the shortcut always stops the running game.
+    const taken = views.flatMap((v, i) => (isSeatTaken(v) ? [i as Seat] : []))
+    return seats.freeSeat() === null && taken.length === 1 ? taken[0]! : null
   }
 
   // -------------------------------------------------------------------------------------
 
   /** One pass of the automatic start (runs every few seconds while watching). */
   async checkAutomaticStart(): Promise<void> {
-    const { isolation, profiles, backend, logger } = this.options
+    const { seats, profiles, backend, logger } = this.options
     if (this.ticking) return
     const automatic = profiles.list().filter((p) => p.autoStart)
     if (automatic.length === 0) {
       this.firstSeen.clear()
       return
     }
-    const phase = isolation.get().phase
+    const starting = seats.all().some((v) => v.phase === 'checking' || v.phase === 'starting')
     if (
       backend.getState().status !== 'ready' ||
       this.state.phase !== 'idle' ||
-      isSessionLive(isolation.get()) ||
-      phase === 'checking'
+      starting ||
+      seats.freeSeat() === null
     ) {
       return
     }
@@ -291,11 +339,17 @@ export class AutomationService {
     }
   }
 
-  private async startFor(profile: Profile, window: WindowInfo): Promise<void> {
-    this.handledPids.add(window.pid)
+  private async startFor(
+    profile: Profile,
+    window: WindowInfo,
+    controllerSlot: number | null = profile.controllerSlot,
+  ): Promise<void> {
+    const seat = this.options.seats.freeSeat()
     this.setIdle()
+    if (seat === null) throw new AppException('alreadyRunning', 'Every player is already playing.')
+    this.handledPids.add(window.pid)
     await this.options.profiles.markUsed(profile.id).catch(() => {})
-    await this.options.isolation.start(startInputFor(profile, window))
+    await this.options.seats.start(startInputFor(profile, window, seat, controllerSlot))
   }
 
   private async waitForWindow(exeName: string, run: number): Promise<WindowInfo | null> {

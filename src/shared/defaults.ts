@@ -62,6 +62,7 @@ export const DEFAULT_SETTINGS: Settings = {
   gamepadHotkeyEnabled: true,
   rumbleFeedback: true,
   checkForUpdates: true,
+  twoPlayers: false,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

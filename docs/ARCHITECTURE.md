@@ -144,6 +144,16 @@ The main process turns facts from the helper into what the UI shows
 A feature is displayed as *on* only when the DLL's `active` mask says so. The UI never
 infers success.
 
+### Two players
+
+`SeatsService` (`src/main/services/seats-service.ts`) runs one `IsolationService` per
+seat (player 1, player 2); each seat ignores helper events for the other seat's session id,
+so the helper and the hook DLL need nothing new. Two sessions may run only on two different
+controller slots with the slot lock on (`src/shared/seats.ts`): without the lock both games
+would read every controller. The same rule disables Start in the UI and refuses the start in
+main. Play, automatic start and the tray take the first free seat; the controller shortcut
+stops the seat locked to the pressing controller.
+
 ## 7. Contracts
 
 ### 7.1 Renderer ↔ Main (`src/shared/ipc-contract.ts`)

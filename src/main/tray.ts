@@ -23,7 +23,8 @@ export class AppTray {
   private readonly tray: Tray
   private readonly idleIcon = nativeImage.createFromPath(iconPath('tray.png'))
   private readonly activeIcon = nativeImage.createFromPath(iconPath('tray-active.png'))
-  private view: IsolationView | null = null
+  private views: IsolationView[] = []
+  private canPlay = true
   private profiles: Profile[] = []
 
   constructor(
@@ -33,7 +34,7 @@ export class AppTray {
     this.tray = new Tray(this.idleIcon)
     this.tray.on('click', () => actions.show())
     this.tray.on('double-click', () => actions.show())
-    this.update(null)
+    this.update([], true)
   }
 
   /** `profiles` most recently used first. */
@@ -44,14 +45,17 @@ export class AppTray {
 
   /** Rebuilds the menu, e.g. after the language changed. */
   refresh(): void {
-    this.update(this.view)
+    this.update(this.views, this.canPlay)
   }
 
-  update(view: IsolationView | null): void {
-    this.view = view
+  /** `views`: every seat's session; `canPlay`: a seat is free for "Play". */
+  update(views: IsolationView[], canPlay: boolean): void {
+    this.views = views
+    this.canPlay = canPlay
     const text = this.texts()
-    const live = view !== null && isSessionLive(view)
-    const game = view?.target?.exeName ?? null
+    const games = views.filter(isSessionLive).flatMap((v) => (v.target ? [v.target.exeName] : []))
+    const live = views.some(isSessionLive)
+    const game = games.length > 0 ? games.join(', ') : null
     this.tray.setImage(live ? this.activeIcon : this.idleIcon)
     const isolating = game ? text.trayIsolating.replace('{game}', game) : ''
     this.tray.setToolTip(live && game ? `InputSplit — ${isolating}` : 'InputSplit')
@@ -62,7 +66,7 @@ export class AppTray {
         { label: text.trayOpen, click: () => this.actions.show() },
         {
           label: text.trayPlay,
-          enabled: !live,
+          enabled: canPlay,
           submenu:
             this.profiles.length > 0
               ? this.profiles.map((profile) => ({
@@ -85,7 +89,7 @@ export class AppTray {
     const text = this.texts()
     this.tray.displayBalloon?.({
       title: text.balloonTitle,
-      content: this.view && isSessionLive(this.view) ? text.balloonIsolating : text.balloonIdle,
+      content: this.views.some(isSessionLive) ? text.balloonIsolating : text.balloonIdle,
       iconType: 'info',
     })
   }

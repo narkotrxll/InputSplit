@@ -123,6 +123,9 @@ export const es: Messages = {
       blocked: 'Este juego no se puede aislar.',
       checking: 'Comprobando el juego…',
       noFeatures: 'Activa al menos una protección.',
+      sameGame: 'El otro jugador ya está jugando a este juego.',
+      controllerShared: 'Con dos jugadores, elige un mando para cada juego.',
+      controllerInUse: 'El otro jugador ya usa este mando.',
     },
     ended: {
       stopped: 'Aislamiento detenido. El juego vuelve a la normalidad.',
@@ -269,6 +272,10 @@ export const es: Messages = {
     updateUnavailable: 'No hay ninguna actualización lista para instalar.',
     updateDevBuild: 'Las actualizaciones solo se instalan en la aplicación instalada.',
     updateFailed: 'No se pudo descargar la actualización. Inténtalo más tarde.',
+    sameGame: 'El otro jugador ya está jugando a este juego.',
+    controllerShared:
+      'Ambos juegos leerían todos los mandos. Elige un mando concreto para cada jugador.',
+    controllerInUse: 'El otro jugador ya usa este mando. Elige otro.',
     internalError: 'Se produjo un error inesperado.',
     error: 'Se produjo un error inesperado.',
   },
@@ -594,5 +601,13 @@ export const es: Messages = {
     devBuild:
       'Esta es una versión de desarrollo: las actualizaciones solo se instalan en la aplicación instalada.',
     sidebar: 'Actualización disponible',
+  },
+  seats: {
+    title: 'Jugadores',
+    player: 'Jugador {n}',
+    noGame: 'Ningún juego elegido',
+    twoPlayers: 'Dos jugadores',
+    twoPlayersHint:
+      'Dos juegos a la vez, cada uno con su propio mando. El panel muestra una pestaña por jugador.',
   },
 }

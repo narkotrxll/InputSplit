@@ -5,9 +5,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { DEFAULT_FEATURES, type ProfileInput, type WindowInfo } from '@shared/domain'
 import { FakeBackend, sessionStatus } from '../native/__fixtures__/fake-backend'
 import { AutomationService, bestWindow, startInputFor } from './automation-service'
-import { IsolationService } from './isolation-service'
 import { Logger } from './logger'
 import { ProfilesService } from './profiles-service'
+import { SeatsService } from './seats-service'
 
 function win(pid: number, exeName: string, overrides: Partial<WindowInfo> = {}): WindowInfo {
   return {
@@ -45,7 +45,7 @@ const profileInput: ProfileInput = {
   features: DEFAULT_FEATURES,
 }
 
-async function setup(windows: WindowInfo[] = []) {
+async function setup(windows: WindowInfo[] = [], twoPlayers = false) {
   const backend = new FakeBackend()
   const state = { windows }
   backend.handlers.listWindows = () => ({ windows: state.windows })
@@ -57,7 +57,15 @@ async function setup(windows: WindowInfo[] = []) {
     warnings: [],
     antiCheat: null,
   })
-  backend.handlers.startIsolation = (p) => sessionStatus({ pid: (p as { pid: number }).pid })
+  let nextSessionId = 1
+  backend.handlers.startIsolation = (p) => {
+    const params = p as { pid: number; xinputSlot: number | null }
+    return sessionStatus({
+      sessionId: nextSessionId++,
+      pid: params.pid,
+      xinputSlot: params.xinputSlot,
+    })
+  }
   backend.handlers.moveWindow = () => ({
     previous: { x: 0, y: 0, width: 800, height: 600 },
     current: { x: 0, y: 0, width: 800, height: 600 },
@@ -69,12 +77,13 @@ async function setup(windows: WindowInfo[] = []) {
   const dir = await mkdtemp(join(tmpdir(), 'inputsplit-test-'))
   const profiles = new ProfilesService(join(dir, 'profiles.json'), () => {})
   await profiles.load()
-  const isolation = new IsolationService(backend, logger)
+  const seats = new SeatsService(backend, logger, () => twoPlayers)
+  const isolation = seats.seat(0)
   let now = 1_000_000
   const launch = vi.fn(async () => {})
   const automation = new AutomationService({
     backend,
-    isolation,
+    seats,
     profiles,
     logger,
     ownPids: () => [],
@@ -89,6 +98,7 @@ async function setup(windows: WindowInfo[] = []) {
     state,
     profiles,
     isolation,
+    seats,
     automation,
     launch,
     advance: (ms: number) => {
@@ -185,5 +195,71 @@ describe('AutomationService', () => {
     expect(t.isolation.get().phase).toBe('running')
     expect(await t.automation.toggle()).toBe('stopped')
     expect(t.isolation.get().phase).toBe('ended')
+  })
+
+  it('gives each player their own seat and controller', async () => {
+    const t = await setup([win(50, 'hollow_knight.exe'), win(60, 'celeste.exe')], true)
+    const knight = await t.profiles.save({ ...profileInput, controllerSlot: 0 })
+    const celeste = await t.profiles.save({
+      ...profileInput,
+      name: 'Celeste',
+      exeName: 'celeste.exe',
+      exePath: 'C:\\Games\\celeste.exe',
+      controllerSlot: 1,
+    })
+    await t.automation.play(knight.id, false)
+    await t.automation.play(celeste.id, false)
+    expect(t.seats.all().map((v) => [v.phase, v.target?.pid, v.controllerSlot])).toEqual([
+      ['running', 50, 0],
+      ['running', 60, 1],
+    ])
+    // Player 2's shortcut stops only player 2's game.
+    expect(await t.automation.toggle(1)).toBe('stopped')
+    expect(t.seats.all().map((v) => v.phase)).toEqual(['running', 'ended'])
+    // Pressed again, it starts player 2's own profile, not the most recent one.
+    expect(await t.automation.toggle(1)).toBe('started')
+    expect(t.seats.get(1).target?.pid).toBe(60)
+  })
+
+  it('uses one seat while "Two players" is off', async () => {
+    const t = await setup([win(50, 'hollow_knight.exe'), win(60, 'celeste.exe')])
+    const knight = await t.profiles.save({ ...profileInput, controllerSlot: 0 })
+    const celeste = await t.profiles.save({
+      ...profileInput,
+      name: 'Celeste',
+      exeName: 'celeste.exe',
+      exePath: null,
+    })
+    await t.automation.play(knight.id, false)
+    await expect(t.automation.play(celeste.id, false)).rejects.toMatchObject({
+      code: 'alreadyRunning',
+    })
+    // The only game stops whichever controller presses the shortcut.
+    expect(await t.automation.toggle(3)).toBe('stopped')
+  })
+
+  it('refuses two games on the same controller', async () => {
+    const t = await setup([win(50, 'hollow_knight.exe'), win(60, 'celeste.exe')], true)
+    const knight = await t.profiles.save({ ...profileInput, controllerSlot: 0 })
+    const celeste = await t.profiles.save({
+      ...profileInput,
+      name: 'Celeste',
+      exeName: 'celeste.exe',
+      exePath: 'C:\\Games\\celeste.exe',
+      controllerSlot: 0,
+    })
+    const any = await t.profiles.save({
+      ...profileInput,
+      name: 'Celeste (any)',
+      exeName: 'celeste.exe',
+      exePath: 'C:\\Games\\celeste.exe',
+      controllerSlot: null,
+    })
+    await t.automation.play(knight.id, false)
+    await t.automation.play(celeste.id, false)
+    expect(t.seats.get(1)).toMatchObject({ phase: 'failed', error: { code: 'controllerInUse' } })
+    await t.automation.play(any.id, false)
+    expect(t.seats.get(1)).toMatchObject({ phase: 'failed', error: { code: 'controllerShared' } })
+    expect(t.backend.calls.filter((c) => c.method === 'startIsolation')).toHaveLength(1)
   })
 })

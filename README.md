@@ -53,6 +53,9 @@ Once a game has a profile, it gets even simpler:
   ends, and a built-in **update check** that installs new versions from GitHub on one click.
 - The game picker marks launchers, online games and games that worked (or not) the last time
   on this PC.
+- **Two players:** turn on Settings → Controllers → **Two players** to isolate two games at
+  once, each locked to its own controller. The dashboard gets a tab per player, and each
+  player's controller shortcut starts or stops their own game.
 
 <table>
 <tr>

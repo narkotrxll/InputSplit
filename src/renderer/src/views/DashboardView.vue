@@ -10,6 +10,7 @@ import FeatureList from '../components/FeatureList.vue'
 import GamePickerDialog from '../components/GamePickerDialog.vue'
 import PageHeader from '../components/PageHeader.vue'
 import ProfileEditorDialog from '../components/ProfileEditorDialog.vue'
+import SeatTabs from '../components/SeatTabs.vue'
 import SessionDiagnostics from '../components/SessionDiagnostics.vue'
 import SetupTile from '../components/SetupTile.vue'
 import StatusPill from '../components/StatusPill.vue'
@@ -133,6 +134,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     </PageHeader>
 
     <div class="flex flex-col gap-4">
+      <SeatTabs v-if="isolation.twoPlayers" />
       <Transition name="fade">
         <UiCallout
           v-if="automation.state.phase !== 'idle'"

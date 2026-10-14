@@ -48,6 +48,8 @@ export class IsolationService {
     private readonly backend: NativeBackend,
     private readonly logger: Logger,
     private readonly now: () => number = Date.now,
+    /** Refuses a start that clashes with another seat's session (two players). */
+    private readonly conflict: (input: StartIsolationInput) => AppError | null = () => null,
   ) {
     backend.onEvent((event) => this.onHelperEvent(event))
     backend.onState((state) => this.onBackendState(state))
@@ -103,6 +105,9 @@ export class IsolationService {
         message: `Protected by ${compat.antiCheat ?? 'an anti-cheat system'}.`,
       })
     }
+
+    const clash = this.conflict(input)
+    if (clash !== null) return this.fail(clash)
 
     try {
       const check = await this.backend.request('checkTarget', { pid: input.target.pid })

@@ -5,7 +5,7 @@
  * focus: the dashboard already says it.
  */
 import { Notification, nativeImage } from 'electron'
-import type { IsolationView } from '@shared/domain'
+import type { IsolationView, Seat } from '@shared/domain'
 import type { MainTexts } from './i18n'
 import { iconPath } from './paths'
 
@@ -18,16 +18,16 @@ export interface NotifierOptions {
 }
 
 export class Notifier {
-  private previous: IsolationView | null = null
+  private readonly previous = new Map<Seat, IsolationView>()
   private readonly icon = nativeImage.createFromPath(iconPath('icon.png'))
 
   constructor(private readonly options: NotifierOptions) {}
 
-  /** Call with every isolation view; notifies on the transitions that matter. */
-  isolationChanged(view: IsolationView): void {
-    const previous = this.previous
-    this.previous = view
-    if (previous === null || previous.phase === view.phase) return
+  /** Call with every isolation view of each seat; notifies on the transitions that matter. */
+  isolationChanged(seat: Seat, view: IsolationView): void {
+    const previous = this.previous.get(seat)
+    this.previous.set(seat, view)
+    if (previous === undefined || previous.phase === view.phase) return
     const text = this.options.texts()
     const game = gameName(view)
     if (view.phase === 'running') {

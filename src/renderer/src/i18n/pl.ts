@@ -122,6 +122,9 @@ export const pl: Messages = {
       blocked: 'Tej gry nie można izolować.',
       checking: 'Sprawdzanie gry…',
       noFeatures: 'Włącz co najmniej jedno zabezpieczenie.',
+      sameGame: 'Drugi gracz już gra w tę grę.',
+      controllerShared: 'Przy dwóch graczach wybierz kontroler dla każdej gry.',
+      controllerInUse: 'Drugi gracz już używa tego kontrolera.',
     },
     ended: {
       stopped: 'Izolacja zatrzymana. Gra działa normalnie.',
@@ -263,6 +266,10 @@ export const pl: Messages = {
     updateUnavailable: 'Żadna aktualizacja nie jest gotowa do instalacji.',
     updateDevBuild: 'Aktualizacje instalują się tylko w zainstalowanej aplikacji.',
     updateFailed: 'Nie udało się pobrać aktualizacji. Spróbuj później.',
+    sameGame: 'Drugi gracz już gra w tę grę.',
+    controllerShared:
+      'Obie gry czytałyby wszystkie kontrolery. Wybierz osobny kontroler dla każdego gracza.',
+    controllerInUse: 'Drugi gracz już używa tego kontrolera. Wybierz inny.',
     internalError: 'Wystąpił nieoczekiwany błąd.',
     error: 'Wystąpił nieoczekiwany błąd.',
   },
@@ -584,5 +591,13 @@ export const pl: Messages = {
     devBuild:
       'To wersja deweloperska: aktualizacje instalują się tylko w zainstalowanej aplikacji.',
     sidebar: 'Dostępna aktualizacja',
+  },
+  seats: {
+    title: 'Gracze',
+    player: 'Gracz {n}',
+    noGame: 'Nie wybrano gry',
+    twoPlayers: 'Dwóch graczy',
+    twoPlayersHint:
+      'Dwie gry naraz, każda z własnym kontrolerem. Panel pokazuje kartę dla każdego gracza.',
   },
 }

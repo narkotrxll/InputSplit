@@ -124,6 +124,9 @@ export const de: Messages = {
       blocked: 'Dieses Spiel kann nicht isoliert werden.',
       checking: 'Spiel wird geprüft…',
       noFeatures: 'Aktiviere mindestens eine Schutzfunktion.',
+      sameGame: 'Der andere Spieler spielt dieses Spiel bereits.',
+      controllerShared: 'Wähle bei zwei Spielern für jedes Spiel einen Controller.',
+      controllerInUse: 'Der andere Spieler nutzt diesen Controller bereits.',
     },
     ended: {
       stopped: 'Isolierung beendet. Das Spiel läuft wieder normal.',
@@ -270,6 +273,10 @@ export const de: Messages = {
     updateUnavailable: 'Es ist kein Update zur Installation bereit.',
     updateDevBuild: 'Updates werden nur in der installierten App installiert.',
     updateFailed: 'Das Update konnte nicht heruntergeladen werden. Versuche es später erneut.',
+    sameGame: 'Der andere Spieler spielt dieses Spiel bereits.',
+    controllerShared:
+      'Beide Spiele würden jeden Controller lesen. Wähle für jeden Spieler einen eigenen Controller.',
+    controllerInUse: 'Der andere Spieler nutzt diesen Controller bereits. Wähle einen anderen.',
     internalError: 'Ein unerwarteter Fehler ist aufgetreten.',
     error: 'Ein unerwarteter Fehler ist aufgetreten.',
   },
@@ -596,5 +603,13 @@ export const de: Messages = {
     devBuild:
       'Dies ist ein Entwicklungsbuild: Updates werden nur in der installierten App installiert.',
     sidebar: 'Update verfügbar',
+  },
+  seats: {
+    title: 'Spieler',
+    player: 'Spieler {n}',
+    noGame: 'Kein Spiel gewählt',
+    twoPlayers: 'Zwei Spieler',
+    twoPlayersHint:
+      'Zwei Spiele gleichzeitig, jedes mit eigenem Controller. Die Übersicht zeigt einen Tab pro Spieler.',
   },
 }

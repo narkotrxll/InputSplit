@@ -64,6 +64,8 @@ async function apply(profile: Profile): Promise<void> {
   applying.value = profile.id
   try {
     await windows.refresh()
+    // The shown player is playing: set the profile up for the free player instead.
+    if (isolation.live && isolation.freeSeat !== null) isolation.setActiveSeat(isolation.freeSeat)
     const found = await isolation.applyProfile(profile, windows.windows)
     if (found) {
       ui.toast({ tone: 'success', title: t('profiles.applied'), body: profile.name })
@@ -161,7 +163,7 @@ onMounted(() => void profiles.load())
               variant="ghost"
               :icon="SlidersHorizontal"
               :loading="applying === profile.id"
-              :disabled="isolation.live"
+              :disabled="isolation.live && isolation.freeSeat === null"
               @click="apply(profile)"
             >
               {{ $t('profiles.apply') }}
@@ -172,7 +174,7 @@ onMounted(() => void profiles.load())
                   size="sm"
                   variant="primary"
                   :icon="Play"
-                  :disabled="isolation.live || automation.state.phase !== 'idle'"
+                  :disabled="isolation.freeSeat === null || automation.state.phase !== 'idle'"
                   @click="play(profile)"
                 >
                   {{ $t('automation.play') }}

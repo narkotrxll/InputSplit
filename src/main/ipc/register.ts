@@ -24,9 +24,9 @@ import type { AutomationService } from '../services/automation-service'
 import type { CompatHistoryService } from '../services/compat-history-service'
 import type { DeviceService } from '../services/device-service'
 import type { IconService } from '../services/icon-service'
-import type { IsolationService } from '../services/isolation-service'
 import type { Logger } from '../services/logger'
 import type { ProfilesService } from '../services/profiles-service'
+import type { SeatsService } from '../services/seats-service'
 import type { SettingsService } from '../services/settings-service'
 import type { UpdateService } from '../services/update-service'
 import { isTrustedSender } from './security'
@@ -34,7 +34,7 @@ import { isTrustedSender } from './security'
 export interface IpcDependencies {
   getWindow: () => BrowserWindow | null
   backend: NativeBackend
-  isolation: IsolationService
+  seats: SeatsService
   devices: DeviceService
   profiles: ProfilesService
   settings: SettingsService
@@ -59,7 +59,7 @@ const EXTERNAL_LINKS = {
 } as const
 
 export function registerIpc(deps: IpcDependencies): void {
-  const { backend, isolation, devices, profiles, settings, icons, logger, texts } = deps
+  const { backend, seats, devices, profiles, settings, icons, logger, texts } = deps
   const { automation, compat, updates } = deps
 
   function handle<C extends InvokeChannel>(channel: C, handler: Handler<C>): void {
@@ -100,7 +100,7 @@ export function registerIpc(deps: IpcDependencies): void {
 
   handle('backend:getState', () => backend.getState())
   handle('backend:restart', async () => {
-    await isolation.stop()
+    await seats.stopAll()
     await backend.restart()
     return ok
   })
@@ -126,10 +126,10 @@ export function registerIpc(deps: IpcDependencies): void {
 
   handle('displays:list', () => devices.listDisplays())
 
-  handle('isolation:get', () => isolation.get())
-  handle('isolation:start', (input) => isolation.start(input))
-  handle('isolation:stop', () => isolation.stop())
-  handle('isolation:dismiss', () => isolation.dismiss())
+  handle('isolation:get', () => seats.all())
+  handle('isolation:start', (input) => seats.start(input))
+  handle('isolation:stop', (seat) => seats.stop(seat))
+  handle('isolation:dismiss', (seat) => seats.dismiss(seat))
 
   handle('profiles:list', () => profiles.list())
   handle('profiles:save', (input) => profiles.save(input))
@@ -204,7 +204,6 @@ export function registerIpc(deps: IpcDependencies): void {
       ? await dialog.showSaveDialog(window, options)
       : await dialog.showSaveDialog(options)
     if (result.canceled || !result.filePath) return { saved: false }
-    const view = isolation.get()
     const report = {
       generatedAt: new Date().toISOString(),
       app: {
@@ -214,7 +213,10 @@ export function registerIpc(deps: IpcDependencies): void {
       },
       backend: backend.getState(),
       // Window titles are personal data; only the executable name is exported.
-      isolation: { ...view, target: view.target ? { exeName: view.target.exeName } : null },
+      isolation: seats.all().map((view) => ({
+        ...view,
+        target: view.target ? { exeName: view.target.exeName } : null,
+      })),
       settings: settings.get(),
       logs: logger
         .all()

@@ -20,7 +20,7 @@ import { AutomationService } from './services/automation-service'
 import { CompatHistoryService } from './services/compat-history-service'
 import { DeviceService } from './services/device-service'
 import { IconService } from './services/icon-service'
-import { IsolationService } from './services/isolation-service'
+import { SeatsService } from './services/seats-service'
 import { Logger } from './services/logger'
 import { ProfilesService } from './services/profiles-service'
 import { SettingsService } from './services/settings-service'
@@ -70,13 +70,13 @@ async function main(): Promise<void> {
     : new HelperClient({ executablePath: helperExecutablePath(), logger })
   if (useSimulatedBackend) logger.warn('Using the SIMULATED backend (development only)')
 
-  const isolation = new IsolationService(backend, logger)
+  const seats = new SeatsService(backend, logger, () => settings.get().twoPlayers)
   const devices = new DeviceService(backend)
   const icons = new IconService()
   const getWindow = () => mainWindow
   const broadcast = createBroadcaster(getWindow)
   const ownPids = () => app.getAppMetrics().map((metric) => metric.pid)
-  const automation = new AutomationService({ backend, isolation, profiles, logger, ownPids })
+  const automation = new AutomationService({ backend, seats, profiles, logger, ownPids })
   const updates = new UpdateService({
     currentVersion: app.getVersion(),
     canInstall: app.isPackaged && process.platform === 'win32',
@@ -103,7 +103,7 @@ async function main(): Promise<void> {
   registerIpc({
     getWindow,
     backend,
-    isolation,
+    seats,
     devices,
     profiles,
     settings,
@@ -144,7 +144,7 @@ async function main(): Promise<void> {
     toggling = true
     logger.info(`Controller shortcut pressed on slot ${event.data.slot + 1}`)
     void automation
-      .toggle()
+      .toggle(event.data.slot)
       .then((result) => {
         if (result === 'nothing' || result === 'failed') {
           rumble(event.data.slot, 'error')
@@ -166,18 +166,20 @@ async function main(): Promise<void> {
   const feedbackSlot = (view: IsolationView) =>
     view.controllerSlot ?? lastHotkeySlot ?? devices.connectedSlots()[0] ?? null
 
-  let previousView = isolation.get()
-  isolation.onChange((view) => {
-    broadcast('isolation:changed', view)
-    tray?.update(view)
-    notifier.isolationChanged(view)
+  const previousViews = seats.all()
+  const updateTray = () => tray?.update(seats.all(), seats.freeSeat() !== null)
+  seats.changes.on(({ seat, view }) => {
+    broadcast('isolation:changed', { seat, view })
+    updateTray()
+    notifier.isolationChanged(seat, view)
+    const previousView = previousViews[seat]!
     if (view.phase !== previousView.phase) {
       if (view.phase === 'running') rumble(feedbackSlot(view), 'on')
       else if (view.phase === 'ended') rumble(feedbackSlot(previousView), 'off')
     }
-    previousView = view
+    previousViews[seat] = view
   })
-  isolation.outcomes.on(({ exeName, outcome }) => {
+  seats.outcomes.on(({ exeName, outcome }) => {
     void compat
       .record(exeName, outcome)
       .catch((error: unknown) => logger.warn(`Compatibility memory: ${String(error)}`))
@@ -219,7 +221,8 @@ async function main(): Promise<void> {
   settings.onChange((next) => {
     applyTheme(next.theme)
     logger.setVerbose(next.verboseLogging)
-    tray?.refresh()
+    if (next.twoPlayers !== previousSettings.twoPlayers) updateTray()
+    else tray?.refresh()
     if (backend.getState().status === 'ready') {
       void backend.setEmergencyHotkey(next.emergencyHotkeyEnabled).catch(() => {})
     }
@@ -260,7 +263,7 @@ async function main(): Promise<void> {
         broadcast('app:navigate', 'dashboard')
       })
     },
-    stopIsolation: () => void isolation.stop(),
+    stopIsolation: () => void seats.stopAll(),
     openSettings: () => {
       showWindow(mainWindow)
       broadcast('app:navigate', 'settings')
@@ -278,7 +281,7 @@ async function main(): Promise<void> {
         automation.stopWatching()
         automation.cancel()
         updates.dispose()
-        await isolation.stop()
+        await seats.stopAll()
         await backend.stop()
       } catch (error) {
         logger.error(`Shutdown problem: ${String(error)}`)

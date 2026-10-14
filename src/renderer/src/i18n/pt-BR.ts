@@ -123,6 +123,9 @@ export const ptBR: Messages = {
       blocked: 'Este jogo não pode ser isolado.',
       checking: 'Verificando o jogo…',
       noFeatures: 'Ative pelo menos uma proteção.',
+      sameGame: 'O outro jogador já está jogando este jogo.',
+      controllerShared: 'Com dois jogadores, escolha um controle para cada jogo.',
+      controllerInUse: 'O outro jogador já usa este controle.',
     },
     ended: {
       stopped: 'Isolamento parado. O jogo voltou ao normal.',
@@ -265,6 +268,10 @@ export const ptBR: Messages = {
     updateUnavailable: 'Nenhuma atualização está pronta para instalar.',
     updateDevBuild: 'As atualizações só são instaladas no aplicativo instalado.',
     updateFailed: 'Não foi possível baixar a atualização. Tente novamente mais tarde.',
+    sameGame: 'O outro jogador já está jogando este jogo.',
+    controllerShared:
+      'Os dois jogos leriam todos os controles. Escolha um controle específico para cada jogador.',
+    controllerInUse: 'O outro jogador já usa este controle. Escolha outro.',
     internalError: 'Ocorreu um erro inesperado.',
     error: 'Ocorreu um erro inesperado.',
   },
@@ -587,5 +594,13 @@ export const ptBR: Messages = {
     devBuild:
       'Esta é uma versão de desenvolvimento: as atualizações só são instaladas no aplicativo instalado.',
     sidebar: 'Atualização disponível',
+  },
+  seats: {
+    title: 'Jogadores',
+    player: 'Jogador {n}',
+    noGame: 'Nenhum jogo escolhido',
+    twoPlayers: 'Dois jogadores',
+    twoPlayersHint:
+      'Dois jogos ao mesmo tempo, cada um com seu próprio controle. O painel mostra uma aba por jogador.',
   },
 }
