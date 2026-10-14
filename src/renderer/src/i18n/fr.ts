@@ -218,6 +218,7 @@ export const fr: Messages = {
     gameInput: 'Ce jeu utilise GameInput. Les entrées manette peuvent s’arrêter sans le focus.',
   },
   errors: {
+    invalidBackup: 'Ce fichier n’est pas une sauvegarde InputSplit.',
     title: 'Un problème est survenu',
     processNotFound: 'Le jeu n’est plus lancé. Relancez-le et choisissez sa fenêtre.',
     selfProcess: 'InputSplit ne peut pas s’isoler lui-même.',
@@ -395,6 +396,7 @@ export const fr: Messages = {
     notRunning: '{exe} n’est pas lancé. Lancez le jeu, puis appliquez à nouveau le profil.',
     lastUsed: 'Utilisé {date}',
     neverUsed: 'Jamais utilisé',
+    playtime: '{time} de jeu',
     deleteTitle: 'Supprimer « {name} » ?',
     deleteBody: 'Le profil sera supprimé. Cela n’affecte pas le jeu.',
     editor: {
@@ -626,5 +628,50 @@ export const fr: Messages = {
     twoPlayers: 'Deux joueurs',
     twoPlayersHint:
       'Deux jeux en même temps, chacun avec sa manette. Le tableau de bord affiche un onglet par joueur.',
+  },
+  library: {
+    add: 'Ajouter depuis la bibliothèque',
+    title: 'Ajouter un jeu de votre bibliothèque',
+    subtitle: 'Jeux installés depuis Steam, Epic Games et GOG Galaxy.',
+    searching: 'Recherche des jeux installés…',
+    search: 'Rechercher des jeux',
+    all: 'Tous',
+    emptyTitle: 'Aucun jeu installé trouvé',
+    emptyHint:
+      'InputSplit cherche dans Steam, Epic Games et GOG Galaxy. Pour les autres jeux, créez un profil et choisissez le .exe avec Parcourir.',
+    noMatch: 'Aucun jeu ne correspond à la recherche.',
+    hasProfile: 'A un profil',
+    rescan: 'Chercher à nouveau',
+    exeHint:
+      'InputSplit a choisi le fichier du jeu lui-même. Si le jeu est introuvable ou ne démarre pas, choisissez le bon .exe avec Parcourir.',
+  },
+  report: {
+    button: 'Signaler un problème',
+    title: 'Signaler un problème',
+    body: 'InputSplit enregistre un rapport dans votre dossier Téléchargements et ouvre un nouveau ticket sur GitHub avec les détails déjà remplis. Décrivez-y ce qui s’est passé et joignez le fichier du rapport.',
+    contents:
+      'Le rapport contient la version de l’application, vos réglages InputSplit, le journal et le nom du .exe du jeu. Les titres de fenêtres et vos fichiers n’y figurent pas.',
+    account: 'Pour l’envoyer, il faut un compte GitHub gratuit.',
+    create: 'Créer le rapport',
+    done: 'Rapport enregistré',
+    doneBody: 'Joignez {file} au ticket sur la page qui vient de s’ouvrir.',
+  },
+  backup: {
+    title: 'Sauvegarde',
+    hint: 'Enregistrez vos profils, réglages et temps de jeu dans un fichier, puis chargez-le sur un autre PC ou après une réinstallation de Windows.',
+    export: 'Exporter',
+    import: 'Importer',
+    exported: 'Sauvegarde enregistrée',
+    importTitle: 'Importer une sauvegarde',
+    profiles: 'Profils dans le fichier',
+    saved: 'Enregistrée',
+    replaceHint:
+      'Les profils portant le même nom que les vôtres sont remplacés par ceux du fichier. Les autres sont ajoutés.',
+    includeSettings: 'Importer aussi les réglages',
+    includeSettingsHint: 'Thème, langue, notifications, raccourcis et protections par défaut.',
+    importButton: 'Importer',
+    imported: 'Sauvegarde importée',
+    importedBody: 'Nouveaux profils : {added}. Mis à jour : {updated}.',
+    skipped: 'Ignorés à cause d’un fichier de jeu non valide : {skipped}.',
   },
 }

@@ -64,6 +64,8 @@ must still be measured on Windows.**
 - 🔧 Onboarding checks the controller and picks the TV
 - 🔧 Built-in compatibility list and local per-game history
 - 🔧 Two players: two games at once, each locked to its own controller (needs Windows testing)
+- 🔧 Profiles from the Steam, Epic Games and GOG Galaxy libraries; play time per profile
+- 🔧 Backup (export/import of profiles, settings and play time); "Report a problem"
 
 ## Phase 5 — Testing ⏳
 

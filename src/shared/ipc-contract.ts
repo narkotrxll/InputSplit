@@ -11,7 +11,11 @@ import { z } from 'zod'
 import {
   AppInfoSchema,
   AutomationStateSchema,
+  BackupImportResultSchema,
+  BackupSchema,
   CompatHistorySchema,
+  LibraryGameSchema,
+  PlaytimeSchema,
   UpdateStateSchema,
   BackendStateSchema,
   ControllerSchema,
@@ -72,6 +76,20 @@ export const invokeContract = {
     output: z.object({ exePath: z.string(), exeName: z.string() }).nullable(),
   },
 
+  /** Installed games from Steam, Epic Games and GOG Galaxy (to create profiles from). */
+  'library:scan': { input: none, output: z.array(LibraryGameSchema) },
+  'library:cover': { input: z.string().min(1).max(200), output: z.string().nullable() },
+
+  'playtime:get': { input: none, output: PlaytimeSchema },
+
+  'backup:export': { input: none, output: z.object({ saved: z.boolean() }) },
+  /** Asks for a backup file and returns its validated content (null when cancelled). */
+  'backup:open': { input: none, output: BackupSchema.nullable() },
+  'backup:import': {
+    input: z.object({ backup: BackupSchema, settings: z.boolean() }),
+    output: BackupImportResultSchema,
+  },
+
   'automation:get': { input: none, output: AutomationStateSchema },
   'automation:cancel': { input: none, output: ok },
 
@@ -88,6 +106,8 @@ export const invokeContract = {
   'diagnostics:getLogs': { input: none, output: z.array(LogEntrySchema) },
   'diagnostics:openLogFolder': { input: none, output: ok },
   'diagnostics:export': { input: none, output: z.object({ saved: z.boolean() }) },
+  /** Saves a report to Downloads, shows it and opens a pre-filled GitHub issue. */
+  'diagnostics:report': { input: none, output: z.object({ fileName: z.string() }) },
 } as const
 
 export const eventContract = {
@@ -99,6 +119,7 @@ export const eventContract = {
   'log:entry': LogEntrySchema,
   'automation:changed': AutomationStateSchema,
   'compat:changed': CompatHistorySchema,
+  'playtime:changed': PlaytimeSchema,
   'updates:changed': UpdateStateSchema,
   'profiles:changed': z.array(ProfileSchema),
   'app:navigate': z.enum(['dashboard', 'applications', 'controllers', 'profiles', 'settings']),

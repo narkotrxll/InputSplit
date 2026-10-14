@@ -219,6 +219,7 @@ export const ptBR: Messages = {
       'Este jogo usa GameInput. A entrada do controle pode parar quando ele não está em foco.',
   },
   errors: {
+    invalidBackup: 'Este arquivo não é um backup do InputSplit.',
     title: 'Algo deu errado',
     processNotFound: 'O jogo não está mais aberto. Abra-o de novo e escolha a janela dele.',
     selfProcess: 'O InputSplit não pode isolar a si mesmo.',
@@ -390,6 +391,7 @@ export const ptBR: Messages = {
     notRunning: '{exe} não está aberto. Abra o jogo e aplique o perfil de novo.',
     lastUsed: 'Usado {date}',
     neverUsed: 'Nunca usado',
+    playtime: '{time} jogado',
     deleteTitle: 'Excluir "{name}"?',
     deleteBody: 'O perfil será removido. Isso não afeta o jogo.',
     editor: {
@@ -616,5 +618,50 @@ export const ptBR: Messages = {
     twoPlayers: 'Dois jogadores',
     twoPlayersHint:
       'Dois jogos ao mesmo tempo, cada um com seu próprio controle. O painel mostra uma aba por jogador.',
+  },
+  library: {
+    add: 'Adicionar da biblioteca',
+    title: 'Adicionar um jogo da sua biblioteca',
+    subtitle: 'Jogos instalados da Steam, Epic Games e GOG Galaxy.',
+    searching: 'Procurando jogos instalados…',
+    search: 'Buscar jogos',
+    all: 'Todos',
+    emptyTitle: 'Nenhum jogo instalado encontrado',
+    emptyHint:
+      'O InputSplit procura na Steam, Epic Games e GOG Galaxy. Para outros jogos, crie um perfil e escolha o .exe em Procurar.',
+    noMatch: 'Nenhum jogo corresponde à busca.',
+    hasProfile: 'Tem perfil',
+    rescan: 'Procurar de novo',
+    exeHint:
+      'O InputSplit escolheu o arquivo do jogo sozinho. Se o jogo não for encontrado ou não abrir, escolha o .exe certo em Procurar.',
+  },
+  report: {
+    button: 'Relatar um problema',
+    title: 'Relatar um problema',
+    body: 'O InputSplit salva um relatório na pasta Downloads e abre uma nova issue no GitHub com os detalhes já preenchidos. Descreva lá o que aconteceu e anexe o arquivo do relatório.',
+    contents:
+      'O relatório traz a versão do app, suas configurações do InputSplit, o log e o nome do .exe do jogo. Títulos de janelas e seus arquivos não são incluídos.',
+    account: 'Para enviar, é preciso uma conta gratuita no GitHub.',
+    create: 'Criar relatório',
+    done: 'Relatório salvo',
+    doneBody: 'Anexe {file} à issue na página que acabou de abrir.',
+  },
+  backup: {
+    title: 'Backup',
+    hint: 'Salve seus perfis, configurações e tempo de jogo em um arquivo e carregue-o em outro PC ou depois de reinstalar o Windows.',
+    export: 'Exportar',
+    import: 'Importar',
+    exported: 'Backup salvo',
+    importTitle: 'Importar backup',
+    profiles: 'Perfis no arquivo',
+    saved: 'Salvo',
+    replaceHint:
+      'Perfis com o mesmo nome dos seus são substituídos pelos do arquivo. Os outros são adicionados.',
+    includeSettings: 'Importar também as configurações',
+    includeSettingsHint: 'Tema, idioma, notificações, atalhos e proteções padrão.',
+    importButton: 'Importar',
+    imported: 'Backup importado',
+    importedBody: 'Perfis novos: {added}. Atualizados: {updated}.',
+    skipped: 'Ignorados por arquivo de jogo inválido: {skipped}.',
   },
 }

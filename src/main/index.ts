@@ -20,6 +20,8 @@ import { AutomationService } from './services/automation-service'
 import { CompatHistoryService } from './services/compat-history-service'
 import { DeviceService } from './services/device-service'
 import { IconService } from './services/icon-service'
+import { LibraryService } from './services/library-service'
+import { PlaytimeService } from './services/playtime-service'
 import { SeatsService } from './services/seats-service'
 import { Logger } from './services/logger'
 import { ProfilesService } from './services/profiles-service'
@@ -83,7 +85,8 @@ async function main(): Promise<void> {
   const compat = new CompatHistoryService(join(userData, 'compat-history.json'), (w) =>
     logger.warn(w),
   )
-  await Promise.all([settings.load(), profiles.load(), compat.load()])
+  const playtime = new PlaytimeService(join(userData, 'playtime.json'), (w) => logger.warn(w))
+  await Promise.all([settings.load(), profiles.load(), compat.load(), playtime.load()])
   logger.setVerbose(settings.get().verboseLogging)
   const texts = () =>
     mainTexts(resolveLocale(settings.get().language, app.getPreferredSystemLanguages()))
@@ -96,6 +99,7 @@ async function main(): Promise<void> {
   const seats = new SeatsService(backend, logger, () => settings.get().twoPlayers)
   const devices = new DeviceService(backend)
   const icons = new IconService()
+  const library = new LibraryService(logger, useSimulatedBackend)
   const getWindow = () => mainWindow
   const broadcast = createBroadcaster(getWindow)
   const ownPids = () => app.getAppMetrics().map((metric) => metric.pid)
@@ -136,6 +140,8 @@ async function main(): Promise<void> {
     automation,
     compat,
     updates,
+    library,
+    playtime,
   })
 
   let previousStatus = backend.getState().status
@@ -196,6 +202,17 @@ async function main(): Promise<void> {
     updateTray()
     notifier.isolationChanged(seat, view)
     const previousView = previousViews[seat]!
+    // Play time: counted from the start of isolation until it stops for any reason.
+    if (
+      previousView.phase === 'running' &&
+      view.phase !== 'running' &&
+      previousView.startedAt !== null &&
+      previousView.target !== null
+    ) {
+      void playtime
+        .record(previousView.target.exeName, Date.now() - previousView.startedAt)
+        .catch((error: unknown) => logger.warn(`Play time: ${String(error)}`))
+    }
     if (view.phase !== previousView.phase) {
       if (view.phase === 'running') rumble(feedbackSlot(view), 'on')
       else if (view.phase === 'ended') rumble(feedbackSlot(previousView), 'off')
@@ -209,6 +226,7 @@ async function main(): Promise<void> {
   })
   automation.changes.on((state) => broadcast('automation:changed', state))
   compat.changes.on((history) => broadcast('compat:changed', history))
+  playtime.changes.on((games) => broadcast('playtime:changed', games))
   profiles.changes.on((list) => {
     broadcast('profiles:changed', list)
     tray?.setProfiles(profiles.recent())
