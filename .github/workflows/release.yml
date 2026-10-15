@@ -97,11 +97,19 @@ jobs:
           TAG: ${{ steps.version.outputs.tag }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
+          # GitHub's generated list of changes, without the "by @user" author mentions and
+          # without the "New Contributors" section, which only lists people.
+          {
+            echo
+            gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
+              -f tag_name="$TAG" -f target_commitish="$GITHUB_SHA" --jq .body \
+              | sed -E 's/ by @[^ ]+( in |$)/\1/' \
+              | sed -E '/^## New Contributors/,/^$/d'
+          } >> release-notes.md
           gh release create "$TAG" \
             dist/InputSplit.exe \
             dist/InputSplit.exe.sha256 \
             --target "$GITHUB_SHA" \
             --title "InputSplit $VERSION" \
             --notes-file release-notes.md \
-            --generate-notes \
             --latest
