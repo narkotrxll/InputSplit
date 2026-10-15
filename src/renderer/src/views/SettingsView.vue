@@ -397,6 +397,27 @@ function showOnboarding(): void {
           </label>
           <label class="flex items-center justify-between gap-6 px-5 py-3.5">
             <span>
+              <span class="flex flex-wrap items-center gap-2 text-[13.5px] text-text">
+                {{ $t('gamepadHotkey.overlay') }}
+                <span class="flex gap-0.5"
+                  ><UiKbd>LB</UiKbd><UiKbd>RB</UiKbd><UiKbd>Menu</UiKbd></span
+                >
+              </span>
+              <span class="block text-[12.5px] text-text-muted">{{
+                $t('gamepadHotkey.overlayHint')
+              }}</span>
+              <span class="mt-1 block text-[12.5px] text-text-muted">{{
+                $t('gamepadHotkey.overlayLatencyHint')
+              }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.overlayHotkeyEnabled"
+              :label="$t('gamepadHotkey.overlay')"
+              @update:model-value="store.update({ overlayHotkeyEnabled: $event })"
+            />
+          </label>
+          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
+            <span>
               <span class="block text-[13.5px] text-text">{{ $t('gamepadHotkey.rumble') }}</span>
               <span class="block text-[12.5px] text-text-muted">{{
                 $t('gamepadHotkey.rumbleHint')

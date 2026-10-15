@@ -571,6 +571,11 @@ export const fr: Messages = {
     rumble: "Vibrer au démarrage et à l'arrêt",
     rumbleHint:
       'Une longue impulsion : isolation activée. Deux courtes : désactivée. Trois : rien à démarrer.',
+    overlay: "FPS et latence d'entrée",
+    overlayHint:
+      "Maintenez ces boutons 1 seconde en jeu pour afficher ou masquer les FPS, le temps d'image et la latence d'entrée dans le coin de l'écran de ce jeu. L'affichage apparaît sur les jeux en fenêtre et sans bordure, pas en plein écran exclusif.",
+    overlayLatencyHint:
+      "La latence d'entrée est mesurée dans le PC : du moment où le jeu lit un nouvel appui jusqu'à celui où il transmet l'image. Le délai de la manette, du câble et de la TV n'est pas inclus et ne peut pas être mesuré sans matériel supplémentaire. Masquez l'affichage une fois terminé : le dessiner par-dessus le jeu peut lui-même ajouter un peu de latence.",
   },
   notify: {
     launchAtLogin: 'Démarrer avec Windows',

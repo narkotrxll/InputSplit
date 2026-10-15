@@ -16,7 +16,7 @@
 namespace inputsplit::proto {
 
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
-constexpr uint16_t kProtocolVersion = 2;  // 2: DirectInput / Raw Input counters
+constexpr uint16_t kProtocolVersion = 3;  // 2: DirectInput / Raw Input counters, 3: frame stats
 
 // Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
@@ -27,6 +27,7 @@ enum class MessageType : uint16_t {
   Disable = 3,    // helper -> DLL, turn everything off (pass-through)
   Status = 4,     // DLL -> helper, after every Configure/Disable and every second
   Log = 5,        // DLL -> helper, diagnostic text
+  FrameStats = 6, // helper -> DLL, start or stop measuring frames (the FPS overlay)
 };
 
 // Features that the helper can request. Bit flags, combine with |.
@@ -53,6 +54,14 @@ enum DetectedApi : uint32_t {
   kApiSdl3 = 1u << 5,
   kApiUnity = 1u << 6,     // UnityPlayer.dll
   kApiSteamApi = 1u << 7,  // steam_api64.dll / steam_api.dll
+};
+
+// Present calls the DLL could hook to count frames (StatusMessage::frameApis).
+enum FrameApi : uint32_t {
+  kFrameApiDxgi = 1u << 0,    // IDXGISwapChain::Present / Present1 (Direct3D 10, 11, 12)
+  kFrameApiD3d9 = 1u << 1,    // IDirect3DDevice9::Present, IDirect3DSwapChain9::Present
+  kFrameApiOpenGl = 1u << 2,  // wglSwapBuffers
+  kFrameApiVulkan = 1u << 3,  // vkQueuePresentKHR exported by vulkan-1.dll (not every game)
 };
 
 constexpr uint32_t kNoSlot = 0xFFFFFFFFu;
@@ -87,6 +96,12 @@ struct DisableMessage {
   Header header;
 };
 
+struct FrameStatsMessage {
+  Header header;
+  uint32_t enabled;  // 1: hook the game's Present calls (once) and measure; 0: stop measuring
+  uint32_t reserved;
+};
+
 struct StatusMessage {
   Header header;
   uint32_t requested;  // Feature bits currently requested
@@ -105,6 +120,15 @@ struct StatusMessage {
   uint64_t xinputEnableBlocked;   // XInputEnable(FALSE) calls ignored
   uint64_t directInputReads;      // GetDeviceState/GetDeviceData calls on DirectInput controllers
   uint64_t rawGamepadReads;       // Raw Input records from HID controllers read by the game
+  // Frame stats (only counted while the helper asked for them, see FrameStatsMessage).
+  uint64_t timeUs;               // monotonic clock of this message, microseconds
+  uint64_t frames;               // Present calls counted
+  uint64_t inputLatencySumUs;    // sum of "controller read with new input -> next Present"
+  uint64_t inputLatencySamples;  // number of such measurements
+  uint32_t worstFrameUs;         // longest gap between two Present calls since the last STATUS
+  uint32_t worstInputLatencyUs;  // longest input -> Present time since the last STATUS
+  uint32_t frameStatsEnabled;    // 1 while measuring
+  uint32_t frameApis;            // FrameApi bits that were hooked
 };
 
 struct LogMessage {
@@ -119,7 +143,8 @@ struct LogMessage {
 static_assert(sizeof(Header) == 16, "Header layout changed");
 static_assert(sizeof(HelloMessage) == 40, "HelloMessage layout changed");
 static_assert(sizeof(ConfigureMessage) == 32, "ConfigureMessage layout changed");
-static_assert(sizeof(StatusMessage) == 112, "StatusMessage layout changed");
+static_assert(sizeof(FrameStatsMessage) == 24, "FrameStatsMessage layout changed");
+static_assert(sizeof(StatusMessage) == 160, "StatusMessage layout changed");
 static_assert(sizeof(LogMessage) == 504, "LogMessage layout changed");
 
 // The largest message; used as the receive buffer size.
@@ -147,6 +172,7 @@ inline uint16_t ValidateMessage(const void* data, uint32_t bytes) {
     case MessageType::Disable: return bytes == sizeof(DisableMessage) ? header->type : 0;
     case MessageType::Status: return bytes == sizeof(StatusMessage) ? header->type : 0;
     case MessageType::Log: return bytes == sizeof(LogMessage) ? header->type : 0;
+    case MessageType::FrameStats: return bytes == sizeof(FrameStatsMessage) ? header->type : 0;
   }
   return 0;
 }

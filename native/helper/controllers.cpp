@@ -78,16 +78,34 @@ int g_testSlot = -1;
 bool g_running = false;
 std::thread g_thread;
 
-// Controller shortcut: LB + RB + View (Back) held for kHotkeyHoldMs on any controller.
-constexpr WORD kHotkeyMask =
-    XINPUT_GAMEPAD_LEFT_SHOULDER | XINPUT_GAMEPAD_RIGHT_SHOULDER | XINPUT_GAMEPAD_BACK;
-constexpr auto kHotkeyHoldMs = std::chrono::milliseconds(2000);
+// Controller shortcuts, held on any controller:
+//   LB + RB + View (Back) for 2 s: start or stop isolation ("gamepadHotkey")
+//   LB + RB + Menu (Start) for 1 s: show or hide the FPS and latency overlay ("overlayHotkey")
+struct Shortcut {
+  WORD mask;
+  std::chrono::milliseconds hold;
+  const char* event;
+};
+constexpr Shortcut kShortcuts[] = {
+    {XINPUT_GAMEPAD_LEFT_SHOULDER | XINPUT_GAMEPAD_RIGHT_SHOULDER | XINPUT_GAMEPAD_BACK,
+     std::chrono::milliseconds(2000), "gamepadHotkey"},
+    {XINPUT_GAMEPAD_LEFT_SHOULDER | XINPUT_GAMEPAD_RIGHT_SHOULDER | XINPUT_GAMEPAD_START,
+     std::chrono::milliseconds(1000), "overlayHotkey"},
+};
+constexpr size_t kShortcutCount = sizeof(kShortcuts) / sizeof(kShortcuts[0]);
 constexpr auto kHotkeyPollMs = std::chrono::milliseconds(50);
-bool g_hotkeyEnabled = false;
+bool g_shortcutEnabled[kShortcutCount] = {};
+
+bool AnyShortcutEnabled() {
+  for (bool enabled : g_shortcutEnabled) {
+    if (enabled) return true;
+  }
+  return false;
+}
 
 struct HotkeyTracker {
   bool holding = false;
-  bool fired = false;  // once per hold: release all three buttons to arm again
+  bool fired = false;  // once per hold: release the buttons to arm again
   std::chrono::steady_clock::time_point since{};
 };
 
@@ -261,24 +279,28 @@ void EmitTestState(int slot, DWORD& lastPacket, bool& wasConnected) {
 
 // Reads the buttons of every connected slot and reports a completed hold. Runs on the
 // monitor thread without the lock (XInputGetState may block briefly).
-void PollHotkey(const bool connected[XUSER_MAX_COUNT], HotkeyTracker trackers[XUSER_MAX_COUNT]) {
+void PollHotkey(const bool connected[XUSER_MAX_COUNT], const bool enabled[kShortcutCount],
+                HotkeyTracker trackers[XUSER_MAX_COUNT][kShortcutCount]) {
   const auto now = std::chrono::steady_clock::now();
   for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
-    HotkeyTracker& tracker = trackers[slot];
     XINPUT_STATE state{};
-    bool pressed = connected[slot] &&
-                   g_api.getState(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS &&
-                   (state.Gamepad.wButtons & kHotkeyMask) == kHotkeyMask;
-    if (!pressed) {
-      tracker = HotkeyTracker{};
-      continue;
-    }
-    if (!tracker.holding) {
-      tracker.holding = true;
-      tracker.since = now;
-    } else if (!tracker.fired && now - tracker.since >= kHotkeyHoldMs) {
-      tracker.fired = true;
-      SendEvent("gamepadHotkey", Json{{"slot", slot}});
+    bool read = connected[slot] &&
+                g_api.getState(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS;
+    for (size_t i = 0; i < kShortcutCount; ++i) {
+      HotkeyTracker& tracker = trackers[slot][i];
+      bool pressed = enabled[i] && read &&
+                     (state.Gamepad.wButtons & kShortcuts[i].mask) == kShortcuts[i].mask;
+      if (!pressed) {
+        tracker = HotkeyTracker{};
+        continue;
+      }
+      if (!tracker.holding) {
+        tracker.holding = true;
+        tracker.since = now;
+      } else if (!tracker.fired && now - tracker.since >= kShortcuts[i].hold) {
+        tracker.fired = true;
+        SendEvent(kShortcuts[i].event, Json{{"slot", slot}});
+      }
     }
   }
 }
@@ -291,7 +313,7 @@ void Run() {
   DWORD lastPacket = 0;
   bool wasConnected = false;
   bool hidListed = false;
-  HotkeyTracker trackers[XUSER_MAX_COUNT];
+  HotkeyTracker trackers[XUSER_MAX_COUNT][kShortcutCount];
 
   std::unique_lock<std::mutex> lock(g_mutex);
   while (g_running) {
@@ -348,19 +370,23 @@ void Run() {
     }
 
     // Shortcut: only connected slots are read (an empty slot is slow to poll).
-    if (g_hotkeyEnabled) {
+    if (AnyShortcutEnabled()) {
       bool connected[XUSER_MAX_COUNT];
+      bool enabled[kShortcutCount];
       for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) connected[slot] = g_slots[slot].connected;
+      for (size_t i = 0; i < kShortcutCount; ++i) enabled[i] = g_shortcutEnabled[i];
       lock.unlock();
-      PollHotkey(connected, trackers);
+      PollHotkey(connected, enabled, trackers);
       lock.lock();
     } else {
-      for (HotkeyTracker& tracker : trackers) tracker = HotkeyTracker{};
+      for (auto& slotTrackers : trackers) {
+        for (HotkeyTracker& tracker : slotTrackers) tracker = HotkeyTracker{};
+      }
     }
 
     if (streamedSlot >= 0) {
       g_wake.wait_for(lock, std::chrono::milliseconds(16));
-    } else if (g_hotkeyEnabled) {
+    } else if (AnyShortcutEnabled()) {
       g_wake.wait_until(lock, (std::min)(nextPresenceCheck, Clock::now() + kHotkeyPollMs));
     } else {
       g_wake.wait_until(lock, nextPresenceCheck);
@@ -432,7 +458,15 @@ void ControllerMonitor::StopTest() {
 void ControllerMonitor::SetHotkeyEnabled(bool enabled) {
   {
     std::lock_guard<std::mutex> lock(g_mutex);
-    g_hotkeyEnabled = enabled;
+    g_shortcutEnabled[0] = enabled;
+  }
+  g_wake.notify_all();
+}
+
+void ControllerMonitor::SetOverlayHotkeyEnabled(bool enabled) {
+  {
+    std::lock_guard<std::mutex> lock(g_mutex);
+    g_shortcutEnabled[1] = enabled;
   }
   g_wake.notify_all();
 }

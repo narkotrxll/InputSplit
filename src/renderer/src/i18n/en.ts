@@ -560,6 +560,11 @@ export const en = {
     rumble: 'Vibrate on start and stop',
     rumbleHint:
       'One long pulse: isolation is on. Two short pulses: it is off. Three: nothing to start.',
+    overlay: 'FPS and input latency',
+    overlayHint:
+      "Hold these buttons for 1 second during a game to show or hide FPS, frame time and input latency in the corner of that game's screen. It shows over windowed and borderless games, not in exclusive fullscreen.",
+    overlayLatencyHint:
+      'Input latency is measured inside the PC: from the moment the game reads a new button press to the moment it hands over the frame. The delay of the controller, the cable and the TV is not included and cannot be measured without extra hardware. Hide the readout when you are done: drawing it over the game can add a little delay itself.',
   },
   notify: {
     launchAtLogin: 'Start with Windows',

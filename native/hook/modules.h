@@ -3,7 +3,11 @@
 
 #include <windows.h>
 
+#include <xinput.h>
+
 #include <cstdint>
+
+#include "../common/hook_protocol.h"
 
 namespace inputsplit::hook {
 
@@ -40,6 +44,12 @@ void SyncRawInputRegistrations();  // re-register the game's HID controllers for
 // Handles our private sync message on the game's window thread (shield window procedure).
 bool HandleRawInputSyncMessage(UINT msg, LRESULT& result);
 bool IsGamepadUsage(USHORT usagePage, USHORT usage);
+
+// frame_stats.cpp (the FPS overlay)
+void SetFrameStats(bool enabled);  // hooks the game's Present calls on first use
+void FrameStatsTick();             // hooks a renderer the game loaded later
+void OnControllerRead(DWORD physicalSlot, const XINPUT_STATE* state);  // after a game read
+void FillFrameStats(proto::StatusMessage& status);
 
 // detection.cpp
 uint32_t DetectApis();  // proto::DetectedApi bits

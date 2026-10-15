@@ -559,6 +559,11 @@ export const pl: Messages = {
     rumble: 'Wibracja przy włączaniu i wyłączaniu',
     rumbleHint:
       'Jeden długi impuls: izolacja włączona. Dwa krótkie: wyłączona. Trzy: nie ma czego uruchomić.',
+    overlay: 'FPS i opóźnienie wejścia',
+    overlayHint:
+      'Przytrzymaj te przyciski przez 1 sekundę w grze, aby pokazać lub ukryć FPS, czas klatki i opóźnienie wejścia w rogu ekranu tej gry. Widać je nad grami w oknie i bez ramki, ale nie w wyłącznym trybie pełnoekranowym.',
+    overlayLatencyHint:
+      'Opóźnienie wejścia jest mierzone w komputerze: od chwili, gdy gra odczyta nowe naciśnięcie, do chwili, gdy przekaże klatkę. Opóźnienie pada, kabla i telewizora nie jest wliczone i nie da się go zmierzyć bez dodatkowego sprzętu. Ukryj odczyt po skończeniu: samo rysowanie go nad grą może dodać trochę opóźnienia.',
   },
   notify: {
     launchAtLogin: 'Uruchamiaj razem z Windows',

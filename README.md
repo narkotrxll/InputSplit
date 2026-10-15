@@ -69,6 +69,11 @@ Once a game has a profile, it gets even simpler:
   window appears. Profiles can also start isolation **automatically** whenever the game opens.
 - **From the couch:** hold **LB + RB + View** for 2 seconds to start or stop isolation. The
   controller vibrates once when isolation is on and twice when it is off.
+- **FPS and input latency:** hold **LB + RB + Menu** for 1 second in a game to show or hide
+  FPS, frame time and input latency in the corner of that game's screen (windowed and
+  borderless games). The latency is measured inside the PC, from the game reading a new
+  button press to it handing over the frame; the controller, cable and TV add their own delay
+  on top, which software cannot measure.
 - **Tray:** closing the window keeps InputSplit in the tray, where you can start a profile,
   stop isolation or quit. It can also **start with Windows**, hidden in the tray.
 - Windows **notifications** when isolation starts or ends.

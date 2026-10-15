@@ -25,6 +25,9 @@ class ControllerMonitor {
   // Controller shortcut: emits "gamepadHotkey" {slot} when LB + RB + View are held for two
   // seconds on any connected controller.
   void SetHotkeyEnabled(bool enabled);
+  // Overlay shortcut: emits "overlayHotkey" {slot} when LB + RB + Menu are held for one
+  // second on any connected controller.
+  void SetOverlayHotkeyEnabled(bool enabled);
   // Short vibration as feedback ("on" one pulse, "off" two, "error" three). Returns false
   // when XInput cannot vibrate.
   bool Rumble(int slot, const std::string& pattern);

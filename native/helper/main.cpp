@@ -134,6 +134,26 @@ Json Handle(const std::string& method, const Json& params) {
     }
     return Json::object();
   }
+  if (method == "setFrameStats") {
+    if (!SessionManager::Instance().SetFrameStats(params.at("sessionId").get<int>(),
+                                                  params.at("enabled").get<bool>())) {
+      throw HelperError{"sessionNotFound", "No such session."};
+    }
+    return Json::object();
+  }
+  if (method == "windowMonitor") {
+    // The monitor showing most of a window, in physical pixels (for the overlay).
+    HWND hwnd = HwndFromJson(params.at("hwnd"));
+    if (hwnd == nullptr || !IsWindow(hwnd)) throw HelperError{"windowNotFound", "No such window."};
+    MONITORINFO info{};
+    info.cbSize = sizeof(info);
+    if (!GetMonitorInfoW(MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST), &info)) {
+      throw HelperError{"windowNotFound", "No monitor for this window."};
+    }
+    const RECT& r = info.rcMonitor;
+    return Json{{"bounds",
+                 {{"x", r.left}, {"y", r.top}, {"width", r.right - r.left}, {"height", r.bottom - r.top}}}};
+  }
   if (method == "stopIsolation") {
     if (!SessionManager::Instance().Stop(params.at("sessionId").get<int>(), "stopped")) {
       throw HelperError{"sessionNotFound", "No such session."};
@@ -160,6 +180,10 @@ Json Handle(const std::string& method, const Json& params) {
   }
   if (method == "setGamepadHotkey") {
     ControllerMonitor::Instance().SetHotkeyEnabled(params.at("enabled").get<bool>());
+    return Json::object();
+  }
+  if (method == "setOverlayHotkey") {
+    ControllerMonitor::Instance().SetOverlayHotkeyEnabled(params.at("enabled").get<bool>());
     return Json::object();
   }
   if (method == "rumble") {

@@ -124,6 +124,7 @@ void DisableAll() {
   g_requested.store(0);
   g_failed.store(0);
   SyncShield(false);
+  SetFrameStats(false);
   if (previouslyActive & proto::kFeatureXInputBackground) {
     OnXInputBackgroundDisabled();
     SyncRawInputRegistrations();
@@ -132,6 +133,7 @@ void DisableAll() {
 }
 
 void Tick() {
+  FrameStatsTick();
   // Pick up windows the game created after isolation started (launcher -> game window,
   // splash -> main window, etc.).
   if (g_active.load() & kWindowProcFeatures) SyncShield(true);
@@ -165,6 +167,7 @@ proto::StatusMessage BuildStatus() {
   status.xinputEnableBlocked = g_counters.xinputEnableBlocked.load();
   status.directInputReads = g_counters.directInputReads.load();
   status.rawGamepadReads = g_counters.rawGamepadReads.load();
+  FillFrameStats(status);
   return status;
 }
 

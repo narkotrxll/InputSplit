@@ -66,6 +66,7 @@ to test), and checking the 🔧 items on real Windows (Phase 5).
 - ⏳ GameInput background hook per GameInput version (needs a GameInput game to test on Windows)
 - 🔧 Launch mode: start a game from a profile with `SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1`
 - 🔧 Controller shortcut (LB + RB + View held 2 s) and rumble feedback
+- 🔧 FPS and input-latency overlay on the game's screen (LB + RB + Menu held 1 s)
 - 🔧 Start with Windows, Windows notifications, profiles in the tray
 - 🔧 Update check and one-click install from GitHub Releases (SHA-256 verified)
 - 🔧 Onboarding checks the controller and picks the TV
