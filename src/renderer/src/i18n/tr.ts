@@ -558,6 +558,11 @@ export const tr: Messages = {
       'Yalıtımı koltuktan başlatmak veya durdurmak için bu düğmeleri 2 saniye basılı tutun. Hiçbir şey çalışmıyorsa, oyunu açık olan en son kullanılan profil başlar.',
     rumble: 'Başlatırken ve durdururken titreş',
     rumbleHint: 'Bir uzun titreşim: yalıtım açık. İki kısa: kapalı. Üç: başlatılacak bir şey yok.',
+    overlay: 'FPS ve giriş gecikmesi',
+    overlayHint:
+      'Oyun sırasında bu tuşları 1 saniye basılı tutarak FPS, kare süresi ve giriş gecikmesini o oyunun ekranının köşesinde gösterin veya gizleyin. Pencereli ve çerçevesiz oyunların üzerinde görünür, özel tam ekranda görünmez.',
+    overlayLatencyHint:
+      'Giriş gecikmesi bilgisayarın içinde ölçülür: oyunun yeni bir tuş basışını okuduğu andan kareyi teslim ettiği ana kadar. Kumanda, kablo ve TV gecikmesi dahil değildir ve ek donanım olmadan ölçülemez. İşiniz bitince göstergeyi gizleyin: oyunun üzerine çizilmesi de biraz gecikme ekleyebilir.',
   },
   notify: {
     launchAtLogin: 'Windows ile başlat',

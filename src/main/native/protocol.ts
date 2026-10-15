@@ -76,6 +76,13 @@ export const helperMethods = {
     result: empty,
   },
   stopIsolation: { params: z.object({ sessionId: z.number().int() }), result: empty },
+  /** Starts or stops the hook's frame counter (FPS overlay); hooks Present on first use. */
+  setFrameStats: {
+    params: z.object({ sessionId: z.number().int(), enabled: z.boolean() }),
+    result: empty,
+  },
+  /** The monitor showing a window, in physical pixels. */
+  windowMonitor: { params: z.object({ hwnd: z.number().int() }), result: z.object({ bounds: RectSchema }) },
   moveWindow: {
     params: z.object({
       hwnd: z.number().int(),
@@ -107,6 +114,8 @@ export const helperMethods = {
   },
   /** Watch every connected controller for the LB + RB + View hold (`gamepadHotkey`). */
   setGamepadHotkey: { params: z.object({ enabled: z.boolean() }), result: empty },
+  /** Watch every connected controller for the LB + RB + Menu hold (`overlayHotkey`). */
+  setOverlayHotkey: { params: z.object({ enabled: z.boolean() }), result: empty },
   /** Short vibration as feedback: `on` one pulse, `off` two pulses, `error` three. */
   rumble: {
     params: z.object({ slot: z.number().int().min(0).max(3), pattern: z.enum(['on', 'off', 'error']) }),
@@ -138,6 +147,7 @@ export const helperEvents = {
   }),
   emergencyStop: z.object({ stoppedSessions: z.number().int() }),
   gamepadHotkey: z.object({ slot: z.number().int().min(0).max(3) }),
+  overlayHotkey: z.object({ slot: z.number().int().min(0).max(3) }),
 } as const
 
 export type HelperEventName = keyof typeof helperEvents

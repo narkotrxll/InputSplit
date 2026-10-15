@@ -562,6 +562,11 @@ export const ptBR: Messages = {
     rumble: 'Vibrar ao iniciar e parar',
     rumbleHint:
       'Um pulso longo: isolamento ativado. Dois curtos: desativado. Três: nada para iniciar.',
+    overlay: 'FPS e atraso de entrada',
+    overlayHint:
+      'Segure estes botões por 1 segundo durante o jogo para mostrar ou ocultar FPS, tempo de quadro e atraso de entrada no canto da tela desse jogo. Aparece sobre jogos em janela e sem borda, não em tela cheia exclusiva.',
+    overlayLatencyHint:
+      'O atraso de entrada é medido dentro do PC: do momento em que o jogo lê um novo toque até o momento em que entrega o quadro. O atraso do controle, do cabo e da TV não está incluído e não pode ser medido sem hardware extra. Oculte a leitura quando terminar: desenhá-la sobre o jogo também pode adicionar um pouco de atraso.',
   },
   notify: {
     launchAtLogin: 'Iniciar com o Windows',

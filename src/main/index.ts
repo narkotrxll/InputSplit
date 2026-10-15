@@ -30,6 +30,8 @@ import { SettingsService } from './services/settings-service'
 import { UpdateService } from './services/update-service'
 import { mainTexts } from './i18n'
 import { Notifier } from './notifier'
+import { OverlayWindows } from './overlay-window'
+import { OverlayService } from './services/overlay-service'
 import { AppTray } from './tray'
 import { createMainWindow, showWindow, titleBarColors } from './window'
 
@@ -134,6 +136,13 @@ async function main(): Promise<void> {
   const broadcast = createBroadcaster(getWindow)
   const ownPids = () => app.getAppMetrics().map((metric) => metric.pid)
   const automation = new AutomationService({ backend, seats, profiles, logger, ownPids })
+  const overlay = new OverlayService({
+    backend,
+    seats,
+    screen: new OverlayWindows(),
+    texts,
+    logger,
+  })
   const updates = new UpdateService({
     currentVersion: app.getVersion(),
     canInstall: app.isPackaged && process.platform === 'win32',
@@ -185,6 +194,7 @@ async function main(): Promise<void> {
         .setEmergencyHotkey(settings.get().emergencyHotkeyEnabled)
         .catch((error: unknown) => logger.warn(`Emergency hotkey: ${String(error)}`))
       setGamepadHotkey(settings.get().gamepadHotkeyEnabled)
+      setOverlayHotkey(settings.get().overlayHotkeyEnabled)
     }
   })
 
@@ -214,6 +224,22 @@ async function main(): Promise<void> {
       .finally(() => {
         toggling = false
       })
+  })
+
+  // Overlay shortcut (LB + RB + Menu held): FPS and input latency on the game's screen.
+  const setOverlayHotkey = (enabled: boolean) => {
+    if (backend.getState().status !== 'ready') return
+    void backend
+      .request('setOverlayHotkey', { enabled })
+      .catch((error: unknown) => logger.warn(`Overlay shortcut: ${String(error)}`))
+  }
+  backend.onEvent((event) => {
+    if (event.name !== 'overlayHotkey' || !settings.get().overlayHotkeyEnabled) return
+    const { slot } = event.data
+    void overlay
+      .toggle(slot)
+      .then((result) => rumble(slot, result === 'nothing' ? 'error' : result))
+      .catch((error: unknown) => logger.warn(`Overlay shortcut failed: ${String(error)}`))
   })
 
   // Vibration as feedback for the player, who may not see any screen showing InputSplit.
@@ -302,6 +328,10 @@ async function main(): Promise<void> {
     if (next.gamepadHotkeyEnabled !== previousSettings.gamepadHotkeyEnabled) {
       setGamepadHotkey(next.gamepadHotkeyEnabled)
     }
+    if (next.overlayHotkeyEnabled !== previousSettings.overlayHotkeyEnabled) {
+      setOverlayHotkey(next.overlayHotkeyEnabled)
+      if (!next.overlayHotkeyEnabled) overlay.closeAll()
+    }
     if (next.launchAtLogin !== previousSettings.launchAtLogin) applyLoginItem(next.launchAtLogin)
     if (next.checkForUpdates !== previousSettings.checkForUpdates) {
       updates.setAutomatic(app.isPackaged && next.checkForUpdates)
@@ -357,6 +387,7 @@ async function main(): Promise<void> {
         automation.stopWatching()
         automation.cancel()
         updates.dispose()
+        overlay.closeAll()
         await seats.stopAll()
         await backend.stop()
       } catch (error) {

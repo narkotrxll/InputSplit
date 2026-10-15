@@ -49,6 +49,8 @@ class SessionManager {
   // Plays the game's sound on the speakers of `displayId` until the session ends.
   // {"routed", "device", "reason"}; null if there is no such session.
   Json RouteAudio(int sessionId, const std::wstring& displayId);
+  // Starts or stops the hook's frame counter (FPS overlay).
+  bool SetFrameStats(int sessionId, bool enabled);
   // Stops every session; waits up to `waitMs` for them to finish.
   int StopAll(const std::string& reason, DWORD waitMs);
 

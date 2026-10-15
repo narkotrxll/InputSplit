@@ -164,6 +164,8 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 | Profile with automatic start, game started from Steam | Isolation turns on about 4 s after the game window appears. After **Stop** it does not turn on again until the game is restarted. |
 | Tray → **Play** → a profile | Same as Play, without opening the window. |
 | Hold **LB + RB + View** 2 s | Starts the most recent profile whose game is open (one long vibration); again stops it (two short). With nothing to start: three short vibrations and a notification. |
+| Isolated game (borderless or windowed), hold **LB + RB + Menu** 1 s | A small readout appears in the top-left corner of the game's screen only (one long vibration): FPS close to what the game or Steam's FPS counter shows, frame time, "Input → frame" after pressing a button, and the screen's refresh rate. The game keeps running and keeps the controller; the desktop keeps keyboard focus. Held again: it disappears (two short vibrations). With no game isolated: three short vibrations. |
+| FPS readout with a Direct3D 9, Direct3D 11/12, OpenGL and Vulkan game | FPS shows for each; "Not available in this game" only when the game's renderer could not be hooked (some Vulkan games). The hook log (Diagnostics) names what was hooked: "Frame counter hooked: 0x…". |
 | Settings → **Start with Windows**, sign out and in | InputSplit starts hidden in the tray. |
 | Notifications | With the InputSplit window in the background, starting/stopping/closing the game shows a Windows notification. None while the window has focus. |
 | Settings → **Check now** | "You have the latest version" or the new version with **Download and install**; the installer starts and InputSplit quits. |

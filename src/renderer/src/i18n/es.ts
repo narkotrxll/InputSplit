@@ -570,6 +570,11 @@ export const es: Messages = {
     rumble: 'Vibrar al activar y detener',
     rumbleHint:
       'Un pulso largo: aislamiento activado. Dos cortos: desactivado. Tres: nada que iniciar.',
+    overlay: 'FPS y retraso de entrada',
+    overlayHint:
+      'Mantén estos botones 1 segundo durante una partida para mostrar u ocultar los FPS, el tiempo de fotograma y el retraso de entrada en la esquina de la pantalla de ese juego. Se ve sobre juegos en ventana y sin bordes, no en pantalla completa exclusiva.',
+    overlayLatencyHint:
+      'El retraso de entrada se mide dentro del PC: desde que el juego lee una pulsación nueva hasta que entrega el fotograma. No incluye el retraso del mando, del cable ni de la TV, que no se puede medir sin hardware adicional. Ocúltalo cuando termines: dibujarlo sobre el juego también puede añadir un poco de retraso.',
   },
   notify: {
     launchAtLogin: 'Iniciar con Windows',

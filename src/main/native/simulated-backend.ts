@@ -124,7 +124,15 @@ export class SimulatedBackend implements NativeBackend {
     { slot: 3, connected: false, kind: 'unknown', wireless: null, battery: null },
   ]
   /** Two players: several sessions at once, like the real helper. */
-  private readonly sessions = new Map<number, { status: SessionStatus; timer: NodeJS.Timeout }>()
+  private readonly sessions = new Map<
+    number,
+    {
+      status: SessionStatus
+      timer: NodeJS.Timeout
+      /** The simulated frame counter while the FPS overlay is on. */
+      frames: { frames: number; latencySum: number; samples: number } | null
+    }
+  >()
   private nextSessionId = 1
   private testTimer: NodeJS.Timeout | null = null
 
@@ -234,7 +242,16 @@ export class SimulatedBackend implements NativeBackend {
         return {}
       case 'setEmergencyHotkey':
         return { registered: true, accelerator: 'Ctrl+Alt+Shift+Q' }
+      case 'setFrameStats': {
+        const session = this.sessions.get(Number(p['sessionId']))
+        if (session === undefined) throw new AppException('sessionNotFound', 'Simulated: no session')
+        session.frames = p['enabled'] === true ? { frames: 0, latencySum: 0, samples: 0 } : null
+        return {}
+      }
+      case 'windowMonitor':
+        return { bounds: { x: 0, y: 0, width: 1920, height: 1080 } }
       case 'setGamepadHotkey':
+      case 'setOverlayHotkey':
       case 'rumble':
         return {}
       case 'hello':
@@ -289,11 +306,12 @@ export class SimulatedBackend implements NativeBackend {
           swallowedFocusEvents: c.swallowedFocusEvents + (Math.random() < 0.2 ? 3 : 0),
           blockedCursorCalls: c.blockedCursorCalls + (Math.random() < 0.5 ? 60 : 0),
         },
+        frameStats: simulatedFrameStats(session.frames),
         updatedAt: Date.now(),
       }
       this.events.emit({ name: 'sessionStatus', data: session.status })
     }, 1000)
-    this.sessions.set(sessionId, { status, timer })
+    this.sessions.set(sessionId, { status, timer, frames: null })
     return status
   }
 
@@ -341,4 +359,27 @@ export class SimulatedBackend implements NativeBackend {
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+/** Roughly 55–60 FPS and 15–30 ms from input to frame, as a real game would report. */
+function simulatedFrameStats(
+  counter: { frames: number; latencySum: number; samples: number } | null,
+): SessionStatus['frameStats'] {
+  if (counter !== null) {
+    counter.frames += 55 + Math.floor(Math.random() * 6)
+    if (Math.random() < 0.7) {
+      counter.latencySum += 15_000 + Math.floor(Math.random() * 15_000)
+      counter.samples += 1
+    }
+  }
+  return {
+    enabled: counter !== null,
+    timeUs: Math.round(performance.now() * 1000),
+    frames: counter?.frames ?? 0,
+    inputLatencySumUs: counter?.latencySum ?? 0,
+    inputLatencySamples: counter?.samples ?? 0,
+    worstFrameUs: counter !== null ? 20_000 + Math.floor(Math.random() * 10_000) : 0,
+    worstInputLatencyUs: counter !== null ? 32_000 : 0,
+    apis: counter !== null ? ['dxgi'] : [],
+  }
 }

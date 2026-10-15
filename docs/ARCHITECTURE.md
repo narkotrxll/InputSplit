@@ -195,19 +195,34 @@ NDJSON over stdio. Requests `{"id":1,"method":"listWindows","params":{}}`, respo
 
 Methods: `hello`, `listWindows`, `listControllers`, `listDisplays`, `checkTarget`,
 `startIsolation`, `stopIsolation`, `moveWindow`, `routeAudio`, `startControllerTest`,
-`stopControllerTest`, `setEmergencyHotkey`, `setGamepadHotkey`, `rumble`, `ping`,
-`shutdown`.
+`stopControllerTest`, `setEmergencyHotkey`, `setGamepadHotkey`, `setOverlayHotkey`,
+`setFrameStats`, `windowMonitor`, `rumble`, `ping`, `shutdown`.
 Events: `controllersChanged`, `controllerState`, `displaysChanged`, `sessionStatus`,
-`sessionEnded`, `emergencyStop`, `gamepadHotkey`, `log`.
+`sessionEnded`, `emergencyStop`, `gamepadHotkey`, `overlayHotkey`, `log`.
 
 The controller shortcut is polled by the helper's controller thread (only connected slots,
 every 50 ms while enabled). The helper only reports the held combination; deciding what to
 start or stop happens in the main process (`AutomationService`).
 
+### FPS and input-latency overlay
+
+LB + RB + Menu (held 1 s, `overlayHotkey`) toggles a readout for the pressing player's game
+(`OverlayService`). Main sends `setFrameStats`; the helper forwards `FRAME_STATS` to the DLL,
+which on first use hooks the game's Present calls (`frame_stats.cpp`: DXGI and Direct3D 9
+found through throw-away devices on a hidden window, `wglSwapBuffers`, and the exported
+`vkQueuePresentKHR`) and from then on counts frames while measuring is on. Input latency is
+"an XInput read returned a changed state -> the next Present", so it covers the game's own
+processing only; the controller, Windows composition, the cable and the display add more,
+which software cannot see. `STATUS` carries cumulative counters and the DLL's clock; main
+turns two consecutive statuses into FPS and averages (`src/shared/frame-stats.ts`). The
+readout is a click-through, non-focusable, always-on-top window in the corner of the
+monitor that shows the game window (`windowMonitor`), so it does not appear over a game in
+exclusive fullscreen.
+
 ### 7.3 Helper ↔ Hook DLL (`native/common/hook_protocol.h`)
 
 Fixed-size, versioned binary structs over a message-mode named pipe (no JSON parser inside
-the game). Messages: `HELLO`, `CONFIGURE`, `DISABLE`, `STATUS`, `LOG`. The DLL uses
+the game). Messages: `HELLO`, `CONFIGURE`, `DISABLE`, `STATUS`, `LOG`, `FRAME_STATS`. The DLL uses
 overlapped I/O on one worker thread: it waits for commands and sends `STATUS` every second.
 
 ## 8. Safety rules enforced in native code (not only in the UI)

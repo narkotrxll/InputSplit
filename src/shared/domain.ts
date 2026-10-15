@@ -191,6 +191,26 @@ export const SessionCountersSchema = z.object({
 })
 export type SessionCounters = z.infer<typeof SessionCountersSchema>
 
+/** Graphics APIs whose Present calls the hook could count (FPS overlay). */
+export const FrameApiSchema = z.enum(['dxgi', 'd3d9', 'opengl', 'vulkan'])
+export type FrameApi = z.infer<typeof FrameApiSchema>
+
+/** Cumulative frame counters from the hook DLL; only counted while the overlay is on. */
+export const FrameStatsSchema = z.object({
+  enabled: z.boolean(),
+  /** The DLL's monotonic clock when it sent this status, in microseconds. */
+  timeUs: z.number().nonnegative(),
+  frames: z.number().nonnegative(),
+  /** Sum and count of "game read new controller input -> next Present" times. */
+  inputLatencySumUs: z.number().nonnegative(),
+  inputLatencySamples: z.number().nonnegative(),
+  /** Longest values since the previous status. */
+  worstFrameUs: z.number().nonnegative(),
+  worstInputLatencyUs: z.number().nonnegative(),
+  apis: z.array(FrameApiSchema),
+})
+export type FrameStats = z.infer<typeof FrameStatsSchema>
+
 /** Status of one isolated game as reported by the hook DLL (via the helper). */
 export const SessionStatusSchema = z.object({
   sessionId: z.number().int(),
@@ -204,6 +224,8 @@ export const SessionStatusSchema = z.object({
   subclassedWindows: z.number().int().nonnegative(),
   xinputSlot: z.number().int().nullable(),
   counters: SessionCountersSchema,
+  /** Left out by a helper older than the FPS overlay. */
+  frameStats: FrameStatsSchema.optional(),
   updatedAt: z.number(),
 })
 export type SessionStatus = z.infer<typeof SessionStatusSchema>
@@ -395,6 +417,8 @@ const ADDED_SETTINGS_FIELDS = {
   antiCheatProtection: z.boolean(),
   /** Play the game's sound on the chosen screen's speakers (TV, monitor) while isolated. */
   gameAudioToDisplay: z.boolean(),
+  /** LB + RB + Menu shows or hides FPS and input latency on the game's screen. */
+  overlayHotkeyEnabled: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -408,6 +432,7 @@ export const SettingsSchema = z.object({
   languageChosen: ADDED_SETTINGS_FIELDS.languageChosen.default(false),
   antiCheatProtection: ADDED_SETTINGS_FIELDS.antiCheatProtection.default(true),
   gameAudioToDisplay: ADDED_SETTINGS_FIELDS.gameAudioToDisplay.default(true),
+  overlayHotkeyEnabled: ADDED_SETTINGS_FIELDS.overlayHotkeyEnabled.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -515,6 +540,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'notifications',
   'emergencyHotkeyEnabled',
   'gamepadHotkeyEnabled',
+  'overlayHotkeyEnabled',
   'rumbleFeedback',
   'checkForUpdates',
   'twoPlayers',

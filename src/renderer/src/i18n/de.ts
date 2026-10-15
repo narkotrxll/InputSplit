@@ -568,6 +568,11 @@ export const de: Messages = {
     rumble: 'Beim Starten und Beenden vibrieren',
     rumbleHint:
       'Ein langer Impuls: Isolierung aktiv. Zwei kurze: beendet. Drei: nichts zu starten.',
+    overlay: 'FPS und Eingabeverzögerung',
+    overlayHint:
+      'Halte diese Tasten im Spiel 1 Sekunde lang, um FPS, Frametime und Eingabeverzögerung in der Ecke des Spielbildschirms ein- oder auszublenden. Sichtbar über Spielen im Fenster und randlosen Fenster, nicht im exklusiven Vollbild.',
+    overlayLatencyHint:
+      'Die Eingabeverzögerung wird im PC gemessen: vom Lesen eines neuen Tastendrucks durch das Spiel bis zur Übergabe des Frames. Die Verzögerung von Controller, Kabel und TV ist nicht enthalten und lässt sich ohne zusätzliche Hardware nicht messen. Blende die Anzeige danach wieder aus: Auch das Zeichnen über dem Spiel kann etwas Verzögerung kosten.',
   },
   notify: {
     launchAtLogin: 'Mit Windows starten',

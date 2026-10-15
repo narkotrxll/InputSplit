@@ -136,6 +136,12 @@ bool HandleMessage(Pipe& pipe, const uint8_t* data, DWORD bytes) {
     case proto::MessageType::Disable:
       DisableAll();
       return SendStatusAndLogs(pipe);
+    case proto::MessageType::FrameStats: {
+      proto::FrameStatsMessage message;
+      memcpy(&message, data, sizeof(message));
+      SetFrameStats(message.enabled != 0);
+      return SendStatusAndLogs(pipe);
+    }
     default:
       Log(LogLevel::Warn, "Ignoring an invalid message (%lu bytes)", bytes);
       return true;

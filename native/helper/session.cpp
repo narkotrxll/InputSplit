@@ -54,6 +54,13 @@ Json BitsToNames(uint32_t bits, const NamedBit* table, size_t count) {
   return names;
 }
 
+const NamedBit kFrameApiNames[] = {
+    {proto::kFrameApiDxgi, "dxgi"},
+    {proto::kFrameApiD3d9, "d3d9"},
+    {proto::kFrameApiOpenGl, "opengl"},
+    {proto::kFrameApiVulkan, "vulkan"},
+};
+
 const char* LogLevelName(uint32_t level) {
   switch (level) {
     case 0: return "debug";
@@ -144,6 +151,12 @@ class Session : public std::enable_shared_from_this<Session> {
     SetEvent(commandEvent_.get());
   }
 
+  void RequestFrameStats(bool enabled) {
+    std::lock_guard<std::mutex> lock(commandMutex_);
+    pendingFrameStats_ = enabled ? 1 : 0;
+    SetEvent(commandEvent_.get());
+  }
+
   void RequestReconfigure(uint32_t features, uint32_t slot) {
     std::lock_guard<std::mutex> lock(commandMutex_);
     pendingConfigure_ = {features, slot};
@@ -199,6 +212,7 @@ class Session : public std::enable_shared_from_this<Session> {
   std::string stopReason_;
   Configure pendingConfigure_{};
   bool hasPendingConfigure_ = false;
+  int pendingFrameStats_ = -1;  // -1 nothing to send, 0 off, 1 on
 
   std::mutex statusMutex_;
   proto::StatusMessage lastStatus_{};
@@ -411,12 +425,24 @@ void Session::Run() {
       std::string stopReason;
       Configure configure{};
       bool reconfigure = false;
+      int frameStats = -1;
       {
         std::lock_guard<std::mutex> lock(commandMutex_);
         stopReason = stopReason_;
         reconfigure = hasPendingConfigure_;
         configure = pendingConfigure_;
         hasPendingConfigure_ = false;
+        frameStats = pendingFrameStats_;
+        pendingFrameStats_ = -1;
+      }
+      if (stopReason.empty() && frameStats >= 0) {
+        auto message = proto::MakeMessage<proto::FrameStatsMessage>(proto::MessageType::FrameStats);
+        message.enabled = static_cast<uint32_t>(frameStats);
+        if (!Write(&message, sizeof(message))) {
+          endMessage = "Could not send the frame counter request.";
+          running = false;
+          continue;
+        }
       }
       if (!stopReason.empty()) {
         // Ask the DLL to go to pass-through and wait briefly for its confirmation. Even if
@@ -523,6 +549,15 @@ Json Session::StatusToJsonLocked() const {
         {"xinputEnableBlocked", s.xinputEnableBlocked},
         {"directInputReads", s.directInputReads},
         {"rawGamepadReads", s.rawGamepadReads}}},
+      {"frameStats",
+       {{"enabled", s.frameStatsEnabled != 0},
+        {"timeUs", s.timeUs},
+        {"frames", s.frames},
+        {"inputLatencySumUs", s.inputLatencySumUs},
+        {"inputLatencySamples", s.inputLatencySamples},
+        {"worstFrameUs", s.worstFrameUs},
+        {"worstInputLatencyUs", s.worstInputLatencyUs},
+        {"apis", BitsToNames(s.frameApis, kFrameApiNames, std::size(kFrameApiNames))}}},
       {"updatedAt", updatedAt_},
   };
 }
@@ -593,6 +628,14 @@ bool SessionManager::Reconfigure(int sessionId, uint32_t features, uint32_t xinp
   auto it = sessions_.find(sessionId);
   if (it == sessions_.end()) return false;
   it->second->RequestReconfigure(features, xinputSlot);
+  return true;
+}
+
+bool SessionManager::SetFrameStats(int sessionId, bool enabled) {
+  std::lock_guard<std::mutex> lock(mutex_);
+  auto it = sessions_.find(sessionId);
+  if (it == sessions_.end()) return false;
+  it->second->RequestFrameStats(enabled);
   return true;
 }
 

@@ -45,6 +45,17 @@ export interface MainTexts {
   reportWhat: string
   reportExpected: string
   reportAttach: string // {file}
+  overlayFps: string
+  overlayFrame: string
+  overlayLatency: string
+  overlayScreen: string
+  overlayMs: string // {value}
+  overlayWorst: string // {value}
+  overlayHz: string // {value}
+  overlayMeasuring: string
+  overlayNoRenderer: string
+  overlayPressButton: string
+  overlayNote: string
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -92,6 +103,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: 'What did you expect to happen?',
     reportAttach:
       'Please attach the report: drag {file} from the folder that just opened into this box.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Frame',
+    overlayLatency: 'Input → frame',
+    overlayScreen: 'Screen',
+    overlayMs: '{value} ms',
+    overlayWorst: 'worst {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Measuring…',
+    overlayNoRenderer: 'Not available in this game',
+    overlayPressButton: 'Press a button',
+    overlayNote: 'PC only: controller, cable and TV delay not included',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -138,6 +160,17 @@ const texts: Record<Locale, MainTexts> = {
     reportWhat: 'Що сталося?',
     reportExpected: 'Що мало статися?',
     reportAttach: 'Прикріпіть звіт: перетягніть {file} з папки, що щойно відкрилася, у це поле.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Кадр',
+    overlayLatency: 'Ввід → кадр',
+    overlayScreen: 'Екран',
+    overlayMs: '{value} мс',
+    overlayWorst: 'найгірше {value}',
+    overlayHz: '{value} Гц',
+    overlayMeasuring: 'Вимірюю…',
+    overlayNoRenderer: 'Недоступно в цій грі',
+    overlayPressButton: 'Натисніть кнопку',
+    overlayNote: 'Лише ПК: без затримки геймпада, кабелю й телевізора',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -183,6 +216,17 @@ const texts: Record<Locale, MainTexts> = {
     reportWhat: 'Что случилось?',
     reportExpected: 'Что должно было произойти?',
     reportAttach: 'Прикрепите отчёт: перетащите {file} из открывшейся папки в это поле.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Кадр',
+    overlayLatency: 'Ввод → кадр',
+    overlayScreen: 'Экран',
+    overlayMs: '{value} мс',
+    overlayWorst: 'худший {value}',
+    overlayHz: '{value} Гц',
+    overlayMeasuring: 'Измеряю…',
+    overlayNoRenderer: 'Недоступно в этой игре',
+    overlayPressButton: 'Нажмите кнопку',
+    overlayNote: 'Только ПК: без задержки геймпада, кабеля и телевизора',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -228,6 +272,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: '¿Qué esperabas que pasara?',
     reportAttach:
       'Adjunta el informe: arrastra {file} desde la carpeta que se acaba de abrir a este cuadro.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Fotograma',
+    overlayLatency: 'Entrada → fotograma',
+    overlayScreen: 'Pantalla',
+    overlayMs: '{value} ms',
+    overlayWorst: 'peor {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Midiendo…',
+    overlayNoRenderer: 'No disponible en este juego',
+    overlayPressButton: 'Pulsa un botón',
+    overlayNote: 'Solo el PC: sin el retraso del mando, el cable y la TV',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -274,6 +329,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: 'Was hast du erwartet?',
     reportAttach:
       'Bitte hänge den Bericht an: Ziehe {file} aus dem gerade geöffneten Ordner in dieses Feld.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Frame',
+    overlayLatency: 'Eingabe → Frame',
+    overlayScreen: 'Bildschirm',
+    overlayMs: '{value} ms',
+    overlayWorst: 'max. {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Wird gemessen…',
+    overlayNoRenderer: 'In diesem Spiel nicht verfügbar',
+    overlayPressButton: 'Drück eine Taste',
+    overlayNote: 'Nur der PC: ohne Verzögerung von Controller, Kabel und TV',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -320,6 +386,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: 'Qu’attendiez-vous ?',
     reportAttach:
       'Joignez le rapport : faites glisser {file} depuis le dossier qui vient de s’ouvrir dans ce champ.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Image',
+    overlayLatency: 'Entrée → image',
+    overlayScreen: 'Écran',
+    overlayMs: '{value} ms',
+    overlayWorst: 'pire {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Mesure…',
+    overlayNoRenderer: 'Indisponible dans ce jeu',
+    overlayPressButton: 'Appuyez sur un bouton',
+    overlayNote: 'PC seul : sans le délai de la manette, du câble et de la TV',
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -364,6 +441,17 @@ const texts: Record<Locale, MainTexts> = {
     reportWhat: 'O que aconteceu?',
     reportExpected: 'O que você esperava que acontecesse?',
     reportAttach: 'Anexe o relatório: arraste {file} da pasta que acabou de abrir para esta caixa.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Quadro',
+    overlayLatency: 'Entrada → quadro',
+    overlayScreen: 'Tela',
+    overlayMs: '{value} ms',
+    overlayWorst: 'pior {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Medindo…',
+    overlayNoRenderer: 'Indisponível neste jogo',
+    overlayPressButton: 'Aperte um botão',
+    overlayNote: 'Só o PC: sem o atraso do controle, do cabo e da TV',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -408,6 +496,17 @@ const texts: Record<Locale, MainTexts> = {
     reportWhat: 'Co się stało?',
     reportExpected: 'Czego się spodziewałeś?',
     reportAttach: 'Dołącz raport: przeciągnij {file} z właśnie otwartego folderu do tego pola.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Klatka',
+    overlayLatency: 'Wejście → klatka',
+    overlayScreen: 'Ekran',
+    overlayMs: '{value} ms',
+    overlayWorst: 'najgorsza {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Mierzę…',
+    overlayNoRenderer: 'Niedostępne w tej grze',
+    overlayPressButton: 'Naciśnij przycisk',
+    overlayNote: 'Tylko PC: bez opóźnienia pada, kabla i telewizora',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -454,6 +553,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: 'Ne olmasını bekliyordunuz?',
     reportAttach:
       'Lütfen raporu ekleyin: az önce açılan klasördeki {file} dosyasını bu kutuya sürükleyin.',
+    overlayFps: 'FPS',
+    overlayFrame: 'Kare',
+    overlayLatency: 'Giriş → kare',
+    overlayScreen: 'Ekran',
+    overlayMs: '{value} ms',
+    overlayWorst: 'en kötü {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: 'Ölçülüyor…',
+    overlayNoRenderer: 'Bu oyunda kullanılamıyor',
+    overlayPressButton: 'Bir tuşa basın',
+    overlayNote: 'Yalnızca PC: kumanda, kablo ve TV gecikmesi dahil değil',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -497,6 +607,17 @@ const texts: Record<Locale, MainTexts> = {
     reportWhat: '发生了什么？',
     reportExpected: '你原本期望发生什么？',
     reportAttach: '请附上报告：把刚打开的文件夹中的 {file} 拖到此框中。',
+    overlayFps: 'FPS',
+    overlayFrame: '帧时间',
+    overlayLatency: '输入 → 画面',
+    overlayScreen: '屏幕',
+    overlayMs: '{value} 毫秒',
+    overlayWorst: '最差 {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: '正在测量…',
+    overlayNoRenderer: '此游戏不支持',
+    overlayPressButton: '请按一个按键',
+    overlayNote: '仅电脑部分：不含手柄、线缆和电视的延迟',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -545,6 +666,17 @@ const texts: Record<Locale, MainTexts> = {
     reportExpected: '本来はどうなるはずでしたか？',
     reportAttach:
       'レポートを添付してください：開いたフォルダーから {file} をこの欄にドラッグします。',
+    overlayFps: 'FPS',
+    overlayFrame: 'フレーム',
+    overlayLatency: '入力 → フレーム',
+    overlayScreen: '画面',
+    overlayMs: '{value} ms',
+    overlayWorst: '最大 {value}',
+    overlayHz: '{value} Hz',
+    overlayMeasuring: '測定中…',
+    overlayNoRenderer: 'このゲームでは利用できません',
+    overlayPressButton: 'ボタンを押してください',
+    overlayNote: 'PC のみ: コントローラー、ケーブル、テレビの遅延は含みません',
   },
 }
 
