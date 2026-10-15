@@ -281,6 +281,8 @@ export const IsolationViewSchema = z.object({
   counters: SessionCountersSchema.nullable(),
   detectedApis: z.array(DetectedApiSchema),
   windowMoved: z.boolean(),
+  /** The screen's speakers the game's sound plays on, or null when it was left alone. */
+  audioDevice: z.string().nullable(),
 })
 export type IsolationView = z.infer<typeof IsolationViewSchema>
 
@@ -391,6 +393,8 @@ const ADDED_SETTINGS_FIELDS = {
    * and accept the ban risk; risky games then need a confirmation on every start.
    */
   antiCheatProtection: z.boolean(),
+  /** Play the game's sound on the chosen screen's speakers (TV, monitor) while isolated. */
+  gameAudioToDisplay: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -403,6 +407,7 @@ export const SettingsSchema = z.object({
   twoPlayers: ADDED_SETTINGS_FIELDS.twoPlayers.default(false),
   languageChosen: ADDED_SETTINGS_FIELDS.languageChosen.default(false),
   antiCheatProtection: ADDED_SETTINGS_FIELDS.antiCheatProtection.default(true),
+  gameAudioToDisplay: ADDED_SETTINGS_FIELDS.gameAudioToDisplay.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -516,6 +521,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'defaultFeatures',
   'moveWindowByDefault',
   'restoreOnExit',
+  'gameAudioToDisplay',
   'showAllWindows',
   'verboseLogging',
   'theme',

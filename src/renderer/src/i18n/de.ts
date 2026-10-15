@@ -108,6 +108,7 @@ export const de: Messages = {
     chooseDisplay: 'Aktueller Bildschirm',
     chooseDisplayHint: 'Das Spielfenster bleibt, wo es ist',
     moveWindow: 'Spiel auf diesen Bildschirm verschieben',
+    audioOnDisplay: 'Spielton: {name}',
     gameGone: 'Dieses Fenster ist nicht mehr geöffnet',
     protections: 'Schutzfunktionen',
     protectionsHint:
@@ -439,6 +440,9 @@ export const de: Messages = {
     defaults: 'Standard für die Isolierung',
     defaultsHint: 'Gilt für neue Setups und neue Profile.',
     moveWindowByDefault: 'Spiel auf den gewählten Bildschirm verschieben',
+    gameAudioToDisplay: 'Spielton über die Lautsprecher des Bildschirms',
+    gameAudioToDisplayHint:
+      'Hat der Fernseher oder Monitor Lautsprecher, läuft der Spielton während der Isolierung darüber. Nur der Ton des Spiels wechselt, alles andere bleibt auf den üblichen Lautsprechern.',
     restoreOnExit: 'Fensterposition nach dem Beenden der Isolierung wiederherstellen',
     safety: 'Sicherheit',
     emergencyHotkey: 'Notfall-Tastenkürzel',

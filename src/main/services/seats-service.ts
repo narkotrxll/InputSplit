@@ -35,6 +35,7 @@ export class SeatsService {
     private readonly twoPlayers: () => boolean,
     safety?: AntiCheatSafety,
     now: () => number = Date.now,
+    audioToDisplay?: () => boolean,
   ) {
     this.seats = Array.from({ length: SEAT_COUNT }, (_, index) => {
       const seat = index as Seat
@@ -44,6 +45,7 @@ export class SeatsService {
         now,
         (input) => this.conflictFor(seat, input),
         safety,
+        audioToDisplay,
       )
       service.onChange((view) => this.changes.emit({ seat, view }))
       service.outcomes.on((outcome) => this.outcomes.emit(outcome))

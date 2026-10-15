@@ -107,6 +107,7 @@ export const fr: Messages = {
     chooseDisplay: 'Écran actuel',
     chooseDisplayHint: 'La fenêtre du jeu reste où elle est',
     moveWindow: 'Déplacer le jeu sur cet écran',
+    audioOnDisplay: 'Son du jeu : {name}',
     gameGone: 'Cette fenêtre n’est plus ouverte',
     protections: 'Protections',
     protectionsHint:
@@ -440,6 +441,9 @@ export const fr: Messages = {
     defaults: 'Isolation par défaut',
     defaultsHint: 'Utilisé pour les nouvelles configurations et les nouveaux profils.',
     moveWindowByDefault: 'Déplacer le jeu sur l’écran choisi',
+    gameAudioToDisplay: 'Son du jeu sur les haut-parleurs de l’écran',
+    gameAudioToDisplayHint:
+      'Si la télé ou le moniteur a des haut-parleurs, le jeu les utilise pendant l’isolation. Seul le son du jeu change ; le reste reste sur vos haut-parleurs habituels.',
     restoreOnExit: 'Restaurer la position de la fenêtre à l’arrêt de l’isolation',
     safety: 'Sécurité',
     emergencyHotkey: 'Raccourci d’arrêt d’urgence',

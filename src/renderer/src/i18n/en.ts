@@ -109,6 +109,7 @@ export const en = {
     chooseDisplay: 'Keep current screen',
     chooseDisplayHint: 'The game window stays where it is',
     moveWindow: 'Move the game to this screen',
+    audioOnDisplay: 'Game sound: {name}',
     gameGone: 'This window is no longer open',
     protections: 'Protections',
     protectionsHint:
@@ -434,6 +435,9 @@ export const en = {
     defaults: 'Isolation defaults',
     defaultsHint: 'Used for new setups and new profiles.',
     moveWindowByDefault: 'Move the game to the selected screen',
+    gameAudioToDisplay: "Play the game's sound on the screen's speakers",
+    gameAudioToDisplayHint:
+      "If the TV or monitor has speakers, the game plays through them while it is isolated. Only the game's sound moves; everything else stays on your usual speakers.",
     restoreOnExit: 'Restore the window position when isolation stops',
     safety: 'Safety',
     emergencyHotkey: 'Emergency stop shortcut',

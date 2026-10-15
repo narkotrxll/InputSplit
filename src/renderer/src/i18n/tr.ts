@@ -105,6 +105,7 @@ export const tr: Messages = {
     chooseDisplay: 'Geçerli ekran',
     chooseDisplayHint: 'Oyun penceresi olduğu yerde kalır',
     moveWindow: 'Oyunu bu ekrana taşı',
+    audioOnDisplay: 'Oyun sesi: {name}',
     gameGone: 'Bu pencere artık açık değil',
     protections: 'Korumalar',
     protectionsHint:
@@ -430,6 +431,9 @@ export const tr: Messages = {
     defaults: 'Yalıtım varsayılanları',
     defaultsHint: 'Yeni kurulumlar ve yeni profiller için kullanılır.',
     moveWindowByDefault: 'Oyunu seçilen ekrana taşı',
+    gameAudioToDisplay: 'Oyun sesini ekranın hoparlörlerinden çal',
+    gameAudioToDisplayHint:
+      'TV veya monitörde hoparlör varsa oyun, yalıtım sürerken onlardan çalar. Yalnızca oyunun sesi değişir; geri kalan her şey olağan hoparlörlerde kalır.',
     restoreOnExit: 'Yalıtım durunca pencere konumunu geri yükle',
     safety: 'Güvenlik',
     emergencyHotkey: 'Acil durdurma kısayolu',

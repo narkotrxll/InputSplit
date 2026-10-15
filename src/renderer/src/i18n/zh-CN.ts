@@ -102,6 +102,7 @@ export const zhCN: Messages = {
     chooseDisplay: '保持当前屏幕',
     chooseDisplayHint: '游戏窗口保持原位',
     moveWindow: '将游戏移到此屏幕',
+    audioOnDisplay: '游戏声音：{name}',
     gameGone: '此窗口已关闭',
     protections: '保护措施',
     protectionsHint: 'InputSplit 在游戏内做出的更改。只有已确认的保护才会显示为运行中。',
@@ -415,6 +416,9 @@ export const zhCN: Messages = {
     defaults: '隔离默认设置',
     defaultsHint: '用于新的设置和新的配置文件。',
     moveWindowByDefault: '将游戏移到所选屏幕',
+    gameAudioToDisplay: '用屏幕的扬声器播放游戏声音',
+    gameAudioToDisplayHint:
+      '如果电视或显示器带扬声器，隔离期间游戏声音将从它播放。只切换游戏的声音，其他声音仍在原来的音箱上。',
     restoreOnExit: '停止隔离时恢复窗口位置',
     safety: '安全',
     emergencyHotkey: '紧急停止快捷键',

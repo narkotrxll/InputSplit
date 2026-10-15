@@ -46,6 +46,9 @@ class SessionManager {
   Json Start(const StartRequest& request, HelperError& error);
   bool Stop(int sessionId, const std::string& reason);
   bool Reconfigure(int sessionId, uint32_t features, uint32_t xinputSlot);
+  // Plays the game's sound on the speakers of `displayId` until the session ends.
+  // {"routed", "device", "reason"}; null if there is no such session.
+  Json RouteAudio(int sessionId, const std::wstring& displayId);
   // Stops every session; waits up to `waitMs` for them to finish.
   int StopAll(const std::string& reason, DWORD waitMs);
 

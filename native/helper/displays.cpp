@@ -27,12 +27,7 @@ UINT EffectiveDpi(HMONITOR monitor) {
   return dpiX;
 }
 
-struct TargetInfo {
-  std::wstring friendlyName;
-  DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY technology = DISPLAYCONFIG_OUTPUT_TECHNOLOGY_OTHER;
-};
-
-// GDI device name ("\\.\DISPLAY1") -> monitor friendly name and connection type.
+// GDI device name ("\\.\DISPLAY1") -> monitor friendly name, device path and connection type.
 std::map<std::wstring, TargetInfo> QueryTargets() {
   std::map<std::wstring, TargetInfo> result;
   UINT32 pathCount = 0;
@@ -63,7 +58,7 @@ std::map<std::wstring, TargetInfo> QueryTargets() {
     if (DisplayConfigGetDeviceInfo(&target.header) != ERROR_SUCCESS) continue;
 
     result[source.viewGdiDeviceName] = {target.monitorFriendlyDeviceName,
-                                        target.outputTechnology};
+                                        target.monitorDevicePath, target.outputTechnology};
   }
   return result;
 }
@@ -103,6 +98,13 @@ std::vector<MonitorEntry> Monitors() {
 }
 
 }  // namespace
+
+std::optional<TargetInfo> FindDisplayTarget(const std::wstring& displayId) {
+  auto targets = QueryTargets();
+  auto it = targets.find(displayId);
+  if (it == targets.end()) return std::nullopt;
+  return it->second;
+}
 
 Json ListDisplays() {
   auto targets = QueryTargets();

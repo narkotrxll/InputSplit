@@ -67,6 +67,8 @@ export class IsolationService {
     /** Refuses a start that clashes with another seat's session (two players). */
     private readonly conflict: (input: StartIsolationInput) => AppError | null = () => null,
     private readonly safety: AntiCheatSafety = PROTECTED,
+    /** Settings → play the game's sound on the chosen screen. */
+    private readonly audioToDisplay: () => boolean = () => false,
   ) {
     backend.onEvent((event) => this.onHelperEvent(event))
     backend.onState((state) => this.onBackendState(state))
@@ -191,6 +193,7 @@ export class IsolationService {
     }
 
     if (input.moveWindow && input.displayId !== null) await this.moveWindow(input)
+    if (input.displayId !== null && this.audioToDisplay()) await this.routeAudio(input.displayId)
     return this.view
   }
 
@@ -231,6 +234,22 @@ export class IsolationService {
       this.moveFailed = true
       this.logger.warn(`Could not move the game window: ${toAppError(error).message}`)
       if (this.lastStatus) this.applyStatus(this.lastStatus)
+    }
+  }
+
+  /** The helper puts the game's sound back by itself when the session ends. */
+  private async routeAudio(displayId: string): Promise<void> {
+    const sessionId = this.view.sessionId
+    if (sessionId === null) return
+    try {
+      const result = await this.backend.request('routeAudio', { sessionId, displayId })
+      if (!result.routed) {
+        this.logger.info(`Game sound stays on its current device (${result.reason ?? 'unknown'})`)
+      } else if (this.view.sessionId === sessionId && this.view.phase === 'running') {
+        this.set({ ...this.view, audioDevice: result.device })
+      }
+    } catch (error) {
+      this.logger.warn(`Could not move the game's sound: ${toAppError(error).message}`)
     }
   }
 
@@ -299,6 +318,7 @@ export class IsolationService {
       phase: 'ended',
       sessionId: null,
       endedReason: reason,
+      audioDevice: null,
       error: unexpected ? { code: reason, message: message ?? reason } : null,
       features: this.view.features.map((f) => ({ ...f, state: 'off', reason: null })),
     })

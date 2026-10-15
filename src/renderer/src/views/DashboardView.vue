@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bookmark, Gamepad2, Monitor, Play, Shuffle, Square, Tv } from '@lucide/vue'
+import { Bookmark, Gamepad2, Monitor, Play, Shuffle, Square, Tv, Volume2 } from '@lucide/vue'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AppIcon from '../components/AppIcon.vue'
@@ -312,6 +312,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             </template>
             <p v-if="display" class="text-[12px] text-text-faint">
               {{ sel.moveWindow ? $t('dashboard.moveWindow') : $t('displays.keep') }}
+            </p>
+            <p
+              v-if="isolation.live && view.audioDevice"
+              class="flex items-center gap-1.5 text-[12px] text-text-faint"
+            >
+              <Volume2 class="size-3.5 shrink-0" aria-hidden="true" />
+              <span class="truncate">{{
+                $t('dashboard.audioOnDisplay', { name: view.audioDevice })
+              }}</span>
             </p>
           </SetupTile>
         </div>

@@ -106,6 +106,7 @@ export const pl: Messages = {
     chooseDisplay: 'Bieżący ekran',
     chooseDisplayHint: 'Okno gry zostaje na miejscu',
     moveWindow: 'Przenieś grę na ten ekran',
+    audioOnDisplay: 'Dźwięk gry: {name}',
     gameGone: 'To okno nie jest już otwarte',
     protections: 'Zabezpieczenia',
     protectionsHint:
@@ -432,6 +433,9 @@ export const pl: Messages = {
     defaults: 'Domyślna izolacja',
     defaultsHint: 'Używane dla nowych ustawień i nowych profili.',
     moveWindowByDefault: 'Przenoś grę na wybrany ekran',
+    gameAudioToDisplay: 'Dźwięk gry z głośników ekranu',
+    gameAudioToDisplayHint:
+      'Jeśli telewizor lub monitor ma głośniki, dźwięk gry leci z nich podczas izolacji. Zmienia się tylko dźwięk gry, reszta zostaje na zwykłych głośnikach.',
     restoreOnExit: 'Przywracaj położenie okna po zatrzymaniu izolacji',
     safety: 'Bezpieczeństwo',
     emergencyHotkey: 'Skrót awaryjnego zatrzymania',
