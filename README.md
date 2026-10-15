@@ -15,12 +15,11 @@ Free and open source · Windows 10/11 · MIT License
 
 ![InputSplit: one PC, two people. One plays, one works.](site/assets/social-preview.png)
 
-> [!IMPORTANT]
-> **Status: early preview (0.1.x).** The first tests on real Windows with an Xbox controller
-> went well: the game keeps its controller in the background. This works in
-> **single-player games only**; games with anti-cheat are refused by default and online games
-> are not supported (see [Use responsibly](#use-responsibly)). Per-game results are collected in the
-> [compatibility matrix](docs/COMPATIBILITY.md). Screenshots come from a development build.
+> [!NOTE]
+> **Version 0.1.x.** Tested on real Windows by two people at once: one played on the TV with a
+> controller while the other kept working on the monitors. InputSplit is made for
+> **single-player and offline games** (see [Use responsibly](#use-responsibly)). Per-game
+> results go into the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Is this what you are looking for?
 
@@ -54,6 +53,8 @@ InputSplit fixes both, **inside the chosen game only**:
 | ⌨️ **Keyboard and mouse stay yours** | The game cannot see typing, mouse movement or clicks. |
 | 🖱️ **Cursor protected** | The game cannot re-centre or trap the shared mouse pointer. |
 | 🎯 **One controller per game** | The chosen controller becomes the game's player 1. |
+| 🕹️ **Most gamepads** | Xbox and other XInput controllers, plus DirectInput and HID gamepads. |
+| 🧩 **64-bit and 32-bit games** | Both kinds of games are supported. |
 | 🌍 **11 languages** | English, Українська, Русский, Español, Deutsch, Français, Português (Brasil), Polski, Türkçe, 简体中文, 日本語. Uses your Windows language by default; change it in Settings. |
 | 📺 **Right screen** | Optionally moves the game window to the TV and puts it back afterwards. |
 
@@ -96,12 +97,13 @@ Once a game has a profile, it gets even simpler:
 
 ## How it works (short version)
 
-InputSplit loads a small component (`InputSplitHook64.dll`) into the game you choose. Inside
-the game it:
+InputSplit loads a small component (`InputSplitHook64.dll`, or `InputSplitHook32.dll` for
+32-bit games) into the game you choose. Inside the game it:
 
 1. swallows the "you lost focus" window messages,
 2. answers "yes" when the game asks whether it is the active window,
-3. keeps XInput enabled and binds the game's player 1 to the chosen controller,
+3. keeps XInput enabled and binds the game's player 1 to the chosen controller, and keeps
+   DirectInput and HID (Raw Input) controllers working in the background,
 4. hides keyboard and mouse input (messages, key-state polling, Raw Input),
 5. ignores attempts to move or confine the cursor.
 
@@ -149,9 +151,9 @@ issue yourself.
 - **Exclusive fullscreen** cannot stay active without focus — use *Borderless Windowed*.
 - **Steam Input** may turn the controller into a mouse while the game is in the background —
   disable Steam Input for that game.
-- Games running as administrator need InputSplit to run as administrator too. 32-bit games and
-  DirectInput or HID (Raw Input) controllers in background are new and not yet tested on many
-  games (see the [roadmap](docs/ROADMAP.md)).
+- Games running as administrator need InputSplit to run as administrator too.
+- 32-bit games and DirectInput or HID (Raw Input) controllers are newer and have been tried on
+  fewer games than XInput controllers in 64-bit games (see the [roadmap](docs/ROADMAP.md)).
 - Windows has one keyboard focus; InputSplit makes the game not *need* it, it cannot create a
   second one.
 
@@ -171,11 +173,6 @@ scoop install inputsplit/inputsplit
 
 Windows SmartScreen or an antivirus may warn about the installer because it is not code-signed
 yet. Choose **More info → Run anyway** if you downloaded it from the link above.
-
-A new release is built and published automatically on every push to `main` (version
-`<major>.<minor>.<n>`: major.minor comes from `package.json`, `n` counts up). To start a new line,
-bump `version` in `package.json` (e.g. to `0.2.0`); to release a specific version, push a tag such
-as `v0.2.0`.
 
 ## Build from source
 
@@ -198,6 +195,11 @@ npm run dev:simulated  # simulated backend, development builds only, clearly lab
 
 Checks: `npm run lint`, `npm run typecheck`, `npm test`. The native code can also be
 cross-compiled on Linux with MinGW (`npm run build:native`) for compile checks.
+
+Releases: a new release is built and published automatically on every push to `main` (version
+`<major>.<minor>.<n>`: major.minor comes from `package.json`, `n` counts up). To start a new line,
+bump `version` in `package.json` (e.g. to `0.2.0`); to release a specific version, push a tag such
+as `v0.2.0`.
 
 ## Project structure
 

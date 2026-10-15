@@ -12,6 +12,12 @@ matches the documented scope (anti-cheat protected and online multiplayer games 
 not supported, see the last section). Per-experiment results, the Windows build and the exact
 games tested were not recorded yet; the tables below stay at "—" until they are.
 
+## Owner report (2026-10-15)
+
+Second real-world test on the latest release: two people used one PC at the same time, one
+playing on the TV with a controller and the other working on the monitors. Reported result:
+everything works well.
+
 ## Windows behaviour (Probe)
 
 | Experiment | Windows 10 | Windows 11 | Notes |
