@@ -72,7 +72,7 @@
             "name": "Does InputSplit work with online games?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. It is meant for single-player and offline games. Games with anti-cheat are refused by default."
+              "text": "It is meant for single-player and offline games. Games with anti-cheat are refused by default; you can turn that protection off in Settings at your own risk, and InputSplit then warns about a possible ban before every such game."
             }
           }
         ]
@@ -152,7 +152,10 @@
           </div>
           <div class="card">
             <h3>📺 Right screen</h3>
-            <p>Optionally moves the game to the TV and back afterwards.</p>
+            <p>
+              Optionally moves the game to the TV and back afterwards. If the TV has speakers, the
+              game's sound plays there.
+            </p>
           </div>
           <div class="card">
             <h3>👥 Two players</h3>
@@ -194,17 +197,19 @@
         <details>
           <summary>Does it work with online games?</summary>
           <p>
-            No. InputSplit is meant for single-player and offline games. Games protected by
-            anti-cheat (Easy Anti-Cheat, BattlEye, Vanguard and others) are refused by default, and
-            InputSplit never tries to hide from an anti-cheat.
+            InputSplit is meant for single-player and offline games. Games protected by anti-cheat
+            (Easy Anti-Cheat, BattlEye, Vanguard and others) are refused by default. You can turn
+            this protection off in Settings → Safety at your own risk: InputSplit then warns you
+            before every online or anti-cheat game that the game may ban your account. InputSplit
+            never tries to hide from an anti-cheat.
           </p>
         </details>
         <details>
           <summary>Which controllers work?</summary>
           <p>
-            Xbox controllers and other XInput gamepads. Games that read controllers only through
-            Windows.Gaming.Input or GameInput get limited support, and InputSplit tells you when
-            that happens.
+            Xbox controllers and other XInput gamepads, as well as DirectInput and HID gamepads.
+            Games that read controllers only through Windows.Gaming.Input or GameInput get limited
+            support, and InputSplit tells you when that happens.
           </p>
         </details>
         <details>
