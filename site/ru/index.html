@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>InputSplit: играть с геймпадом, пока другой работает за тем же ПК</title>
+    <meta
+      name="description"
+      content="Бесплатная программа для Windows: игра работает в фоне, геймпад не отключается, игра не ставится на паузу при Alt+Tab и не видит клавиатуру и мышь. Один играет на телевизоре, другой работает за тем же компьютером."
+    />
+    <link rel="canonical" href="https://narkotrxll.github.io/InputSplit/ru/" />
+    <link rel="alternate" hreflang="en" href="https://narkotrxll.github.io/InputSplit/" />
+    <link rel="alternate" hreflang="ru" href="https://narkotrxll.github.io/InputSplit/ru/" />
+    <link rel="icon" href="../assets/icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="InputSplit: один ПК на двоих" />
+    <meta
+      property="og:description"
+      content="Играйте на телевизоре с геймпадом, пока другой человек работает за тем же компьютером с Windows."
+    />
+    <meta property="og:url" content="https://narkotrxll.github.io/InputSplit/ru/" />
+    <meta
+      property="og:image"
+      content="https://narkotrxll.github.io/InputSplit/assets/social-preview.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "InputSplit",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "Оставляет одну игру работать в фоне с геймпадом: без паузы при потере фокуса и без реакции на клавиатуру и мышь.",
+        "downloadUrl": "https://github.com/narkotrxll/InputSplit/releases/latest",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Как сделать, чтобы игра не вставала на паузу при Alt+Tab?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Добавьте игру в InputSplit и нажмите «Запустить изоляцию». Игра не узнаёт, что активным стало другое окно, поэтому не ставится на паузу и не выключает звук."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как играть геймпадом, если окно игры не в фокусе?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "InputSplit не даёт игре отключить XInput, поэтому она продолжает читать геймпад, пока в фокусе другое окно. Включите в игре режим «Окно без рамки»."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли вдвоём пользоваться одним ПК: один играет, другой работает?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. Один играет на телевизоре с геймпадом, другой работает за мониторами с клавиатурой и мышью. Игра не видит клавиатуру и мышь."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Работает ли InputSplit с онлайн-играми?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Нет. Программа для одиночных и офлайн-игр. Игры с античитом по умолчанию не запускаются."
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a class="brand" href="./"><img src="../assets/icon.png" alt="" />InputSplit</a>
+        <nav>
+          <a href="#how">Как пользоваться</a>
+          <a href="#faq">Вопросы</a>
+          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
+          <a href="../" hreflang="en">English</a>
+        </nav>
+      </header>
+
+      <div class="hero">
+        <h1>Один ПК на двоих.<br />Один играет, другой работает.</h1>
+        <p class="lead">
+          InputSplit позволяет одному человеку играть на телевизоре с геймпадом, пока другой
+          работает за тем же компьютером с клавиатурой и мышью. Игра работает в фоне и не встаёт на
+          паузу.
+        </p>
+        <div class="buttons">
+          <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+            >Скачать для Windows</a
+          >
+          <a class="btn" href="https://github.com/narkotrxll/InputSplit">Исходный код</a>
+        </div>
+        <p class="small">
+          Бесплатно и с открытым кодом (MIT) · Windows 10/11 · 11 языков, включая русский · без прав
+          администратора
+        </p>
+        <div class="shot">
+          <img
+            src="../assets/screenshots/dashboard-active.png"
+            alt="InputSplit: игра изолирована и работает в фоне"
+            width="1280"
+            height="820"
+          />
+        </div>
+      </div>
+
+      <section>
+        <h2>Знакомо?</h2>
+        <ul class="pains">
+          <li>Игра <b>встаёт на паузу при Alt+Tab</b> или клике на другом мониторе.</li>
+          <li><b>Геймпад перестаёт работать</b>, как только окно игры теряет фокус.</li>
+          <li>Игра <b>реагирует на набор текста и клики мыши</b> в другой программе.</li>
+          <li>
+            Хочется, чтобы один сидел на диване с геймпадом, а другой за столом,
+            <b>на одном компьютере</b>.
+          </li>
+        </ul>
+        <p>InputSplit исправляет всё это внутри выбранной игры, и только там.</p>
+      </section>
+
+      <section>
+        <h2>Что умеет</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>🎮 Геймпад работает в фоне</h3>
+            <p>Игра продолжает читать свой геймпад, даже когда не в фокусе.</p>
+          </div>
+          <div class="card">
+            <h3>🪟 Без паузы</h3>
+            <p>Игра не узнаёт, что активным стало другое окно.</p>
+          </div>
+          <div class="card">
+            <h3>⌨️ Клавиатура и мышь ваши</h3>
+            <p>Игра не видит набор текста, движения и клики мыши.</p>
+          </div>
+          <div class="card">
+            <h3>🖱️ Курсор под защитой</h3>
+            <p>Игра не может дёргать или запирать общий курсор.</p>
+          </div>
+          <div class="card">
+            <h3>📺 Нужный экран</h3>
+            <p>По желанию переносит игру на телевизор и возвращает обратно.</p>
+          </div>
+          <div class="card">
+            <h3>👥 Два игрока</h3>
+            <p>Две игры сразу, у каждой свой геймпад.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how">
+        <h2>Как пользоваться</h2>
+        <ol class="steps">
+          <li>
+            <b>Выберите игру.</b> Добавьте её из библиотеки Steam, Epic или GOG или укажите её .exe.
+          </li>
+          <li><b>Выберите геймпад</b>, который станет первым игроком в игре.</li>
+          <li>
+            <b>Нажмите «Запустить изоляцию».</b> Или зажмите на геймпаде LB + RB + View на 2
+            секунды.
+          </li>
+        </ol>
+        <p class="note">
+          Включите в игре режим «Окно без рамки». Всё отменяется кнопкой «Остановить», а если
+          InputSplit закроется или вы нажмёте Ctrl+Alt+Shift+Q, игра сама вернётся к обычной работе.
+        </p>
+      </section>
+
+      <section>
+        <h2>Скриншоты</h2>
+        <div class="gallery">
+          <img src="../assets/screenshots/game-picker.png" alt="Выбор игры" loading="lazy" />
+          <img src="../assets/screenshots/controllers.png" alt="Проверка геймпада" loading="lazy" />
+          <img
+            src="../assets/screenshots/display-picker.png"
+            alt="Выбор телевизора"
+            loading="lazy"
+          />
+          <img src="../assets/screenshots/dashboard-light.png" alt="Светлая тема" loading="lazy" />
+        </div>
+      </section>
+
+      <section id="faq">
+        <h2>Вопросы</h2>
+        <details>
+          <summary>Работает ли с онлайн-играми?</summary>
+          <p>
+            Нет. InputSplit сделан для одиночных и офлайн-игр. Игры с античитом (Easy Anti-Cheat,
+            BattlEye, Vanguard и другие) по умолчанию не запускаются, и InputSplit никогда не
+            пытается прятаться от античита.
+          </p>
+        </details>
+        <details>
+          <summary>Какие геймпады подходят?</summary>
+          <p>
+            Геймпады Xbox и другие XInput-геймпады. Игры, которые читают геймпад только через
+            Windows.Gaming.Input или GameInput, поддерживаются частично, и InputSplit об этом
+            предупреждает.
+          </p>
+        </details>
+        <details>
+          <summary>Меняет ли что-то в Windows?</summary>
+          <p>
+            Нет. Никаких глобальных перехватов клавиатуры и изменений системных настроек. Всё
+            происходит внутри выбранной игры и отменяется кнопкой «Остановить».
+          </p>
+        </details>
+        <details>
+          <summary>Почему Windows или антивирус предупреждает?</summary>
+          <p>
+            Установщик пока не подписан, а InputSplit загружает в игру небольшой компонент, и
+            некоторые антивирусы на это ругаются. Если вы скачали его с официальной страницы релизов
+            на GitHub, нажмите «Подробнее», затем «Выполнить в любом случае».
+          </p>
+        </details>
+        <details>
+          <summary>Собирает ли программа данные?</summary>
+          <p>
+            Нет. Никаких аккаунтов, рекламы и аналитики. Программа только проверяет обновления на
+            GitHub, и это можно отключить.
+          </p>
+        </details>
+      </section>
+
+      <footer>
+        InputSplit бесплатен, код открыт под лицензией MIT ·
+        <a href="https://github.com/narkotrxll/InputSplit">GitHub</a> ·
+        <a href="https://github.com/narkotrxll/InputSplit/issues">Сообщить о проблеме</a> ·
+        <a href="https://buymeacoffee.com/narkotrxll">Угостить кофе ☕</a> ·
+        <a href="../" hreflang="en">English version</a>
+      </footer>
+    </div>
+  </body>
+</html>

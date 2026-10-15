@@ -6,8 +6,17 @@ name: Release
 on:
   push:
     branches: [main]
-    # Docs-only changes don't need a new installer (tag pushes ignore this filter).
-    paths-ignore: ['**.md', 'docs/**', 'LICENSE']
+    # Docs, website and package-manager changes don't need a new installer (tag pushes ignore this filter).
+    paths-ignore:
+      [
+        '**.md',
+        'docs/**',
+        'LICENSE',
+        'site/**',
+        'bucket/**',
+        'packaging/**',
+        '.github/workflows/pages.yml',
+      ]
     tags: ['v*']
   workflow_dispatch:
 
