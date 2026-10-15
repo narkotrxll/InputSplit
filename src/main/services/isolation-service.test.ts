@@ -130,6 +130,45 @@ describe('IsolationService', () => {
     expect(service.dismiss().phase).toBe('idle')
   })
 
+  it("plays the game's sound on the chosen screen when the setting is on", async () => {
+    const backend = setup().backend
+    backend.handlers.routeAudio = () => ({ routed: true, device: 'LG TV (NVIDIA HD Audio)' })
+    const service = new IsolationService(
+      backend,
+      new Logger(null),
+      () => 100_000,
+      undefined,
+      undefined,
+      () => true,
+    )
+    const view = await service.start(input)
+    expect(view.audioDevice).toBe('LG TV (NVIDIA HD Audio)')
+    expect(backend.calls.find((c) => c.method === 'routeAudio')?.params).toEqual({
+      sessionId: 7,
+      displayId: '\\\\.\\DISPLAY3',
+    })
+    // The helper restores the sound itself; the ended view no longer names the device.
+    expect((await service.stop()).audioDevice).toBeNull()
+  })
+
+  it('leaves the sound alone when the screen has no speakers or the setting is off', async () => {
+    const backend = setup().backend
+    backend.handlers.routeAudio = () => ({ routed: false, device: null, reason: 'noDisplayAudio' })
+    const on = new IsolationService(
+      backend,
+      new Logger(null),
+      () => 0,
+      undefined,
+      undefined,
+      () => true,
+    )
+    expect((await on.start(input)).audioDevice).toBeNull()
+
+    const { backend: other, service: off } = setup()
+    await off.start(input)
+    expect(other.calls.some((c) => c.method === 'routeAudio')).toBe(false)
+  })
+
   it('reports a helper crash as an ended session (fail-safe engaged)', async () => {
     const { backend, service } = setup()
     await service.start(input)

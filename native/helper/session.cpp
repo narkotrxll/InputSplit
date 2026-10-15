@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../common/version.h"
+#include "audio.h"
 #include "injector.h"
 #include "safety.h"
 
@@ -157,6 +158,8 @@ class Session : public std::enable_shared_from_this<Session> {
     return StatusToJsonLocked();
   }
 
+  Json RouteAudio(const std::wstring& displayId);
+
  private:
   struct Configure {
     uint32_t features;
@@ -171,6 +174,7 @@ class Session : public std::enable_shared_from_this<Session> {
   bool SendConfigure(uint32_t features, uint32_t slot);
   void Run();
   void Finish(const std::string& reason, const std::string& message);
+  void RestoreAudio();
   Json StatusToJsonLocked() const;
   bool IsPassThrough() {
     std::lock_guard<std::mutex> lock(statusMutex_);
@@ -201,6 +205,12 @@ class Session : public std::enable_shared_from_this<Session> {
   bool hasStatus_ = false;
   uint32_t architectureBits_ = 0;
   int64_t updatedAt_ = 0;
+
+  // The game's own output device before RouteAudio, put back when the session ends.
+  std::mutex audioMutex_;
+  bool audioRouted_ = false;
+  bool ended_ = false;
+  std::wstring audioPrevious_;
 
   std::thread thread_;
 };
@@ -438,7 +448,45 @@ void Session::Run() {
   Finish(endReason, endMessage);
 }
 
+Json Session::RouteAudio(const std::wstring& displayId) {
+  auto notRouted = [](const char* reason) {
+    return Json{{"routed", false}, {"device", nullptr}, {"reason", reason}};
+  };
+  std::optional<AudioEndpoint> endpoint = FindDisplayAudio(displayId);
+  if (!endpoint) return notRouted("noDisplayAudio");
+
+  std::lock_guard<std::mutex> lock(audioMutex_);
+  if (ended_) return notRouted("sessionEnded");
+  if (!audioRouted_) {
+    std::optional<std::wstring> previous = GetAppAudioDevice(pid_);
+    if (!previous) return notRouted("unsupported");
+    audioPrevious_ = *previous;
+  }
+  if (!SetAppAudioDevice(pid_, EndpointInterfacePath(endpoint->id))) {
+    LogEvent("warn", "Could not send the game's sound to " + ToUtf8(endpoint->name));
+    return notRouted("routeFailed");
+  }
+  audioRouted_ = true;
+  LogEvent("info", "Game sound now plays on " + ToUtf8(endpoint->name));
+  return Json{{"routed", true}, {"device", ToUtf8(endpoint->name)}};
+}
+
+void Session::RestoreAudio() {
+  std::lock_guard<std::mutex> lock(audioMutex_);
+  ended_ = true;
+  if (!audioRouted_) return;
+  audioRouted_ = false;
+  // Also after the game exited: process_ keeps its pid valid until the session is gone, and
+  // Windows remembers the choice for the game's next start, so it must be undone now.
+  if (SetAppAudioDevice(pid_, audioPrevious_)) {
+    LogEvent("info", "Game sound is back on its previous output device");
+  } else {
+    LogEvent("warn", "Could not put the game's sound back; check Settings > Sound > Volume mixer");
+  }
+}
+
 void Session::Finish(const std::string& reason, const std::string& message) {
+  RestoreAudio();
   if (readPending_) {
     CancelIoEx(pipe_.get(), &readOverlapped_);
     DWORD ignored = 0;
@@ -527,6 +575,17 @@ bool SessionManager::Stop(int sessionId, const std::string& reason) {
   session->RequestStop(reason);
   session->WaitEnded(3000);
   return true;
+}
+
+Json SessionManager::RouteAudio(int sessionId, const std::wstring& displayId) {
+  std::shared_ptr<Session> session;
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = sessions_.find(sessionId);
+    if (it == sessions_.end()) return nullptr;
+    session = it->second;
+  }
+  return session->RouteAudio(displayId);
 }
 
 bool SessionManager::Reconfigure(int sessionId, uint32_t features, uint32_t xinputSlot) {

@@ -104,6 +104,7 @@ export const uk: Messages = {
     chooseDisplay: 'Поточний екран',
     chooseDisplayHint: 'Вікно гри залишиться на місці',
     moveWindow: 'Перенести гру на цей екран',
+    audioOnDisplay: 'Звук гри: {name}',
     gameGone: 'Це вікно вже закрито',
     protections: 'Захист',
     protectionsHint:
@@ -429,6 +430,9 @@ export const uk: Messages = {
     defaults: 'Типова ізоляція',
     defaultsHint: 'Використовується для нових налаштувань і профілів.',
     moveWindowByDefault: 'Переносити гру на вибраний екран',
+    gameAudioToDisplay: 'Звук гри — на динаміки екрана',
+    gameAudioToDisplayHint:
+      'Якщо телевізор або монітор має динаміки, гра звучить через них, поки триває ізоляція. Перемикається лише звук гри, решта лишається на звичайних колонках.',
     restoreOnExit: 'Повертати вікно на місце після зупинки ізоляції',
     safety: 'Безпека',
     emergencyHotkey: 'Екстрена зупинка',

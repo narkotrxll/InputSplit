@@ -220,6 +220,12 @@ export class SimulatedBackend implements NativeBackend {
         }
       case 'restoreWindowRect':
         return { restored: true }
+      case 'routeAudio': {
+        const display = DISPLAYS.find((d) => d.id === p['displayId'])
+        return display?.isLikelyTv
+          ? { routed: true, device: `${display.name} (NVIDIA High Definition Audio)` }
+          : { routed: false, device: null, reason: 'noDisplayAudio' }
+      }
       case 'startControllerTest':
         this.startTest(Number(p['slot']))
         return {}

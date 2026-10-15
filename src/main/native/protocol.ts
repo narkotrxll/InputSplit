@@ -84,6 +84,19 @@ export const helperMethods = {
     }),
     result: z.object({ previous: RectSchema, current: RectSchema }),
   },
+  /**
+   * Plays the session's game on the speakers of `displayId` (HDMI/DisplayPort audio of a TV or
+   * monitor). Only that game's output changes; the helper puts it back when the session ends.
+   */
+  routeAudio: {
+    params: z.object({ sessionId: z.number().int(), displayId: z.string() }),
+    result: z.object({
+      routed: z.boolean(),
+      device: z.string().nullable(),
+      /** Why not: noDisplayAudio, unsupported, routeFailed, sessionEnded. */
+      reason: z.string().optional(),
+    }),
+  },
   restoreWindowRect: {
     params: z.object({ hwnd: z.number().int(), rect: RectSchema }),
     result: z.object({ restored: z.boolean() }),

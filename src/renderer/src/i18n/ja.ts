@@ -107,6 +107,7 @@ export const ja: Messages = {
     chooseDisplay: '現在の画面のまま',
     chooseDisplayHint: 'ゲームのウィンドウは移動しません',
     moveWindow: 'ゲームをこの画面に移動',
+    audioOnDisplay: 'ゲームの音声：{name}',
     gameGone: 'このウィンドウはもう開いていません',
     protections: '保護機能',
     protectionsHint:
@@ -443,6 +444,9 @@ export const ja: Messages = {
     defaults: '分離の既定値',
     defaultsHint: '新しい設定とプロファイルに使われます。',
     moveWindowByDefault: 'ゲームを選択した画面に移動',
+    gameAudioToDisplay: 'ゲームの音声を画面のスピーカーで再生',
+    gameAudioToDisplayHint:
+      'テレビやモニターにスピーカーがある場合、分離中はゲームの音声をそこから再生します。切り替わるのはゲームの音声だけで、ほかの音はいつものスピーカーのままです。',
     restoreOnExit: '分離の停止時にウィンドウの位置を戻す',
     safety: '安全',
     emergencyHotkey: '緊急停止ショートカット',

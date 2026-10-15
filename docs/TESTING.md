@@ -168,6 +168,7 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 | Notifications | With the InputSplit window in the background, starting/stopping/closing the game shows a Windows notification. None while the window has focus. |
 | Settings → **Check now** | "You have the latest version" or the new version with **Download and install**; the installer starts and InputSplit quits. |
 | Onboarding (Settings → Show the welcome guide) | The controller step turns green after a button press; the screen step preselects the TV. |
+| Isolation with a TV/monitor that has speakers (HDMI or DisplayPort) | Only the game's sound plays on the TV (the dashboard shows "Game sound: …"); other apps stay on the usual speakers. Windows → Settings → Sound → Volume mixer lists the game on the TV. After **Stop** or closing the game it is back on its previous device. A screen without speakers changes nothing. |
 | Settings → **Two players**, two games, two controllers | Player 1 and Player 2 tabs each start their own game; each game reacts only to its own controller and keeps it in the background. |
 | Two players, the same controller (or "Any controller") for both | Start is disabled with "the other player already uses this controller" / "choose a controller for each game". |
 | Two players, **LB + RB + View** on player 2's controller | Stops only player 2's game; pressed again, starts player 2's profile. |

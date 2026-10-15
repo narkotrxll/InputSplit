@@ -107,6 +107,7 @@ export const ptBR: Messages = {
     chooseDisplay: 'Tela atual',
     chooseDisplayHint: 'A janela do jogo fica onde está',
     moveWindow: 'Mover o jogo para esta tela',
+    audioOnDisplay: 'Som do jogo: {name}',
     gameGone: 'Esta janela não está mais aberta',
     protections: 'Proteções',
     protectionsHint:
@@ -434,6 +435,9 @@ export const ptBR: Messages = {
     defaults: 'Padrões de isolamento',
     defaultsHint: 'Usados em novas configurações e novos perfis.',
     moveWindowByDefault: 'Mover o jogo para a tela escolhida',
+    gameAudioToDisplay: 'Som do jogo nos alto-falantes da tela',
+    gameAudioToDisplayHint:
+      'Se a TV ou o monitor tiver alto-falantes, o jogo toca por eles durante o isolamento. Só o som do jogo muda; o resto continua nos alto-falantes de sempre.',
     restoreOnExit: 'Restaurar a posição da janela ao parar o isolamento',
     safety: 'Segurança',
     emergencyHotkey: 'Atalho de parada de emergência',
