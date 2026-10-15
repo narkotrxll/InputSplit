@@ -1,3 +1,8 @@
+// The COM and WinRT headers below need the RPC headers that WIN32_LEAN_AND_MEAN (set for the
+// whole project) leaves out of windows.h; MSVC fails to compile them without.
+#undef WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #include "audio.h"
 
 #include <cfgmgr32.h>
