@@ -119,10 +119,14 @@ async function main(): Promise<void> {
       : await dialog.showMessageBox(options)
     return response === 1
   }
-  const seats = new SeatsService(backend, logger, () => settings.get().twoPlayers, {
-    protection: () => settings.get().antiCheatProtection,
-    confirmRisk,
-  })
+  const seats = new SeatsService(
+    backend,
+    logger,
+    () => settings.get().twoPlayers,
+    { protection: () => settings.get().antiCheatProtection, confirmRisk },
+    Date.now,
+    () => settings.get().gameAudioToDisplay,
+  )
   const devices = new DeviceService(backend)
   const icons = new IconService()
   const library = new LibraryService(logger, useSimulatedBackend)

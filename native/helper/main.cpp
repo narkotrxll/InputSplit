@@ -140,6 +140,12 @@ Json Handle(const std::string& method, const Json& params) {
     }
     return Json::object();
   }
+  if (method == "routeAudio") {
+    Json result = SessionManager::Instance().RouteAudio(
+        params.at("sessionId").get<int>(), FromUtf8(params.at("displayId").get<std::string>()));
+    if (result.is_null()) throw HelperError{"sessionNotFound", "No such session."};
+    return result;
+  }
   if (method == "moveWindow") {
     HelperError error;
     Json result = MoveWindowToDisplay(HwndFromJson(params.at("hwnd")),

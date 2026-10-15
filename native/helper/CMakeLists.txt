@@ -7,12 +7,13 @@ add_executable(inputsplit-helper
   safety.cpp
   controllers.cpp
   displays.cpp
+  audio.cpp
   injector.cpp
   session.cpp
   system_window.cpp)
 inputsplit_common_options(inputsplit-helper)
 target_link_libraries(inputsplit-helper PRIVATE nlohmann_json::nlohmann_json
-  user32 advapi32 psapi dwmapi setupapi hid)
+  user32 advapi32 psapi dwmapi setupapi hid cfgmgr32 ole32)
 if(MINGW)
   target_link_options(inputsplit-helper PRIVATE -municode)
 endif()

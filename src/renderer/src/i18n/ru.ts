@@ -104,6 +104,7 @@ export const ru: Messages = {
     chooseDisplay: 'Текущий экран',
     chooseDisplayHint: 'Окно игры останется на месте',
     moveWindow: 'Перенести игру на этот экран',
+    audioOnDisplay: 'Звук игры: {name}',
     gameGone: 'Это окно уже закрыто',
     protections: 'Защита',
     protectionsHint:
@@ -429,6 +430,9 @@ export const ru: Messages = {
     defaults: 'Изоляция по умолчанию',
     defaultsHint: 'Используется для новых настроек и профилей.',
     moveWindowByDefault: 'Переносить игру на выбранный экран',
+    gameAudioToDisplay: 'Звук игры — на динамики экрана',
+    gameAudioToDisplayHint:
+      'Если у телевизора или монитора есть динамики, игра звучит через них, пока идёт изоляция. Переключается только звук игры, остальное остаётся на обычных колонках.',
     restoreOnExit: 'Возвращать окно на место после остановки изоляции',
     safety: 'Безопасность',
     emergencyHotkey: 'Экстренная остановка',

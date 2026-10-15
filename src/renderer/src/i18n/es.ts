@@ -107,6 +107,7 @@ export const es: Messages = {
     chooseDisplay: 'Pantalla actual',
     chooseDisplayHint: 'La ventana del juego se queda donde está',
     moveWindow: 'Mover el juego a esta pantalla',
+    audioOnDisplay: 'Sonido del juego: {name}',
     gameGone: 'Esta ventana ya no está abierta',
     protections: 'Protecciones',
     protectionsHint:
@@ -440,6 +441,9 @@ export const es: Messages = {
     defaults: 'Aislamiento predeterminado',
     defaultsHint: 'Se usa en nuevas configuraciones y nuevos perfiles.',
     moveWindowByDefault: 'Mover el juego a la pantalla elegida',
+    gameAudioToDisplay: 'Sonido del juego en los altavoces de la pantalla',
+    gameAudioToDisplayHint:
+      'Si la TV o el monitor tiene altavoces, el juego suena por ellos durante el aislamiento. Solo cambia el sonido del juego; lo demás sigue en tus altavoces habituales.',
     restoreOnExit: 'Restaurar la posición de la ventana al detener el aislamiento',
     safety: 'Seguridad',
     emergencyHotkey: 'Atajo de parada de emergencia',

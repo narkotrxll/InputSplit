@@ -194,7 +194,7 @@ NDJSON over stdio. Requests `{"id":1,"method":"listWindows","params":{}}`, respo
 (version skew shows up as a clear error, not as `undefined` in the UI).
 
 Methods: `hello`, `listWindows`, `listControllers`, `listDisplays`, `checkTarget`,
-`startIsolation`, `stopIsolation`, `moveWindow`, `startControllerTest`,
+`startIsolation`, `stopIsolation`, `moveWindow`, `routeAudio`, `startControllerTest`,
 `stopControllerTest`, `setEmergencyHotkey`, `setGamepadHotkey`, `rumble`, `ping`,
 `shutdown`.
 Events: `controllersChanged`, `controllerState`, `displaysChanged`, `sessionStatus`,

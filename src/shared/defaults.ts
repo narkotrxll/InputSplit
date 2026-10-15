@@ -42,6 +42,7 @@ export const IDLE_VIEW: IsolationView = {
   counters: null,
   detectedApis: [],
   windowMoved: false,
+  audioDevice: null,
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -68,6 +69,7 @@ export const DEFAULT_SETTINGS: Settings = {
   twoPlayers: false,
   languageChosen: false,
   antiCheatProtection: true,
+  gameAudioToDisplay: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */
