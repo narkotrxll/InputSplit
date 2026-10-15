@@ -24,6 +24,14 @@
       content="https://narkotrxll.github.io/InputSplit/assets/social-preview.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#06060b" />
+    <link
+      rel="preload"
+      href="assets/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="style.css" />
     <script type="application/ld+json">
       {
@@ -80,168 +88,828 @@
     </script>
   </head>
   <body>
-    <div class="wrap">
-      <header class="top">
+    <div class="bg" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="grid"></div>
+      <canvas></canvas>
+      <div class="noise"></div>
+    </div>
+
+    <header class="top">
+      <div class="wrap">
         <a class="brand" href="./"><img src="assets/icon.png" alt="" />InputSplit</a>
         <nav>
+          <a href="#features">Features</a>
           <a href="#how">How it works</a>
           <a href="#faq">FAQ</a>
-          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
-          <a href="ru/" hreflang="ru">Русский</a>
-        </nav>
-      </header>
-
-      <div class="hero">
-        <h1>One PC, two people.<br />One plays, one works.</h1>
-        <p class="lead">
-          InputSplit lets someone play on the TV with a controller while someone else keeps working
-          on the same Windows PC with the keyboard and mouse. The game keeps running in the
-          background and never pauses.
-        </p>
-        <div class="buttons">
-          <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
-            >Download for Windows</a
+          <a href="https://github.com/narkotrxll/InputSplit"
+            ><svg class="i"><use href="assets/icons.svg#code-xml" /></svg>GitHub</a
           >
-          <a class="btn" href="https://github.com/narkotrxll/InputSplit">Source code</a>
+          <a class="lang" href="ru/" hreflang="ru"
+            ><svg class="i"><use href="assets/icons.svg#languages" /></svg>RU</a
+          >
+          <a class="dl" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+            ><svg class="i"><use href="assets/icons.svg#download" /></svg><span>Download</span></a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="hero">
+          <div class="badge reveal">
+            <b>Free</b> Open source · Windows 10/11 · no account, no ads
+          </div>
+          <h1 class="reveal">
+            One PC, two people.<br /><span class="grad">One plays, one works.</span>
+          </h1>
+          <p class="lead reveal">
+            InputSplit lets someone play on the TV with a controller while someone else keeps
+            working on the same Windows PC with the keyboard and mouse. The game keeps running in
+            the background and never pauses.
+          </p>
+          <div class="buttons reveal">
+            <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+              ><svg class="i"><use href="assets/icons.svg#download" /></svg>Download for Windows</a
+            >
+            <a class="btn" href="https://github.com/narkotrxll/InputSplit"
+              ><svg class="i"><use href="assets/icons.svg#code-xml" /></svg>Source code</a
+            >
+          </div>
+          <ul class="facts reveal">
+            <li>
+              <svg class="i"><use href="assets/icons.svg#check" /></svg>MIT license
+            </li>
+            <li>
+              <svg class="i"><use href="assets/icons.svg#check" /></svg>11 languages
+            </li>
+            <li>
+              <svg class="i"><use href="assets/icons.svg#check" /></svg>No administrator rights
+            </li>
+            <li>
+              <svg class="i"><use href="assets/icons.svg#check" /></svg>Updates itself
+            </li>
+          </ul>
+          <div class="split reveal">
+            <span
+              ><svg class="i"><use href="assets/icons.svg#gamepad-2" /></svg><em>Player</em> TV +
+              controller</span
+            >
+            <span
+              ><svg class="i"><use href="assets/icons.svg#monitor" /></svg><em>You</em> monitors +
+              keyboard and mouse</span
+            >
+          </div>
+          <div class="stage">
+            <div class="frame">
+              <img
+                src="assets/screens/en/dashboard-active.webp"
+                alt="InputSplit with a game isolated and running in the background"
+                width="1280"
+                height="820"
+                fetchpriority="high"
+              />
+            </div>
+          </div>
         </div>
-        <p class="small">
-          Free and open source (MIT) · Windows 10/11 · 11 languages · no administrator rights
-        </p>
-        <div class="shot">
-          <img
-            src="assets/screenshots/dashboard-active.png"
-            alt="InputSplit with a game isolated and running in the background"
-            width="1280"
-            height="820"
-          />
+
+        <section>
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#circle-x" /></svg>The problem
+            </div>
+            <h2>Sound familiar?</h2>
+          </div>
+          <div class="pains">
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#pause" /></svg>
+              </div>
+              <p>The game <b>pauses when you Alt+Tab</b> or click on another monitor.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <p>The <b>controller stops working</b> as soon as the game window is not focused.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#keyboard-off" /></svg>
+              </div>
+              <p>The game <b>reacts to your typing and mouse clicks</b> in another app.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#users" /></svg>
+              </div>
+              <p>
+                You want one person on the couch and another at the desk,
+                <b>on one computer</b>.
+              </p>
+            </div>
+          </div>
+          <p class="fix reveal">
+            <svg class="i"><use href="assets/icons.svg#sparkles" /></svg>InputSplit fixes all of
+            this inside the game you choose, and only there.
+          </p>
+        </section>
+
+        <section id="features">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#zap" /></svg>Features
+            </div>
+            <h2>Everything you need to share one PC</h2>
+            <p>Pick the game, pick the controller, press Start. The rest happens by itself.</p>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#app-window" /></svg>
+              </div>
+              <h3>The game keeps playing when you click away</h3>
+              <p>
+                Click into your browser, switch monitors, Alt+Tab as much as you like. The game on
+                the TV keeps running and keeps listening to its controller.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>The controller keeps
+                  working in the background
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>The game is never told
+                  another window became active, so it does not pause or mute
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Your typing, mouse
+                  movement and clicks never reach the game
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>The game cannot
+                  re-centre or trap the shared mouse pointer
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/dashboard-active.webp"
+                  alt="Dashboard with every protection active"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+              <div class="float tr">
+                <img
+                  src="assets/screens/en/crop-live.webp"
+                  alt="Live diagnostics: the game is reading the controller"
+                  width="340"
+                  height="386"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#library" /></svg>
+              </div>
+              <h3>Your games, one click away</h3>
+              <p>
+                No hunting for .exe files. InputSplit finds the games installed through Steam, Epic
+                Games and GOG Galaxy.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Add a game from your
+                  library and save it as a profile
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg><b>Play</b> starts the
+                  game and isolates it as soon as its window appears
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Or isolate a game
+                  automatically whenever it opens
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>The picker marks
+                  launchers, online games and games that worked before
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/library.webp"
+                  alt="Adding a game from the Steam, Epic Games and GOG library"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h3>Any gamepad, locked to its game</h3>
+              <p>
+                The controller you pick becomes the game's player 1, and the game ignores every
+                other pad. Test the buttons and sticks right in the app.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Xbox and other XInput
+                  controllers, DirectInput and HID gamepads
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Live controller test
+                  with artwork for your model
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Battery level at a
+                  glance
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Works with 64-bit and
+                  32-bit games
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/controllers.webp"
+                  alt="Controller test with a live gamepad picture"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#tv" /></svg>
+              </div>
+              <h3>The right screen, the right speakers</h3>
+              <p>
+                InputSplit can move the game to the TV when isolation starts and put it back
+                afterwards. Your monitors stay exactly as they were.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Pick the TV on a map of
+                  your screens
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#volume-2" /></svg>If the TV has
+                  speakers, the game's sound plays there
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Only the game's sound
+                  moves: your calls and music stay on your speakers
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Everything goes back
+                  when you press Stop
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/display-picker.webp"
+                  alt="Choosing the TV on a map of the screens"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+              <div class="float br">
+                <img
+                  src="assets/screens/en/crop-audio.webp"
+                  alt="Setting: play the game's sound on the screen's speakers"
+                  width="726"
+                  height="171"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#gauge" /></svg>
+              </div>
+              <h3>FPS and input latency, right on the TV</h3>
+              <p>
+                Hold <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>Menu</kbd> for a second during a game to
+                show or hide a small readout in the corner of the game's screen.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>FPS, frame time and the
+                  worst frame
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Input → frame latency:
+                  from the game reading a button press to handing over the frame
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Shows over windowed and
+                  borderless games
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Measured inside the PC:
+                  the controller, cable and TV add their own delay
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <div class="tv" role="img" aria-label="The FPS overlay in the corner of a game">
+                  <div class="game">
+                    <div class="sun"></div>
+                    <div class="hills"></div>
+                    <div class="floor"></div>
+                    <div class="car"></div>
+                  </div>
+                  <div class="osd" data-ms="{v} ms" data-worst="worst {v}">
+                    <div class="row">
+                      <span class="l">FPS</span><span class="good" data-v="fps">60</span>
+                    </div>
+                    <div class="row">
+                      <span class="l">Frame</span><span data-v="frame">16.7 ms</span>
+                    </div>
+                    <div class="row">
+                      <span class="l">Input → frame</span><span data-v="latency">9.8 ms</span>
+                    </div>
+                    <div class="row"><span class="l">Screen</span><span>60 Hz</span></div>
+                    <div class="osd-note">PC only: controller, cable and TV delay not included</div>
+                  </div>
+                  <div class="combo"><kbd>LB</kbd>+<kbd>RB</kbd>+<kbd>Menu</kbd></div>
+                </div>
+              </div>
+              <div class="float bl">
+                <img
+                  src="assets/screens/en/crop-fps.webp"
+                  alt="Setting: FPS and input latency shortcut"
+                  width="768"
+                  height="162"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#users" /></svg>
+              </div>
+              <h3>Two players, two games</h3>
+              <p>
+                Turn on Two players and isolate two games at once, each locked to its own
+                controller. Great for two screens and two gamepads on one PC.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>A dashboard tab for each
+                  player
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Each player's controller
+                  shortcut starts or stops their own game
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>The keyboard and mouse
+                  stay free for a third person
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/two-players.webp"
+                  alt="Dashboard with a tab for each of two players"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#shield-check" /></svg>
+              </div>
+              <h3>Safe by default</h3>
+              <p>
+                InputSplit only touches the game you choose, and everything is undone when you press
+                Stop. Nothing in Windows is changed.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Games with anti-cheat
+                  are refused, so your account stays safe
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>Emergency stop:
+                  <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd>
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>If InputSplit closes,
+                  the game goes back to normal by itself
+                </li>
+                <li>
+                  <svg class="i"><use href="assets/icons.svg#check" /></svg>No global keyboard
+                  hooks, no administrator rights
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="assets/screens/en/crop-safety.webp"
+                  alt="Safety settings: anti-cheat protection and emergency stop"
+                  width="768"
+                  height="261"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#layers" /></svg>And more
+            </div>
+            <h2>Small things that make it easy</h2>
+          </div>
+          <div class="more">
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h4>Start from the couch</h4>
+              <p>
+                Hold <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>View</kbd> for 2 seconds to start or stop.
+                The controller vibrates to confirm.
+              </p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#bookmark" /></svg>
+              </div>
+              <h4>Profiles</h4>
+              <p>Save a game with its controller and screen, then start it in one click.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#clock" /></svg>
+              </div>
+              <h4>Play time</h4>
+              <p>Each profile shows how long the game has been played.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#hard-drive-download" /></svg>
+              </div>
+              <h4>Backup</h4>
+              <p>Move profiles, settings and play time to another PC with one file.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#sun-moon" /></svg>
+              </div>
+              <h4>Dark and light</h4>
+              <p>A clean interface in a dark or light theme, or follow Windows.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#languages" /></svg>
+              </div>
+              <h4>11 languages</h4>
+              <p>Uses your Windows language by default. Change it any time in Settings.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#refresh-cw" /></svg>
+              </div>
+              <h4>Automatic updates</h4>
+              <p>New versions install themselves. You can turn that off.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#bug" /></svg>
+              </div>
+              <h4>Report a problem</h4>
+              <p>One button saves a diagnostics report and opens a GitHub issue for you.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="how">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#circle-play" /></svg>How it works
+            </div>
+            <h2>Three steps, and you're playing</h2>
+          </div>
+          <ol class="steps">
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#library" /></svg>
+              </div>
+              <h4>Pick the game</h4>
+              <p>Add it from your Steam, Epic or GOG library, or pick its .exe.</p>
+            </li>
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h4>Pick the controller</h4>
+              <p>It becomes the game's player 1. Optionally pick the TV too.</p>
+            </li>
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="assets/icons.svg#play" /></svg>
+              </div>
+              <h4>Press Start isolation</h4>
+              <p>
+                Or hold <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>View</kbd> on the controller for 2
+                seconds.
+              </p>
+            </li>
+          </ol>
+          <p class="note reveal">
+            <svg class="i"><use href="assets/icons.svg#monitor" /></svg>
+            <span
+              >Use Borderless Windowed mode in the game. Everything is undone when you press Stop,
+              and the game switches back to normal by itself if InputSplit closes or you press
+              Ctrl+Alt+Shift+Q.</span
+            >
+          </p>
+        </section>
+
+        <section id="screenshots">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#app-window" /></svg>Screenshots
+            </div>
+            <h2>Take a look inside</h2>
+          </div>
+          <div class="gallery">
+            <button
+              class="reveal"
+              data-full="assets/screens/en/dashboard-active.webp"
+              data-caption="Dashboard while a game is isolated"
+            >
+              <img
+                src="assets/screens/en/dashboard-active.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Dashboard while a game is isolated</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/game-picker.webp"
+              data-caption="Choosing a running game"
+            >
+              <img
+                src="assets/screens/en/game-picker.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Choosing a running game</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/display-picker.webp"
+              data-caption="Choosing the TV"
+            >
+              <img
+                src="assets/screens/en/display-picker.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Choosing the TV</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/library.webp"
+              data-caption="Steam, Epic Games and GOG library"
+            >
+              <img
+                src="assets/screens/en/library.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Steam, Epic Games and GOG library</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/controllers.webp"
+              data-caption="Controller test"
+            >
+              <img
+                src="assets/screens/en/controllers.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Controller test</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/two-players.webp"
+              data-caption="Two players"
+            >
+              <img
+                src="assets/screens/en/two-players.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Two players</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/profiles.webp"
+              data-caption="Profiles"
+            >
+              <img
+                src="assets/screens/en/profiles.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Profiles</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/diagnostics.webp"
+              data-caption="Diagnostics"
+            >
+              <img
+                src="assets/screens/en/diagnostics.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Diagnostics</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="assets/screens/en/dashboard-light.webp"
+              data-caption="Light theme"
+            >
+              <img
+                src="assets/screens/en/dashboard-light.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Light theme</span>
+            </button>
+          </div>
+        </section>
+
+        <section id="faq">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="assets/icons.svg#sparkles" /></svg>FAQ
+            </div>
+            <h2>Questions</h2>
+          </div>
+          <div class="faq">
+            <details class="reveal">
+              <summary>
+                Does it work with online games?<svg class="i">
+                  <use href="assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                InputSplit is meant for single-player and offline games. Games protected by
+                anti-cheat (Easy Anti-Cheat, BattlEye, Vanguard and others) are refused by default.
+                You can turn this protection off in Settings → Safety at your own risk: InputSplit
+                then warns you before every online or anti-cheat game that the game may ban your
+                account. InputSplit never tries to hide from an anti-cheat.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Which controllers work?<svg class="i">
+                  <use href="assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                Xbox controllers and other XInput gamepads, as well as DirectInput and HID gamepads.
+                Games that read controllers only through Windows.Gaming.Input or GameInput get
+                limited support, and InputSplit tells you when that happens.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Does it change anything in Windows?<svg class="i">
+                  <use href="assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                No. There are no global keyboard hooks and no system settings changes. Everything
+                happens inside the chosen game and is undone when you press Stop.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Why does Windows or my antivirus warn about it?<svg class="i">
+                  <use href="assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                The installer is not code-signed yet, and InputSplit loads a small component into
+                the game, which some antivirus software flags. If you downloaded it from the
+                official GitHub release, click More info, then Run anyway.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Does it collect any data?<svg class="i">
+                  <use href="assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                No. There are no accounts, ads or analytics. It only checks GitHub for updates, and
+                you can turn that off.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <div class="cta reveal">
+          <h2>Ready to share your PC?</h2>
+          <p>Free, open source, and ready in a minute.</p>
+          <div class="buttons">
+            <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+              ><svg class="i"><use href="assets/icons.svg#download" /></svg>Download for Windows</a
+            >
+            <a class="btn" href="https://github.com/narkotrxll/InputSplit"
+              ><svg class="i"><use href="assets/icons.svg#code-xml" /></svg>View on GitHub</a
+            >
+          </div>
+          <p class="small">Windows 10/11 · 64-bit · also on Scoop</p>
         </div>
       </div>
+    </main>
 
-      <section>
-        <h2>Sound familiar?</h2>
-        <ul class="pains">
-          <li>The game <b>pauses when you Alt+Tab</b> or click on another monitor.</li>
-          <li>The <b>controller stops working</b> as soon as the game window is not focused.</li>
-          <li>The game <b>reacts to your typing and mouse clicks</b> in another app.</li>
-          <li>
-            You want one person on the couch with a gamepad and another at the desk,
-            <b>on one computer</b>.
-          </li>
-        </ul>
-        <p>InputSplit fixes all of this inside the game you choose, and only there.</p>
-      </section>
+    <footer>
+      <div class="wrap">
+        <span>InputSplit is free and open source under the MIT license.</span>
+        <nav>
+          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
+          <a href="https://github.com/narkotrxll/InputSplit/issues">Report a problem</a>
+          <a href="https://github.com/narkotrxll/InputSplit/releases">Releases</a>
+          <a href="ru/" hreflang="ru">Русская версия</a>
+        </nav>
+      </div>
+    </footer>
 
-      <section>
-        <h2>What it does</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>🎮 Controller keeps working</h3>
-            <p>The game keeps reading its controller in the background.</p>
-          </div>
-          <div class="card">
-            <h3>🪟 No pause on focus loss</h3>
-            <p>The game is never told that another window became active.</p>
-          </div>
-          <div class="card">
-            <h3>⌨️ Keyboard and mouse stay yours</h3>
-            <p>The game cannot see typing, mouse movement or clicks.</p>
-          </div>
-          <div class="card">
-            <h3>🖱️ Cursor protected</h3>
-            <p>The game cannot re-centre or trap the shared pointer.</p>
-          </div>
-          <div class="card">
-            <h3>📺 Right screen</h3>
-            <p>
-              Optionally moves the game to the TV and back afterwards. If the TV has speakers, the
-              game's sound plays there.
-            </p>
-          </div>
-          <div class="card">
-            <h3>👥 Two players</h3>
-            <p>Two games at once, each locked to its own controller.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="how">
-        <h2>How to use it</h2>
-        <ol class="steps">
-          <li>
-            <b>Pick the game.</b> Add it from your Steam, Epic or GOG library, or pick its .exe.
-          </li>
-          <li><b>Pick the controller</b> that becomes the game's player 1.</li>
-          <li>
-            <b>Press Start isolation.</b> Or hold LB + RB + View on the controller for 2 seconds.
-          </li>
-        </ol>
-        <p class="note">
-          Use Borderless Windowed mode in the game. Everything is undone when you press Stop, and
-          the game switches back to normal by itself if InputSplit closes or you press
-          Ctrl+Alt+Shift+Q.
-        </p>
-      </section>
-
-      <section>
-        <h2>Screenshots</h2>
-        <div class="gallery">
-          <img src="assets/screenshots/game-picker.png" alt="Choosing a game" loading="lazy" />
-          <img src="assets/screenshots/controllers.png" alt="Controller test" loading="lazy" />
-          <img src="assets/screenshots/display-picker.png" alt="Choosing the TV" loading="lazy" />
-          <img src="assets/screenshots/dashboard-light.png" alt="Light theme" loading="lazy" />
-        </div>
-      </section>
-
-      <section id="faq">
-        <h2>Questions</h2>
-        <details>
-          <summary>Does it work with online games?</summary>
-          <p>
-            InputSplit is meant for single-player and offline games. Games protected by anti-cheat
-            (Easy Anti-Cheat, BattlEye, Vanguard and others) are refused by default. You can turn
-            this protection off in Settings → Safety at your own risk: InputSplit then warns you
-            before every online or anti-cheat game that the game may ban your account. InputSplit
-            never tries to hide from an anti-cheat.
-          </p>
-        </details>
-        <details>
-          <summary>Which controllers work?</summary>
-          <p>
-            Xbox controllers and other XInput gamepads, as well as DirectInput and HID gamepads.
-            Games that read controllers only through Windows.Gaming.Input or GameInput get limited
-            support, and InputSplit tells you when that happens.
-          </p>
-        </details>
-        <details>
-          <summary>Does it change anything in Windows?</summary>
-          <p>
-            No. There are no global keyboard hooks and no system settings changes. Everything
-            happens inside the chosen game and is undone when you press Stop.
-          </p>
-        </details>
-        <details>
-          <summary>Why does Windows or my antivirus warn about it?</summary>
-          <p>
-            The installer is not code-signed yet, and InputSplit loads a small component into the
-            game, which some antivirus software flags. If you downloaded it from the official GitHub
-            release, click More info, then Run anyway.
-          </p>
-        </details>
-        <details>
-          <summary>Does it collect any data?</summary>
-          <p>
-            No. There are no accounts, ads or analytics. It only checks GitHub for updates, and you
-            can turn that off.
-          </p>
-        </details>
-      </section>
-
-      <footer>
-        InputSplit is free and open source under the MIT license ·
-        <a href="https://github.com/narkotrxll/InputSplit">GitHub</a> ·
-        <a href="https://github.com/narkotrxll/InputSplit/issues">Report a problem</a> ·
-        <a href="ru/" hreflang="ru">Русская версия</a>
-      </footer>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot">
+      <button type="button" aria-label="Close">
+        <svg class="i"><use href="assets/icons.svg#x" /></svg>
+      </button>
+      <figure>
+        <img alt="" />
+        <p></p>
+      </figure>
     </div>
+
+    <script src="main.js" defer></script>
   </body>
 </html>

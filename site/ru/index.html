@@ -24,6 +24,14 @@
       content="https://narkotrxll.github.io/InputSplit/assets/social-preview.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#06060b" />
+    <link
+      rel="preload"
+      href="../assets/fonts/inter-cyrillic-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="../style.css" />
     <script type="application/ld+json">
       {
@@ -80,173 +88,832 @@
     </script>
   </head>
   <body>
-    <div class="wrap">
-      <header class="top">
-        <a class="brand" href="./"><img src="../assets/icon.png" alt="" />InputSplit</a>
-        <nav>
-          <a href="#how">Как пользоваться</a>
-          <a href="#faq">Вопросы</a>
-          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
-          <a href="../" hreflang="en">English</a>
-        </nav>
-      </header>
+    <div class="bg" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="grid"></div>
+      <canvas></canvas>
+      <div class="noise"></div>
+    </div>
 
-      <div class="hero">
-        <h1>Один ПК на двоих.<br />Один играет, другой работает.</h1>
-        <p class="lead">
-          InputSplit позволяет одному человеку играть на телевизоре с геймпадом, пока другой
-          работает за тем же компьютером с клавиатурой и мышью. Игра работает в фоне и не встаёт на
-          паузу.
-        </p>
-        <div class="buttons">
-          <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
-            >Скачать для Windows</a
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href="../"><img src="../assets/icon.png" alt="" />InputSplit</a>
+        <nav>
+          <a href="#features">Возможности</a>
+          <a href="#how">Как это работает</a>
+          <a href="#faq">Вопросы</a>
+          <a href="https://github.com/narkotrxll/InputSplit"
+            ><svg class="i"><use href="../assets/icons.svg#code-xml" /></svg>GitHub</a
           >
-          <a class="btn" href="https://github.com/narkotrxll/InputSplit">Исходный код</a>
+          <a class="lang" href="../" hreflang="en"
+            ><svg class="i"><use href="../assets/icons.svg#languages" /></svg>EN</a
+          >
+          <a class="dl" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+            ><svg class="i"><use href="../assets/icons.svg#download" /></svg><span>Скачать</span></a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="hero">
+          <div class="badge reveal">
+            <b>Бесплатно</b> Открытый код · Windows 10/11 · без аккаунта и рекламы
+          </div>
+          <h1 class="reveal">
+            Один ПК на двоих.<br /><span class="grad">Один играет, другой работает.</span>
+          </h1>
+          <p class="lead reveal">
+            InputSplit позволяет одному играть на телевизоре с геймпадом, пока другой работает за
+            тем же компьютером с Windows на клавиатуре и мыши. Игра продолжает работать в фоне и не
+            встаёт на паузу.
+          </p>
+          <div class="buttons reveal">
+            <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+              ><svg class="i"><use href="../assets/icons.svg#download" /></svg>Скачать для
+              Windows</a
+            >
+            <a class="btn" href="https://github.com/narkotrxll/InputSplit"
+              ><svg class="i"><use href="../assets/icons.svg#code-xml" /></svg>Исходный код</a
+            >
+          </div>
+          <ul class="facts reveal">
+            <li>
+              <svg class="i"><use href="../assets/icons.svg#check" /></svg>Лицензия MIT
+            </li>
+            <li>
+              <svg class="i"><use href="../assets/icons.svg#check" /></svg>11 языков
+            </li>
+            <li>
+              <svg class="i"><use href="../assets/icons.svg#check" /></svg>Без прав администратора
+            </li>
+            <li>
+              <svg class="i"><use href="../assets/icons.svg#check" /></svg>Обновляется сама
+            </li>
+          </ul>
+          <div class="split reveal">
+            <span
+              ><svg class="i"><use href="../assets/icons.svg#gamepad-2" /></svg
+              ><em>Игрок</em> телевизор + геймпад</span
+            >
+            <span
+              ><svg class="i"><use href="../assets/icons.svg#monitor" /></svg><em>Вы</em> мониторы +
+              клавиатура и мышь</span
+            >
+          </div>
+          <div class="stage">
+            <div class="frame">
+              <img
+                src="../assets/screens/ru/dashboard-active.webp"
+                alt="InputSplit: игра изолирована и работает в фоне"
+                width="1280"
+                height="820"
+                fetchpriority="high"
+              />
+            </div>
+          </div>
         </div>
-        <p class="small">
-          Бесплатно и с открытым кодом (MIT) · Windows 10/11 · 11 языков, включая русский · без прав
-          администратора
-        </p>
-        <div class="shot">
-          <img
-            src="../assets/screenshots/dashboard-active.png"
-            alt="InputSplit: игра изолирована и работает в фоне"
-            width="1280"
-            height="820"
-          />
+
+        <section>
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#circle-x" /></svg>Проблема
+            </div>
+            <h2>Знакомо?</h2>
+          </div>
+          <div class="pains">
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#pause" /></svg>
+              </div>
+              <p>Игра <b>встаёт на паузу при Alt+Tab</b> или клике на другом мониторе.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <p><b>Геймпад перестаёт работать</b>, как только окно игры теряет фокус.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#keyboard-off" /></svg>
+              </div>
+              <p>Игра <b>реагирует на набор текста и клики мыши</b> в другой программе.</p>
+            </div>
+            <div class="pain reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#users" /></svg>
+              </div>
+              <p>
+                Хочется, чтобы один сидел на диване, а другой за столом,
+                <b>за одним компьютером</b>.
+              </p>
+            </div>
+          </div>
+          <p class="fix reveal">
+            <svg class="i"><use href="../assets/icons.svg#sparkles" /></svg>InputSplit исправляет
+            всё это внутри выбранной игры, и только в ней.
+          </p>
+        </section>
+
+        <section id="features">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#zap" /></svg>Возможности
+            </div>
+            <h2>Всё, чтобы делить один ПК на двоих</h2>
+            <p>Выберите игру и геймпад, нажмите «Начать». Остальное произойдёт само.</p>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#app-window" /></svg>
+              </div>
+              <h3>Игра не замечает, что вы переключились</h3>
+              <p>
+                Кликайте в браузер, переходите на другой монитор, жмите Alt+Tab сколько угодно. Игра
+                на телевизоре продолжает работать и слушаться своего геймпада.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Геймпад работает в
+                  фоне
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Игра не узнаёт, что
+                  активным стало другое окно, поэтому не встаёт на паузу и не глушит звук
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Ваш набор текста,
+                  движения мыши и клики не доходят до игры
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Игра не может дёргать
+                  или запирать общий курсор мыши
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/dashboard-active.webp"
+                  alt="Главная: все защиты активны"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+              <div class="float tr">
+                <img
+                  src="../assets/screens/ru/crop-live.webp"
+                  alt="Живая диагностика: игра читает геймпад"
+                  width="340"
+                  height="386"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#library" /></svg>
+              </div>
+              <h3>Ваши игры в один клик</h3>
+              <p>
+                Не нужно искать .exe. InputSplit сам находит игры, установленные через Steam, Epic
+                Games и GOG Galaxy.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Добавьте игру из
+                  библиотеки и сохраните её как профиль
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg
+                  ><b>Играть</b> запускает игру и изолирует её, как только появится окно
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Или включайте
+                  изоляцию автоматически при каждом запуске игры
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>В списке отмечены
+                  лаунчеры, онлайн-игры и игры, которые уже работали
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/library.webp"
+                  alt="Добавление игры из библиотеки Steam, Epic Games и GOG"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h3>Любой геймпад, закреплённый за игрой</h3>
+              <p>
+                Выбранный геймпад становится первым игроком, а остальные игра не видит. Кнопки и
+                стики можно проверить прямо в программе.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Xbox и другие
+                  XInput-геймпады, DirectInput и HID
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Проверка геймпада
+                  вживую с картинкой вашей модели
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Заряд батареи всегда
+                  на виду
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Работает с 64- и
+                  32-битными играми
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/controllers.webp"
+                  alt="Проверка геймпада с живой картинкой"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#tv" /></svg>
+              </div>
+              <h3>Нужный экран и нужные динамики</h3>
+              <p>
+                InputSplit может перенести игру на телевизор при старте изоляции и вернуть её
+                обратно. Ваши мониторы остаются как были.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Выберите телевизор на
+                  схеме экранов
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#volume-2" /></svg>Если у телевизора
+                  есть динамики, звук игры пойдёт через них
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Переключается только
+                  звук игры: созвоны и музыка остаются на ваших колонках
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Всё возвращается по
+                  кнопке «Остановить»
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/display-picker.webp"
+                  alt="Выбор телевизора на схеме экранов"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+              <div class="float br">
+                <img
+                  src="../assets/screens/ru/crop-audio.webp"
+                  alt="Настройка: звук игры на динамики экрана"
+                  width="726"
+                  height="171"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#gauge" /></svg>
+              </div>
+              <h3>FPS и задержка ввода прямо на телевизоре</h3>
+              <p>
+                Удерживайте <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>Menu</kbd> секунду во время игры,
+                чтобы показать или скрыть небольшой показатель в углу экрана игры.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>FPS, время кадра и
+                  худший кадр
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Задержка «ввод →
+                  кадр»: от чтения нажатия игрой до отдачи кадра
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Показывается поверх
+                  игр в окне и без рамки
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Измеряется внутри ПК:
+                  геймпад, кабель и телевизор добавляют свою задержку
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <div class="tv" role="img" aria-label="Показатель FPS в углу игры">
+                  <div class="game">
+                    <div class="sun"></div>
+                    <div class="hills"></div>
+                    <div class="floor"></div>
+                    <div class="car"></div>
+                  </div>
+                  <div class="osd" data-ms="{v} мс" data-worst="худший {v}" data-dec=",">
+                    <div class="row">
+                      <span class="l">FPS</span><span class="good" data-v="fps">60</span>
+                    </div>
+                    <div class="row">
+                      <span class="l">Кадр</span><span data-v="frame">16,7 мс</span>
+                    </div>
+                    <div class="row">
+                      <span class="l">Ввод → кадр</span><span data-v="latency">9,8 мс</span>
+                    </div>
+                    <div class="row"><span class="l">Экран</span><span>60 Гц</span></div>
+                    <div class="osd-note">
+                      Только ПК: без задержки геймпада, кабеля и телевизора
+                    </div>
+                  </div>
+                  <div class="combo"><kbd>LB</kbd>+<kbd>RB</kbd>+<kbd>Menu</kbd></div>
+                </div>
+              </div>
+              <div class="float bl">
+                <img
+                  src="../assets/screens/ru/crop-fps.webp"
+                  alt="Настройка: FPS и задержка ввода"
+                  width="768"
+                  height="180"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature flip">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#users" /></svg>
+              </div>
+              <h3>Два игрока, две игры</h3>
+              <p>
+                Включите «Два игрока» и изолируйте две игры одновременно, у каждой свой геймпад. Два
+                экрана и два геймпада на одном ПК.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Отдельная вкладка на
+                  главной для каждого игрока
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Комбинация на
+                  геймпаде каждого игрока управляет только его игрой
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Клавиатура и мышь
+                  остаются свободными для третьего
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/two-players.webp"
+                  alt="Главная с вкладками двух игроков"
+                  width="1280"
+                  height="820"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="text reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#shield-check" /></svg>
+              </div>
+              <h3>Безопасно по умолчанию</h3>
+              <p>
+                InputSplit затрагивает только выбранную игру, и всё отменяется кнопкой «Остановить».
+                В Windows ничего не меняется.
+              </p>
+              <ul class="ticks">
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Игры с античитом не
+                  запускаются, чтобы аккаунт был в безопасности
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Экстренная остановка:
+                  <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd>
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Если InputSplit
+                  закроется, игра сама вернётся в обычный режим
+                </li>
+                <li>
+                  <svg class="i"><use href="../assets/icons.svg#check" /></svg>Без глобальных
+                  перехватов клавиатуры и без прав администратора
+                </li>
+              </ul>
+            </div>
+            <div class="visual reveal">
+              <div class="frame">
+                <img
+                  src="../assets/screens/ru/crop-safety.webp"
+                  alt="Безопасность: защита от античитов и экстренная остановка"
+                  width="768"
+                  height="262"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#layers" /></svg>И ещё
+            </div>
+            <h2>Мелочи, которые делают жизнь проще</h2>
+          </div>
+          <div class="more">
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h4>Запуск с дивана</h4>
+              <p>
+                Удерживайте <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>View</kbd> 2 секунды, чтобы
+                включить или выключить. Геймпад подтвердит вибрацией.
+              </p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#bookmark" /></svg>
+              </div>
+              <h4>Профили</h4>
+              <p>Сохраните игру вместе с геймпадом и экраном и запускайте в один клик.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#clock" /></svg>
+              </div>
+              <h4>Время в игре</h4>
+              <p>В каждом профиле видно, сколько вы уже наиграли.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#hard-drive-download" /></svg>
+              </div>
+              <h4>Резервная копия</h4>
+              <p>Перенесите профили, настройки и время в игре на другой ПК одним файлом.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#sun-moon" /></svg>
+              </div>
+              <h4>Тёмная и светлая тема</h4>
+              <p>Аккуратный интерфейс в тёмной или светлой теме, или как в Windows.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#languages" /></svg>
+              </div>
+              <h4>11 языков</h4>
+              <p>По умолчанию язык как в Windows. Его можно сменить в Настройках.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#refresh-cw" /></svg>
+              </div>
+              <h4>Автообновление</h4>
+              <p>Новые версии ставятся сами. Это можно отключить.</p>
+            </div>
+            <div class="tile reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#bug" /></svg>
+              </div>
+              <h4>Сообщить о проблеме</h4>
+              <p>Одна кнопка сохраняет отчёт диагностики и открывает задачу на GitHub.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="how">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#circle-play" /></svg>Как это работает
+            </div>
+            <h2>Три шага, и можно играть</h2>
+          </div>
+          <ol class="steps">
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#library" /></svg>
+              </div>
+              <h4>Выберите игру</h4>
+              <p>Добавьте её из библиотеки Steam, Epic или GOG или укажите её .exe.</p>
+            </li>
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#gamepad-2" /></svg>
+              </div>
+              <h4>Выберите геймпад</h4>
+              <p>Он станет первым игроком в игре. По желанию выберите и телевизор.</p>
+            </li>
+            <li class="reveal">
+              <div class="ico">
+                <svg class="i"><use href="../assets/icons.svg#play" /></svg>
+              </div>
+              <h4>Нажмите «Начать изоляцию»</h4>
+              <p>
+                Или удерживайте <kbd>LB</kbd> + <kbd>RB</kbd> + <kbd>View</kbd> на геймпаде 2
+                секунды.
+              </p>
+            </li>
+          </ol>
+          <p class="note reveal">
+            <svg class="i"><use href="../assets/icons.svg#monitor" /></svg>
+            <span
+              >Включите в игре режим «В окне без рамки». Всё отменяется кнопкой «Остановить», а если
+              InputSplit закроется или вы нажмёте Ctrl+Alt+Shift+Q, игра сама вернётся в обычный
+              режим.</span
+            >
+          </p>
+        </section>
+
+        <section id="screenshots">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#app-window" /></svg>Скриншоты
+            </div>
+            <h2>Загляните внутрь</h2>
+          </div>
+          <div class="gallery">
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/dashboard-active.webp"
+              data-caption="Главная во время изоляции"
+            >
+              <img
+                src="../assets/screens/ru/dashboard-active.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Главная во время изоляции</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/game-picker.webp"
+              data-caption="Выбор запущенной игры"
+            >
+              <img
+                src="../assets/screens/ru/game-picker.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Выбор запущенной игры</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/display-picker.webp"
+              data-caption="Выбор телевизора"
+            >
+              <img
+                src="../assets/screens/ru/display-picker.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Выбор телевизора</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/library.webp"
+              data-caption="Библиотека Steam, Epic Games и GOG"
+            >
+              <img
+                src="../assets/screens/ru/library.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Библиотека Steam, Epic Games и GOG</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/controllers.webp"
+              data-caption="Проверка геймпада"
+            >
+              <img
+                src="../assets/screens/ru/controllers.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Проверка геймпада</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/two-players.webp"
+              data-caption="Два игрока"
+            >
+              <img
+                src="../assets/screens/ru/two-players.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Два игрока</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/profiles.webp"
+              data-caption="Профили"
+            >
+              <img
+                src="../assets/screens/ru/profiles.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Профили</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/diagnostics.webp"
+              data-caption="Диагностика"
+            >
+              <img
+                src="../assets/screens/ru/diagnostics.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Диагностика</span>
+            </button>
+            <button
+              class="reveal"
+              data-full="../assets/screens/ru/dashboard-light.webp"
+              data-caption="Светлая тема"
+            >
+              <img
+                src="../assets/screens/ru/dashboard-light.webp"
+                alt=""
+                width="1280"
+                height="820"
+                loading="lazy"
+              /><span>Светлая тема</span>
+            </button>
+          </div>
+        </section>
+
+        <section id="faq">
+          <div class="head reveal">
+            <div class="eyebrow">
+              <svg class="i"><use href="../assets/icons.svg#sparkles" /></svg>Вопросы
+            </div>
+            <h2>Частые вопросы</h2>
+          </div>
+          <div class="faq">
+            <details class="reveal">
+              <summary>
+                Работает ли с онлайн-играми?<svg class="i">
+                  <use href="../assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                InputSplit сделан для одиночных и офлайн-игр. Игры с античитом (Easy Anti-Cheat,
+                BattlEye, Vanguard и другие) по умолчанию не запускаются. Эту защиту можно выключить
+                в Настройках → Безопасность на свой риск: тогда InputSplit перед каждой онлайн-игрой
+                или игрой с античитом предупреждает, что аккаунт могут забанить. InputSplit никогда
+                не пытается прятаться от античита.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Какие геймпады подходят?<svg class="i">
+                  <use href="../assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                Геймпады Xbox и другие XInput-геймпады, а также DirectInput- и HID-геймпады. Игры,
+                которые читают геймпад только через Windows.Gaming.Input или GameInput,
+                поддерживаются частично, и InputSplit об этом предупреждает.
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Меняет ли что-то в Windows?<svg class="i">
+                  <use href="../assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                Нет. Никаких глобальных перехватов клавиатуры и изменений системных настроек. Всё
+                происходит внутри выбранной игры и отменяется кнопкой «Остановить».
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Почему Windows или антивирус предупреждает?<svg class="i">
+                  <use href="../assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                Установщик пока не подписан, а InputSplit загружает в игру небольшой компонент, и
+                некоторые антивирусы на это ругаются. Если вы скачали его с официальной страницы
+                релизов на GitHub, нажмите «Подробнее», затем «Выполнить в любом случае».
+              </p>
+            </details>
+            <details class="reveal">
+              <summary>
+                Собирает ли программа данные?<svg class="i">
+                  <use href="../assets/icons.svg#chevron-down" />
+                </svg>
+              </summary>
+              <p>
+                Нет. Никаких аккаунтов, рекламы и аналитики. Программа только проверяет обновления
+                на GitHub, и это можно отключить.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <div class="cta reveal">
+          <h2>Готовы делить ПК на двоих?</h2>
+          <p>Бесплатно, с открытым кодом и готово за минуту.</p>
+          <div class="buttons">
+            <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+              ><svg class="i"><use href="../assets/icons.svg#download" /></svg>Скачать для
+              Windows</a
+            >
+            <a class="btn" href="https://github.com/narkotrxll/InputSplit"
+              ><svg class="i"><use href="../assets/icons.svg#code-xml" /></svg>Открыть на GitHub</a
+            >
+          </div>
+          <p class="small">Windows 10/11 · 64 бита · есть и в Scoop</p>
         </div>
       </div>
+    </main>
 
-      <section>
-        <h2>Знакомо?</h2>
-        <ul class="pains">
-          <li>Игра <b>встаёт на паузу при Alt+Tab</b> или клике на другом мониторе.</li>
-          <li><b>Геймпад перестаёт работать</b>, как только окно игры теряет фокус.</li>
-          <li>Игра <b>реагирует на набор текста и клики мыши</b> в другой программе.</li>
-          <li>
-            Хочется, чтобы один сидел на диване с геймпадом, а другой за столом,
-            <b>на одном компьютере</b>.
-          </li>
-        </ul>
-        <p>InputSplit исправляет всё это внутри выбранной игры, и только там.</p>
-      </section>
+    <footer>
+      <div class="wrap">
+        <span>InputSplit бесплатен, код открыт под лицензией MIT.</span>
+        <nav>
+          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
+          <a href="https://github.com/narkotrxll/InputSplit/issues">Сообщить о проблеме</a>
+          <a href="https://github.com/narkotrxll/InputSplit/releases">Релизы</a>
+          <a href="../" hreflang="en">English version</a>
+        </nav>
+      </div>
+    </footer>
 
-      <section>
-        <h2>Что умеет</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>🎮 Геймпад работает в фоне</h3>
-            <p>Игра продолжает читать свой геймпад, даже когда не в фокусе.</p>
-          </div>
-          <div class="card">
-            <h3>🪟 Без паузы</h3>
-            <p>Игра не узнаёт, что активным стало другое окно.</p>
-          </div>
-          <div class="card">
-            <h3>⌨️ Клавиатура и мышь ваши</h3>
-            <p>Игра не видит набор текста, движения и клики мыши.</p>
-          </div>
-          <div class="card">
-            <h3>🖱️ Курсор под защитой</h3>
-            <p>Игра не может дёргать или запирать общий курсор.</p>
-          </div>
-          <div class="card">
-            <h3>📺 Нужный экран</h3>
-            <p>
-              По желанию переносит игру на телевизор и возвращает обратно. Если у телевизора есть
-              динамики, звук игры идёт в них.
-            </p>
-          </div>
-          <div class="card">
-            <h3>👥 Два игрока</h3>
-            <p>Две игры сразу, у каждой свой геймпад.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="how">
-        <h2>Как пользоваться</h2>
-        <ol class="steps">
-          <li>
-            <b>Выберите игру.</b> Добавьте её из библиотеки Steam, Epic или GOG или укажите её .exe.
-          </li>
-          <li><b>Выберите геймпад</b>, который станет первым игроком в игре.</li>
-          <li>
-            <b>Нажмите «Запустить изоляцию».</b> Или зажмите на геймпаде LB + RB + View на 2
-            секунды.
-          </li>
-        </ol>
-        <p class="note">
-          Включите в игре режим «Окно без рамки». Всё отменяется кнопкой «Остановить», а если
-          InputSplit закроется или вы нажмёте Ctrl+Alt+Shift+Q, игра сама вернётся к обычной работе.
-        </p>
-      </section>
-
-      <section>
-        <h2>Скриншоты</h2>
-        <div class="gallery">
-          <img src="../assets/screenshots/game-picker.png" alt="Выбор игры" loading="lazy" />
-          <img src="../assets/screenshots/controllers.png" alt="Проверка геймпада" loading="lazy" />
-          <img
-            src="../assets/screenshots/display-picker.png"
-            alt="Выбор телевизора"
-            loading="lazy"
-          />
-          <img src="../assets/screenshots/dashboard-light.png" alt="Светлая тема" loading="lazy" />
-        </div>
-      </section>
-
-      <section id="faq">
-        <h2>Вопросы</h2>
-        <details>
-          <summary>Работает ли с онлайн-играми?</summary>
-          <p>
-            InputSplit сделан для одиночных и офлайн-игр. Игры с античитом (Easy Anti-Cheat,
-            BattlEye, Vanguard и другие) по умолчанию не запускаются. Эту защиту можно выключить в
-            Настройках → Безопасность на свой риск: тогда InputSplit перед каждой онлайн-игрой или
-            игрой с античитом предупреждает, что аккаунт могут забанить. InputSplit никогда не
-            пытается прятаться от античита.
-          </p>
-        </details>
-        <details>
-          <summary>Какие геймпады подходят?</summary>
-          <p>
-            Геймпады Xbox и другие XInput-геймпады, а также DirectInput- и HID-геймпады. Игры,
-            которые читают геймпад только через Windows.Gaming.Input или GameInput, поддерживаются
-            частично, и InputSplit об этом предупреждает.
-          </p>
-        </details>
-        <details>
-          <summary>Меняет ли что-то в Windows?</summary>
-          <p>
-            Нет. Никаких глобальных перехватов клавиатуры и изменений системных настроек. Всё
-            происходит внутри выбранной игры и отменяется кнопкой «Остановить».
-          </p>
-        </details>
-        <details>
-          <summary>Почему Windows или антивирус предупреждает?</summary>
-          <p>
-            Установщик пока не подписан, а InputSplit загружает в игру небольшой компонент, и
-            некоторые антивирусы на это ругаются. Если вы скачали его с официальной страницы релизов
-            на GitHub, нажмите «Подробнее», затем «Выполнить в любом случае».
-          </p>
-        </details>
-        <details>
-          <summary>Собирает ли программа данные?</summary>
-          <p>
-            Нет. Никаких аккаунтов, рекламы и аналитики. Программа только проверяет обновления на
-            GitHub, и это можно отключить.
-          </p>
-        </details>
-      </section>
-
-      <footer>
-        InputSplit бесплатен, код открыт под лицензией MIT ·
-        <a href="https://github.com/narkotrxll/InputSplit">GitHub</a> ·
-        <a href="https://github.com/narkotrxll/InputSplit/issues">Сообщить о проблеме</a> ·
-        <a href="../" hreflang="en">English version</a>
-      </footer>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="Скриншот">
+      <button type="button" aria-label="Закрыть">
+        <svg class="i"><use href="../assets/icons.svg#x" /></svg>
+      </button>
+      <figure>
+        <img alt="" />
+        <p></p>
+      </figure>
     </div>
+
+    <script src="../main.js" defer></script>
   </body>
 </html>
