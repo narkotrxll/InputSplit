@@ -1,0 +1,33 @@
+{
+  "version": "0.1.10",
+  "description": "Play on the TV with a controller while someone else keeps working on the same Windows PC.",
+  "homepage": "https://github.com/narkotrxll/InputSplit",
+  "license": "MIT",
+  "notes": "InputSplit updates itself; you can turn that off in Settings > Updates.",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/narkotrxll/InputSplit/releases/download/v0.1.10/InputSplit.exe",
+      "hash": "699c78d8b2d80322a13359d9760134f2b5f03170426a2addd0118967ffcd2ab3"
+    }
+  },
+  "installer": {
+    "args": ["/S", "/D=$dir"]
+  },
+  "uninstaller": {
+    "file": "Uninstall InputSplit.exe",
+    "args": ["/S"]
+  },
+  "checkver": {
+    "github": "https://github.com/narkotrxll/InputSplit"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/narkotrxll/InputSplit/releases/download/v$version/InputSplit.exe",
+        "hash": {
+          "url": "$url.sha256"
+        }
+      }
+    }
+  }
+}

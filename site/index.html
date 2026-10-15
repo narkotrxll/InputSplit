@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>InputSplit: play with a controller while someone else uses the same PC</title>
+    <meta
+      name="description"
+      content="Free Windows app that keeps a game running in the background: the controller keeps working, the game does not pause on Alt+Tab, and it ignores the keyboard and mouse. One person plays on the TV, another keeps working."
+    />
+    <link rel="canonical" href="https://narkotrxll.github.io/InputSplit/" />
+    <link rel="alternate" hreflang="en" href="https://narkotrxll.github.io/InputSplit/" />
+    <link rel="alternate" hreflang="ru" href="https://narkotrxll.github.io/InputSplit/ru/" />
+    <link rel="icon" href="assets/icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="InputSplit: one PC, two people" />
+    <meta
+      property="og:description"
+      content="Play on the TV with a controller while someone else keeps working on the same Windows PC."
+    />
+    <meta property="og:url" content="https://narkotrxll.github.io/InputSplit/" />
+    <meta
+      property="og:image"
+      content="https://narkotrxll.github.io/InputSplit/assets/social-preview.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "InputSplit",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "Keeps one game running in the background with its controller, without pausing on focus loss and without seeing the keyboard and mouse.",
+        "downloadUrl": "https://github.com/narkotrxll/InputSplit/releases/latest",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I keep a game running when I Alt+Tab?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Add the game to InputSplit and press Start isolation. The game is never told that another window became active, so it does not pause or mute."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I use a controller in a game that is not the focused window?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "InputSplit keeps XInput enabled inside the chosen game, so the game keeps reading its controller while another window has focus. Use Borderless Windowed mode."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can two people use one Windows PC at the same time, one gaming and one working?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. One person plays on the TV with a gamepad, the other uses the monitors with the keyboard and mouse. The game cannot see the keyboard and mouse."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does InputSplit work with online games?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. It is meant for single-player and offline games. Games with anti-cheat are refused by default."
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a class="brand" href="./"><img src="assets/icon.png" alt="" />InputSplit</a>
+        <nav>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://github.com/narkotrxll/InputSplit">GitHub</a>
+          <a href="ru/" hreflang="ru">Русский</a>
+        </nav>
+      </header>
+
+      <div class="hero">
+        <h1>One PC, two people.<br />One plays, one works.</h1>
+        <p class="lead">
+          InputSplit lets someone play on the TV with a controller while someone else keeps working
+          on the same Windows PC with the keyboard and mouse. The game keeps running in the
+          background and never pauses.
+        </p>
+        <div class="buttons">
+          <a class="btn primary" href="https://github.com/narkotrxll/InputSplit/releases/latest"
+            >Download for Windows</a
+          >
+          <a class="btn" href="https://github.com/narkotrxll/InputSplit">Source code</a>
+        </div>
+        <p class="small">
+          Free and open source (MIT) · Windows 10/11 · 11 languages · no administrator rights
+        </p>
+        <div class="shot">
+          <img
+            src="assets/screenshots/dashboard-active.png"
+            alt="InputSplit with a game isolated and running in the background"
+            width="1280"
+            height="820"
+          />
+        </div>
+      </div>
+
+      <section>
+        <h2>Sound familiar?</h2>
+        <ul class="pains">
+          <li>The game <b>pauses when you Alt+Tab</b> or click on another monitor.</li>
+          <li>The <b>controller stops working</b> as soon as the game window is not focused.</li>
+          <li>The game <b>reacts to your typing and mouse clicks</b> in another app.</li>
+          <li>
+            You want one person on the couch with a gamepad and another at the desk,
+            <b>on one computer</b>.
+          </li>
+        </ul>
+        <p>InputSplit fixes all of this inside the game you choose, and only there.</p>
+      </section>
+
+      <section>
+        <h2>What it does</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>🎮 Controller keeps working</h3>
+            <p>The game keeps reading its controller in the background.</p>
+          </div>
+          <div class="card">
+            <h3>🪟 No pause on focus loss</h3>
+            <p>The game is never told that another window became active.</p>
+          </div>
+          <div class="card">
+            <h3>⌨️ Keyboard and mouse stay yours</h3>
+            <p>The game cannot see typing, mouse movement or clicks.</p>
+          </div>
+          <div class="card">
+            <h3>🖱️ Cursor protected</h3>
+            <p>The game cannot re-centre or trap the shared pointer.</p>
+          </div>
+          <div class="card">
+            <h3>📺 Right screen</h3>
+            <p>Optionally moves the game to the TV and back afterwards.</p>
+          </div>
+          <div class="card">
+            <h3>👥 Two players</h3>
+            <p>Two games at once, each locked to its own controller.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how">
+        <h2>How to use it</h2>
+        <ol class="steps">
+          <li>
+            <b>Pick the game.</b> Add it from your Steam, Epic or GOG library, or pick its .exe.
+          </li>
+          <li><b>Pick the controller</b> that becomes the game's player 1.</li>
+          <li>
+            <b>Press Start isolation.</b> Or hold LB + RB + View on the controller for 2 seconds.
+          </li>
+        </ol>
+        <p class="note">
+          Use Borderless Windowed mode in the game. Everything is undone when you press Stop, and
+          the game switches back to normal by itself if InputSplit closes or you press
+          Ctrl+Alt+Shift+Q.
+        </p>
+      </section>
+
+      <section>
+        <h2>Screenshots</h2>
+        <div class="gallery">
+          <img src="assets/screenshots/game-picker.png" alt="Choosing a game" loading="lazy" />
+          <img src="assets/screenshots/controllers.png" alt="Controller test" loading="lazy" />
+          <img src="assets/screenshots/display-picker.png" alt="Choosing the TV" loading="lazy" />
+          <img src="assets/screenshots/dashboard-light.png" alt="Light theme" loading="lazy" />
+        </div>
+      </section>
+
+      <section id="faq">
+        <h2>Questions</h2>
+        <details>
+          <summary>Does it work with online games?</summary>
+          <p>
+            No. InputSplit is meant for single-player and offline games. Games protected by
+            anti-cheat (Easy Anti-Cheat, BattlEye, Vanguard and others) are refused by default, and
+            InputSplit never tries to hide from an anti-cheat.
+          </p>
+        </details>
+        <details>
+          <summary>Which controllers work?</summary>
+          <p>
+            Xbox controllers and other XInput gamepads. Games that read controllers only through
+            Windows.Gaming.Input or GameInput get limited support, and InputSplit tells you when
+            that happens.
+          </p>
+        </details>
+        <details>
+          <summary>Does it change anything in Windows?</summary>
+          <p>
+            No. There are no global keyboard hooks and no system settings changes. Everything
+            happens inside the chosen game and is undone when you press Stop.
+          </p>
+        </details>
+        <details>
+          <summary>Why does Windows or my antivirus warn about it?</summary>
+          <p>
+            The installer is not code-signed yet, and InputSplit loads a small component into the
+            game, which some antivirus software flags. If you downloaded it from the official GitHub
+            release, click More info, then Run anyway.
+          </p>
+        </details>
+        <details>
+          <summary>Does it collect any data?</summary>
+          <p>
+            No. There are no accounts, ads or analytics. It only checks GitHub for updates, and you
+            can turn that off.
+          </p>
+        </details>
+      </section>
+
+      <footer>
+        InputSplit is free and open source under the MIT license ·
+        <a href="https://github.com/narkotrxll/InputSplit">GitHub</a> ·
+        <a href="https://github.com/narkotrxll/InputSplit/issues">Report a problem</a> ·
+        <a href="https://buymeacoffee.com/narkotrxll">Buy me a coffee ☕</a> ·
+        <a href="ru/" hreflang="ru">Русская версия</a>
+      </footer>
+    </div>
+  </body>
+</html>

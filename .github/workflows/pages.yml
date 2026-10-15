@@ -1,0 +1,42 @@
+name: Website
+
+# Publishes site/ to GitHub Pages (https://narkotrxll.github.io/InputSplit/), together with the
+# app icon and the README screenshots. Needs Settings → Pages → Source: "GitHub Actions".
+# Skipped while the repository is private.
+on:
+  push:
+    branches: [main]
+    paths:
+      ['site/**', 'docs/screenshots/**', 'resources/icons/icon.png', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Assemble the site
+        run: |
+          mkdir -p _site/assets/screenshots
+          cp -r site/. _site/
+          cp resources/icons/icon.png _site/assets/icon.png
+          cp docs/screenshots/*.png _site/assets/screenshots/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

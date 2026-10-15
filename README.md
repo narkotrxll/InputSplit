@@ -9,6 +9,7 @@
 Free and open source · Windows 10/11 · MIT License
 
 [**Download InputSplit.exe**](https://github.com/narkotrxll/InputSplit/releases/latest) ·
+[Website](https://narkotrxll.github.io/InputSplit/) ·
 [Buy me a coffee ☕](https://buymeacoffee.com/narkotrxll)
 
 </div>
@@ -21,6 +22,19 @@ Free and open source · Windows 10/11 · MIT License
 > **single-player games only**; games with anti-cheat are refused by default and online games
 > are not supported (see [Use responsibly](#use-responsibly)). Per-game results are collected in the
 > [compatibility matrix](docs/COMPATIBILITY.md). Screenshots come from a development build.
+
+## Is this what you are looking for?
+
+InputSplit is for you if you have run into one of these on Windows:
+
+- **The game pauses when I Alt+Tab** or click on another monitor, and I want it to keep running.
+- **The controller stops working when the game window is not focused**, so nobody can play
+  while someone else uses the PC.
+- **The game reacts to my keyboard and mouse** while I am typing in another window.
+- I want **one PC for two people**: one plays on the TV with a gamepad, the other works or
+  browses on the monitors with the keyboard and mouse.
+- I want to **play a game in the background with a controller** while watching a video,
+  chatting or working on a second screen.
 
 ## What it does
 
@@ -116,7 +130,17 @@ of an online game or a game with anti-cheat. Read it carefully: **the game can b
 account, sometimes days later and permanently**, and some anti-cheats stop the game from
 starting or close it anyway. Nothing about how InputSplit works changes, so the anti-cheat sees
 exactly what it would see with the protection on. You take that risk yourself.
-- may be flagged by antivirus software until releases are code-signed.
+
+Because it loads code into a game, InputSplit may be flagged by antivirus software until
+releases are code-signed.
+
+## Privacy
+
+InputSplit has no accounts, ads, analytics or telemetry. The only network requests it makes are
+update checks and downloads from GitHub (`api.github.com` and the release files on
+`github.com`); turn them off in **Settings → Updates**. **Report a problem** saves a report on
+your PC and opens a GitHub issue page in your browser; nothing is sent until you submit that
+issue yourself.
 
 ## Known limitations
 
@@ -137,6 +161,13 @@ Download `InputSplit.exe` from the
 [latest release](https://github.com/narkotrxll/InputSplit/releases/latest) and run it. No
 administrator rights are needed. After that InputSplit keeps itself up to date: it downloads
 new versions in the background and installs them when you restart it (Settings → Updates).
+
+With [Scoop](https://scoop.sh):
+
+```powershell
+scoop bucket add inputsplit https://github.com/narkotrxll/InputSplit
+scoop install inputsplit/inputsplit
+```
 
 Windows SmartScreen or an antivirus may warn about the installer because it is not code-signed
 yet. Choose **More info → Run anyway** if you downloaded it from the link above.
