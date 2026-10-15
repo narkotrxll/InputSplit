@@ -636,6 +636,16 @@ export const ja: Messages = {
     readyHint: '次に InputSplit を終了したときにも自動でインストールされます。',
     restart: '再起動してアップデート',
     sidebarReady: '再起動してアップデート',
+    errorUnreachable:
+      'GitHub が InputSplit のリリースを返しません。リポジトリが非公開か、まだリリースがありません。新しいバージョンを手動でダウンロードしてください。',
+    errorRateLimited: 'GitHub が一時的に確認を制限しています。しばらくしてからお試しください。',
+    downloadManually: '手動でダウンロード',
+    checkedAt: '{time} に確認済み',
+    sidebarDownloading: 'アップデートをダウンロード中',
+    sidebarError: 'アップデートが機能していません',
+    sidebarErrorHint: '詳細は設定で確認',
+    sidebarChecking: '確認中…',
+    sidebarUpToDate: '最新',
   },
   seats: {
     title: 'プレイヤー',

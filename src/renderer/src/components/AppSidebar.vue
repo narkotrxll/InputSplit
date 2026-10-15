@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {
   AppWindow,
+  CircleAlert,
   Coffee,
+  Download,
   Bookmark,
   Gamepad2,
   Info,
@@ -30,6 +32,8 @@ const items = [
   { to: '/settings', name: 'settings', icon: Settings, key: '5' },
   { to: '/about', name: 'about', icon: Info, key: '6' },
 ] as const
+
+const u = computed(() => updates.state)
 
 const backendStatus = computed(() => backend.state?.status ?? 'starting')
 const dotClass = computed(
@@ -68,7 +72,7 @@ const dotClass = computed(
 
     <div class="mt-auto flex flex-col gap-2 p-2.5">
       <button
-        v-if="updates.state?.status === 'ready' && updates.state.canInstall"
+        v-if="u?.status === 'ready' && u.canInstall"
         type="button"
         class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-1.5 text-left text-[13px] font-medium text-accent transition-colors hover:bg-accent-soft/70"
         @click="updates.install()"
@@ -76,21 +80,47 @@ const dotClass = computed(
         <RotateCw class="size-4 shrink-0" aria-hidden="true" />
         <span class="min-w-0 flex-1">
           {{ $t('updates.sidebarReady') }}
-          <span class="block text-[11.5px] font-normal text-text-muted">{{
-            updates.state.latestVersion
-          }}</span>
+          <span class="block text-[11.5px] font-normal text-text-muted">{{ u.latestVersion }}</span>
         </span>
       </button>
+      <div
+        v-else-if="u?.status === 'downloading'"
+        class="rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-2 text-[13px] font-medium text-accent"
+        role="status"
+      >
+        <div class="flex items-center gap-2.5">
+          <Download class="size-4 shrink-0" aria-hidden="true" />
+          <span class="min-w-0 flex-1 truncate">{{ $t('updates.sidebarDownloading') }}</span>
+          <span class="text-[11.5px] tabular-nums">{{ u.progress ?? 0 }}%</span>
+        </div>
+        <div class="mt-1.5 h-1 overflow-hidden rounded-full bg-accent/15">
+          <div
+            class="h-full rounded-full bg-accent transition-[width]"
+            :style="{ width: `${u.progress ?? 0}%` }"
+          />
+        </div>
+      </div>
       <RouterLink
-        v-else-if="updates.state?.status === 'available' || updates.state?.status === 'ready'"
+        v-else-if="u?.status === 'available' || u?.status === 'ready'"
         to="/settings"
         class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-accent/30 bg-accent-soft px-2.5 py-1.5 text-[13px] font-medium text-accent transition-colors hover:bg-accent-soft/70"
       >
         <Sparkles class="size-4 shrink-0" aria-hidden="true" />
         <span class="min-w-0 flex-1">
           {{ $t('updates.sidebar') }}
+          <span class="block text-[11.5px] font-normal text-text-muted">{{ u.latestVersion }}</span>
+        </span>
+      </RouterLink>
+      <RouterLink
+        v-else-if="u?.status === 'error'"
+        to="/settings"
+        class="flex min-h-8.5 items-center gap-2.5 rounded-lg border border-warning/30 bg-warning-soft px-2.5 py-1.5 text-[13px] font-medium text-warning transition-colors hover:bg-warning-soft/70"
+      >
+        <CircleAlert class="size-4 shrink-0" aria-hidden="true" />
+        <span class="min-w-0 flex-1">
+          {{ $t('updates.sidebarError') }}
           <span class="block text-[11.5px] font-normal text-text-muted">{{
-            updates.state.latestVersion
+            $t('updates.sidebarErrorHint')
           }}</span>
         </span>
       </RouterLink>
@@ -116,6 +146,18 @@ const dotClass = computed(
           <span class="size-1.5 rounded-full" :class="dotClass" />
           {{ $t(`backend.${backendStatus}`) }}
         </div>
+        <RouterLink
+          v-if="u"
+          to="/settings"
+          class="mt-1 block truncate text-[11.5px] text-text-faint transition-colors hover:text-text-muted"
+        >
+          {{ $t('about.version', { version: u.currentVersion })
+          }}<template v-if="u.status === 'checking'">
+            · {{ $t('updates.sidebarChecking') }}</template
+          ><template v-else-if="u.status === 'upToDate'">
+            · <span class="text-success">{{ $t('updates.sidebarUpToDate') }}</span></template
+          >
+        </RouterLink>
         <p
           v-if="backend.state?.emergencyHotkey"
           class="mt-1.5 text-[11.5px] leading-snug text-text-faint"

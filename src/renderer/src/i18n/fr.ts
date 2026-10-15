@@ -640,6 +640,16 @@ export const fr: Messages = {
     readyHint: "Elle s'installe aussi d'elle-même la prochaine fois que vous quittez InputSplit.",
     restart: 'Redémarrer et mettre à jour',
     sidebarReady: 'Redémarrer pour mettre à jour',
+    errorUnreachable:
+      'GitHub ne montre pas les versions d’InputSplit : le dépôt est privé ou n’a pas encore de version. Téléchargez la nouvelle version manuellement.',
+    errorRateLimited: 'GitHub limite les vérifications pour le moment. Réessayez plus tard.',
+    downloadManually: 'Télécharger manuellement',
+    checkedAt: 'Vérifié à {time}',
+    sidebarDownloading: 'Téléchargement de la mise à jour',
+    sidebarError: 'Les mises à jour ne fonctionnent pas',
+    sidebarErrorHint: 'Détails dans les Paramètres',
+    sidebarChecking: 'vérification…',
+    sidebarUpToDate: 'à jour',
   },
   seats: {
     title: 'Joueurs',

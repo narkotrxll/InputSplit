@@ -32,7 +32,7 @@ import type { PlaytimeService } from '../services/playtime-service'
 import type { ProfilesService } from '../services/profiles-service'
 import type { SeatsService } from '../services/seats-service'
 import type { SettingsService } from '../services/settings-service'
-import type { UpdateService } from '../services/update-service'
+import { RELEASES_PAGE, type UpdateService } from '../services/update-service'
 import { isTrustedSender } from './security'
 
 export interface IpcDependencies {
@@ -265,7 +265,8 @@ export function registerIpc(deps: IpcDependencies): void {
     return ok
   })
   handle('updates:openRelease', async () => {
-    const url = updates.get().releaseUrl
+    // The latest release page when the check never reached a release.
+    const url = updates.get().releaseUrl ?? RELEASES_PAGE
     // Only our own repository's release pages, never a URL from elsewhere.
     if (url !== null && url.startsWith(`${EXTERNAL_LINKS.repository}/releases/`)) {
       await shell.openExternal(url)

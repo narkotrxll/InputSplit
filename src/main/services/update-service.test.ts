@@ -41,15 +41,20 @@ function release(tag: string, installerName = 'InputSplit.exe') {
 
 interface Fake {
   tag: string
+  /** The releases API answers with this status instead of a release. */
+  apiStatus?: number
   checksum?: string
   installerName?: string
   canInstall?: boolean
 }
 
-function fakeFetch({ tag, checksum = sha, installerName }: Fake) {
+function fakeFetch({ tag, checksum = sha, installerName, apiStatus }: Fake) {
   return vi.fn(async (url: string | URL | Request) => {
     const href = String(url)
-    if (href === RELEASES_API) return Response.json(release(tag, installerName))
+    if (href === RELEASES_API) {
+      if (apiStatus !== undefined) return new Response('{}', { status: apiStatus })
+      return Response.json(release(tag, installerName))
+    }
     if (href.endsWith('.sha256')) return new Response(`${checksum}  setup.exe\n`)
     return new Response(installer)
   }) as unknown as typeof fetch
@@ -105,6 +110,23 @@ describe('UpdateService', () => {
     const { updates } = await service({ tag: 'v0.1.0' })
     expect((await updates.check()).status).toBe('upToDate')
     expect(updates.readyInstaller()).toBeNull()
+  })
+
+  it('reports a failure, not "up to date", when GitHub has no public release', async () => {
+    const { updates } = await service({ tag: 'v0.2.0', apiStatus: 404 })
+    const state = await updates.check()
+    expect(state.status).toBe('error')
+    expect(state.errorReason).toBe('unreachable')
+    expect(state.latestVersion).toBeNull()
+  })
+
+  it('tells a rate limit apart from a network failure', async () => {
+    expect(
+      (await (await service({ tag: 'v0.2.0', apiStatus: 403 })).updates.check()).errorReason,
+    ).toBe('rateLimited')
+    expect(
+      (await (await service({ tag: 'v0.2.0', apiStatus: 502 })).updates.check()).errorReason,
+    ).toBe('network')
   })
 
   it('runs the downloaded installer on "Restart and update"', async () => {

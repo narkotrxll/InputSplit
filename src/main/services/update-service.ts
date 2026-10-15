@@ -19,6 +19,8 @@ import { Emitter } from '../util/emitter'
 import type { Logger } from './logger'
 
 export const RELEASES_API = 'https://api.github.com/repos/narkotrxll/InputSplit/releases/latest'
+/** Where users download a version by hand when the check cannot reach GitHub's releases. */
+export const RELEASES_PAGE = 'https://github.com/narkotrxll/InputSplit/releases/latest'
 const CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000
 const FIRST_CHECK_DELAY_MS = 15_000
 
@@ -51,6 +53,15 @@ export function compareVersions(a: string, b: string): number {
   if (x.pre === undefined) return 1
   if (y.pre === undefined) return -1
   return x.pre.localeCompare(y.pre)
+}
+
+class CheckFailed extends Error {
+  constructor(
+    readonly reason: NonNullable<UpdateState['errorReason']>,
+    message: string,
+  ) {
+    super(message)
+  }
 }
 
 interface Installer {
@@ -102,6 +113,7 @@ export class UpdateService {
       progress: null,
       canInstall: options.canInstall,
       checkedAt: null,
+      errorReason: null,
     }
   }
 
@@ -138,12 +150,17 @@ export class UpdateService {
       const response = await this.fetch(RELEASES_API, {
         headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'InputSplit' },
       })
-      if (response.status === 404) {
-        // No published release yet, or the repository is not public.
-        this.set({ ...this.state, status: 'upToDate', checkedAt: Date.now() })
-        return this.state
+      if (!response.ok) {
+        // 404: no published release, or the repository is not public. Either way nothing
+        // can be checked, so it is a failure, never "up to date".
+        const reason =
+          response.status === 404
+            ? 'unreachable'
+            : response.status === 403 || response.status === 429
+              ? 'rateLimited'
+              : 'network'
+        throw new CheckFailed(reason, `GitHub answered ${response.status}`)
       }
-      if (!response.ok) throw new Error(`GitHub answered ${response.status}`)
       const release = ReleaseSchema.parse(await response.json())
       const latest = release.tag_name.replace(/^v/i, '')
       const newer =
@@ -167,6 +184,7 @@ export class UpdateService {
         latestVersion: latest,
         releaseUrl: release.html_url,
         checkedAt: Date.now(),
+        errorReason: null,
       })
       if (!newer && this.options.canInstall) {
         // The installer of an update that has been installed since.
@@ -185,7 +203,8 @@ export class UpdateService {
       this.options.logger.warn(`Update check failed: ${String(error)}`)
       // An update that is already downloaded stays ready.
       const next = this.downloaded !== null ? 'ready' : 'error'
-      this.set({ ...this.state, status: next, checkedAt: Date.now() })
+      const errorReason = error instanceof CheckFailed ? error.reason : 'network'
+      this.set({ ...this.state, status: next, checkedAt: Date.now(), errorReason })
     }
     return this.state
   }

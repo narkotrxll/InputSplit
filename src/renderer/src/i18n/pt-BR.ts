@@ -629,6 +629,16 @@ export const ptBR: Messages = {
     readyHint: 'Ela também é instalada sozinha na próxima vez que você fechar o InputSplit.',
     restart: 'Reiniciar e atualizar',
     sidebarReady: 'Reinicie para atualizar',
+    errorUnreachable:
+      'O GitHub não mostra as versões do InputSplit: o repositório é privado ou ainda não tem versões. Baixe a nova versão manualmente.',
+    errorRateLimited: 'O GitHub está limitando as verificações. Tente mais tarde.',
+    downloadManually: 'Baixar manualmente',
+    checkedAt: 'Verificado às {time}',
+    sidebarDownloading: 'Baixando atualização',
+    sidebarError: 'As atualizações não estão funcionando',
+    sidebarErrorHint: 'Detalhes nas Configurações',
+    sidebarChecking: 'verificando…',
+    sidebarUpToDate: 'atualizada',
   },
   seats: {
     title: 'Jogadores',
