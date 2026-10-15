@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from '@lucide/vue'
 import { computed } from 'vue'
+import { SHOW_COFFEE_BUTTON } from '@shared/defaults'
 import { call } from '../api'
 import { useBackendStore } from '../stores/backend'
 import { useUiStore } from '../stores/ui'
@@ -126,6 +127,7 @@ const dotClass = computed(
       </RouterLink>
       <!-- Buy Me a Coffee's own button look: brand yellow with black text in both themes. -->
       <button
+        v-if="SHOW_COFFEE_BUTTON"
         type="button"
         class="flex h-8.5 items-center gap-2.5 rounded-lg bg-[#ffdd00] px-2.5 text-[13px] font-semibold text-black shadow-sm transition-colors hover:bg-[#ffe633] active:bg-[#f2d200]"
         @click="call('app:openExternal', 'coffee')"

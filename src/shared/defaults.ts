@@ -4,6 +4,9 @@
  */
 import type { FeatureFlags, IsolationView, Settings } from './domain'
 
+/** Shows the "Buy me a coffee" button in the sidebar. Hidden until the donation page is ready. */
+export const SHOW_COFFEE_BUTTON = false
+
 export const FEATURE_NAMES = [
   'activationShield',
   'focusSpoof',

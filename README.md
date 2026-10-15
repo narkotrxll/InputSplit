@@ -9,8 +9,7 @@
 Free and open source · Windows 10/11 · MIT License
 
 [**Download InputSplit.exe**](https://github.com/narkotrxll/InputSplit/releases/latest) ·
-[Website](https://narkotrxll.github.io/InputSplit/) ·
-[Buy me a coffee ☕](https://buymeacoffee.com/narkotrxll)
+[Website](https://narkotrxll.github.io/InputSplit/)
 
 </div>
 
@@ -224,12 +223,6 @@ and [ProtoInput](https://github.com/Ilyaki/ProtoInput) (input redirection techni
 and uses [MinHook](https://github.com/TsudaKageyu/minhook) and
 [nlohmann/json](https://github.com/nlohmann/json). See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-## Support
-
-InputSplit is free. If it saves your evenings on the couch, you can
-[buy me a coffee ☕](https://buymeacoffee.com/narkotrxll). There is also a button for it in
-**About** inside the app.
 
 ## License
 
