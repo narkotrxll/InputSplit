@@ -460,6 +460,12 @@ export const UpdateStateSchema = z.object({
   /** Installing needs the packaged app (the installer replaces it). */
   canInstall: z.boolean(),
   checkedAt: z.number().nullable(),
+  /**
+   * Why the last check failed: `unreachable` when GitHub has no public release to show
+   * (the repository is private or has no releases), `rateLimited` when GitHub refused for a
+   * while, `network` otherwise.
+   */
+  errorReason: z.enum(['unreachable', 'rateLimited', 'network']).nullable(),
 })
 export type UpdateState = z.infer<typeof UpdateStateSchema>
 

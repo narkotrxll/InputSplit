@@ -623,6 +623,16 @@ export const tr: Messages = {
     readyHint: 'InputSplit’i bir sonraki kapatışınızda da kendiliğinden kurulur.',
     restart: 'Yeniden başlat ve güncelle',
     sidebarReady: 'Güncellemek için yeniden başlat',
+    errorUnreachable:
+      'GitHub InputSplit sürümlerini göstermiyor: depo gizli ya da henüz sürüm yok. Yeni sürümü elle indirin.',
+    errorRateLimited: 'GitHub kontrolleri şimdilik sınırlıyor. Daha sonra tekrar deneyin.',
+    downloadManually: 'Elle indir',
+    checkedAt: '{time} itibarıyla kontrol edildi',
+    sidebarDownloading: 'Güncelleme indiriliyor',
+    sidebarError: 'Güncellemeler çalışmıyor',
+    sidebarErrorHint: 'Ayrıntılar Ayarlar’da',
+    sidebarChecking: 'kontrol ediliyor…',
+    sidebarUpToDate: 'güncel',
   },
   seats: {
     title: 'Oyuncular',

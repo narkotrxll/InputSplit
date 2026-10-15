@@ -639,6 +639,16 @@ export const de: Messages = {
       'Sie wird auch automatisch installiert, wenn du InputSplit das nächste Mal beendest.',
     restart: 'Neu starten und aktualisieren',
     sidebarReady: 'Neu starten zum Aktualisieren',
+    errorUnreachable:
+      'GitHub zeigt keine InputSplit-Releases: Das Repository ist privat oder hat noch keine Releases. Lade die neue Version manuell herunter.',
+    errorRateLimited: 'GitHub begrenzt die Prüfungen gerade. Versuche es später erneut.',
+    downloadManually: 'Manuell herunterladen',
+    checkedAt: 'Geprüft um {time}',
+    sidebarDownloading: 'Update wird geladen',
+    sidebarError: 'Updates funktionieren nicht',
+    sidebarErrorHint: 'Details in den Einstellungen',
+    sidebarChecking: 'prüfe…',
+    sidebarUpToDate: 'aktuell',
   },
   seats: {
     title: 'Spieler',

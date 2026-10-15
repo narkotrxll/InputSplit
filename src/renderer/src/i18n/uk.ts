@@ -619,6 +619,16 @@ export const uk: Messages = {
     readyHint: 'Вона також встановиться сама, коли ви закриєте InputSplit.',
     restart: 'Перезапустити й оновити',
     sidebarReady: 'Перезапустити й оновити',
+    errorUnreachable:
+      'GitHub не віддає релізи InputSplit: репозиторій закритий або в ньому ще немає релізів. Завантажте нову версію вручну.',
+    errorRateLimited: 'GitHub тимчасово обмежив перевірки. Спробуйте пізніше.',
+    downloadManually: 'Завантажити вручну',
+    checkedAt: 'Перевірено о {time}',
+    sidebarDownloading: 'Завантажую оновлення',
+    sidebarError: 'Оновлення не працюють',
+    sidebarErrorHint: 'Подробиці в налаштуваннях',
+    sidebarChecking: 'перевіряю…',
+    sidebarUpToDate: 'остання',
   },
   seats: {
     title: 'Гравці',

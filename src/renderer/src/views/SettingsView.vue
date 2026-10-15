@@ -41,6 +41,21 @@ const ui = useUiStore()
 const updates = useUpdatesStore()
 const s = computed(() => store.settings)
 const u = computed(() => updates.state)
+const updateErrorText = computed(() => {
+  switch (u.value?.errorReason) {
+    case 'unreachable':
+      return t('updates.errorUnreachable')
+    case 'rateLimited':
+      return t('updates.errorRateLimited')
+    default:
+      return t('updates.error')
+  }
+})
+const checkedTime = computed(() => {
+  const at = u.value?.checkedAt
+  if (!at || u.value?.status === 'checking') return null
+  return new Date(at).toLocaleTimeString(locale.value, { hour: '2-digit', minute: '2-digit' })
+})
 
 const theme = computed({
   get: () => s.value.theme,
@@ -138,6 +153,112 @@ function showOnboarding(): void {
   <div>
     <PageHeader :title="$t('settings.title')" :subtitle="$t('settings.subtitle')" />
     <div class="flex max-w-3xl flex-col gap-4">
+      <UiCard :title="$t('updates.title')" :padded="false">
+        <div class="divide-y divide-line">
+          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
+            <span>
+              <span class="block text-[13.5px] text-text">{{ $t('updates.auto') }}</span>
+              <span class="block text-[12.5px] text-text-muted">{{ $t('updates.autoHint') }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.checkForUpdates"
+              :label="$t('updates.auto')"
+              @update:model-value="store.update({ checkForUpdates: $event })"
+            />
+          </label>
+          <div
+            v-if="u"
+            class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3.5"
+          >
+            <span class="min-w-0 text-[13px]" aria-live="polite">
+              <span v-if="u.status === 'available'" class="font-medium text-accent">{{
+                $t('updates.available', { version: u.latestVersion ?? '' })
+              }}</span>
+              <span v-else-if="u.status === 'ready'" class="font-medium text-accent">
+                {{ $t('updates.ready', { version: u.latestVersion ?? '' }) }}
+                <span class="mt-0.5 block text-[12px] font-normal text-text-muted">{{
+                  $t('updates.readyHint')
+                }}</span>
+              </span>
+              <span v-else-if="u.status === 'downloading'" class="text-text">{{
+                $t('updates.downloading', { percent: u.progress ?? 0 })
+              }}</span>
+              <span v-else-if="u.status === 'installing'" class="text-text">{{
+                $t('updates.installing')
+              }}</span>
+              <span v-else-if="u.status === 'upToDate'" class="text-success">{{
+                $t('updates.upToDate', { version: u.currentVersion })
+              }}</span>
+              <span v-else-if="u.status === 'error'" class="text-warning">{{
+                updateErrorText
+              }}</span>
+              <span v-else class="text-text-muted">{{
+                $t('about.version', { version: u.currentVersion })
+              }}</span>
+              <span v-if="checkedTime" class="mt-0.5 block text-[12px] text-text-faint">{{
+                $t('updates.checkedAt', { time: checkedTime })
+              }}</span>
+              <span v-if="updates.error" class="mt-1 block text-[12px] text-danger">{{
+                errorText(updates.error)
+              }}</span>
+              <span
+                v-if="u.status === 'available' && !u.canInstall"
+                class="mt-1 block text-[12px] text-text-faint"
+                >{{ $t('updates.devBuild') }}</span
+              >
+            </span>
+            <span class="flex flex-wrap gap-2">
+              <UiButton
+                v-if="
+                  u.releaseUrl &&
+                  (u.status === 'available' || u.status === 'ready' || u.status === 'upToDate')
+                "
+                size="sm"
+                variant="ghost"
+                :icon="ExternalLink"
+                @click="updates.openRelease()"
+                >{{ $t('updates.whatsNew') }}</UiButton
+              >
+              <UiButton
+                v-if="u.status === 'error' && u.errorReason === 'unreachable'"
+                size="sm"
+                variant="ghost"
+                :icon="ExternalLink"
+                @click="updates.openRelease()"
+                >{{ $t('updates.downloadManually') }}</UiButton
+              >
+              <UiButton
+                v-if="u.status === 'ready' && u.canInstall"
+                size="sm"
+                variant="primary"
+                :icon="RotateCw"
+                @click="updates.install()"
+                >{{ $t('updates.restart') }}</UiButton
+              >
+              <UiButton
+                v-else-if="u.status === 'available' && u.canInstall"
+                size="sm"
+                variant="primary"
+                :icon="Download"
+                @click="updates.install()"
+                >{{ $t('updates.install') }}</UiButton
+              >
+              <UiButton
+                v-else
+                size="sm"
+                :icon="RefreshCw"
+                :loading="u.status === 'checking'"
+                :disabled="u.status === 'downloading' || u.status === 'installing'"
+                @click="updates.check()"
+                >{{
+                  u.status === 'checking' ? $t('updates.checking') : $t('updates.check')
+                }}</UiButton
+              >
+            </span>
+          </div>
+        </div>
+      </UiCard>
+
       <UiCard :title="$t('settings.general')" :padded="false">
         <div class="divide-y divide-line">
           <label class="flex items-center justify-between gap-6 px-5 py-3.5">
@@ -342,101 +463,6 @@ function showOnboarding(): void {
             <UiButton size="sm" :icon="RotateCcw" @click="showOnboarding">{{
               $t('common.show')
             }}</UiButton>
-          </div>
-        </div>
-      </UiCard>
-
-      <UiCard :title="$t('updates.title')" :padded="false">
-        <div class="divide-y divide-line">
-          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
-            <span>
-              <span class="block text-[13.5px] text-text">{{ $t('updates.auto') }}</span>
-              <span class="block text-[12.5px] text-text-muted">{{ $t('updates.autoHint') }}</span>
-            </span>
-            <UiSwitch
-              :model-value="s.checkForUpdates"
-              :label="$t('updates.auto')"
-              @update:model-value="store.update({ checkForUpdates: $event })"
-            />
-          </label>
-          <div
-            v-if="u"
-            class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3.5"
-          >
-            <span class="min-w-0 text-[13px]" aria-live="polite">
-              <span v-if="u.status === 'available'" class="font-medium text-accent">{{
-                $t('updates.available', { version: u.latestVersion ?? '' })
-              }}</span>
-              <span v-else-if="u.status === 'ready'" class="font-medium text-accent">
-                {{ $t('updates.ready', { version: u.latestVersion ?? '' }) }}
-                <span class="mt-0.5 block text-[12px] font-normal text-text-muted">{{
-                  $t('updates.readyHint')
-                }}</span>
-              </span>
-              <span v-else-if="u.status === 'downloading'" class="text-text">{{
-                $t('updates.downloading', { percent: u.progress ?? 0 })
-              }}</span>
-              <span v-else-if="u.status === 'installing'" class="text-text">{{
-                $t('updates.installing')
-              }}</span>
-              <span v-else-if="u.status === 'upToDate'" class="text-success">{{
-                $t('updates.upToDate', { version: u.currentVersion })
-              }}</span>
-              <span v-else-if="u.status === 'error'" class="text-warning">{{
-                $t('updates.error')
-              }}</span>
-              <span v-else class="text-text-muted">{{
-                $t('about.version', { version: u.currentVersion })
-              }}</span>
-              <span v-if="updates.error" class="mt-1 block text-[12px] text-danger">{{
-                errorText(updates.error)
-              }}</span>
-              <span
-                v-if="u.status === 'available' && !u.canInstall"
-                class="mt-1 block text-[12px] text-text-faint"
-                >{{ $t('updates.devBuild') }}</span
-              >
-            </span>
-            <span class="flex flex-wrap gap-2">
-              <UiButton
-                v-if="
-                  u.releaseUrl &&
-                  (u.status === 'available' || u.status === 'ready' || u.status === 'upToDate')
-                "
-                size="sm"
-                variant="ghost"
-                :icon="ExternalLink"
-                @click="updates.openRelease()"
-                >{{ $t('updates.whatsNew') }}</UiButton
-              >
-              <UiButton
-                v-if="u.status === 'ready' && u.canInstall"
-                size="sm"
-                variant="primary"
-                :icon="RotateCw"
-                @click="updates.install()"
-                >{{ $t('updates.restart') }}</UiButton
-              >
-              <UiButton
-                v-else-if="u.status === 'available' && u.canInstall"
-                size="sm"
-                variant="primary"
-                :icon="Download"
-                @click="updates.install()"
-                >{{ $t('updates.install') }}</UiButton
-              >
-              <UiButton
-                v-else
-                size="sm"
-                :icon="RefreshCw"
-                :loading="u.status === 'checking'"
-                :disabled="u.status === 'downloading' || u.status === 'installing'"
-                @click="updates.check()"
-                >{{
-                  u.status === 'checking' ? $t('updates.checking') : $t('updates.check')
-                }}</UiButton
-              >
-            </span>
           </div>
         </div>
       </UiCard>

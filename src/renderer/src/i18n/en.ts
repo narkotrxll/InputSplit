@@ -623,6 +623,16 @@ export const en = {
     readyHint: 'It also installs by itself the next time you quit InputSplit.',
     restart: 'Restart and update',
     sidebarReady: 'Restart to update',
+    errorUnreachable:
+      "GitHub doesn't show InputSplit releases: the repository is private or has no releases yet. Download the new version by hand.",
+    errorRateLimited: 'GitHub is limiting checks for now. Try again later.',
+    downloadManually: 'Download manually',
+    checkedAt: 'Checked at {time}',
+    sidebarDownloading: 'Downloading update',
+    sidebarError: "Updates aren't working",
+    sidebarErrorHint: 'Open Settings for details',
+    sidebarChecking: 'checking…',
+    sidebarUpToDate: 'latest',
   },
   seats: {
     title: 'Players',

@@ -594,6 +594,16 @@ export const zhCN: Messages = {
     readyHint: '下次退出 InputSplit 时也会自动安装。',
     restart: '重启并更新',
     sidebarReady: '重启以更新',
+    errorUnreachable:
+      'GitHub 无法提供 InputSplit 的版本：仓库是私有的，或者还没有发布版本。请手动下载新版本。',
+    errorRateLimited: 'GitHub 暂时限制了检查次数，请稍后再试。',
+    downloadManually: '手动下载',
+    checkedAt: '检查于 {time}',
+    sidebarDownloading: '正在下载更新',
+    sidebarError: '更新无法使用',
+    sidebarErrorHint: '在设置中查看详情',
+    sidebarChecking: '正在检查…',
+    sidebarUpToDate: '已是最新',
   },
   seats: {
     title: '玩家',

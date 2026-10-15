@@ -621,6 +621,16 @@ export const ru: Messages = {
     readyHint: 'Она также установится сама, когда вы закроете InputSplit.',
     restart: 'Перезапустить и обновить',
     sidebarReady: 'Перезапустить и обновить',
+    errorUnreachable:
+      'GitHub не отдаёт релизы InputSplit: репозиторий закрыт или в нём ещё нет релизов. Скачайте новую версию вручную.',
+    errorRateLimited: 'GitHub временно ограничил проверки. Попробуйте позже.',
+    downloadManually: 'Скачать вручную',
+    checkedAt: 'Проверено в {time}',
+    sidebarDownloading: 'Скачиваю обновление',
+    sidebarError: 'Обновления не работают',
+    sidebarErrorHint: 'Подробности в настройках',
+    sidebarChecking: 'проверяю…',
+    sidebarUpToDate: 'последняя',
   },
   seats: {
     title: 'Игроки',
