@@ -13,7 +13,7 @@ Free and open source · Windows 10/11 · MIT License
 
 </div>
 
-![InputSplit dashboard with an active isolation](docs/screenshots/dashboard-active.png)
+![InputSplit: one PC, two people. One plays, one works.](site/assets/social-preview.png)
 
 > [!IMPORTANT]
 > **Status: early preview (0.1.x).** The first tests on real Windows with an Xbox controller
