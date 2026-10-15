@@ -1,4 +1,6 @@
 // Builds the native layer and copies the binaries to resources/native (packaged with the app).
+// Two configurations: 64-bit (helper, InputSplitHook64.dll, Probe) and 32-bit
+// (InputSplitHook32.dll for 32-bit games, InputSplitProbe32.exe).
 //
 //   Windows: Visual Studio 2022 (or Build Tools) with the C++ workload → MSVC Release build
 //   Linux:   mingw-w64 + CMake (cross-compile, for checks)            → MinGW Release build
@@ -12,7 +14,6 @@ import { join, resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const source = join(root, 'native')
 const windows = process.platform === 'win32'
-const buildDir = join(source, windows ? 'build' : 'build-mingw')
 
 function run(command, args) {
   console.log(`> ${command} ${args.join(' ')}`)
@@ -95,16 +96,36 @@ if (windows && visualStudioPath() === null) {
   process.exit(1)
 }
 
-const configure = ['-S', source, '-B', buildDir, '-DCMAKE_BUILD_TYPE=Release']
-if (windows) configure.push('-A', 'x64')
-else configure.push(`-DCMAKE_TOOLCHAIN_FILE=${join(source, 'cmake', 'mingw-w64-x86_64.cmake')}`)
-run(cmake, configure)
-run(cmake, ['--build', buildDir, '--config', 'Release', '--parallel'])
+function build(bits) {
+  const buildDir = join(
+    source,
+    windows ? (bits === 64 ? 'build' : 'build32') : `build-mingw${bits === 64 ? '' : '32'}`,
+  )
+  const configure = ['-S', source, '-B', buildDir, '-DCMAKE_BUILD_TYPE=Release']
+  if (windows) configure.push('-A', bits === 64 ? 'x64' : 'Win32')
+  else {
+    const toolchain = bits === 64 ? 'mingw-w64-x86_64.cmake' : 'mingw-w64-i686.cmake'
+    configure.push(`-DCMAKE_TOOLCHAIN_FILE=${join(source, 'cmake', toolchain)}`)
+  }
+  run(cmake, configure)
+  run(cmake, ['--build', buildDir, '--config', 'Release', '--parallel'])
+  return join(buildDir, 'bin')
+}
+
+const bin64 = build(64)
+const bin32 = build(32)
 
 const target = join(root, 'resources', 'native')
 mkdirSync(target, { recursive: true })
-for (const file of ['inputsplit-helper.exe', 'InputSplitHook64.dll']) {
-  copyFileSync(join(buildDir, 'bin', file), join(target, file))
+const outputs = [
+  [bin64, 'inputsplit-helper.exe'],
+  [bin64, 'InputSplitHook64.dll'],
+  [bin32, 'InputSplitHook32.dll'],
+]
+for (const [dir, file] of outputs) {
+  copyFileSync(join(dir, file), join(target, file))
   console.log(`copied ${file} → resources/native/`)
 }
-console.log(`\nDone. The test game is at ${join(buildDir, 'bin', 'InputSplitProbe.exe')}`)
+console.log(
+  `\nDone. The test games are ${join(bin64, 'InputSplitProbe.exe')} and ${join(bin32, 'InputSplitProbe32.exe')}`,
+)

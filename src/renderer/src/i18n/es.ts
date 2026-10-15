@@ -198,16 +198,16 @@ export const es: Messages = {
       usesGameInput:
         'El juego usa GameInput, que por defecto no envía la entrada a ventanas en segundo plano.',
       usesDirectInput:
-        'Parece que el juego usa DirectInput para los mandos. Su soporte en segundo plano está previsto.',
+        'El juego usa DirectInput, pero aún no ha leído ningún mando con él. Comprueba que el mando esté conectado y mueve un stick.',
       noControllerReads:
-        'El juego no ha leído ningún mando XInput desde que empezó el aislamiento. Puede que use otro método de entrada.',
+        'El juego no ha leído ningún mando desde que empezó el aislamiento. Puede que use otro método de entrada.',
     },
   },
   limitations: {
     windowsGamingInput:
       'El juego también usa Windows.Gaming.Input; la entrada del mando por esa vía se detiene en segundo plano.',
     gameInput: 'El juego también usa GameInput, que por defecto no tiene entrada en segundo plano.',
-    directInput: 'Los mandos DirectInput todavía no se mantienen activos en segundo plano.',
+    directInput: 'El juego usa DirectInput, pero aún no ha leído ningún mando con él.',
     noWindowProtected: 'No se pudo proteger ninguna ventana del juego. ¿Está abierta?',
     windowMoveFailed: 'No se pudo mover la ventana del juego a la pantalla elegida.',
   },
@@ -234,7 +234,7 @@ export const es: Messages = {
     appContainer:
       'Es una aplicación aislada de Microsoft Store. InputSplit no puede trabajar con ella.',
     unsupportedArchitecture:
-      'De momento solo se admiten juegos de 64 bits. El soporte de 32 bits está previsto.',
+      'Este juego está hecho para procesadores ARM. InputSplit admite juegos de 64 y 32 bits para procesadores Intel y AMD.',
     antiCheat:
       'Este juego está protegido por un sistema antitrampas. InputSplit rechaza los juegos protegidos, porque modificarlos puede hacer que baneen tu cuenta. Puedes desactivar la protección antitrampas en Ajustes bajo tu propio riesgo.',
     hookMissing: 'Falta una parte de InputSplit. Reinstala la aplicación.',

@@ -49,14 +49,21 @@ must still be measured on Windows.**
 
 ## Phase 4 — Native integration 🔧
 
+Everything in this phase is written. What is left: the GameInput hook (needs a GameInput game
+to test), and checking the 🔧 items on real Windows (Phase 5).
+
 - ✅ Session state machine driven only by helper/DLL confirmations
 - ✅ Emergency hotkey handled in the helper
 - ✅ Window move to target display, restore on stop
 - 🔧 Auto-attach a profile when its executable starts (`autoStart` profiles)
-- ⏳ 32-bit games (32-bit DLL + 32-bit injector)
-- ⏳ DirectInput gamepads in background (`SetCooperativeLevel` → `DISCL_BACKGROUND`)
-- ⏳ HID gamepads via Raw Input (`RIDEV_INPUTSINK`)
-- ⏳ GameInput research: intercept `GameInputCreate`, set background focus policy
+- 🔧 32-bit games: `InputSplitHook32.dll`; the 64-bit helper injects into 32-bit games itself
+  (verified under Wine with `InputSplitProbe32.exe`)
+- 🔧 DirectInput gamepads in background (`SetCooperativeLevel` → `DISCL_BACKGROUND` for
+  controllers only, re-acquire after a lost device)
+- 🔧 HID gamepads via Raw Input (`RIDEV_INPUTSINK` added to the game's controller registrations)
+- ✅ GameInput research → `docs/RESEARCH.md` §4.1: no safe generic hook; GameInput games keep
+  *Limited support* for now
+- ⏳ GameInput background hook per GameInput version (needs a GameInput game to test on Windows)
 - 🔧 Launch mode: start a game from a profile with `SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1`
 - 🔧 Controller shortcut (LB + RB + View held 2 s) and rumble feedback
 - 🔧 Start with Windows, Windows notifications, profiles in the tray
@@ -69,7 +76,7 @@ must still be measured on Windows.**
 
 ## Phase 5 — Testing ⏳
 
-- ⏳ Run the Probe test plan (E1–E9) on Windows 10 and Windows 11
+- ⏳ Run the Probe test plan (E1–E12) on Windows 10 and Windows 11
 - ⏳ At least 5 real games with different input stacks (XInput native, Unity, Unreal, SDL,
   DirectInput) → `docs/COMPATIBILITY.md`
 - ⏳ Scenarios: focus loss, Alt+Tab, clicks on another monitor, typing, controller

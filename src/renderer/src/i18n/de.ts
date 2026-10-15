@@ -200,9 +200,9 @@ export const de: Messages = {
       usesGameInput:
         'Das Spiel nutzt GameInput, das Eingaben standardmäßig nicht an Hintergrundfenster liefert.',
       usesDirectInput:
-        'Das Spiel scheint DirectInput für Controller zu nutzen. Unterstützung im Hintergrund ist geplant.',
+        'Das Spiel nutzt DirectInput, hat darüber aber noch keinen Controller gelesen. Prüfe, ob der Controller verbunden ist, und bewege einen Stick.',
       noControllerReads:
-        'Das Spiel hat seit Beginn der Isolierung keinen XInput-Controller abgefragt. Es nutzt eventuell eine andere Eingabemethode.',
+        'Das Spiel hat seit Beginn der Isolierung keinen Controller abgefragt. Es nutzt eventuell eine andere Eingabemethode.',
     },
   },
   limitations: {
@@ -210,7 +210,7 @@ export const de: Messages = {
       'Das Spiel nutzt auch Windows.Gaming.Input; Controller-Eingaben darüber stoppen im Hintergrund.',
     gameInput:
       'Das Spiel nutzt auch GameInput, das standardmäßig keine Eingaben im Hintergrund liefert.',
-    directInput: 'DirectInput-Controller bleiben im Hintergrund noch nicht aktiv.',
+    directInput: 'Das Spiel nutzt DirectInput, hat darüber aber noch keinen Controller gelesen.',
     noWindowProtected: 'Kein Spielfenster konnte geschützt werden. Ist das Spielfenster geöffnet?',
     windowMoveFailed:
       'Das Spielfenster konnte nicht auf den gewählten Bildschirm verschoben werden.',
@@ -236,7 +236,7 @@ export const de: Messages = {
     systemProcess: 'Dies ist ein Teil von Windows. InputSplit verändert niemals Systemprogramme.',
     appContainer: 'Dies ist eine abgeschottete Store-App. InputSplit kann damit nicht arbeiten.',
     unsupportedArchitecture:
-      'Derzeit werden nur 64-Bit-Spiele unterstützt. 32-Bit-Unterstützung ist geplant.',
+      'Dieses Spiel ist für ARM-Prozessoren gebaut. InputSplit unterstützt 64- und 32-Bit-Spiele für Intel- und AMD-Prozessoren.',
     antiCheat:
       'Dieses Spiel ist durch ein Anti-Cheat-System geschützt. InputSplit lehnt geschützte Spiele ab, weil Änderungen daran zur Sperrung deines Kontos führen können. Du kannst den Anti-Cheat-Schutz in den Einstellungen auf eigenes Risiko ausschalten.',
     hookMissing: 'Ein Teil von InputSplit fehlt. Bitte installiere die App neu.',

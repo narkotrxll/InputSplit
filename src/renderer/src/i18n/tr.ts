@@ -195,16 +195,16 @@ export const tr: Messages = {
       usesGameInput:
         'Oyun, varsayılan olarak arka plandaki pencerelere girdi iletmeyen GameInput kullanıyor.',
       usesDirectInput:
-        'Oyun kontrolcüler için DirectInput kullanıyor gibi görünüyor. Arka plan desteği planlanıyor.',
+        'Oyun DirectInput kullanıyor ancak bununla henüz bir kontrolcü okumadı. Kontrolcünün bağlı olduğunu kontrol edin ve bir çubuğu hareket ettirin.',
       noControllerReads:
-        'Yalıtım başladığından beri oyun hiçbir XInput kontrolcüsünü okumadı. Başka bir girdi yöntemi kullanıyor olabilir.',
+        'Oyun, izolasyon başladığından beri hiç kontrolcü okumadı. Başka bir giriş yöntemi kullanıyor olabilir.',
     },
   },
   limitations: {
     windowsGamingInput:
       'Oyun ayrıca Windows.Gaming.Input kullanıyor; bu yolla gelen kontrolcü girdisi arka planda durur.',
     gameInput: 'Oyun ayrıca varsayılan olarak arka plan girdisi olmayan GameInput kullanıyor.',
-    directInput: 'DirectInput kontrolcüleri henüz arka planda etkin kalmıyor.',
+    directInput: 'Oyun DirectInput kullanıyor ancak bununla henüz bir kontrolcü okumadı.',
     noWindowProtected: 'Hiçbir oyun penceresi korunamadı. Oyun penceresi açık mı?',
     windowMoveFailed: 'Oyun penceresi seçilen ekrana taşınamadı.',
   },
@@ -229,7 +229,7 @@ export const tr: Messages = {
     systemProcess: 'Bu, Windows’un bir parçası. InputSplit sistem programlarını asla değiştirmez.',
     appContainer: 'Bu, korumalı alanda çalışan bir Store uygulaması. InputSplit bununla çalışamaz.',
     unsupportedArchitecture:
-      'Şimdilik yalnızca 64 bit oyunlar destekleniyor. 32 bit desteği planlanıyor.',
+      'Bu oyun ARM işlemciler için derlenmiş. InputSplit, Intel ve AMD işlemciler için 64 bit ve 32 bit oyunları destekler.',
     antiCheat:
       'Bu oyun bir hile önleme sistemiyle korunuyor. InputSplit korunan oyunları reddeder, çünkü onları değiştirmek hesabınızın yasaklanmasına yol açabilir. Hile önleme korumasını Ayarlar’dan riski size ait olmak üzere kapatabilirsiniz.',
     hookMissing: 'InputSplit’in bir parçası eksik. Lütfen uygulamayı yeniden yükleyin.',

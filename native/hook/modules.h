@@ -31,6 +31,16 @@ bool InstallXInputHooks();
 void OnXInputBackgroundEnabled();
 void OnXInputBackgroundDisabled();
 
+// directinput_bridge.cpp
+bool InstallDirectInputHooks();
+
+// rawinput_bridge.cpp
+bool InstallRawInputHooks();
+void SyncRawInputRegistrations();  // re-register the game's HID controllers for the current state
+// Handles our private sync message on the game's window thread (shield window procedure).
+bool HandleRawInputSyncMessage(UINT msg, LRESULT& result);
+bool IsGamepadUsage(USHORT usagePage, USHORT usage);
+
 // detection.cpp
 uint32_t DetectApis();  // proto::DetectedApi bits
 

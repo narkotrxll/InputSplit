@@ -15,7 +15,7 @@ extraResources:
   # CreateProcess/LoadLibrary need real files, so native binaries live outside app.asar.
   - from: resources/native
     to: native
-    filter: ['inputsplit-helper.exe', 'InputSplitHook64.dll']
+    filter: ['inputsplit-helper.exe', 'InputSplitHook64.dll', 'InputSplitHook32.dll']
   - from: resources/icons
     to: icons
   - from: resources/licenses

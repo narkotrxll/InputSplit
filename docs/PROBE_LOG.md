@@ -64,6 +64,14 @@ Together they give the state of each second:
     stays 0 while moving the stick → XInput is focus-gated on this Windows build.
   - E4 (isolated): must keep growing while the stick moves. Flat → controller input is lost.
 - `padConnected` is only refreshed while polling, so during a pause it shows the last value.
+- `diChanges` / `diChangesBackground`: the first DirectInput controller changed state (stick
+  moved, button pressed), in total and while `background=1`. `diFound=1` means the Probe found
+  one; `diLost` counts reads that failed because Windows took the device away (focus loss).
+  Isolated, `diChangesBackground` must grow while the stick moves.
+- `rawHid` / `rawHidBackground`: Raw Input records from HID gamepads/joysticks. The Probe
+  registers them *without* `RIDEV_INPUTSINK`, like most games, so without InputSplit
+  `rawHidBackground` stays 0. Isolated, it must grow while the stick moves. Xbox controllers
+  usually report through XInput only; DualShock/DualSense and generic USB pads show up here.
 
 ## Signs that keyboard or mouse leaked into the game
 

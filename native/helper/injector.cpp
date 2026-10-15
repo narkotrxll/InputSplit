@@ -51,6 +51,17 @@ DWORD RunRemoteThread(HANDLE process, LPTHREAD_START_ROUTINE start, void* parame
 
 }  // namespace
 
+std::wstring HookDllForArchitecture(const std::wstring& hook64Path, Architecture arch) {
+  if (arch != Architecture::X86) return hook64Path;
+  const std::wstring suffix = L"64.dll";
+  std::wstring path = hook64Path;
+  if (path.size() >= suffix.size() &&
+      ToLower(path.substr(path.size() - suffix.size())) == suffix) {
+    path.replace(path.size() - suffix.size(), suffix.size(), L"32.dll");
+  }
+  return path;
+}
+
 std::optional<uint32_t> FindExportRva(const std::wstring& dllPath, const char* exportName) {
   std::vector<char> file;
   if (!ReadWholeFile(dllPath, file)) return std::nullopt;
@@ -110,17 +121,26 @@ std::optional<uint32_t> FindExportRva(const std::wstring& dllPath, const char* e
     if (ordinal == nullptr || *ordinal >= exports->NumberOfFunctions) return std::nullopt;
     const auto* functionRva = At<DWORD>(file, *functionsOffset + *ordinal * sizeof(DWORD));
     if (functionRva == nullptr) return std::nullopt;
+    // An RVA inside the export directory is a forwarder string ("DLL.Function"), not code.
+    if (*functionRva >= exportDirectory.VirtualAddress &&
+        *functionRva < exportDirectory.VirtualAddress + exportDirectory.Size) {
+      return std::nullopt;
+    }
     return *functionRva;
   }
   return std::nullopt;
 }
 
 std::optional<uintptr_t> FindRemoteModule(HANDLE process, const std::wstring& fileName) {
+  // In a 32-bit game only its 32-bit modules matter (the 64-bit ntdll/wow64 layer is not
+  // where LoadLibraryW or our DLL live).
+  BOOL wow64 = FALSE;
+  IsWow64Process(process, &wow64);
   std::vector<HMODULE> modules(1024);
   DWORD needed = 0;
   if (!EnumProcessModulesEx(process, modules.data(),
                             static_cast<DWORD>(modules.size() * sizeof(HMODULE)), &needed,
-                            LIST_MODULES_ALL)) {
+                            wow64 ? LIST_MODULES_32BIT : LIST_MODULES_ALL)) {
     return std::nullopt;
   }
   const std::wstring wanted = ToLower(fileName);
@@ -134,21 +154,50 @@ std::optional<uintptr_t> FindRemoteModule(HANDLE process, const std::wstring& fi
   return std::nullopt;
 }
 
+namespace {
+
+// Address of LoadLibraryW inside `process`.
+std::optional<uintptr_t> RemoteLoadLibraryW(HANDLE process) {
+  BOOL wow64 = FALSE;
+  IsWow64Process(process, &wow64);
+  if (!wow64) {
+    // kernel32 is mapped at the same address in every 64-bit process during a boot
+    // session, so our own LoadLibraryW address is valid in the game too.
+    return reinterpret_cast<uintptr_t>(
+        GetProcAddress(GetModuleHandleW(L"kernel32.dll"), "LoadLibraryW"));
+  }
+  // 32-bit game: find its 32-bit kernel32 (or KernelBase) and read the export's RVA from
+  // the matching file in SysWOW64.
+  wchar_t systemWow64[MAX_PATH];
+  UINT length = GetSystemWow64DirectoryW(systemWow64, MAX_PATH);
+  if (length == 0 || length >= MAX_PATH) return std::nullopt;
+  for (const wchar_t* module : {L"kernel32.dll", L"KernelBase.dll"}) {
+    auto base = FindRemoteModule(process, module);
+    auto rva = FindExportRva(std::wstring(systemWow64) + L"\\" + module, "LoadLibraryW");
+    if (base && rva) return *base + *rva;
+  }
+  return std::nullopt;
+}
+
+}  // namespace
+
 bool InjectAndAttach(HANDLE process, const std::wstring& dllPath, HelperError& error) {
+  const std::wstring dllName = FileNameOf(dllPath);
   auto attachRva = FindExportRva(dllPath, "InputSplitAttach");
   if (!attachRva) {
-    error = {"hookInvalid", "InputSplitHook64.dll has no InputSplitAttach export."};
+    error = {"hookInvalid", ToUtf8(dllName) + " has no InputSplitAttach export."};
     return false;
   }
-  const std::wstring dllName = FileNameOf(dllPath);
   auto base = FindRemoteModule(process, dllName);
 
   if (!base) {
-    // Step 1: LoadLibraryW in the game. kernel32 is mapped at the same address in every
-    // process of the same architecture during a boot session, so our LoadLibraryW address
-    // is valid in the game too.
-    auto loadLibrary = reinterpret_cast<LPTHREAD_START_ROUTINE>(
-        GetProcAddress(GetModuleHandleW(L"kernel32.dll"), "LoadLibraryW"));
+    // Step 1: LoadLibraryW in the game.
+    auto loadLibraryAddress = RemoteLoadLibraryW(process);
+    if (!loadLibraryAddress) {
+      error = {"injectionFailed", "LoadLibraryW was not found in the game."};
+      return false;
+    }
+    auto loadLibrary = reinterpret_cast<LPTHREAD_START_ROUTINE>(*loadLibraryAddress);
     const size_t bytes = (dllPath.size() + 1) * sizeof(wchar_t);
     void* remotePath = VirtualAllocEx(process, nullptr, bytes, MEM_COMMIT | MEM_RESERVE,
                                       PAGE_READWRITE);
@@ -171,7 +220,7 @@ bool InjectAndAttach(HANDLE process, const std::wstring& dllPath, HelperError& e
     // The thread's exit code is a truncated HMODULE on 64-bit, so look the module up.
     base = FindRemoteModule(process, dllName);
     if (!base) {
-      error = {"injectionFailed", "The game refused to load InputSplitHook64.dll."};
+      error = {"injectionFailed", "The game refused to load " + ToUtf8(dllName) + "."};
       return false;
     }
   }

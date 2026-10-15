@@ -312,7 +312,11 @@ bool Session::Handshake(const StartRequest& request, HelperError& error) {
     return false;
   }
 
-  if (!InjectAndAttach(process_.get(), SessionManager::Instance().hookDllPath(), error)) {
+  BOOL wow64 = FALSE;
+  IsWow64Process(process_.get(), &wow64);
+  const std::wstring hookDll = HookDllForArchitecture(
+      SessionManager::Instance().hookDllPath(), wow64 ? Architecture::X86 : Architecture::X64);
+  if (!InjectAndAttach(process_.get(), hookDll, error)) {
     CancelIoEx(pipe_.get(), &connectOverlapped);
     DWORD ignored = 0;
     GetOverlappedResult(pipe_.get(), &connectOverlapped, &ignored, TRUE);
@@ -468,7 +472,9 @@ Json Session::StatusToJsonLocked() const {
         {"blockedMouse", s.blockedMouse},
         {"swallowedFocusEvents", s.swallowedFocusEvents},
         {"blockedCursorCalls", s.blockedCursorCalls},
-        {"xinputEnableBlocked", s.xinputEnableBlocked}}},
+        {"xinputEnableBlocked", s.xinputEnableBlocked},
+        {"directInputReads", s.directInputReads},
+        {"rawGamepadReads", s.rawGamepadReads}}},
       {"updatedAt", updatedAt_},
   };
 }

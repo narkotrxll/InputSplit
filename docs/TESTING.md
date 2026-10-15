@@ -15,6 +15,8 @@ the step-by-step procedure. Results go into `docs/COMPATIBILITY.md`.
 | Stop → DLL confirms pass-through; restart re-attaches to the already loaded DLL | Wine 9 | ✅ |
 | Fail-safe: helper killed with SIGKILL → DLL disables everything; new helper re-attaches | Wine 9 | ✅ |
 | Probe paused behind Notepad (`running=0`) → after Start it runs in background (`background=1 running=1`) → after the helper exits it pauses again | Wine 9 | ✅ |
+| 32-bit: the 64-bit helper injects `InputSplitHook32.dll` into `InputSplitProbe32.exe`, handshake (`architectureBits: 32`), all features *active*, XInput reads counted, stop | Wine 9 (WOW64) | ✅ |
+| DirectInput tables patched and Raw Input controller registration updated without errors (64- and 32-bit) | Wine 9, no controller attached | ✅ |
 | **Everything involving real focus changes, real controllers, real games** | **Windows 10/11** | ⏳ **needs you** |
 
 Wine proves the plumbing works; it does not prove Windows focus behaviour. Do not treat
@@ -30,7 +32,10 @@ any game as supported until it passes the steps below on Windows.
      then in the repository run `npm ci` and `npm run build:native`. CMake does not need to
      be on `PATH`: the script uses the copy bundled with Visual Studio.
      Output: `native\build\bin\` → `inputsplit-helper.exe`, `InputSplitHook64.dll`,
-     `InputSplitProbe.exe`.
+     `InputSplitProbe.exe`; `native\build32\bin\` → `InputSplitHook32.dll`,
+     `InputSplitProbe32.exe` (the 32-bit test game). The helper looks for
+     `InputSplitHook32.dll` next to itself, so copy it into `native\build\bin\` when testing
+     without the installer.
 3. Windows Defender may flag `InputSplitHook64.dll` (it is injected into another process).
    If so, allow it for the build folder only. Report it — this is why code signing is on the
    roadmap.
@@ -107,6 +112,32 @@ Create a folder `EasyAntiCheat` next to a copy of `InputSplitProbe.exe`, run tha
 to isolate it. **Pass:** refused with "Protected by Easy Anti-Cheat", nothing injected
 (Process Explorer shows no `InputSplitHook64.dll` in the Probe).
 
+### E10 — 32-bit games
+
+1. Run `InputSplitProbe32.exe` (next to the helper and both DLLs) and repeat E3–E7 with it.
+2. **Pass:** the same results as with the 64-bit Probe; the session shows 32-bit in
+   Diagnostics. Process Explorer shows `InputSplitHook32.dll` in the Probe.
+
+### E11 — DirectInput controller in background
+
+Needs a controller that DirectInput sees (any gamepad; Xbox controllers show up too).
+
+1. Without InputSplit: run the Probe, click another window, move the stick.
+   Expected: `DirectInput … lost` grows, `state changes … in background` stays 0.
+2. With isolation: same steps. **Pass:** `state changes … while really in background` keeps
+   growing, and the Dashboard shows the controller as read. Keyboard/mouse counters stay 0.
+3. Stop isolation, click another window: `in background` stops growing again (the game's own
+   foreground setting is back).
+
+### E12 — HID controller through Raw Input in background
+
+Needs a DualShock/DualSense or a generic USB gamepad (Xbox controllers usually do not send
+Raw Input HID records). The Probe registers them without `RIDEV_INPUTSINK`, like most games.
+
+1. Without InputSplit: Probe in background, move the stick → `Raw Input HID … in background`
+   stays 0.
+2. With isolation: **Pass:** it keeps growing. After Stop it stays 0 again in background.
+
 ## Real games (C8)
 
 For each game: set **Borderless Windowed** in its video settings, disable Steam Input for it
@@ -122,7 +153,8 @@ Suggested first set (single-player, no anti-cheat, different input stacks):
 | Unreal Engine 4/5 | Hellblade, Stray |
 | Native XInput | Dark Souls III, Sekiro |
 | SDL2 | Celeste (FNA/SDL), Factorio |
-| DirectInput (expected: Limited) | older titles |
+| DirectInput (new in Phase 4, needs testing) | older titles, many racing and flight games |
+| 32-bit (new in Phase 4, needs testing) | older titles built for 32-bit Windows |
 
 ## Convenience features (manual, on Windows)
 

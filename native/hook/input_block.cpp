@@ -133,10 +133,40 @@ BOOL WINAPI DetourGetKeyboardState(PBYTE keys) {
 
 // --- 3. Raw input ------------------------------------------------------------------------
 
-// Rewrites one raw record in place so that it carries no information.
-void NeutraliseRawRecord(RAWINPUT* record) {
+// Size of the record header in a buffer. A 32-bit game on 64-bit Windows (WOW64) receives
+// GetRawInputBuffer records in the 64-bit layout: the header holds two 8-byte handles, so it
+// is 24 bytes instead of 16, and records are aligned to 8 bytes. GetRawInputData converts
+// records to the 32-bit layout, so this only applies to the buffer.
+size_t BufferHeaderSize() {
+#ifdef _WIN64
+  return sizeof(RAWINPUTHEADER);
+#else
+  static const bool wow64 = [] {
+    BOOL value = FALSE;
+    return IsWow64Process(GetCurrentProcess(), &value) && value;
+  }();
+  return wow64 ? 24 : sizeof(RAWINPUTHEADER);
+#endif
+}
+
+size_t BufferAlignment() {
+#ifdef _WIN64
+  return 8;
+#else
+  return BufferHeaderSize() == 24 ? 8 : 4;
+#endif
+}
+
+// Rewrites one raw record in place so that it carries no information. `body` points to the
+// data that follows the header (record->data in the normal layout). HID records are counted
+// as controller reads.
+void NeutraliseRawRecord(RAWINPUT* record, void* body) {
+  if (record->header.dwType == RIM_TYPEHID) {
+    if (IsActive(proto::kFeatureXInputBackground)) Count(g_counters.rawGamepadReads);
+    return;
+  }
   if (record->header.dwType == RIM_TYPEKEYBOARD && IsActive(proto::kFeatureBlockKeyboard)) {
-    RAWKEYBOARD& kb = record->data.keyboard;
+    RAWKEYBOARD& kb = *static_cast<RAWKEYBOARD*>(body);
     if (kb.VKey != 0xFF) Count(g_counters.blockedKeyboard);
     kb.MakeCode = 0;
     kb.Flags = RI_KEY_BREAK;
@@ -144,7 +174,7 @@ void NeutraliseRawRecord(RAWINPUT* record) {
     kb.Message = WM_KEYUP;
     kb.ExtraInformation = 0;
   } else if (record->header.dwType == RIM_TYPEMOUSE && IsActive(proto::kFeatureBlockMouse)) {
-    RAWMOUSE& mouse = record->data.mouse;
+    RAWMOUSE& mouse = *static_cast<RAWMOUSE*>(body);
     Count(g_counters.blockedMouse);
     mouse.usFlags = MOUSE_MOVE_RELATIVE;
     mouse.usButtonFlags = 0;
@@ -161,24 +191,27 @@ UINT WINAPI DetourGetRawInputData(HRAWINPUT input, UINT command, LPVOID data, PU
   UINT result = g_realGetRawInputData(input, command, data, size, headerSize);
   if (command == RID_INPUT && data != nullptr && result != static_cast<UINT>(-1) &&
       result >= sizeof(RAWINPUTHEADER)) {
-    NeutraliseRawRecord(static_cast<RAWINPUT*>(data));
+    auto* record = static_cast<RAWINPUT*>(data);
+    NeutraliseRawRecord(record, &record->data);
   }
   return result;
 }
 
-// Same as the Windows NEXTRAWINPUTBLOCK macro for 64-bit processes (records are aligned to
-// 8 bytes); written out because MinGW lacks the QWORD type the macro relies on.
+// Same as the Windows NEXTRAWINPUTBLOCK macro (written out because MinGW lacks the QWORD type
+// the macro relies on), with the WOW64 alignment described at BufferHeaderSize().
 RAWINPUT* NextRawRecord(RAWINPUT* record) {
+  const uintptr_t align = BufferAlignment() - 1;
   uintptr_t next = reinterpret_cast<uintptr_t>(record) + record->header.dwSize;
-  return reinterpret_cast<RAWINPUT*>((next + 7) & ~static_cast<uintptr_t>(7));
+  return reinterpret_cast<RAWINPUT*>((next + align) & ~align);
 }
 
 UINT WINAPI DetourGetRawInputBuffer(PRAWINPUT data, PUINT size, UINT headerSize) {
   UINT count = g_realGetRawInputBuffer(data, size, headerSize);
   if (data != nullptr && count != static_cast<UINT>(-1)) {
     RAWINPUT* record = data;
+    const size_t headerSize = BufferHeaderSize();
     for (UINT i = 0; i < count; ++i) {
-      NeutraliseRawRecord(record);
+      NeutraliseRawRecord(record, reinterpret_cast<BYTE*>(record) + headerSize);
       record = NextRawRecord(record);
     }
   }

@@ -198,16 +198,16 @@ export const fr: Messages = {
       usesGameInput:
         'Le jeu utilise GameInput, qui par défaut ne transmet pas les entrées aux fenêtres en arrière-plan.',
       usesDirectInput:
-        'Le jeu semble utiliser DirectInput pour les manettes. La prise en charge en arrière-plan est prévue.',
+        'Le jeu utilise DirectInput mais n’a encore lu aucune manette avec. Vérifiez que la manette est branchée et bougez un stick.',
       noControllerReads:
-        'Le jeu n’a lu aucune manette XInput depuis le début de l’isolation. Il utilise peut-être une autre méthode d’entrée.',
+        'Le jeu n’a lu aucune manette depuis le début de l’isolation. Il utilise peut-être une autre méthode d’entrée.',
     },
   },
   limitations: {
     windowsGamingInput:
       'Le jeu utilise aussi Windows.Gaming.Input ; les entrées manette par ce biais s’arrêtent en arrière-plan.',
     gameInput: 'Le jeu utilise aussi GameInput, qui n’a pas d’entrée en arrière-plan par défaut.',
-    directInput: 'Les manettes DirectInput ne restent pas encore actives en arrière-plan.',
+    directInput: 'Le jeu utilise DirectInput mais n’a encore lu aucune manette avec.',
     noWindowProtected: 'Aucune fenêtre du jeu n’a pu être protégée. La fenêtre est-elle ouverte ?',
     windowMoveFailed: 'La fenêtre du jeu n’a pas pu être déplacée sur l’écran choisi.',
   },
@@ -233,7 +233,7 @@ export const fr: Messages = {
       'Ceci fait partie de Windows. InputSplit ne modifie jamais les programmes système.',
     appContainer: 'C’est une application du Store isolée. InputSplit ne peut pas l’utiliser.',
     unsupportedArchitecture:
-      'Seuls les jeux 64 bits sont pris en charge pour l’instant. Le 32 bits est prévu.',
+      'Ce jeu est conçu pour les processeurs ARM. InputSplit prend en charge les jeux 64 et 32 bits pour processeurs Intel et AMD.',
     antiCheat:
       'Ce jeu est protégé par un système anti-triche. InputSplit refuse les jeux protégés, car les modifier peut faire bannir votre compte. Vous pouvez désactiver la protection anti-triche dans les Paramètres à vos risques.',
     hookMissing: 'Une partie d’InputSplit est manquante. Réinstallez l’application.',

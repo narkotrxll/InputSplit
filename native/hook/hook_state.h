@@ -21,6 +21,8 @@ struct Counters {
   std::atomic<uint64_t> swallowedFocusEvents{0};
   std::atomic<uint64_t> blockedCursorCalls{0};
   std::atomic<uint64_t> xinputEnableBlocked{0};
+  std::atomic<uint64_t> directInputReads{0};
+  std::atomic<uint64_t> rawGamepadReads{0};
 };
 
 extern HMODULE g_module;                  // this DLL

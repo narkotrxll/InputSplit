@@ -150,8 +150,9 @@ issue yourself.
 - **Exclusive fullscreen** cannot stay active without focus — use *Borderless Windowed*.
 - **Steam Input** may turn the controller into a mouse while the game is in the background —
   disable Steam Input for that game.
-- **32-bit games**, DirectInput gamepads in background, and games running as administrator are
-  not supported yet (see the [roadmap](docs/ROADMAP.md)).
+- Games running as administrator need InputSplit to run as administrator too. 32-bit games and
+  DirectInput or HID (Raw Input) controllers in background are new and not yet tested on many
+  games (see the [roadmap](docs/ROADMAP.md)).
 - Windows has one keyboard focus; InputSplit makes the game not *need* it, it cannot create a
   second one.
 

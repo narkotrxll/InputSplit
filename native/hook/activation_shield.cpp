@@ -7,7 +7,8 @@
 //
 // The same procedure handles other *sent* messages that a GetMessage hook cannot see:
 // WM_MOUSEACTIVATE (a click on the TV must not activate the game) and keyboard messages
-// delivered by SendMessage.
+// delivered by SendMessage. It also presents background WM_INPUT from controllers as normal
+// input and runs Raw Input re-registration on the game's thread (rawinput_bridge.cpp).
 //
 // Origin: NoFocusLoss NewWndProc (list of swallowed messages). Improvements: all top-level
 // windows of the process are covered (NoFocusLoss handled only the largest one), windows
@@ -73,6 +74,16 @@ LRESULT CALLBACK ShieldProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     LRESULT result = callOriginal();
     Forget(hwnd);
     return result;
+  }
+
+  LRESULT syncResult = 0;
+  if (HandleRawInputSyncMessage(msg, syncResult)) return syncResult;
+
+  // Raw input that Windows delivers only because of RIDEV_INPUTSINK (rawinput_bridge.cpp) is
+  // marked "background"; some engines drop it, so present it as normal input.
+  if (msg == WM_INPUT && GET_RAWINPUT_CODE_WPARAM(wParam) == RIM_INPUTSINK &&
+      IsActive(proto::kFeatureXInputBackground)) {
+    wParam = (wParam & ~static_cast<WPARAM>(0xFF)) | RIM_INPUT;
   }
 
   if (IsActive(proto::kFeatureActivationShield)) {

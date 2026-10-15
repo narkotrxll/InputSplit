@@ -3,6 +3,7 @@ import { Activity, Crosshair, EyeOff, Keyboard, MousePointer2 } from '@lucide/vu
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { IsolationView } from '@shared/domain'
+import { controllerReads } from '@shared/support'
 import { formatCount, formatDuration } from '../lib/format'
 import UiBadge from './ui/UiBadge.vue'
 
@@ -17,7 +18,7 @@ onBeforeUnmount(() => window.clearInterval(timer))
 const previous = ref<{ reads: number; at: number } | null>(null)
 const rate = ref(0)
 watch(
-  () => props.view.counters?.xinputReads,
+  () => (props.view.counters ? controllerReads(props.view.counters) : undefined),
   (reads) => {
     if (reads === undefined) {
       previous.value = null
@@ -74,7 +75,7 @@ const rows = computed(() => [
       <p class="mt-1 flex justify-between gap-2 text-[12px] text-text-faint">
         <span>{{ $t('dashboard.counters.xinputRate') }}</span>
         <span class="tabular">{{
-          $t('dashboard.counters.total', { n: formatCount(counters.xinputReads, locale) })
+          $t('dashboard.counters.total', { n: formatCount(controllerReads(counters), locale) })
         }}</span>
       </p>
     </div>

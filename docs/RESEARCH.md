@@ -231,17 +231,49 @@ comment, and ProtoInput's MIT notice is kept in `THIRD_PARTY_NOTICES.md`.
 | Activation messages (`WM_ACTIVATE`, `WM_ACTIVATEAPP`, `WM_NCACTIVATE`, `WM_KILLFOCUS`) | Sent to the game on focus loss → many games pause/mute. | Swallow via window subclassing (NoFocusLoss technique) on all top-level windows. | Implemented, **[to verify]** per game |
 | Focus queries (`GetForegroundWindow`, `GetActiveWindow`, `GetFocus`) | Return the other user's window → engines (e.g. Unreal's foreground check, Unity "run in background" logic) stop processing input. | Hook and return the game's own window. | Implemented, **[to verify]** |
 | **XInput** `XInputGetState` | Win32 docs mark `XInputEnable` deprecated on Windows 10+ "as game controller input is automatically enabled/disabled by the system based on the application window focus" **[docs]**. Multiple projects report that `XInputGetState` nevertheless returns live data in background **[reported]**; NoFocusLoss relies on this. | Probe experiment E1 measures it without any hooks. Hook `XInputEnable` so the game cannot disable itself; remap user index to the chosen slot. | **[to verify]** — the single most important measurement |
-| Raw Input (`WM_INPUT`) | Delivered to the foreground app only, unless the game registered with `RIDEV_INPUTSINK` / `RIDEV_EXINPUTSINK`. | Drop keyboard/mouse `WM_INPUT` in the subclass; neutralise keyboard/mouse records in `GetRawInputData` / `GetRawInputBuffer`. HID gamepads via raw input: planned (force `RIDEV_INPUTSINK`). | Kb/mouse implemented; HID gamepad planned |
+| Raw Input (`WM_INPUT`) | Delivered to the foreground app only, unless the game registered with `RIDEV_INPUTSINK` / `RIDEV_EXINPUTSINK`. | Drop keyboard/mouse `WM_INPUT` in the subclass; neutralise keyboard/mouse records in `GetRawInputData` / `GetRawInputBuffer`. HID gamepads: add `RIDEV_INPUTSINK` to the game's controller registrations (usage page 1, usages 4/5/8) and present background `WM_INPUT` as `RIM_INPUT`. | Implemented, **[to verify]** |
 | `GetAsyncKeyState` / `GetKeyState` / `GetKeyboardState` | `GetAsyncKeyState` reflects the global physical key state → leaks the other user's typing to a game that thinks it is focused. | Hook; report all keys up (ProtoInput technique). | Implemented |
 | Window input messages (`WM_KEY*`, `WM_CHAR`, `WM_MOUSE*`) | Keyboard goes to the focused window only; mouse messages go to the window under the cursor (so moving the mouse across the TV feeds the game). | Filter in subclass and in `Get/PeekMessage`; answer `WM_MOUSEACTIVATE` with `MA_NOACTIVATEANDEAT`. | Implemented |
 | Cursor APIs (`SetCursorPos`, `ClipCursor`, `GetCursorPos`) | A "focused" game re-centres or confines the *shared* cursor. | `SetCursorPos`/`ClipCursor` → no-op; `GetCursorPos` → frozen position inside the game window. | Implemented |
-| DirectInput 8 | `DISCL_FOREGROUND` devices are unacquired when the window is not foreground → keyboard/mouse naturally isolated, **but DirectInput gamepads also stop**. | Planned: COM vtable hook of `SetCooperativeLevel` forcing `DISCL_BACKGROUND` for game controllers only. | Planned (post-MVP) — game reported as *Limited Support* |
+| DirectInput 8 | `DISCL_FOREGROUND` devices are unacquired when the window is not foreground → keyboard/mouse naturally isolated, **but DirectInput gamepads also stop**. | COM vtable patch of `SetCooperativeLevel` / `Acquire` / `GetDeviceState` / `GetDeviceData`: `DISCL_BACKGROUND` for game controllers only, re-acquire once after a lost device. | Implemented, **[to verify]** |
 | Windows.Gaming.Input | "A Windows application must have focus to receive input from a controller" (quoted from the namespace remarks in a Unity issue tracker entry) **[docs/reported]**. | Detect module, report *Limited Support*. | Not supported |
-| GameInput | Default focus policy delivers no background input; a game may opt in with `GameInputEnableBackgroundInput` **[docs]**. | Detect module, report *Limited Support*. Research item: intercept `GameInputCreate` and set the focus policy. | Not supported yet |
+| GameInput | Default focus policy delivers no background input; a game may opt in with `GameInputEnableBackgroundInput` **[docs]**. | Detect module, report *Limited Support*. Research result in §4.1. | Not supported yet |
 | SDL2/SDL3 | Drops joystick events when no SDL window has keyboard focus unless `SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS` **[docs]**. SDL learns focus from `WM_SETFOCUS`/`WM_KILLFOCUS`. | Subclass swallows `WM_KILLFOCUS`; when InputSplit launches a game itself we can also set the env var `SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1`. | Partially, **[to verify]** |
 | Exclusive fullscreen (DXGI) | Leaves fullscreen / minimises when focus is lost. | Cannot be fixed without breaking the other user. Require *Borderless Windowed*; explain in UI. | Documented limitation |
 | Steam Input | When the game is not foreground, Steam applies the *Desktop Configuration* → the gamepad may move the shared mouse **[reported]**. | Detect running Steam, show guidance: disable Steam Input for that game / disable the Desktop layout. | Guidance only |
 | Xbox Game Bar (Guide button) | Opens Game Bar on the *foreground* (other user's) screen. | Guidance: disable "Open Game Bar using this button on a controller". | Guidance only |
+
+### 4.1 GameInput — research result (Phase 4)
+
+Question: can InputSplit make a GameInput game keep its controller in the background by
+intercepting `GameInputCreate` and changing the focus policy?
+
+What we know:
+
+- `GameInputCreate(IGameInput**)` is the only export a game calls; everything else is methods
+  of COM-style interfaces. The only background switch is `IGameInput::SetFocusPolicy`.
+- The interface layout is **versioned**: the in-box/GDK API and each redistributable API
+  version (1.x, 2.x, …) have their own interface IDs and method order. The vtable index of
+  `SetFocusPolicy` therefore depends on the GameInput version the game was built against.
+  Patching the wrong index would make the game call a different method with wrong arguments,
+  i.e. crash a running game. Unlike DirectInput 8, whose interfaces have not changed since
+  DirectX 8, there is no single stable layout to rely on.
+- A game usually calls `GameInputCreate` once at start-up, before the user starts isolation,
+  and does not call `SetFocusPolicy` at all (it relies on the default). A hook on
+  `GameInputCreate` alone would therefore miss the game's instance in the common case. It
+  only helps if `GameInputCreate` returns a process-wide object (then InputSplit could call
+  `SetFocusPolicy` on its own reference) **[to verify]**.
+- Whether readings are filtered inside the game process (where InputSplit's focus spoofing
+  might already help) or by the GameInput service against the real foreground window is not
+  documented **[to verify]**.
+
+Conclusion: a GameInput hook is feasible only per API version, using `QueryInterface` with the
+exact interface IDs of each version before touching a vtable, and it can only be validated with
+a GameInput game on real Windows. Until then InputSplit keeps the safe behaviour: it detects
+`GameInput.dll`, warns before the start and reports *Limited support*. Next steps (roadmap):
+pin the interface IDs and `SetFocusPolicy` index per version from the GameInput headers, add a
+GameInput reader to the Probe, and check on Windows whether one `SetFocusPolicy` call on a
+fresh instance changes the game's input.
 
 ---
 
@@ -253,8 +285,10 @@ comment, and ProtoInput's MIT notice is kept in `THIRD_PARTY_NOTICES.md`.
 2. **Injection requires same-or-higher integrity.** A non-elevated InputSplit cannot inject
    into a game running as administrator (UIPI / integrity levels). We report this; we do not
    self-elevate silently.
-3. **Bitness.** A 64-bit process loads only 64-bit DLLs. MVP supports 64-bit games;
-   32-bit support needs a 32-bit DLL + 32-bit injector (roadmap).
+3. **Bitness.** A 64-bit process loads only 64-bit DLLs, a 32-bit process only 32-bit DLLs.
+   InputSplit ships both (`InputSplitHook64.dll`, `InputSplitHook32.dll`); the 64-bit helper
+   starts `LoadLibraryW` of the game's own 32-bit `kernel32.dll` in 32-bit games, so no
+   32-bit injector process is needed. ARM64 games are refused.
 4. **Protected processes / AppContainer.** Protected (PPL) processes cannot be opened;
    AppContainer (some Store apps) cannot load DLLs from arbitrary folders. We detect and refuse.
 5. **Anti-cheat.** EasyAntiCheat, BattlEye, Vanguard, FACEIT, nProtect, XIGNCODE, ACE, etc.

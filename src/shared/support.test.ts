@@ -21,6 +21,8 @@ function status(overrides: Partial<SessionStatus> = {}): SessionStatus {
       swallowedFocusEvents: 0,
       blockedCursorCalls: 0,
       xinputEnableBlocked: 0,
+      directInputReads: 0,
+      rawGamepadReads: 0,
     },
     updatedAt: 0,
     ...overrides,
@@ -66,6 +68,31 @@ describe('evaluateSession', () => {
       reason: 'usesWindowsGamingInput',
     })
     expect(result.limitations).toContain('windowsGamingInput')
+  })
+
+  it('counts DirectInput and Raw Input controller reads as proof', () => {
+    const counters = { ...status().counters, xinputReads: 0 }
+    const viaDirectInput = status({
+      detectedApis: ['directInput8'],
+      counters: { ...counters, directInputReads: 40 },
+    })
+    const viaRawInput = status({ detectedApis: [], counters: { ...counters, rawGamepadReads: 12 } })
+    const late = XINPUT_GRACE_MS + 1
+    expect(stateOf(viaDirectInput, 'xinputBackground', late)).toBe('active')
+    expect(evaluateSession(viaDirectInput, 0, late).limitations).not.toContain('directInput')
+    expect(stateOf(viaRawInput, 'xinputBackground', late)).toBe('active')
+  })
+
+  it('explains a DirectInput game that never reads its controller', () => {
+    const s = status({
+      detectedApis: ['directInput8'],
+      counters: { ...status().counters, xinputReads: 0 },
+    })
+    const result = evaluateSession(s, 0, XINPUT_GRACE_MS + 1)
+    expect(result.features.find((f) => f.name === 'xinputBackground')?.reason).toBe(
+      'usesDirectInput',
+    )
+    expect(result.limitations).toContain('directInput')
   })
 
   it('flags a shield that protects no window', () => {

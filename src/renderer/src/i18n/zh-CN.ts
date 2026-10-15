@@ -187,14 +187,15 @@ export const zhCN: Messages = {
       waitingForReads: '在游戏中推动摇杆或按下按钮。',
       usesWindowsGamingInput: '游戏使用 Windows.Gaming.Input 读取手柄，它只对焦点窗口有效。',
       usesGameInput: '游戏使用 GameInput，它默认不向后台窗口传递输入。',
-      usesDirectInput: '游戏似乎使用 DirectInput 读取手柄。后台支持已在计划中。',
-      noControllerReads: '自隔离开始以来，游戏尚未读取任何 XInput 手柄。它可能使用其他输入方式。',
+      usesDirectInput:
+        '游戏使用 DirectInput，但尚未通过它读取手柄。请检查手柄是否已连接，并推动摇杆。',
+      noControllerReads: '自隔离开始以来，游戏尚未读取任何手柄。它可能使用其他输入方式。',
     },
   },
   limitations: {
     windowsGamingInput: '游戏还使用了 Windows.Gaming.Input；通过它的手柄输入在后台会停止。',
     gameInput: '游戏还使用了 GameInput，默认不支持后台输入。',
-    directInput: 'DirectInput 手柄暂时无法在后台保持工作。',
+    directInput: '游戏使用 DirectInput，但尚未通过它读取手柄。',
     noWindowProtected: '未能保护任何游戏窗口。游戏窗口是否已打开？',
     windowMoveFailed: '无法将游戏窗口移到所选屏幕。',
   },
@@ -214,7 +215,8 @@ export const zhCN: Messages = {
     accessDenied: 'Windows 不允许 InputSplit 访问此程序。它可能受到保护。',
     systemProcess: '这是 Windows 的一部分。InputSplit 从不修改系统程序。',
     appContainer: '这是沙盒化的应用商店应用。InputSplit 无法处理它。',
-    unsupportedArchitecture: '目前仅支持 64 位游戏。32 位支持已在计划中。',
+    unsupportedArchitecture:
+      '此游戏为 ARM 处理器构建。InputSplit 支持适用于 Intel 和 AMD 处理器的 64 位和 32 位游戏。',
     antiCheat:
       '此游戏受反作弊系统保护。InputSplit 会拒绝受保护的游戏，因为修改它们可能导致账号被封。你可以在“设置”中自行承担风险关闭反作弊保护。',
     hookMissing: 'InputSplit 缺少部分组件。请重新安装。',

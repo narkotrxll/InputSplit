@@ -2,6 +2,7 @@
 
 #include <tlhelp32.h>
 
+#include "injector.h"
 #include "util.h"
 
 namespace inputsplit::helper {
@@ -169,9 +170,14 @@ TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath,
   if (process.appContainer) {
     block("appContainer", "Sandboxed (AppContainer) apps cannot load InputSplit.");
   }
-  if (process.architecture != SelfArchitecture()) {
+  // The 64-bit helper handles 64-bit games and 32-bit (WOW64) games; ARM64 games have no
+  // matching hook DLL.
+  const bool architectureSupported =
+      process.architecture == SelfArchitecture() ||
+      (SelfArchitecture() == Architecture::X64 && process.architecture == Architecture::X86);
+  if (!architectureSupported) {
     block("unsupportedArchitecture",
-          std::string("Only 64-bit games are supported for now; this one is ") +
+          std::string("Only 64-bit and 32-bit x86 games are supported; this one is ") +
               ArchitectureName(process.architecture) + ".");
   }
 
@@ -186,8 +192,9 @@ TargetVerdict CheckTarget(unsigned long pid, const std::wstring& hookDllPath,
     block("antiCheat", "Protected by " + *verdict.antiCheat +
                            ". InputSplit never injects into anti-cheat protected games.");
   }
-  if (!PathExists(hookDllPath)) {
-    block("hookMissing", "InputSplitHook64.dll was not found next to the helper.");
+  const std::wstring gameHookDll = HookDllForArchitecture(hookDllPath, process.architecture);
+  if (architectureSupported && !PathExists(gameHookDll)) {
+    block("hookMissing", ToUtf8(FileNameOf(gameHookDll)) + " was not found next to the helper.");
   }
 
   if (HasModule(process, L"windows.gaming.input.dll")) {

@@ -264,6 +264,8 @@ export class SimulatedBackend implements NativeBackend {
         swallowedFocusEvents: 0,
         blockedCursorCalls: 0,
         xinputEnableBlocked: 0,
+        directInputReads: 0,
+        rawGamepadReads: 0,
       },
       updatedAt: Date.now(),
     }

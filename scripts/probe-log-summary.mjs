@@ -25,7 +25,13 @@ const COUNTERS = [
   'mouseClicks',
   'rawMouse',
   'cursorChanges',
+  'diChanges',
+  'diChangesBackground',
+  'rawHid',
+  'rawHidBackground',
 ]
+// Background controller input from any of the Probe's three controller readers.
+const CONTROLLER_BACKGROUND = ['packetsBackground', 'diChangesBackground', 'rawHidBackground']
 const FOCUS_LOSS = ['deactivateApp', 'deactivate', 'killFocus']
 const KEYBOARD = ['keyMsgs', 'charMsgs', 'asyncPresses', 'rawKb']
 const MOUSE = ['mouseMoves', 'mouseClicks', 'rawMouse', 'cursorChanges', 'mouseActivate']
@@ -63,6 +69,8 @@ function parse(text) {
       const [key, value] = pair.split('=')
       values[key] = Number(value)
     }
+    // Logs from older Probe versions have no DirectInput / Raw Input HID counters.
+    for (const key of COUNTERS) values[key] ??= 0
     if (!run) {
       // Lines before the first header (log truncated at the top).
       run = { pid: '?', samples: [] }
@@ -144,6 +152,16 @@ function summariseRun(run) {
         `controller packets +${delta.packets} (in background +${delta.packetsBackground})`,
       )
     }
+    if (delta.diChanges > 0) {
+      details.push(
+        `DirectInput controller changes +${delta.diChanges} (in background +${delta.diChangesBackground})`,
+      )
+    }
+    if (delta.rawHid > 0) {
+      details.push(
+        `Raw Input HID controller records +${delta.rawHid} (in background +${delta.rawHidBackground})`,
+      )
+    }
     const focus = describe(delta, FOCUS_LOSS)
     if (focus) details.push(`focus-loss messages ${focus}`)
     const keyboard = describe(delta, KEYBOARD)
@@ -159,9 +177,10 @@ function summariseRun(run) {
       if (sum(delta, KEYBOARD) > 0)
         problems.push(`${where}: keyboard reached the game (${keyboard})`)
       if (sum(delta, MOUSE) > 0) problems.push(`${where}: mouse reached the game (${mouse})`)
-      if (!segment.padConnected) {
+      const otherController = delta.diChanges > 0 || delta.rawHid > 0
+      if (!segment.padConnected && !otherController) {
         problems.push(`${where}: no controller connected on XInput slot 0`)
-      } else if (seconds >= 5 && delta.packetsBackground === 0) {
+      } else if (seconds >= 5 && sum(delta, CONTROLLER_BACKGROUND) === 0) {
         problems.push(`${where}: no controller input in background (was the stick moved?)`)
       }
     }
