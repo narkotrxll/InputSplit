@@ -103,3 +103,17 @@ The desktop app bundles npm packages (Electron, Vue, Pinia, Reka UI, Lucide, vue
 fonts and others), each under its own permissive license (MIT, ISC, Apache-2.0 or SIL OFL for
 fonts). The installer includes the complete list with license texts generated at build time
 (`LICENSES.chromium.html` from Electron and `resources/licenses/`).
+
+## Website (`site/`)
+
+### Lucide icons — ISC License
+
+<https://lucide.dev> — Copyright (c) Lucide Icons and Contributors. The website's icons
+(`site/assets/icons.svg`) are generated from Lucide by `scripts/site-icons.mjs`. Full license
+text: <https://github.com/lucide-icons/lucide/blob/main/LICENSE>.
+
+### Inter — SIL Open Font License 1.1
+
+<https://github.com/rsms/inter> — Copyright 2016 The Inter Project Authors. The website ships
+the Latin and Cyrillic variable font files in `site/assets/fonts/`. Full license text:
+<https://openfontlicense.org/open-font-license-official-text/>.
