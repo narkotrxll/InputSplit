@@ -6,16 +6,17 @@
   "notes": "InputSplit updates itself; you can turn that off in Settings > Updates.",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/narkotrxll/InputSplit/releases/download/v0.1.10/InputSplit.exe",
+      "url": "https://github.com/narkotrxll/InputSplit/releases/download/v0.1.10/InputSplit.exe#/setup.exe",
       "hash": "699c78d8b2d80322a13359d9760134f2b5f03170426a2addd0118967ffcd2ab3"
     }
   },
   "installer": {
+    "file": "setup.exe",
     "args": ["/S", "/D=$dir"]
   },
   "uninstaller": {
     "file": "Uninstall InputSplit.exe",
-    "args": ["/S"]
+    "args": ["/S", "_?=$dir"]
   },
   "checkver": {
     "github": "https://github.com/narkotrxll/InputSplit"
@@ -23,7 +24,7 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://github.com/narkotrxll/InputSplit/releases/download/v$version/InputSplit.exe",
+        "url": "https://github.com/narkotrxll/InputSplit/releases/download/v$version/InputSplit.exe#/setup.exe",
         "hash": {
           "url": "$url.sha256"
         }
