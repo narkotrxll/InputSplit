@@ -36,6 +36,10 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends mingw-w64
       - run: cmake -S native -B native/build-mingw -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/native/cmake/mingw-w64-x86_64.cmake" -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build native/build-mingw --parallel
+      - name: 32-bit hook DLL and test game
+        run: |
+          cmake -S native -B native/build-mingw32 -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/native/cmake/mingw-w64-i686.cmake" -DCMAKE_BUILD_TYPE=Release
+          cmake --build native/build-mingw32 --parallel
 
   windows:
     name: Windows build (MSVC native + installer)
@@ -63,6 +67,8 @@ jobs:
             native/build/bin/inputsplit-helper.exe
             native/build/bin/InputSplitHook64.dll
             native/build/bin/InputSplitProbe.exe
+            native/build32/bin/InputSplitHook32.dll
+            native/build32/bin/InputSplitProbe32.exe
             scripts/poc/isolate.ps1
             docs/TESTING.md
       - name: Upload installer

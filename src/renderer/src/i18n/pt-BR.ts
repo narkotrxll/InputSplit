@@ -198,16 +198,16 @@ export const ptBR: Messages = {
       usesGameInput:
         'O jogo usa GameInput, que por padrão não entrega entradas a janelas em segundo plano.',
       usesDirectInput:
-        'O jogo parece usar DirectInput para os controles. O suporte em segundo plano está planejado.',
+        'O jogo usa DirectInput, mas ainda não leu nenhum controle por ele. Verifique se o controle está conectado e mova um analógico.',
       noControllerReads:
-        'O jogo não leu nenhum controle XInput desde o início do isolamento. Ele pode usar outro método de entrada.',
+        'O jogo não leu nenhum controle desde o início do isolamento. Ele pode usar outro método de entrada.',
     },
   },
   limitations: {
     windowsGamingInput:
       'O jogo também usa Windows.Gaming.Input; a entrada do controle por ele para em segundo plano.',
     gameInput: 'O jogo também usa GameInput, que por padrão não recebe entrada em segundo plano.',
-    directInput: 'Controles DirectInput ainda não ficam ativos em segundo plano.',
+    directInput: 'O jogo usa DirectInput, mas ainda não leu nenhum controle por ele.',
     noWindowProtected: 'Nenhuma janela do jogo pôde ser protegida. A janela do jogo está aberta?',
     windowMoveFailed: 'Não foi possível mover a janela do jogo para a tela escolhida.',
   },
@@ -233,7 +233,7 @@ export const ptBR: Messages = {
     systemProcess: 'Isto faz parte do Windows. O InputSplit nunca modifica programas do sistema.',
     appContainer: 'Este é um app isolado da Microsoft Store. O InputSplit não funciona com ele.',
     unsupportedArchitecture:
-      'Por enquanto só jogos de 64 bits são suportados. O suporte a 32 bits está planejado.',
+      'Este jogo foi feito para processadores ARM. O InputSplit suporta jogos de 64 e 32 bits para processadores Intel e AMD.',
     antiCheat:
       'Este jogo é protegido por um sistema antitrapaça. O InputSplit recusa jogos protegidos, porque alterá-los pode fazer sua conta ser banida. Você pode desativar a proteção antitrapaça nas Configurações por sua conta e risco.',
     hookMissing: 'Uma parte do InputSplit está faltando. Reinstale o app.',

@@ -4,6 +4,10 @@
 //   * pauses when it thinks it lost focus (WM_ACTIVATEAPP / WM_ACTIVATE / foreground check),
 //   * calls XInputEnable(FALSE) when deactivated (old XInput games do this),
 //   * polls XInput user index 0 every frame,
+//   * reads the first DirectInput 8 controller every frame (DISCL_FOREGROUND, re-acquires when
+//     the device is lost, like most DirectInput games),
+//   * counts Raw Input records from HID gamepads/joysticks (registered *without*
+//     RIDEV_INPUTSINK, like most games, so they stop in background unless InputSplit helps),
 //   * reads keyboard and mouse through messages, GetAsyncKeyState, Raw Input (with
 //     RIDEV_INPUTSINK, i.e. even in background) and GetCursorPos,
 //   * optionally (--fps-cursor) re-centres and confines the cursor like a shooter.
@@ -22,7 +26,11 @@
 #include <windows.h>
 #include <xinput.h>
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
 #include <cstdio>
+#include <cstring>
 #include <cwchar>
 #include <string>
 
@@ -51,6 +59,15 @@ struct Stats {
   unsigned packetsTotal = 0;
   unsigned packetsInBackground = 0;
   XINPUT_GAMEPAD pad{};
+  // DirectInput controller
+  bool diDevice = false;
+  unsigned diReads = 0;
+  unsigned diChanges = 0;
+  unsigned diChangesInBackground = 0;
+  unsigned diLost = 0;
+  // Raw Input HID controllers
+  unsigned rawHid = 0;
+  unsigned rawHidInBackground = 0;
   // Keyboard leaks
   unsigned keyMessages = 0;
   unsigned charMessages = 0;
@@ -67,6 +84,9 @@ struct Stats {
 } g;
 
 bool g_asyncDown[256] = {};
+IDirectInput8W* g_directInput = nullptr;
+IDirectInputDevice8W* g_diDevice = nullptr;
+DIJOYSTATE2 g_diLast{};
 POINT g_lastCursor{};
 wchar_t g_logPath[MAX_PATH];
 FILE* g_log = nullptr;
@@ -91,7 +111,58 @@ void LoadXInput() {
   g_xinputEnable = reinterpret_cast<XInputEnableFn>(GetProcAddress(module, "XInputEnable"));
 }
 
+BOOL CALLBACK OnDirectInputController(const DIDEVICEINSTANCEW* instance, void* context) {
+  *static_cast<GUID*>(context) = instance->guidInstance;
+  return DIENUM_STOP;  // the first controller is enough
+}
+
+void OpenDirectInput(HWND hwnd) {
+  if (FAILED(DirectInput8Create(GetModuleHandleW(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8W,
+                                reinterpret_cast<void**>(&g_directInput), nullptr))) {
+    return;
+  }
+  GUID controller{};
+  g_directInput->EnumDevices(DI8DEVCLASS_GAMECTRL, OnDirectInputController, &controller,
+                             DIEDFL_ATTACHEDONLY);
+  if (controller == GUID{}) return;
+  if (FAILED(g_directInput->CreateDevice(controller, &g_diDevice, nullptr))) return;
+  g_diDevice->SetDataFormat(&c_dfDIJoystick2);
+  // What most DirectInput games do: controller input only while the window is in front.
+  g_diDevice->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+  g_diDevice->Acquire();
+  g.diDevice = true;
+}
+
+void ReadDirectInput(bool background) {
+  if (g_diDevice == nullptr) return;
+  g_diDevice->Poll();
+  DIJOYSTATE2 state{};
+  HRESULT result = g_diDevice->GetDeviceState(sizeof(state), &state);
+  if (result == DIERR_INPUTLOST || result == DIERR_NOTACQUIRED) {
+    ++g.diLost;
+    g_diDevice->Acquire();
+    return;
+  }
+  if (FAILED(result)) return;
+  ++g.diReads;
+  if (memcmp(&state, &g_diLast, sizeof(state)) != 0) {
+    ++g.diChanges;
+    if (background) ++g.diChangesInBackground;
+    g_diLast = state;
+  }
+}
+
 void RegisterRawInput(HWND hwnd) {
+  // Controllers: no RIDEV_INPUTSINK, so Windows sends them only while we are in front.
+  RAWINPUTDEVICE controllers[2]{};
+  controllers[0].usUsagePage = 0x01;
+  controllers[0].usUsage = 0x05;  // gamepad
+  controllers[0].hwndTarget = hwnd;
+  controllers[1].usUsagePage = 0x01;
+  controllers[1].usUsage = 0x04;  // joystick
+  controllers[1].hwndTarget = hwnd;
+  RegisterRawInputDevices(controllers, 2, sizeof(RAWINPUTDEVICE));
+
   RAWINPUTDEVICE devices[2]{};
   devices[0].usUsagePage = 0x01;  // generic desktop
   devices[0].usUsage = 0x06;      // keyboard
@@ -104,14 +175,19 @@ void RegisterRawInput(HWND hwnd) {
   RegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
 }
 
-void OnRawInput(LPARAM lParam) {
-  RAWINPUT record{};
-  UINT size = sizeof(record);
-  if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, &record, &size,
+void OnRawInput(HWND hwnd, LPARAM lParam) {
+  // HID records can be larger than RAWINPUT; the header is all we need for them.
+  alignas(8) BYTE buffer[1024];
+  UINT size = sizeof(buffer);
+  if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, buffer, &size,
                       sizeof(RAWINPUTHEADER)) == static_cast<UINT>(-1)) {
     return;
   }
-  if (record.header.dwType == RIM_TYPEKEYBOARD) {
+  const RAWINPUT& record = *reinterpret_cast<const RAWINPUT*>(buffer);
+  if (record.header.dwType == RIM_TYPEHID) {
+    ++g.rawHid;
+    if (ReallyInBackground(hwnd)) ++g.rawHidInBackground;
+  } else if (record.header.dwType == RIM_TYPEKEYBOARD) {
     if (record.data.keyboard.VKey != 0xFF && !(record.data.keyboard.Flags & RI_KEY_BREAK)) {
       ++g.rawKeyboard;
     }
@@ -137,6 +213,7 @@ void Frame(HWND hwnd) {
     }
     g.pad = state.Gamepad;
   }
+  if (focused || g_alwaysPoll) ReadDirectInput(background);
 
   // Keyboard polling (what many engines do every frame).
   for (int vk = 0x08; vk <= 0xFE; ++vk) {
@@ -167,8 +244,8 @@ void Frame(HWND hwnd) {
 std::wstring StatusText(HWND hwnd) {
   bool background = ReallyInBackground(hwnd);
   bool focused = GameThinksFocused(hwnd);
-  wchar_t text[4096];
-  swprintf(text, 4096,
+  wchar_t text[6144];
+  swprintf(text, 6144,
            L"InputSplit Probe  —  %ls\n"
            L"Window is really %ls (GetGUIThreadInfo)\n\n"
            L"FOCUS AS SEEN BY THE GAME\n"
@@ -181,6 +258,11 @@ std::wstring StatusText(HWND hwnd) {
            L"  connected: %ls   packet: %lu\n"
            L"  packets seen: %u   of them while really in background: %u\n"
            L"  LX %6d  LY %6d  RX %6d  RY %6d  LT %3u  RT %3u  buttons 0x%04X\n\n"
+           L"CONTROLLER (DirectInput, first game controller)\n"
+           L"  found: %ls   reads: %u   lost: %u\n"
+           L"  state changes: %u   of them while really in background: %u\n\n"
+           L"CONTROLLER (Raw Input HID, without RIDEV_INPUTSINK)\n"
+           L"  records: %u   of them while really in background: %u\n\n"
            L"KEYBOARD THAT REACHED THE GAME (should stay 0 while isolated)\n"
            L"  key messages: %u   char messages: %u\n"
            L"  GetAsyncKeyState presses: %u   raw keyboard records: %u\n\n"
@@ -196,7 +278,8 @@ std::wstring StatusText(HWND hwnd) {
            g.killFocusMsgs, g.mouseActivateMsgs, g.framesRunning, g.framesPaused,
            g.padConnected ? L"yes" : L"no", g.lastPacket, g.packetsTotal, g.packetsInBackground,
            g.pad.sThumbLX, g.pad.sThumbLY, g.pad.sThumbRX, g.pad.sThumbRY, g.pad.bLeftTrigger,
-           g.pad.bRightTrigger, g.pad.wButtons, g.keyMessages, g.charMessages, g.asyncKeyPresses,
+           g.pad.bRightTrigger, g.pad.wButtons, g.diDevice ? L"yes" : L"no", g.diReads, g.diLost,
+           g.diChanges, g.diChangesInBackground, g.rawHid, g.rawHidInBackground, g.keyMessages, g.charMessages, g.asyncKeyPresses,
            g.rawKeyboard, g.mouseMoveMessages, g.mouseClickMessages, g.rawMouse,
            g.cursorPosChanges, g_useXInputEnable ? L"on" : L"off", g_fpsCursor ? L"on" : L"off",
            g_alwaysPoll ? L"on" : L"off", g_logPath);
@@ -211,12 +294,14 @@ void WriteLogLine(HWND hwnd) {
           "%02d:%02d:%02d background=%d running=%d deactivateApp=%u deactivate=%u killFocus=%u "
           "mouseActivate=%u padConnected=%d packets=%u packetsBackground=%u keyMsgs=%u "
           "charMsgs=%u asyncPresses=%u rawKb=%u mouseMoves=%u mouseClicks=%u rawMouse=%u "
-          "cursorChanges=%u\n",
+          "cursorChanges=%u diFound=%d diReads=%u diLost=%u diChanges=%u diChangesBackground=%u "
+          "rawHid=%u rawHidBackground=%u\n",
           time.wHour, time.wMinute, time.wSecond, ReallyInBackground(hwnd) ? 1 : 0,
           GameThinksFocused(hwnd) ? 1 : 0, g.deactivateAppMsgs, g.deactivateMsgs, g.killFocusMsgs,
           g.mouseActivateMsgs, g.padConnected ? 1 : 0, g.packetsTotal, g.packetsInBackground,
           g.keyMessages, g.charMessages, g.asyncKeyPresses, g.rawKeyboard, g.mouseMoveMessages,
-          g.mouseClickMessages, g.rawMouse, g.cursorPosChanges);
+          g.mouseClickMessages, g.rawMouse, g.cursorPosChanges, g.diDevice ? 1 : 0, g.diReads,
+          g.diLost, g.diChanges, g.diChangesInBackground, g.rawHid, g.rawHidInBackground);
   fflush(g_log);
 }
 
@@ -224,6 +309,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
   switch (msg) {
     case WM_CREATE:
       RegisterRawInput(hwnd);
+      OpenDirectInput(hwnd);
       SetTimer(hwnd, 1, 16, nullptr);    // ~60 "frames" per second
       SetTimer(hwnd, 2, 1000, nullptr);  // log line
       return 0;
@@ -256,14 +342,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
       ++g.mouseActivateMsgs;
       break;
     case WM_INPUT:
-      OnRawInput(lParam);
+      OnRawInput(hwnd, lParam);
       break;  // DefWindowProc must still run for WM_INPUT
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
       ++g.keyMessages;
       if (wParam == 'R' && !ReallyInBackground(hwnd)) {
+        bool diDevice = g.diDevice;
         g = Stats{};
         g.believesActive = true;
+        g.diDevice = diDevice;
       }
       if (wParam == VK_ESCAPE) {
         g_fpsCursor = false;

@@ -7,8 +7,8 @@
 // The helper is the pipe server, the DLL is the client.
 //
 // For TypeScript readers: think of each struct as an interface whose layout is fixed in
-// memory. `static_assert`s at the bottom guarantee that a 64-bit helper and a 32-bit DLL
-// (future) agree on sizes.
+// memory. `static_assert`s at the bottom guarantee that the 64-bit helper and both DLLs
+// (InputSplitHook64.dll and InputSplitHook32.dll) agree on sizes.
 #pragma once
 
 #include <cstdint>
@@ -16,7 +16,7 @@
 namespace inputsplit::proto {
 
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
-constexpr uint16_t kProtocolVersion = 1;
+constexpr uint16_t kProtocolVersion = 2;  // 2: DirectInput / Raw Input counters
 
 // Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
@@ -34,7 +34,8 @@ enum Feature : uint32_t {
   kFeatureNone = 0,
   kFeatureActivationShield = 1u << 0,  // swallow "you lost focus" window messages
   kFeatureFocusSpoof = 1u << 1,        // GetForegroundWindow & co. return the game window
-  kFeatureXInputBackground = 1u << 2,  // keep XInput enabled, count reads
+  kFeatureXInputBackground = 1u << 2,  // controller in background: XInput (required), plus
+                                       // DirectInput and Raw Input HID gamepads (best effort)
   kFeatureXInputSlotLock = 1u << 3,    // game's controller #1 = chosen physical slot
   kFeatureBlockKeyboard = 1u << 4,     // game cannot see keyboard input
   kFeatureBlockMouse = 1u << 5,        // game cannot see mouse input, clicks do not activate it
@@ -102,6 +103,8 @@ struct StatusMessage {
   uint64_t swallowedFocusEvents;  // deactivation messages not delivered to the game
   uint64_t blockedCursorCalls;    // SetCursorPos / ClipCursor calls ignored
   uint64_t xinputEnableBlocked;   // XInputEnable(FALSE) calls ignored
+  uint64_t directInputReads;      // GetDeviceState/GetDeviceData calls on DirectInput controllers
+  uint64_t rawGamepadReads;       // Raw Input records from HID controllers read by the game
 };
 
 struct LogMessage {
@@ -116,7 +119,7 @@ struct LogMessage {
 static_assert(sizeof(Header) == 16, "Header layout changed");
 static_assert(sizeof(HelloMessage) == 40, "HelloMessage layout changed");
 static_assert(sizeof(ConfigureMessage) == 32, "ConfigureMessage layout changed");
-static_assert(sizeof(StatusMessage) == 96, "StatusMessage layout changed");
+static_assert(sizeof(StatusMessage) == 112, "StatusMessage layout changed");
 static_assert(sizeof(LogMessage) == 504, "LogMessage layout changed");
 
 // The largest message; used as the receive buffer size.

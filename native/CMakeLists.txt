@@ -1,11 +1,14 @@
 # InputSplit native layer.
 #
-#   InputSplitHook64.dll   injected into the game (hook/)
-#   inputsplit-helper.exe  control process started by the Electron app (helper/)
-#   InputSplitProbe.exe    test "game" used to measure isolation (probe/)
+#   InputSplitHook64.dll   injected into 64-bit games (hook/)
+#   InputSplitHook32.dll   injected into 32-bit games (hook/, built by the 32-bit configuration)
+#   inputsplit-helper.exe  control process started by the Electron app (helper/, 64-bit only)
+#   InputSplitProbe.exe    test "game" used to measure isolation (probe/; InputSplitProbe32.exe)
 #
 # Windows (MSVC):  cmake -S native -B native/build -A x64 && cmake --build native/build --config Release
+#        32-bit:   cmake -S native -B native/build32 -A Win32 && cmake --build native/build32 --config Release
 # Linux (MinGW):   cmake -S native -B native/build-mingw -DCMAKE_TOOLCHAIN_FILE=native/cmake/mingw-w64-x86_64.cmake
+#        32-bit:   cmake -S native -B native/build-mingw32 -DCMAKE_TOOLCHAIN_FILE=native/cmake/mingw-w64-i686.cmake
 cmake_minimum_required(VERSION 3.21)
 project(InputSplitNative LANGUAGES C CXX)
 
@@ -17,8 +20,12 @@ if(NOT WIN32)
   message(FATAL_ERROR "The native layer targets Windows. On Linux use the MinGW toolchain file.")
 endif()
 
-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
-  message(FATAL_ERROR "Only 64-bit builds are supported for now (32-bit games are on the roadmap).")
+# The 64-bit helper injects into both 64-bit and 32-bit (WOW64) games, so a 32-bit
+# configuration only builds the hook DLL and the test game.
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set(INPUTSPLIT_BITS 64)
+else()
+  set(INPUTSPLIT_BITS 32)
 endif()
 
 # Version from package.json so the UI, helper and DLL always agree.
@@ -54,9 +61,15 @@ function(inputsplit_common_options target)
   else()
     target_compile_options(${target} PRIVATE -Wall -Wextra -Wno-cast-function-type)
     target_link_options(${target} PRIVATE -static -static-libgcc -static-libstdc++)
+    if(INPUTSPLIT_BITS EQUAL 32)
+      # Undecorated stdcall exports (InputSplitAttach, not InputSplitAttach@4).
+      target_link_options(${target} PRIVATE -Wl,--enable-stdcall-fixup -Wl,--kill-at)
+    endif()
   endif()
 endfunction()
 
 add_subdirectory(hook)
-add_subdirectory(helper)
+if(INPUTSPLIT_BITS EQUAL 64)
+  add_subdirectory(helper)
+endif()
 add_subdirectory(probe)

@@ -71,6 +71,16 @@ void ApplyConfiguration(uint32_t features, uint32_t xinputSlot, HWND requestedWi
         !InstallXInputHooks()) {
       failed |= features & (proto::kFeatureXInputBackground | proto::kFeatureXInputSlotLock);
     }
+    if (features & proto::kFeatureXInputBackground) {
+      // Other controller stacks are best effort: a game that uses only XInput must not be
+      // reported as limited because, say, DirectInput could not be prepared. Raw Input needs
+      // the input-block hooks for GetRawInputData (they pass everything through unless
+      // keyboard/mouse blocking is on).
+      if (!InstallDirectInputHooks()) Log(LogLevel::Warn, "DirectInput background not available");
+      if (!InstallInputBlockHooks() || !InstallRawInputHooks()) {
+        Log(LogLevel::Warn, "Raw Input background not available");
+      }
+    }
     if ((features & proto::kFeatureXInputSlotLock) && xinputSlot > 3) {
       failed |= proto::kFeatureXInputSlotLock;
       Log(LogLevel::Warn, "Slot lock requested without a valid slot");
@@ -94,8 +104,14 @@ void ApplyConfiguration(uint32_t features, uint32_t xinputSlot, HWND requestedWi
 
   const uint32_t turnedOn = active & ~previouslyActive;
   const uint32_t turnedOff = previouslyActive & ~active;
-  if (turnedOn & proto::kFeatureXInputBackground) OnXInputBackgroundEnabled();
-  if (turnedOff & proto::kFeatureXInputBackground) OnXInputBackgroundDisabled();
+  if (turnedOn & proto::kFeatureXInputBackground) {
+    OnXInputBackgroundEnabled();
+    SyncRawInputRegistrations();
+  }
+  if (turnedOff & proto::kFeatureXInputBackground) {
+    OnXInputBackgroundDisabled();
+    SyncRawInputRegistrations();
+  }
   if (turnedOn & proto::kFeatureCursorGuard) ReleaseGameCursorClip();
   if (turnedOn & proto::kFeatureActivationShield) WakeGame(GameWindow());
 
@@ -108,7 +124,10 @@ void DisableAll() {
   g_requested.store(0);
   g_failed.store(0);
   SyncShield(false);
-  if (previouslyActive & proto::kFeatureXInputBackground) OnXInputBackgroundDisabled();
+  if (previouslyActive & proto::kFeatureXInputBackground) {
+    OnXInputBackgroundDisabled();
+    SyncRawInputRegistrations();
+  }
   if (previouslyActive != 0) Log(LogLevel::Info, "All features disabled (pass-through)");
 }
 
@@ -144,6 +163,8 @@ proto::StatusMessage BuildStatus() {
   status.swallowedFocusEvents = g_counters.swallowedFocusEvents.load();
   status.blockedCursorCalls = g_counters.blockedCursorCalls.load();
   status.xinputEnableBlocked = g_counters.xinputEnableBlocked.load();
+  status.directInputReads = g_counters.directInputReads.load();
+  status.rawGamepadReads = g_counters.rawGamepadReads.load();
   return status;
 }
 

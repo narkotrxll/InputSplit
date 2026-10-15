@@ -3,12 +3,14 @@
  *
  * Rules (see docs/ARCHITECTURE.md §6):
  *  - a feature is "active" only if the DLL lists it in `active`;
- *  - the controller feature additionally needs proof that the game reads XInput; until then
+ *  - the controller feature additionally needs proof that the game reads its controller
+ *    (XInput, DirectInput or Raw Input); until then
  *    it is "pending", and after a grace period without a single read it is "unsupported";
  *  - anything failed or unsupported makes the session "limited".
  */
 import type {
   BackendStatus,
+  SessionCounters,
   DetectedApi,
   FeatureFlags,
   FeatureName,
@@ -19,7 +21,13 @@ import type {
 } from './domain'
 import { FEATURE_NAMES } from './defaults'
 
-/** How long a game may take before its first XInput read counts as "never". */
+/** Every controller read the hook DLL saw: XInput, DirectInput and Raw Input HID records. */
+export function controllerReads(counters: SessionCounters | null | undefined): number {
+  if (!counters) return 0
+  return counters.xinputReads + counters.directInputReads + counters.rawGamepadReads
+}
+
+/** How long a game may take before its first controller read counts as "never". */
 export const XINPUT_GRACE_MS = 6000
 
 export function featureFlagsToList(flags: FeatureFlags): FeatureName[] {
@@ -42,7 +50,7 @@ export function evaluateSession(status: SessionStatus, startedAt: number, now: n
   const requested = new Set(status.requested)
   const active = new Set(status.active)
   const failed = new Set(status.failed)
-  const reads = status.counters.xinputReads
+  const reads = controllerReads(status.counters)
   const graceOver = now - startedAt >= XINPUT_GRACE_MS
 
   const features: FeatureReport[] = FEATURE_NAMES.map((name) => {

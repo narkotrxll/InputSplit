@@ -22,7 +22,7 @@ import {
 } from '@shared/domain'
 import { lookupCompat, type CompatOutcome } from '@shared/compatibility'
 import { AppException, toAppError } from '@shared/errors'
-import { evaluateSession, isSessionLive } from '@shared/support'
+import { controllerReads, evaluateSession, isSessionLive } from '@shared/support'
 import type { NativeBackend } from '../native/backend'
 import type { HelperEvent } from '../native/protocol'
 import { Emitter } from '../util/emitter'
@@ -307,7 +307,7 @@ export class IsolationService {
   /** Judged from what the game did while it ran, not from how the session ended. */
   private outcome(): CompatOutcome {
     const controller = this.view.features.find((f) => f.name === 'xinputBackground')
-    const readPad = (this.view.counters?.xinputReads ?? 0) > 0
+    const readPad = controllerReads(this.view.counters) > 0
     if (controller && controller.state !== 'off' && !readPad) return 'limited'
     const degraded = this.view.features.some(
       (f) => f.state === 'failed' || f.state === 'unsupported',

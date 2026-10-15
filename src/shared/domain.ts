@@ -184,6 +184,10 @@ export const SessionCountersSchema = z.object({
   swallowedFocusEvents: z.number().nonnegative(),
   blockedCursorCalls: z.number().nonnegative(),
   xinputEnableBlocked: z.number().nonnegative(),
+  /** Reads of DirectInput controllers (GetDeviceState / GetDeviceData). */
+  directInputReads: z.number().nonnegative().default(0),
+  /** Raw Input records from HID controllers that the game read. */
+  rawGamepadReads: z.number().nonnegative().default(0),
 })
 export type SessionCounters = z.infer<typeof SessionCountersSchema>
 

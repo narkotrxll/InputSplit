@@ -196,16 +196,16 @@ export const pl: Messages = {
       usesGameInput:
         'Gra używa GameInput, które domyślnie nie przekazuje danych wejściowych do okien w tle.',
       usesDirectInput:
-        'Gra prawdopodobnie używa DirectInput dla kontrolerów. Obsługa w tle jest planowana.',
+        'Gra używa DirectInput, ale nie odczytała jeszcze przez niego kontrolera. Sprawdź, czy kontroler jest podłączony, i porusz gałką.',
       noControllerReads:
-        'Od startu izolacji gra nie odczytała żadnego kontrolera XInput. Może używać innej metody wejścia.',
+        'Od rozpoczęcia izolacji gra ani razu nie odczytała kontrolera. Może używać innej metody wprowadzania.',
     },
   },
   limitations: {
     windowsGamingInput:
       'Gra używa też Windows.Gaming.Input; sygnał z kontrolera przez to API zatrzymuje się w tle.',
     gameInput: 'Gra używa też GameInput, które domyślnie nie działa w tle.',
-    directInput: 'Kontrolery DirectInput nie pozostają jeszcze aktywne w tle.',
+    directInput: 'Gra używa DirectInput, ale nie odczytała jeszcze przez niego kontrolera.',
     noWindowProtected: 'Nie udało się ochronić żadnego okna gry. Czy okno gry jest otwarte?',
     windowMoveFailed: 'Nie udało się przenieść okna gry na wybrany ekran.',
   },
@@ -230,7 +230,7 @@ export const pl: Messages = {
       'To część systemu Windows. InputSplit nigdy nie modyfikuje programów systemowych.',
     appContainer: 'To izolowana aplikacja ze Sklepu Microsoft. InputSplit nie może z nią działać.',
     unsupportedArchitecture:
-      'Na razie obsługiwane są tylko gry 64-bitowe. Obsługa 32-bitowych jest planowana.',
+      'Ta gra jest przeznaczona dla procesorów ARM. InputSplit obsługuje gry 64- i 32-bitowe dla procesorów Intel i AMD.',
     antiCheat:
       'Ta gra jest chroniona przez anti-cheat. InputSplit odrzuca chronione gry, bo ich modyfikowanie może skończyć się banem konta. Ochronę przed anti-cheatami możesz wyłączyć w Ustawieniach na własne ryzyko.',
     hookMissing: 'Brakuje części InputSplit. Zainstaluj aplikację ponownie.',

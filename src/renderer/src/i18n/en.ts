@@ -200,16 +200,16 @@ export const en = {
       usesGameInput:
         'The game uses GameInput, which does not deliver input to background windows by default.',
       usesDirectInput:
-        'The game seems to use DirectInput for controllers. Background support for it is planned.',
+        'The game uses DirectInput but has not read a controller through it yet. Check that the controller is connected and move a stick.',
       noControllerReads:
-        'The game has not read an XInput controller since isolation started. It may use another input method.',
+        'The game has not read a controller since isolation started. It may use another input method.',
     },
   },
   limitations: {
     windowsGamingInput:
       'The game also uses Windows.Gaming.Input; controller input from it stops in background.',
     gameInput: 'The game also uses GameInput, which has no background input by default.',
-    directInput: 'DirectInput controllers are not kept active in background yet.',
+    directInput: 'The game uses DirectInput but has not read a controller through it.',
     noWindowProtected: 'No game window could be protected. Is the game window open?',
     windowMoveFailed: 'The game window could not be moved to the selected screen.',
   },
@@ -232,7 +232,8 @@ export const en = {
     accessDenied: 'Windows does not allow InputSplit to access this program. It may be protected.',
     systemProcess: 'This is a part of Windows. InputSplit never modifies system programs.',
     appContainer: 'This is a sandboxed Store app. InputSplit cannot work with it.',
-    unsupportedArchitecture: 'Only 64-bit games are supported for now. 32-bit support is planned.',
+    unsupportedArchitecture:
+      'This game is built for ARM processors. InputSplit supports 64-bit and 32-bit games for Intel and AMD processors.',
     antiCheat:
       'This game is protected by an anti-cheat system. InputSplit refuses protected games, because changing them can get your account banned. You can turn off anti-cheat protection in Settings at your own risk.',
     hookMissing: 'A part of InputSplit is missing. Please reinstall the app.',

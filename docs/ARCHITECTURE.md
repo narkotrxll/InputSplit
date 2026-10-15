@@ -35,15 +35,23 @@ mouse. Nothing global is intercepted; user A's desktop keeps real focus and real
 └────────────────────┬─────────────────────────────────────────────────────────────────┘
                      │ \\.\pipe\InputSplit.Hook.<gamePid>  (fixed-size binary messages)
 ┌────────────────────▼─────────────────────────────────────────────────────────────────┐
-│ Game process  +  InputSplitHook64.dll (C++17, MinHook, static CRT)                   │
-│   activation shield · focus spoof · XInput bridge · keyboard/mouse block            │
-│   cursor guard · API detection · counters                                            │
+│ Game process  +  InputSplitHook64.dll / InputSplitHook32.dll (C++17, MinHook)        │
+│   activation shield · focus spoof · XInput / DirectInput / Raw Input bridges        │
+│   keyboard/mouse block · cursor guard · API detection · counters                    │
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Also built: `InputSplitProbe.exe` — a tiny test "game" that shows exactly what a game sees
-(focus messages, `GetForegroundWindow`, XInput packets, keyboard/mouse events). It is the
-measurement instrument for Phase 1 and for regression testing; it is not shipped to users.
+The helper is always 64-bit. 64-bit games get `InputSplitHook64.dll`; 32-bit games (WOW64)
+get `InputSplitHook32.dll`, built from the same sources by a second, 32-bit CMake
+configuration. The helper can inject into both: for a 32-bit game it finds the game's 32-bit
+`kernel32.dll` and reads the address of `LoadLibraryW` from `SysWOW64\kernel32.dll`, so no
+separate 32-bit injector process is needed. The pipe protocol has the same layout in both DLLs
+(`static_assert`s in `hook_protocol.h`).
+
+Also built: `InputSplitProbe.exe` (and `InputSplitProbe32.exe`) — a tiny test "game" that shows
+exactly what a game sees (focus messages, `GetForegroundWindow`, XInput packets, a DirectInput
+controller, Raw Input HID records, keyboard/mouse events). It is the measurement instrument for
+Phase 1 and for regression testing; it is not shipped to users.
 
 ### Why a separate helper process (not a Node addon)
 
@@ -113,6 +121,8 @@ every call. Pass-through costs one atomic load.
 | `ACTIVATION_SHIELD` | `activation_shield.cpp` | Subclasses **all** top-level windows of the process (re-scanned every second). Swallows `WM_ACTIVATE(WA_INACTIVE)`, `WM_ACTIVATEAPP(FALSE)`, `WM_KILLFOCUS`, `WM_IME_SETCONTEXT(FALSE)`; lets `WM_NCACTIVATE(FALSE)` reach `DefWindowProc` but not the game. When it turns on while the game is already in the background (the user just clicked *Start* in InputSplit), it posts one `WM_ACTIVATEAPP(TRUE)` / `WM_ACTIVATE` / `WM_SETFOCUS` so an already-paused game resumes — once, not in a loop. | NoFocusLoss, fixed N1/N2 |
 | `FOCUS_SPOOF` | `focus_spoof.cpp` | `GetForegroundWindow`, `GetActiveWindow`, `GetFocus` return the game window. | NoFocusLoss + ProtoInput |
 | `XINPUT_BACKGROUND` | `xinput_bridge.cpp` | Pre-loads all XInput DLL variants and hooks them (incl. ordinal 100 `XInputGetStateEx`). `XInputEnable(FALSE)` is ignored while active. Counts calls (proof that the game reads the pad). | ProtoInput + ours |
+| `XINPUT_BACKGROUND` (best effort) | `directinput_bridge.cpp` | DirectInput 8 controllers: patches the device vtables (found through a throw-away DirectInput object) so `SetCooperativeLevel(DISCL_FOREGROUND)` becomes `DISCL_BACKGROUND` for joysticks/gamepads only (keyboard and mouse stay foreground). Devices set up earlier are switched on their next `Acquire`; a read that fails with `DIERR_INPUTLOST` re-acquires once. Restored to the game's level when isolation stops. Counts controller reads. | Ours |
+| `XINPUT_BACKGROUND` (best effort) | `rawinput_bridge.cpp` | Raw Input HID controllers (usage page 1, usages 4/5/8): adds `RIDEV_INPUTSINK` to the game's registrations (hooked `RegisterRawInputDevices`, existing ones re-registered), restores them on stop; the shield presents background `WM_INPUT` as `RIM_INPUT`. HID records the game reads are counted in `input_block.cpp`. | Ours |
 | `XINPUT_SLOT_LOCK` | `xinput_bridge.cpp` | Game user index 0 → chosen physical slot; indexes 1–3 → "not connected". | ProtoInput |
 | `BLOCK_KEYBOARD` | `input_block.cpp` | `GetAsyncKeyState`/`GetKeyState`/`GetKeyboardState` report all keys up; `WM_KEY*`/`WM_CHAR`/`WM_SYSKEY*` and keyboard `WM_INPUT` are dropped; keyboard records in `GetRawInputData`/`GetRawInputBuffer` are neutralised. | ProtoInput + ours |
 | `BLOCK_MOUSE` | `input_block.cpp` | Mouse messages dropped; `WM_MOUSEACTIVATE` → `MA_NOACTIVATEANDEAT` (a click on the TV does not steal focus); mouse raw input neutralised. | ProtoInput + ours |
@@ -124,8 +134,12 @@ Windows.Gaming.Input, GameInput, SDL2, SDL3, Unity, Steam API.
 ### Status reported by the DLL
 
 `requested` mask, `active` mask, `failed` mask, number of subclassed windows, the game
-window handle, detected APIs and cumulative counters (XInput reads, blocked keyboard events,
-blocked mouse events, swallowed focus events, blocked cursor calls).
+window handle, detected APIs and cumulative counters (XInput reads, DirectInput controller
+reads, Raw Input HID records, blocked keyboard events, blocked mouse events, swallowed focus
+events, blocked cursor calls). Any of the three controller counters proves that the game
+reads its controller. `XINPUT_BACKGROUND` is reported *active* when the XInput hooks are in;
+DirectInput and Raw Input are extras that never make it *failed* (a game that uses neither
+must not look limited), and their outcome is logged.
 
 ## 6. Status model
 
@@ -138,7 +152,7 @@ The main process turns facts from the helper into what the UI shows
 | **Isolating** | Checks, injection or hook installation in progress. |
 | **Active** | Every requested feature confirmed active by the DLL, and the game has been seen reading XInput. |
 | **Limited Support** | Running, but something requested is `failed`/`unsupported`, or the game never called XInput (e.g. it uses Windows.Gaming.Input/GameInput), or a known limitation applies. Each item is listed with a reason. |
-| **Error** | Refused or failed (anti-cheat, elevated game, 32-bit, injection error…) with a human explanation. |
+| **Error** | Refused or failed (anti-cheat, elevated game, ARM64 game, injection error…) with a human explanation. |
 | **Disconnected** | Isolation is running but the selected controller slot is not connected. |
 
 A feature is displayed as *on* only when the DLL's `active` mask says so. The UI never
@@ -199,7 +213,7 @@ overlapped I/O on one worker thread: it waits for commands and sends `STATUS` ev
 ## 8. Safety rules enforced in native code (not only in the UI)
 
 - Refuse: anti-cheat detected (modules in the process, or anti-cheat files in the game
-  folder), 32-bit target (not yet supported), elevated target while we are not elevated,
+  folder), ARM64 target (no matching DLL), elevated target while we are not elevated,
   AppContainer / protected process, system processes (`%WINDIR%`), InputSplit itself.
 - Anti-cheat refusal is a user setting (Settings → Safety, on by default). When it is off,
   the app passes `allowAntiCheat` to `checkTarget` / `startIsolation`, the helper reports the
@@ -229,10 +243,10 @@ Measurements are a Phase 5 task (`docs/TESTING.md`).
 ```
 native/                 C++ (CMake)
   common/               hook_protocol.h, version.h — shared by helper and DLL
-  hook/                 InputSplitHook DLL
+  hook/                 InputSplitHook64.dll / InputSplitHook32.dll
   helper/               inputsplit-helper.exe
   probe/                InputSplitProbe.exe (test game)
-  cmake/                MinGW toolchain for Linux cross-compilation
+  cmake/                MinGW toolchains (64-bit and 32-bit) for Linux cross-compilation
 src/
   shared/               domain types, IPC contract, status logic (no Electron/Node imports)
   main/                 Electron main process

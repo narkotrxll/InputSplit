@@ -111,7 +111,7 @@ function isSelected(window: WindowInfo): boolean {
           </p>
         </div>
         <div class="hidden flex-wrap justify-end gap-1 md:flex">
-          <UiBadge v-if="window.architecture === 'x86'" tone="warning">{{
+          <UiBadge v-if="window.architecture === 'x86'" tone="neutral">{{
             $t('apps.x86')
           }}</UiBadge>
           <UiBadge v-if="window.elevated || !window.accessible" tone="warning" :icon="ShieldAlert">

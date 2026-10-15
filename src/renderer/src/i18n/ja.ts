@@ -197,16 +197,17 @@ export const ja: Messages = {
       usesGameInput:
         'このゲームは GameInput を使用しています。既定ではバックグラウンドのウィンドウに入力が届きません。',
       usesDirectInput:
-        'このゲームは DirectInput を使用しているようです。バックグラウンド対応は予定しています。',
+        'ゲームは DirectInput を使用していますが、まだコントローラーを読み取っていません。コントローラーが接続されているか確認し、スティックを動かしてください。',
       noControllerReads:
-        '分離開始以降、ゲームは XInput コントローラーを一度も読み取っていません。別の入力方式を使用している可能性があります。',
+        '分離開始以降、ゲームはコントローラーを一度も読み取っていません。別の入力方式を使用している可能性があります。',
     },
   },
   limitations: {
     windowsGamingInput:
       'このゲームは Windows.Gaming.Input も使用しており、それ経由の入力はバックグラウンドで止まります。',
     gameInput: 'このゲームは GameInput も使用しており、既定ではバックグラウンド入力がありません。',
-    directInput: 'DirectInput のコントローラーは、まだバックグラウンドで動作しません。',
+    directInput:
+      'ゲームは DirectInput を使用していますが、まだコントローラーを読み取っていません。',
     noWindowProtected: 'ゲームのウィンドウを保護できませんでした。ウィンドウは開いていますか？',
     windowMoveFailed: 'ゲームのウィンドウを選択した画面に移動できませんでした。',
   },
@@ -234,7 +235,7 @@ export const ja: Messages = {
       'これは Windows の一部です。InputSplit がシステムプログラムを変更することはありません。',
     appContainer: 'これはサンドボックス化された Store アプリです。InputSplit では扱えません。',
     unsupportedArchitecture:
-      '現在は 64 ビットのゲームのみ対応しています。32 ビット対応は予定しています。',
+      'このゲームは ARM プロセッサー向けです。InputSplit は Intel と AMD プロセッサー向けの 64 ビットおよび 32 ビットのゲームに対応しています。',
     antiCheat:
       'このゲームはチート対策システムで保護されています。保護されたゲームを変更するとアカウントが BAN される可能性があるため、InputSplit は拒否します。アンチチート保護は自己責任で設定からオフにできます。',
     hookMissing: 'InputSplit の一部が見つかりません。アプリを再インストールしてください。',

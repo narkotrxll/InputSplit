@@ -47,5 +47,4 @@ above. InputSplit also remembers locally how each game behaved the last time
 | Games reading controllers only via Windows.Gaming.Input | The API delivers input to the focused window only. |
 | Games using GameInput without background focus policy | No background input by default. |
 | Exclusive fullscreen | Windows leaves exclusive fullscreen on focus loss; use Borderless Windowed. |
-| 32-bit games | Not supported yet (roadmap). |
 | Games running as administrator | Run InputSplit as administrator too, or start the game normally. |
