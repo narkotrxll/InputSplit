@@ -336,6 +336,15 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    keys: {
+      title: 'Controller as keyboard',
+      description:
+        "For games without controller support: buttons, triggers and the left stick press keys inside the isolated game. The shared keyboard stays blocked; only these keys reach the game. Works in games that read keys from window messages; games that read the keyboard through Raw Input or DirectInput won't see them.",
+      preset: 'WASD preset',
+      clear: 'Clear',
+      press: 'Press a key…',
+      stick: 'Stick',
+    },
     bridge: {
       title: 'PlayStation and Switch controllers as an Xbox controller',
       hint: 'DualShock 4, DualSense and Switch Pro controllers appear to isolated games as an Xbox controller in a free slot, without drivers. Vibration works over USB. Turn it on for games that do not see these controllers; a game that already supports them may react twice.',

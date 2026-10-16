@@ -341,6 +341,15 @@ export const de: Messages = {
     wired: 'Kabel',
     use: 'Für Spiel nutzen',
     inUse: 'Ausgewählt',
+    keys: {
+      title: 'Controller als Tastatur',
+      description:
+        'Für Spiele ohne Controller-Unterstützung: Tasten, Trigger und linker Stick drücken Tasten im isolierten Spiel. Die gemeinsame Tastatur bleibt gesperrt, nur diese Tasten erreichen das Spiel. Funktioniert in Spielen, die Tasten aus Fensternachrichten lesen; Spiele, die die Tastatur über Raw Input oder DirectInput lesen, sehen sie nicht.',
+      preset: 'WASD-Vorlage',
+      clear: 'Leeren',
+      press: 'Taste drücken…',
+      stick: 'Stick',
+    },
     bridge: {
       title: 'PlayStation- und Switch-Controller als Xbox-Controller',
       hint: 'DualShock 4, DualSense und Switch Pro erscheinen isolierten Spielen als Xbox-Controller auf einem freien Platz, ohne Treiber. Vibration funktioniert über USB. Schalte es für Spiele ein, die diese Controller nicht erkennen; ein Spiel, das sie bereits unterstützt, kann doppelt reagieren.',

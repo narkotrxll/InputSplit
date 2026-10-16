@@ -334,6 +334,15 @@ export const pl: Messages = {
     wired: 'Przewodowy',
     use: 'Użyj w grze',
     inUse: 'Wybrany',
+    keys: {
+      title: 'Pad jako klawiatura',
+      description:
+        'Dla gier bez obsługi pada: przyciski, spusty i lewa gałka naciskają klawisze w izolowanej grze. Wspólna klawiatura pozostaje zablokowana, do gry trafiają tylko te klawisze. Działa w grach, które czytają klawisze z komunikatów okna; gry czytające klawiaturę przez Raw Input lub DirectInput ich nie zobaczą.',
+      preset: 'Układ WASD',
+      clear: 'Wyczyść',
+      press: 'Naciśnij klawisz…',
+      stick: 'Gałka',
+    },
     bridge: {
       title: 'Kontrolery PlayStation i Switch jako kontroler Xbox',
       hint: 'DualShock 4, DualSense i Switch Pro są widoczne dla izolowanych gier jako kontroler Xbox w wolnym gnieździe, bez sterowników. Wibracje działają przez USB. Włącz dla gier, które nie widzą tych kontrolerów; gra, która już je obsługuje, może reagować podwójnie.',

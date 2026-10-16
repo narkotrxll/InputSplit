@@ -7,6 +7,7 @@ import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import { INPUT_TOOLS } from '@shared/input-tools'
 import ControllerSlotCard from '../components/ControllerSlotCard.vue'
 import ControllerTuningCard from '../components/ControllerTuningCard.vue'
+import GamepadKeysCard from '../components/GamepadKeysCard.vue'
 import GamepadVisualizer from '../components/GamepadVisualizer.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
@@ -192,6 +193,7 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
     </UiCard>
 
     <ControllerTuningCard v-if="devices.connected.length > 0" class="mt-5" />
+    <GamepadKeysCard v-if="devices.connected.length > 0" class="mt-5" />
 
     <UiEmptyState
       v-if="devices.loaded && devices.connected.length === 0"

@@ -299,6 +299,17 @@ bool InstallXInputHooks() {
   return installed;
 }
 
+bool ReadPlayerOnePad(XINPUT_STATE* state) {
+  if (g_real.getState == nullptr && !InstallXInputHooks()) return false;
+  DWORD physical = 0;
+  if (!MapUserIndex(0, physical)) return false;
+  if (g_real.getState(physical, state) != ERROR_SUCCESS && !ReadBridged(physical, state)) {
+    return false;
+  }
+  ApplyTuning(state);
+  return true;
+}
+
 void OnXInputBackgroundEnabled() {
   // The game may already have disabled XInput before isolation started.
   if (g_real.enable != nullptr) g_real.enable(TRUE);

@@ -340,6 +340,15 @@ export const fr: Messages = {
     wired: 'Filaire',
     use: 'Utiliser pour le jeu',
     inUse: 'Choisie',
+    keys: {
+      title: 'Manette comme clavier',
+      description:
+        'Pour les jeux sans prise en charge de la manette : boutons, gâchettes et stick gauche appuient sur des touches dans le jeu isolé. Le clavier partagé reste bloqué ; seules ces touches atteignent le jeu. Fonctionne dans les jeux qui lisent les touches via les messages de fenêtre ; ceux qui lisent le clavier via Raw Input ou DirectInput ne les verront pas.',
+      preset: 'Modèle WASD',
+      clear: 'Effacer',
+      press: 'Appuyez sur une touche…',
+      stick: 'Stick',
+    },
     bridge: {
       title: 'Manettes PlayStation et Switch comme manette Xbox',
       hint: 'Les DualShock 4, DualSense et Switch Pro apparaissent aux jeux isolés comme une manette Xbox sur un emplacement libre, sans pilote. La vibration fonctionne en USB. Activez-le pour les jeux qui ne voient pas ces manettes ; un jeu qui les prend déjà en charge peut réagir deux fois.',

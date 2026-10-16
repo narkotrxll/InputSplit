@@ -340,6 +340,15 @@ export const es: Messages = {
     wired: 'Con cable',
     use: 'Usar en el juego',
     inUse: 'Elegido',
+    keys: {
+      title: 'Mando como teclado',
+      description:
+        'Para juegos sin soporte de mando: los botones, gatillos y el stick izquierdo pulsan teclas dentro del juego aislado. El teclado compartido sigue bloqueado; solo estas teclas llegan al juego. Funciona en juegos que leen las teclas de los mensajes de ventana; los que leen el teclado con Raw Input o DirectInput no las verán.',
+      preset: 'Plantilla WASD',
+      clear: 'Borrar',
+      press: 'Pulsa una tecla…',
+      stick: 'Stick',
+    },
     bridge: {
       title: 'Mandos de PlayStation y Switch como mando de Xbox',
       hint: 'DualShock 4, DualSense y Switch Pro aparecen en los juegos aislados como un mando de Xbox en una ranura libre, sin controladores. La vibración funciona por USB. Actívalo para juegos que no ven estos mandos; un juego que ya los admite puede reaccionar dos veces.',

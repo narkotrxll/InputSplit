@@ -34,6 +34,12 @@ bool IsMouseMessage(UINT message);
 bool InstallXInputHooks();
 void OnXInputBackgroundEnabled();
 void OnXInputBackgroundDisabled();
+bool ReadPlayerOnePad(XINPUT_STATE* state);  // the game's player 1, tuning applied
+
+// key_emulation.cpp (the controller presses keys in the game)
+void SetKeyMap(const uint8_t (&keyMap)[24]);
+void ClearKeyMap();
+bool SyntheticKeyDown(int vk);  // a key the controller holds down in the game
 
 // directinput_bridge.cpp
 bool InstallDirectInputHooks();

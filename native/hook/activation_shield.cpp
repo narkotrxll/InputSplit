@@ -76,6 +76,12 @@ LRESULT CALLBACK ShieldProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return result;
   }
 
+  // Keys from the controller (key_emulation.cpp): delivered without the marker bit.
+  if (IsKeyboardMessage(msg) && (lParam & proto::kSyntheticKeyBit)) {
+    lParam &= ~static_cast<LPARAM>(proto::kSyntheticKeyBit);
+    return callOriginal();
+  }
+
   LRESULT syncResult = 0;
   if (HandleRawInputSyncMessage(msg, syncResult)) return syncResult;
 

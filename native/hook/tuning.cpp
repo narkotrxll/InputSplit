@@ -83,6 +83,7 @@ void SetTuning(const proto::TuningMessage& tuning) {
     Log(LogLevel::Info, "Player order: slots %u %u %u %u", tuning.playerSlots[0] + 1u,
         tuning.playerSlots[1] + 1u, tuning.playerSlots[2] + 1u, tuning.playerSlots[3] + 1u);
   }
+  SetKeyMap(tuning.keyMap);
   Log(LogLevel::Info, "Tuning %s: dead zones L=%d R=%d triggers=%d, buttons %s",
       enabled ? "on" : "off", left, right, trigger, identity ? "unchanged" : "remapped");
 }
@@ -90,6 +91,7 @@ void SetTuning(const proto::TuningMessage& tuning) {
 void ClearTuning() {
   g_enabled.store(false, std::memory_order_release);
   g_orderEnabled.store(false, std::memory_order_release);
+  ClearKeyMap();
 }
 
 bool PlayerOrderSlot(DWORD userIndex, DWORD& physical) {

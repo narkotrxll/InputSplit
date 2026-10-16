@@ -316,6 +316,15 @@ export const zhCN: Messages = {
     wired: '有线',
     use: '用于游戏',
     inUse: '已选择',
+    keys: {
+      title: '手柄当键盘',
+      description:
+        '适用于不支持手柄的游戏：按键、扳机和左摇杆会在隔离的游戏内按下键盘按键。共享键盘仍被屏蔽，只有这些按键会到达游戏。适用于从窗口消息读取按键的游戏；通过 Raw Input 或 DirectInput 读取键盘的游戏收不到它们。',
+      preset: 'WASD 预设',
+      clear: '清除',
+      press: '请按一个键…',
+      stick: '摇杆',
+    },
     bridge: {
       title: '将 PlayStation 和 Switch 手柄作为 Xbox 手柄',
       hint: 'DualShock 4、DualSense 和 Switch Pro 会以空闲插槽中的 Xbox 手柄出现在隔离的游戏中，无需驱动。通过 USB 连接时支持震动。请为识别不到这些手柄的游戏开启；已支持它们的游戏可能会触发两次。',
