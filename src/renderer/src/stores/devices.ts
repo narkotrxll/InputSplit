@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Controller, ControllerState, Display, GamepadModel } from '@shared/domain'
+import type {
+  Controller,
+  ControllerState,
+  Display,
+  GamepadModel,
+  PollingRate,
+} from '@shared/domain'
 import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import { call } from '../api'
 
@@ -27,6 +33,8 @@ export const useDevicesStore = defineStore('devices', () => {
   const testSlot = ref<number | null>(null)
   const testState = ref<ControllerState | null>(null)
   const loaded = ref(false)
+  /** Controller test: the last polling-rate result, or 'measuring'. */
+  const pollingRate = ref<{ slot: number; value: number | null | 'measuring' } | null>(null)
   const looks = ref<Record<number, GamepadModel>>(loadLooks())
   /** Running programs that change controller input (ids from input-tools.ts). */
   const inputTools = ref<string[]>([])
@@ -69,6 +77,15 @@ export const useDevicesStore = defineStore('devices', () => {
     inputTools.value = await call('controllers:inputTools')
   }
 
+  function setPollingRate(rate: PollingRate): void {
+    pollingRate.value = { slot: rate.slot, value: rate.updatesPerSecond }
+  }
+
+  async function measurePollingRate(slot: number): Promise<void> {
+    pollingRate.value = { slot, value: 'measuring' }
+    await call('controllers:measureRate', slot)
+  }
+
   async function startTest(slot: number): Promise<void> {
     testSlot.value = slot
     testState.value = null
@@ -98,6 +115,9 @@ export const useDevicesStore = defineStore('devices', () => {
     testState,
     loaded,
     looks,
+    pollingRate,
+    setPollingRate,
+    measurePollingRate,
     inputTools,
     connected,
     setControllers,

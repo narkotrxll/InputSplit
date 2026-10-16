@@ -50,6 +50,19 @@ const doubledSlots = computed(() =>
   devices.controllers.filter((c) => c.connected && c.doubled).map((c) => c.slot + 1),
 )
 
+// Polling rate of the controller under test.
+const rate = computed(() =>
+  devices.pollingRate?.slot === testSlot.value ? devices.pollingRate : null,
+)
+const rateText = computed(() => {
+  const value = rate.value?.value
+  if (value === undefined) return ''
+  if (value === 'measuring') return t('controllers.rate.measuring')
+  if (value === null) return t('controllers.rate.lost')
+  if (value < 20) return t('controllers.rate.still')
+  return t(value < 100 ? 'controllers.rate.slow' : 'controllers.rate.result', { n: value })
+})
+
 async function toggleTest(slot: number): Promise<void> {
   if (devices.testSlot === slot) await devices.stopTest()
   else await devices.startTest(slot)
@@ -141,6 +154,19 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
         </div>
       </template>
       <GamepadVisualizer :state="devices.testState" :model="devices.lookOf(testSlot)" />
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-4">
+        <UiButton
+          size="sm"
+          variant="subtle"
+          :disabled="rate?.value === 'measuring'"
+          @click="devices.measurePollingRate(testSlot)"
+        >
+          {{ $t('controllers.rate.measure') }}
+        </UiButton>
+        <span class="text-[12.5px] text-text-muted tabular">{{ rateText }}</span>
+      </div>
+      <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.rate.hint') }}</p>
+      <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.glyphsTip') }}</p>
     </UiCard>
 
     <UiEmptyState

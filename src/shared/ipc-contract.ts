@@ -20,6 +20,7 @@ import {
   BackendStateSchema,
   ControllerSchema,
   ControllerStateSchema,
+  PollingRateSchema,
   DisplaySchema,
   IsolationViewSchema,
   SeatSchema,
@@ -53,6 +54,7 @@ export const invokeContract = {
   'controllers:list': { input: none, output: z.array(ControllerSchema) },
   'controllers:startTest': { input: z.number().int().min(0).max(3), output: ok },
   'controllers:stopTest': { input: none, output: ok },
+  'controllers:measureRate': { input: z.number().int().min(0).max(3), output: ok },
   /** Running programs that change controller input (ids from input-tools.ts). */
   'controllers:inputTools': { input: none, output: z.array(z.string()) },
 
@@ -117,6 +119,7 @@ export const eventContract = {
   'isolation:changed': z.object({ seat: SeatSchema, view: IsolationViewSchema }),
   'controllers:changed': z.array(ControllerSchema),
   'controllers:state': ControllerStateSchema,
+  'controllers:pollingRate': PollingRateSchema,
   'displays:changed': z.array(DisplaySchema),
   'log:entry': LogEntrySchema,
   'automation:changed': AutomationStateSchema,

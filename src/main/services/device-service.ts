@@ -1,7 +1,7 @@
 /**
  * Controllers and displays: cached lists kept fresh by helper events (no polling here).
  */
-import type { Controller, ControllerState, Display, HidGamepad } from '@shared/domain'
+import type { Controller, ControllerState, Display, HidGamepad, PollingRate } from '@shared/domain'
 import { resolveModels } from '@shared/gamepad-models'
 import { INPUT_TOOL_EXES, toolsFromProcesses } from '@shared/input-tools'
 import type { NativeBackend } from '../native/backend'
@@ -17,6 +17,7 @@ export class DeviceService {
   readonly controllersChanged = new Emitter<Controller[]>()
   readonly displaysChanged = new Emitter<Display[]>()
   readonly controllerState = new Emitter<ControllerState>()
+  readonly pollingRate = new Emitter<PollingRate>()
 
   constructor(private readonly backend: NativeBackend) {
     backend.onEvent((event) => {
@@ -28,6 +29,8 @@ export class DeviceService {
         this.displaysChanged.emit(this.displays)
       } else if (event.name === 'controllerState') {
         this.controllerState.emit(event.data)
+      } else if (event.name === 'pollingRate') {
+        this.pollingRate.emit(event.data)
       }
     })
     let previous = backend.getState().status
@@ -66,6 +69,11 @@ export class DeviceService {
     } catch {
       return []
     }
+  }
+
+  /** Starts a two-second measurement; the result arrives as a `pollingRate` event. */
+  async measurePollingRate(slot: number): Promise<void> {
+    await this.backend.request('measurePollingRate', { slot })
   }
 
   async listDisplays(): Promise<Display[]> {

@@ -114,6 +114,10 @@ Json Handle(const std::string& method, const Json& params) {
     ControllerMonitor::Instance().StartTest(params.at("slot").get<int>());
     return Json::object();
   }
+  if (method == "measurePollingRate") {
+    ControllerMonitor::Instance().MeasurePollingRate(params.at("slot").get<int>());
+    return Json::object();
+  }
   if (method == "stopControllerTest") {
     ControllerMonitor::Instance().StopTest();
     return Json::object();

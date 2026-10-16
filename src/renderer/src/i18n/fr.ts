@@ -337,6 +337,17 @@ export const fr: Messages = {
     wired: 'Filaire',
     use: 'Utiliser pour le jeu',
     inUse: 'Choisie',
+    rate: {
+      measure: 'Mesurer la fréquence d’interrogation',
+      measuring: 'Faites tourner un stick pendant 2 secondes…',
+      result: 'Environ {n} mises à jour par seconde',
+      slow: 'Environ {n} mises à jour par seconde : lent, un câble ou un meilleur récepteur réagira plus vite',
+      still: 'Trop peu de mises à jour : faites tourner un stick pendant la mesure',
+      lost: 'La manette s’est déconnectée pendant la mesure',
+      hint: 'La plupart des manettes envoient 125 à 250 mises à jour par seconde en Bluetooth et 250 à 1000 en USB. Plus il y en a, moins il y a de délai entre votre main et le jeu.',
+    },
+    glyphsTip:
+      'Le jeu affiche des boutons Xbox pour une manette PlayStation, ou l’inverse ? Le jeu choisit lui-même ses icônes. Il suffit souvent d’activer ou désactiver Steam Input pour ce jeu, de brancher la manette par câble ou de choisir le style des boutons dans les réglages du jeu.',
     doubled: 'Peut réagir deux fois dans les jeux',
     tools: {
       title: 'Programmes qui modifient l’entrée de la manette',
