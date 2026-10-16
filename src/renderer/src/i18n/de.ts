@@ -594,6 +594,9 @@ export const de: Messages = {
     shortcut: 'Controller-Tastenkombination',
     shortcutHint:
       'Halte diese Tasten 2 Sekunden lang, um die Isolierung vom Sofa aus zu starten oder zu beenden. Läuft nichts, startet das zuletzt verwendete Profil, dessen Spiel geöffnet ist.',
+    alerts: 'Controller-Hinweise auf dem Spielbildschirm',
+    alertsHint:
+      'Wenn der Controller des Spielers getrennt wird, wieder da ist oder der Akku fast leer ist, erscheint eine kurze Meldung auf dem Spielbildschirm und als Windows-Benachrichtigung.',
     rumble: 'Beim Starten und Beenden vibrieren',
     rumbleHint:
       'Ein langer Impuls: Isolierung aktiv. Zwei kurze: beendet. Drei: nichts zu starten.',

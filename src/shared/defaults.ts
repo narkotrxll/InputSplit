@@ -73,6 +73,7 @@ export const DEFAULT_SETTINGS: Settings = {
   overlayHotkeyEnabled: true,
   gamepadTuning: { leftDeadzone: 0, rightDeadzone: 0, triggerDeadzone: 0, remap: {} },
   blockGameBarButton: true,
+  controllerAlerts: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

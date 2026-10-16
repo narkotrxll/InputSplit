@@ -442,6 +442,8 @@ const ADDED_SETTINGS_FIELDS = {
   gamepadTuning: GamepadTuningSchema,
   /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
   blockGameBarButton: z.boolean(),
+  /** Tell the player on the TV when their controller disconnects or its battery runs low. */
+  controllerAlerts: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -463,6 +465,7 @@ export const SettingsSchema = z.object({
     remap: {},
   }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
+  controllerAlerts: ADDED_SETTINGS_FIELDS.controllerAlerts.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -580,6 +583,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'gameAudioToDisplay',
   'gamepadTuning',
   'blockGameBarButton',
+  'controllerAlerts',
   'showAllWindows',
   'verboseLogging',
   'theme',

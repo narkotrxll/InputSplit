@@ -56,6 +56,9 @@ export interface MainTexts {
   overlayNoRenderer: string
   overlayPressButton: string
   overlayNote: string
+  noticeDisconnected: string // {n}
+  noticeReconnected: string // {n}
+  noticeLowBattery: string // {n}
 }
 
 const texts: Record<Locale, MainTexts> = {
@@ -114,6 +117,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Not available in this game',
     overlayPressButton: 'Press a button',
     overlayNote: 'PC only: controller, cable and TV delay not included',
+    noticeDisconnected: 'Controller {n} disconnected',
+    noticeReconnected: 'Controller {n} is back',
+    noticeLowBattery: 'Controller {n}: battery is low',
   },
   uk: {
     trayIsolating: 'Ізоляція: {game}',
@@ -171,6 +177,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Недоступно в цій грі',
     overlayPressButton: 'Натисніть кнопку',
     overlayNote: 'Лише ПК: без затримки геймпада, кабелю й телевізора',
+    noticeDisconnected: 'Геймпад {n} відключився',
+    noticeReconnected: 'Геймпад {n} знову підключено',
+    noticeLowBattery: 'Геймпад {n}: батарея сідає',
   },
   ru: {
     trayIsolating: 'Изоляция: {game}',
@@ -227,6 +236,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Недоступно в этой игре',
     overlayPressButton: 'Нажмите кнопку',
     overlayNote: 'Только ПК: без задержки геймпада, кабеля и телевизора',
+    noticeDisconnected: 'Геймпад {n} отключился',
+    noticeReconnected: 'Геймпад {n} снова подключён',
+    noticeLowBattery: 'Геймпад {n}: батарея садится',
   },
   es: {
     trayIsolating: 'Aislando {game}',
@@ -283,6 +295,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'No disponible en este juego',
     overlayPressButton: 'Pulsa un botón',
     overlayNote: 'Solo el PC: sin el retraso del mando, el cable y la TV',
+    noticeDisconnected: 'Mando {n} desconectado',
+    noticeReconnected: 'El mando {n} ha vuelto',
+    noticeLowBattery: 'Mando {n}: batería baja',
   },
   de: {
     trayIsolating: '{game} wird isoliert',
@@ -340,6 +355,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'In diesem Spiel nicht verfügbar',
     overlayPressButton: 'Drück eine Taste',
     overlayNote: 'Nur der PC: ohne Verzögerung von Controller, Kabel und TV',
+    noticeDisconnected: 'Controller {n} getrennt',
+    noticeReconnected: 'Controller {n} ist wieder da',
+    noticeLowBattery: 'Controller {n}: Akku fast leer',
   },
   fr: {
     trayIsolating: 'Isolation de {game}',
@@ -397,6 +415,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Indisponible dans ce jeu',
     overlayPressButton: 'Appuyez sur un bouton',
     overlayNote: 'PC seul : sans le délai de la manette, du câble et de la TV',
+    noticeDisconnected: 'Manette {n} déconnectée',
+    noticeReconnected: 'La manette {n} est de retour',
+    noticeLowBattery: 'Manette {n} : batterie faible',
   },
   'pt-BR': {
     trayIsolating: 'Isolando {game}',
@@ -452,6 +473,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Indisponível neste jogo',
     overlayPressButton: 'Aperte um botão',
     overlayNote: 'Só o PC: sem o atraso do controle, do cabo e da TV',
+    noticeDisconnected: 'Controle {n} desconectado',
+    noticeReconnected: 'O controle {n} voltou',
+    noticeLowBattery: 'Controle {n}: bateria fraca',
   },
   pl: {
     trayIsolating: 'Izolowanie: {game}',
@@ -507,6 +531,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Niedostępne w tej grze',
     overlayPressButton: 'Naciśnij przycisk',
     overlayNote: 'Tylko PC: bez opóźnienia pada, kabla i telewizora',
+    noticeDisconnected: 'Kontroler {n} rozłączony',
+    noticeReconnected: 'Kontroler {n} znów połączony',
+    noticeLowBattery: 'Kontroler {n}: słaba bateria',
   },
   tr: {
     trayIsolating: '{game} yalıtılıyor',
@@ -564,6 +591,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'Bu oyunda kullanılamıyor',
     overlayPressButton: 'Bir tuşa basın',
     overlayNote: 'Yalnızca PC: kumanda, kablo ve TV gecikmesi dahil değil',
+    noticeDisconnected: 'Kumanda {n} bağlantısı kesildi',
+    noticeReconnected: 'Kumanda {n} yeniden bağlandı',
+    noticeLowBattery: 'Kumanda {n}: pil zayıf',
   },
   'zh-CN': {
     trayIsolating: '正在隔离 {game}',
@@ -618,6 +648,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: '此游戏不支持',
     overlayPressButton: '请按一个按键',
     overlayNote: '仅电脑部分：不含手柄、线缆和电视的延迟',
+    noticeDisconnected: '手柄 {n} 已断开',
+    noticeReconnected: '手柄 {n} 已重新连接',
+    noticeLowBattery: '手柄 {n}：电量低',
   },
   ja: {
     trayIsolating: '{game} を分離中',
@@ -677,6 +710,9 @@ const texts: Record<Locale, MainTexts> = {
     overlayNoRenderer: 'このゲームでは利用できません',
     overlayPressButton: 'ボタンを押してください',
     overlayNote: 'PC のみ: コントローラー、ケーブル、テレビの遅延は含みません',
+    noticeDisconnected: 'コントローラー {n} が切断されました',
+    noticeReconnected: 'コントローラー {n} が再接続されました',
+    noticeLowBattery: 'コントローラー {n}：バッテリー残量が少なくなっています',
   },
 }
 

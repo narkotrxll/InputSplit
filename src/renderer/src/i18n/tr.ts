@@ -585,6 +585,9 @@ export const tr: Messages = {
     shortcut: 'Kumanda kısayolu',
     shortcutHint:
       'Yalıtımı koltuktan başlatmak veya durdurmak için bu düğmeleri 2 saniye basılı tutun. Hiçbir şey çalışmıyorsa, oyunu açık olan en son kullanılan profil başlar.',
+    alerts: 'Oyun ekranında kumanda uyarıları',
+    alertsHint:
+      'Oyuncunun kumandası koparsa, yeniden bağlanırsa ya da pili azalırsa oyun ekranında ve Windows bildiriminde kısa bir mesaj görünür.',
     rumble: 'Başlatırken ve durdururken titreş',
     rumbleHint: 'Bir uzun titreşim: yalıtım açık. İki kısa: kapalı. Üç: başlatılacak bir şey yok.',
     overlay: 'FPS ve giriş gecikmesi',
