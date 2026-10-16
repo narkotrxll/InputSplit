@@ -242,6 +242,8 @@ export class SimulatedBackend implements NativeBackend {
         return {}
       case 'setEmergencyHotkey':
         return { registered: true, accelerator: 'Ctrl+Alt+Shift+Q' }
+      case 'setTuning':
+        return {}
       case 'setFrameStats': {
         const session = this.sessions.get(Number(p['sessionId']))
         if (session === undefined) throw new AppException('sessionNotFound', 'Simulated: no session')

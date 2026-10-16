@@ -337,6 +337,22 @@ export const fr: Messages = {
     wired: 'Filaire',
     use: 'Utiliser pour le jeu',
     inUse: 'Choisie',
+    tuning: {
+      title: 'Sticks, gâchettes et boutons',
+      description:
+        'S’applique dans les jeux isolés à ce qu’ils lisent comme une manette Xbox. La manette elle-même et les autres programmes ne changent pas.',
+      reset: 'Réinitialiser',
+      leftDeadzone: 'Zone morte du stick gauche',
+      rightDeadzone: 'Zone morte du stick droit',
+      triggerDeadzone: 'Zone morte des gâchettes',
+      now: 'Maintenant : {n} %',
+      driftHint:
+        'Si un personnage ou la caméra bouge tout seul, relâchez le stick et réglez la zone morte un peu au-dessus de la valeur affichée ici (testez la manette ci-dessus).',
+      buttons: 'Boutons',
+      swapAB: 'Inverser A et B',
+      off: 'Désactivé',
+      dpad: 'Croix directionnelle',
+    },
     test: 'Tester',
     stopTest: 'Arrêter le test',
     testTitle: 'Test de la manette',

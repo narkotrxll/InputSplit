@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import type { GamepadModel } from '@shared/domain'
 import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import ControllerSlotCard from '../components/ControllerSlotCard.vue'
+import ControllerTuningCard from '../components/ControllerTuningCard.vue'
 import GamepadVisualizer from '../components/GamepadVisualizer.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
@@ -111,6 +112,8 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
       </template>
       <GamepadVisualizer :state="devices.testState" :model="devices.lookOf(testSlot)" />
     </UiCard>
+
+    <ControllerTuningCard v-if="devices.connected.length > 0" class="mt-5" />
 
     <UiEmptyState
       v-if="devices.loaded && devices.connected.length === 0"

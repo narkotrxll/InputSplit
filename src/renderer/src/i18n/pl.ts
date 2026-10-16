@@ -331,6 +331,22 @@ export const pl: Messages = {
     wired: 'Przewodowy',
     use: 'Użyj w grze',
     inUse: 'Wybrany',
+    tuning: {
+      title: 'Gałki, spusty i przyciski',
+      description:
+        'Stosowane w izolowanych grach do tego, co odczytują jako kontroler Xbox. Sam kontroler i inne programy się nie zmieniają.',
+      reset: 'Resetuj',
+      leftDeadzone: 'Martwa strefa lewej gałki',
+      rightDeadzone: 'Martwa strefa prawej gałki',
+      triggerDeadzone: 'Martwa strefa spustów',
+      now: 'Teraz: {n}%',
+      driftHint:
+        'Jeśli postać lub kamera porusza się sama, puść gałkę i ustaw martwą strefę trochę powyżej pokazanej tu wartości (włącz test kontrolera powyżej).',
+      buttons: 'Przyciski',
+      swapAB: 'Zamień A i B',
+      off: 'Wyłączony',
+      dpad: 'Krzyżak',
+    },
     test: 'Testuj',
     stopTest: 'Zatrzymaj test',
     testTitle: 'Test kontrolera',

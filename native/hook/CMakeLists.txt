@@ -11,6 +11,7 @@ add_library(InputSplitHook SHARED
   rawinput_bridge.cpp
   detection.cpp
   frame_stats.cpp
+  tuning.cpp
   minhook_util.cpp
   log.cpp
   hook.def)

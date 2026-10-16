@@ -329,6 +329,22 @@ export const tr: Messages = {
     wired: 'Kablolu',
     use: 'Oyun için kullan',
     inUse: 'Seçildi',
+    tuning: {
+      title: 'Çubuklar, tetikler ve tuşlar',
+      description:
+        'Yalıtılmış oyunlarda Xbox kumandası olarak okunan girişe uygulanır. Kumandanın kendisi ve diğer programlar değişmez.',
+      reset: 'Sıfırla',
+      leftDeadzone: 'Sol çubuk ölü bölgesi',
+      rightDeadzone: 'Sağ çubuk ölü bölgesi',
+      triggerDeadzone: 'Tetik ölü bölgesi',
+      now: 'Şu an: %{n}',
+      driftHint:
+        'Karakter ya da kamera kendi kendine hareket ediyorsa çubuğu bırakın ve ölü bölgeyi burada gösterilen değerin biraz üstüne ayarlayın (yukarıdan kumandayı test edin).',
+      buttons: 'Tuşlar',
+      swapAB: "A ile B'yi değiştir",
+      off: 'Kapalı',
+      dpad: 'Yön tuşları',
+    },
     test: 'Test et',
     stopTest: 'Testi durdur',
     testTitle: 'Kontrolcü testi',

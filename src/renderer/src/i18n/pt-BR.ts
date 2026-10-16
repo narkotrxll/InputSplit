@@ -333,6 +333,22 @@ export const ptBR: Messages = {
     wired: 'Com fio',
     use: 'Usar no jogo',
     inUse: 'Escolhido',
+    tuning: {
+      title: 'Analógicos, gatilhos e botões',
+      description:
+        'Aplicado dentro dos jogos isolados ao que eles leem como controle Xbox. O controle e os outros programas não mudam.',
+      reset: 'Redefinir',
+      leftDeadzone: 'Zona morta do analógico esquerdo',
+      rightDeadzone: 'Zona morta do analógico direito',
+      triggerDeadzone: 'Zona morta dos gatilhos',
+      now: 'Agora: {n}%',
+      driftHint:
+        'Se um personagem ou a câmera se mexer sozinho, solte o analógico e ponha a zona morta um pouco acima do valor mostrado aqui (teste o controle acima).',
+      buttons: 'Botões',
+      swapAB: 'Trocar A e B',
+      off: 'Desligado',
+      dpad: 'Direcional',
+    },
     test: 'Testar',
     stopTest: 'Parar teste',
     testTitle: 'Teste do controle',
