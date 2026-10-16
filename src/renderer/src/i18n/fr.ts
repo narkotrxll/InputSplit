@@ -275,6 +275,9 @@ export const fr: Messages = {
       'Ce profil ne sait pas où se trouve le jeu. Choisissez le fichier du jeu dans le profil.',
     launchFailed: 'Impossible de lancer le jeu. Vérifiez le fichier du jeu dans le profil.',
     launchTimeout: "La fenêtre du jeu n'est pas apparue à temps.",
+    secondCopyTimeout:
+      'Le jeu n’a pas ouvert de deuxième copie. Certains jeux n’autorisent qu’une copie à la fois.',
+    noFreeController: 'Aucune manette libre pour le deuxième joueur. Branchez-en une autre.',
     updateUnavailable: "Aucune mise à jour n'est prête à être installée.",
     updateDevBuild: "Les mises à jour ne s'installent que dans l'application installée.",
     updateFailed: 'Impossible de télécharger la mise à jour. Réessayez plus tard.',
@@ -717,6 +720,8 @@ export const fr: Messages = {
     player: 'Joueur {n}',
     noGame: 'Aucun jeu choisi',
     twoPlayers: 'Deux joueurs',
+    sameGameHint:
+      'Le même jeu pour les deux : appuyez encore sur Jouer dans son profil. InputSplit lance une deuxième copie pour l’autre joueur, avec une manette et un écran libres (si le jeu autorise deux copies).',
     twoPlayersHint:
       'Deux jeux en même temps, chacun avec sa manette. Le tableau de bord affiche un onglet par joueur.',
   },

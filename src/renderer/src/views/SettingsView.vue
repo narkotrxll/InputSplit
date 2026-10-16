@@ -463,6 +463,9 @@ function showOnboarding(): void {
               <span class="block text-[12.5px] text-text-muted">{{
                 $t('seats.twoPlayersHint')
               }}</span>
+              <span v-if="s.twoPlayers" class="mt-1 block text-[12.5px] text-text-muted">{{
+                $t('seats.sameGameHint')
+              }}</span>
             </span>
             <UiSwitch
               :model-value="s.twoPlayers"

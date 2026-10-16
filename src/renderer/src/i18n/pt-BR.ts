@@ -271,6 +271,9 @@ export const ptBR: Messages = {
     noExePath: 'Este perfil não sabe onde está o jogo. Escolha o arquivo do jogo no perfil.',
     launchFailed: 'Não foi possível iniciar o jogo. Verifique o arquivo do jogo no perfil.',
     launchTimeout: 'A janela do jogo não apareceu a tempo.',
+    secondCopyTimeout:
+      'O jogo não abriu uma segunda cópia. Alguns jogos permitem só uma cópia por vez.',
+    noFreeController: 'Não há controle livre para o segundo jogador. Conecte outro.',
     updateUnavailable: 'Nenhuma atualização está pronta para instalar.',
     updateDevBuild: 'As atualizações só são instaladas no aplicativo instalado.',
     updateFailed: 'Não foi possível baixar a atualização. Tente novamente mais tarde.',
@@ -706,6 +709,8 @@ export const ptBR: Messages = {
     player: 'Jogador {n}',
     noGame: 'Nenhum jogo escolhido',
     twoPlayers: 'Dois jogadores',
+    sameGameHint:
+      'O mesmo jogo para os dois: aperte Jogar no perfil dele de novo. O InputSplit abre uma segunda cópia para o outro jogador, com controle e tela livres (se o jogo permitir duas cópias).',
     twoPlayersHint:
       'Dois jogos ao mesmo tempo, cada um com seu próprio controle. O painel mostra uma aba por jogador.',
   },

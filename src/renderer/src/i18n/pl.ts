@@ -269,6 +269,9 @@ export const pl: Messages = {
     noExePath: 'Ten profil nie wie, gdzie jest gra. Wybierz plik gry w profilu.',
     launchFailed: 'Nie udało się uruchomić gry. Sprawdź plik gry w profilu.',
     launchTimeout: 'Okno gry nie pojawiło się na czas.',
+    secondCopyTimeout:
+      'Gra nie otworzyła drugiej kopii. Niektóre gry pozwalają tylko na jedną kopię naraz.',
+    noFreeController: 'Brak wolnego pada dla drugiego gracza. Podłącz kolejny.',
     updateUnavailable: 'Żadna aktualizacja nie jest gotowa do instalacji.',
     updateDevBuild: 'Aktualizacje instalują się tylko w zainstalowanej aplikacji.',
     updateFailed: 'Nie udało się pobrać aktualizacji. Spróbuj później.',
@@ -702,6 +705,8 @@ export const pl: Messages = {
     player: 'Gracz {n}',
     noGame: 'Nie wybrano gry',
     twoPlayers: 'Dwóch graczy',
+    sameGameHint:
+      'Ta sama gra dla obu: naciśnij ponownie Graj w jej profilu. InputSplit uruchomi drugą kopię dla drugiego gracza, z wolnym padem i ekranem (jeśli gra pozwala na dwie kopie).',
     twoPlayersHint:
       'Dwie gry naraz, każda z własnym kontrolerem. Panel pokazuje kartę dla każdego gracza.',
   },

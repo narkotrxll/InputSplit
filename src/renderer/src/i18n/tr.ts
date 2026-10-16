@@ -267,6 +267,9 @@ export const tr: Messages = {
     noExePath: 'Bu profil oyunun nerede olduğunu bilmiyor. Profilde oyun dosyasını seçin.',
     launchFailed: 'Oyun başlatılamadı. Profildeki oyun dosyasını kontrol edin.',
     launchTimeout: 'Oyun penceresi zamanında açılmadı.',
+    secondCopyTimeout:
+      'Oyun ikinci bir kopya açmadı. Bazı oyunlar aynı anda yalnızca bir kopyaya izin verir.',
+    noFreeController: 'İkinci oyuncu için boş kumanda yok. Bir kumanda daha bağlayın.',
     updateUnavailable: 'Yüklenmeye hazır bir güncelleme yok.',
     updateDevBuild: 'Güncellemeler yalnızca yüklü uygulamada kurulur.',
     updateFailed: 'Güncelleme indirilemedi. Daha sonra tekrar deneyin.',
@@ -700,6 +703,8 @@ export const tr: Messages = {
     player: 'Oyuncu {n}',
     noGame: 'Oyun seçilmedi',
     twoPlayers: 'İki oyuncu',
+    sameGameHint:
+      "İkisi için aynı oyun: profilinde Oyna'ya tekrar basın. InputSplit diğer oyuncu için boş bir kumanda ve ekranla ikinci bir kopya başlatır (oyun iki kopyaya izin veriyorsa).",
     twoPlayersHint:
       'Aynı anda iki oyun, her biri kendi kontrolcüsüyle. Panelde her oyuncu için bir sekme görünür.',
   },

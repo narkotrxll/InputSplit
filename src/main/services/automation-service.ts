@@ -7,7 +7,8 @@
  *  - the controller shortcut: stop the pressing player's isolation, or start the most recent
  *    profile whose game is open.
  *
- * With "Two players" on, each of these takes the first free seat.
+ * With "Two players" on, each of these takes the first free seat. "Play" on a profile whose
+ * game the other player already plays starts a second copy, with a free controller and screen.
  *
  * Each game process is started automatically at most once: after the user stops it, the
  * same process is left alone until it exits.
@@ -16,6 +17,7 @@ import { spawn } from 'node:child_process'
 import { dirname } from 'node:path'
 import type {
   AutomationState,
+  IsolationView,
   Profile,
   Seat,
   StartIsolationInput,
@@ -187,6 +189,10 @@ export class AutomationService {
     }
 
     const run = ++this.run
+    const others = seats.all().filter(isSeatTaken)
+    const exe = profile.exeName.toLowerCase()
+    const secondCopy = others.some((v) => v.target?.exeName.toLowerCase() === exe)
+    const placed = secondCopy ? await this.placeSecondCopy(profile, others) : profile
     let window = await this.findWindow(profile.exeName)
     if (window === null) {
       if (!launch) {
@@ -214,10 +220,37 @@ export class AutomationService {
       if (run !== this.run) return // cancelled
       if (window === null) {
         this.setIdle()
+        if (secondCopy) {
+          throw new AppException('secondCopyTimeout', 'The game did not open a second copy.')
+        }
         throw new AppException('launchTimeout', 'The game window did not appear in time.')
       }
     }
-    await this.startFor(profile, window)
+    await this.startFor(placed, window)
+  }
+
+  /**
+   * The second copy of a game gets the profile's controller and screen unless the other
+   * player already has them; then a free connected controller and a free secondary screen.
+   */
+  private async placeSecondCopy(profile: Profile, others: IsolationView[]): Promise<Profile> {
+    const { backend } = this.options
+    const usedSlots = new Set(others.map((v) => v.controllerSlot))
+    const usedDisplays = new Set(others.map((v) => v.displayId))
+    let controllerSlot = profile.controllerSlot
+    if (controllerSlot === null || usedSlots.has(controllerSlot)) {
+      const { controllers } = await backend.request('listControllers', {})
+      controllerSlot = controllers.find((c) => c.connected && !usedSlots.has(c.slot))?.slot ?? null
+      if (controllerSlot === null) {
+        throw new AppException('noFreeController', 'Connect a controller for the second player.')
+      }
+    }
+    let displayId = profile.displayId
+    if (displayId !== null && usedDisplays.has(displayId)) {
+      const { displays } = await backend.request('listDisplays', {})
+      displayId = displays.find((d) => !d.isPrimary && !usedDisplays.has(d.id))?.id ?? null
+    }
+    return { ...profile, controllerSlot, displayId }
   }
 
   /** Stops waiting for a launched game (the game itself keeps running); clears an error. */
@@ -372,8 +405,18 @@ export class AutomationService {
     return null
   }
 
+  /** The game's window, skipping copies another player already plays. */
   private async findWindow(exeName: string): Promise<WindowInfo | null> {
-    return bestWindow(await this.listWindows(), exeName)
+    const taken = new Set(
+      this.options.seats
+        .all()
+        .filter(isSeatTaken)
+        .map((v) => v.target?.pid),
+    )
+    return bestWindow(
+      (await this.listWindows()).filter((w) => !taken.has(w.pid)),
+      exeName,
+    )
   }
 
   private async listWindows(): Promise<WindowInfo[]> {
