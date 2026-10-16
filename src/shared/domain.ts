@@ -121,6 +121,13 @@ export const HidGamepadSchema = z.object({
 })
 export type HidGamepad = z.infer<typeof HidGamepadSchema>
 
+/** Controller test: how often the controller sent new data (null: it disconnected). */
+export const PollingRateSchema = z.object({
+  slot: z.number().int().min(0).max(3),
+  updatesPerSecond: z.number().int().nullable(),
+})
+export type PollingRate = z.infer<typeof PollingRateSchema>
+
 export const ControllerStateSchema = z.object({
   slot: z.number().int().min(0).max(3),
   connected: z.boolean(),

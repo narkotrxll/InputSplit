@@ -333,6 +333,17 @@ export const ptBR: Messages = {
     wired: 'Com fio',
     use: 'Usar no jogo',
     inUse: 'Escolhido',
+    rate: {
+      measure: 'Medir a taxa de atualização',
+      measuring: 'Gire um analógico por 2 segundos…',
+      result: 'Cerca de {n} atualizações por segundo',
+      slow: 'Cerca de {n} atualizações por segundo: lento; com cabo ou um receptor melhor a resposta será mais rápida',
+      still: 'Poucas atualizações: gire um analógico durante a medição',
+      lost: 'O controle desconectou durante a medição',
+      hint: 'A maioria dos controles envia 125–250 atualizações por segundo por Bluetooth e 250–1000 por USB. Quanto mais, menor o atraso entre sua mão e o jogo.',
+    },
+    glyphsTip:
+      'O jogo mostra botões de Xbox para um controle de PlayStation ou o contrário? O próprio jogo escolhe os ícones. Costuma ajudar ligar ou desligar o Steam Input para o jogo, conectar o controle por cabo ou escolher o estilo dos botões nas configurações do jogo.',
     tuning: {
       title: 'Analógicos, gatilhos e botões',
       description:

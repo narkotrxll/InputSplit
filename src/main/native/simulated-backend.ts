@@ -239,6 +239,14 @@ export class SimulatedBackend implements NativeBackend {
       case 'startControllerTest':
         this.startTest(Number(p['slot']))
         return {}
+      case 'measurePollingRate': {
+        const slot = Number(p['slot'])
+        setTimeout(
+          () => this.events.emit({ name: 'pollingRate', data: { slot, updatesPerSecond: 248 } }),
+          2000,
+        )
+        return {}
+      }
       case 'stopControllerTest':
         if (this.testTimer) clearInterval(this.testTimer)
         return {}

@@ -361,6 +361,7 @@ async function main(): Promise<void> {
   })
   devices.displaysChanged.on((list) => broadcast('displays:changed', list))
   devices.controllerState.on((state) => broadcast('controllers:state', state))
+  devices.pollingRate.on((rate) => broadcast('controllers:pollingRate', rate))
   logger.onEntry((entry) => broadcast('log:entry', entry))
   const applyTheme = (theme: 'dark' | 'light' | 'system') => {
     nativeTheme.themeSource = theme

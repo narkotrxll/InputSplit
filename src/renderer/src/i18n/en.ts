@@ -333,6 +333,17 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    rate: {
+      measure: 'Measure polling rate',
+      measuring: 'Move a stick in circles for 2 seconds…',
+      result: 'About {n} updates per second',
+      slow: 'About {n} updates per second: slow, a cable or a better receiver will feel more responsive',
+      still: 'Too few updates: move a stick in circles while measuring',
+      lost: 'The controller disconnected during the measurement',
+      hint: 'Most controllers send 125–250 updates per second over Bluetooth and 250–1000 over USB. More updates mean less delay between your hand and the game.',
+    },
+    glyphsTip:
+      "Game shows Xbox buttons for a PlayStation controller, or the other way round? The game picks its button pictures itself. Usually it helps to turn Steam Input on or off for that game, connect the controller by cable, or choose the button style in the game's settings.",
     tuning: {
       title: 'Sticks, triggers and buttons',
       description:
