@@ -419,6 +419,8 @@ const ADDED_SETTINGS_FIELDS = {
   gameAudioToDisplay: z.boolean(),
   /** LB + RB + Menu shows or hides FPS and input latency on the game's screen. */
   overlayHotkeyEnabled: z.boolean(),
+  /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
+  blockGameBarButton: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -433,6 +435,7 @@ export const SettingsSchema = z.object({
   antiCheatProtection: ADDED_SETTINGS_FIELDS.antiCheatProtection.default(true),
   gameAudioToDisplay: ADDED_SETTINGS_FIELDS.gameAudioToDisplay.default(true),
   overlayHotkeyEnabled: ADDED_SETTINGS_FIELDS.overlayHotkeyEnabled.default(true),
+  blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -548,6 +551,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'moveWindowByDefault',
   'restoreOnExit',
   'gameAudioToDisplay',
+  'blockGameBarButton',
   'showAllWindows',
   'verboseLogging',
   'theme',

@@ -435,6 +435,9 @@ export const ptBR: Messages = {
     defaults: 'Padrões de isolamento',
     defaultsHint: 'Usados em novas configurações e novos perfis.',
     moveWindowByDefault: 'Mover o jogo para a tela escolhida',
+    blockGameBarButton: 'O botão Xbox não abre a Game Bar',
+    blockGameBarButtonHint:
+      'Enquanto um jogo está isolado, o botão Xbox do controle não abre mais a Game Bar na tela da outra pessoa. Tudo volta ao normal quando o isolamento para.',
     gameAudioToDisplay: 'Som do jogo nos alto-falantes da tela',
     gameAudioToDisplayHint:
       'Se a TV ou o monitor tiver alto-falantes, o jogo toca por eles durante o isolamento. Só o som do jogo muda; o resto continua nos alto-falantes de sempre.',

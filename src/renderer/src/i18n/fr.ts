@@ -441,6 +441,9 @@ export const fr: Messages = {
     defaults: 'Isolation par défaut',
     defaultsHint: 'Utilisé pour les nouvelles configurations et les nouveaux profils.',
     moveWindowByDefault: 'Déplacer le jeu sur l’écran choisi',
+    blockGameBarButton: 'Le bouton Xbox n’ouvre pas la Game Bar',
+    blockGameBarButtonHint:
+      'Pendant l’isolation d’un jeu, le bouton Xbox de la manette n’ouvre plus la Game Bar sur l’écran de l’autre personne. Tout revient comme avant à l’arrêt.',
     gameAudioToDisplay: 'Son du jeu sur les haut-parleurs de l’écran',
     gameAudioToDisplayHint:
       'Si la télé ou le moniteur a des haut-parleurs, le jeu les utilise pendant l’isolation. Seul le son du jeu change ; le reste reste sur vos haut-parleurs habituels.',

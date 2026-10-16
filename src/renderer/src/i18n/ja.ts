@@ -444,6 +444,9 @@ export const ja: Messages = {
     defaults: '分離の既定値',
     defaultsHint: '新しい設定とプロファイルに使われます。',
     moveWindowByDefault: 'ゲームを選択した画面に移動',
+    blockGameBarButton: 'Xbox ボタンで Game Bar を開かない',
+    blockGameBarButtonHint:
+      'ゲームを分離している間、コントローラーの Xbox ボタンで相手の画面に Game Bar が開かなくなります。分離を止めると元に戻ります。',
     gameAudioToDisplay: 'ゲームの音声を画面のスピーカーで再生',
     gameAudioToDisplayHint:
       'テレビやモニターにスピーカーがある場合、分離中はゲームの音声をそこから再生します。切り替わるのはゲームの音声だけで、ほかの音はいつものスピーカーのままです。',

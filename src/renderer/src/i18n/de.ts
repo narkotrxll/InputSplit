@@ -440,6 +440,9 @@ export const de: Messages = {
     defaults: 'Standard für die Isolierung',
     defaultsHint: 'Gilt für neue Setups und neue Profile.',
     moveWindowByDefault: 'Spiel auf den gewählten Bildschirm verschieben',
+    blockGameBarButton: 'Die Xbox-Taste öffnet keine Game Bar',
+    blockGameBarButtonHint:
+      'Während ein Spiel isoliert ist, öffnet die Xbox-Taste des Controllers die Game Bar nicht mehr auf dem Bildschirm der anderen Person. Nach dem Stoppen ist alles wie vorher.',
     gameAudioToDisplay: 'Spielton über die Lautsprecher des Bildschirms',
     gameAudioToDisplayHint:
       'Hat der Fernseher oder Monitor Lautsprecher, läuft der Spielton während der Isolierung darüber. Nur der Ton des Spiels wechselt, alles andere bleibt auf den üblichen Lautsprechern.',

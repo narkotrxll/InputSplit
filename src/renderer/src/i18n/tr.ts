@@ -431,6 +431,9 @@ export const tr: Messages = {
     defaults: 'Yalıtım varsayılanları',
     defaultsHint: 'Yeni kurulumlar ve yeni profiller için kullanılır.',
     moveWindowByDefault: 'Oyunu seçilen ekrana taşı',
+    blockGameBarButton: "Xbox tuşu Game Bar'ı açmaz",
+    blockGameBarButtonHint:
+      "Bir oyun yalıtılmışken kumandanın Xbox tuşu diğer kişinin ekranında Game Bar'ı açmaz. Yalıtım durunca her şey eski haline döner.",
     gameAudioToDisplay: 'Oyun sesini ekranın hoparlörlerinden çal',
     gameAudioToDisplayHint:
       'TV veya monitörde hoparlör varsa oyun, yalıtım sürerken onlardan çalar. Yalnızca oyunun sesi değişir; geri kalan her şey olağan hoparlörlerde kalır.',
