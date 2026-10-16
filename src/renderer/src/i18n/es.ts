@@ -337,6 +337,22 @@ export const es: Messages = {
     wired: 'Con cable',
     use: 'Usar en el juego',
     inUse: 'Elegido',
+    tuning: {
+      title: 'Sticks, gatillos y botones',
+      description:
+        'Se aplica dentro de los juegos aislados a lo que leen como mando de Xbox. El mando y los demás programas no cambian.',
+      reset: 'Restablecer',
+      leftDeadzone: 'Zona muerta del stick izquierdo',
+      rightDeadzone: 'Zona muerta del stick derecho',
+      triggerDeadzone: 'Zona muerta de los gatillos',
+      now: 'Ahora: {n}%',
+      driftHint:
+        'Si un personaje o la cámara se mueven solos, suelta el stick y pon la zona muerta un poco por encima del valor que se muestra aquí (prueba el mando arriba).',
+      buttons: 'Botones',
+      swapAB: 'Intercambiar A y B',
+      off: 'Desactivado',
+      dpad: 'Cruceta',
+    },
     doubled: 'Puede responder dos veces en los juegos',
     tools: {
       title: 'Programas que cambian la entrada del mando',

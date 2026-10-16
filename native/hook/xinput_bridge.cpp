@@ -71,7 +71,10 @@ DWORD WINAPI DetourGetState(DWORD userIndex, XINPUT_STATE* state) {
   DWORD physical = 0;
   if (!MapUserIndex(userIndex, physical)) return ERROR_DEVICE_NOT_CONNECTED;
   DWORD result = g_real.getState(physical, state);
-  if (result == ERROR_SUCCESS) OnControllerRead(physical, state);
+  if (result == ERROR_SUCCESS) {
+    ApplyTuning(state);
+    OnControllerRead(physical, state);
+  }
   return result;
 }
 
@@ -81,7 +84,10 @@ DWORD WINAPI DetourGetStateEx(DWORD userIndex, XINPUT_STATE* state) {
   if (!MapUserIndex(userIndex, physical)) return ERROR_DEVICE_NOT_CONNECTED;
   GetStateFn fn = g_real.getStateEx != nullptr ? g_real.getStateEx : g_real.getState;
   DWORD result = fn(physical, state);
-  if (result == ERROR_SUCCESS) OnControllerRead(physical, state);
+  if (result == ERROR_SUCCESS) {
+    ApplyTuning(state);
+    OnControllerRead(physical, state);
+  }
   return result;
 }
 

@@ -157,6 +157,13 @@ class Session : public std::enable_shared_from_this<Session> {
     SetEvent(commandEvent_.get());
   }
 
+  void RequestTuning(const proto::TuningMessage& tuning) {
+    std::lock_guard<std::mutex> lock(commandMutex_);
+    pendingTuning_ = tuning;
+    hasPendingTuning_ = true;
+    SetEvent(commandEvent_.get());
+  }
+
   void RequestReconfigure(uint32_t features, uint32_t slot) {
     std::lock_guard<std::mutex> lock(commandMutex_);
     pendingConfigure_ = {features, slot};
@@ -213,6 +220,8 @@ class Session : public std::enable_shared_from_this<Session> {
   Configure pendingConfigure_{};
   bool hasPendingConfigure_ = false;
   int pendingFrameStats_ = -1;  // -1 nothing to send, 0 off, 1 on
+  proto::TuningMessage pendingTuning_{};
+  bool hasPendingTuning_ = false;
 
   std::mutex statusMutex_;
   proto::StatusMessage lastStatus_{};
@@ -426,6 +435,8 @@ void Session::Run() {
       Configure configure{};
       bool reconfigure = false;
       int frameStats = -1;
+      proto::TuningMessage tuning{};
+      bool sendTuning = false;
       {
         std::lock_guard<std::mutex> lock(commandMutex_);
         stopReason = stopReason_;
@@ -434,6 +445,14 @@ void Session::Run() {
         hasPendingConfigure_ = false;
         frameStats = pendingFrameStats_;
         pendingFrameStats_ = -1;
+        tuning = pendingTuning_;
+        sendTuning = hasPendingTuning_;
+        hasPendingTuning_ = false;
+      }
+      if (stopReason.empty() && sendTuning && !Write(&tuning, sizeof(tuning))) {
+        endMessage = "Could not send the controller tuning.";
+        running = false;
+        continue;
       }
       if (stopReason.empty() && frameStats >= 0) {
         auto message = proto::MakeMessage<proto::FrameStatsMessage>(proto::MessageType::FrameStats);
@@ -628,6 +647,14 @@ bool SessionManager::Reconfigure(int sessionId, uint32_t features, uint32_t xinp
   auto it = sessions_.find(sessionId);
   if (it == sessions_.end()) return false;
   it->second->RequestReconfigure(features, xinputSlot);
+  return true;
+}
+
+bool SessionManager::SetTuning(int sessionId, const proto::TuningMessage& tuning) {
+  std::lock_guard<std::mutex> lock(mutex_);
+  auto it = sessions_.find(sessionId);
+  if (it == sessions_.end()) return false;
+  it->second->RequestTuning(tuning);
   return true;
 }
 

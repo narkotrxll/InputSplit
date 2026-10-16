@@ -10,6 +10,7 @@ import { join } from 'node:path'
 import { app, dialog, nativeTheme, net, type BrowserWindow } from 'electron'
 import type { IsolationView } from '@shared/domain'
 import { resolveLocale } from '@shared/locales'
+import { isDefaultTuning, toHelperTuning } from '@shared/tuning'
 import { isSessionLive } from '@shared/support'
 import { HelperClient } from './native/helper-client'
 import { SimulatedBackend } from './native/simulated-backend'
@@ -253,6 +254,15 @@ async function main(): Promise<void> {
   const feedbackSlot = (view: IsolationView) =>
     view.controllerSlot ?? lastHotkeySlot ?? devices.connectedSlots()[0] ?? null
 
+  // Dead zones and button remapping (Controllers page), sent to each game that starts.
+  const sendTuning = (view: IsolationView, evenIfDefault: boolean) => {
+    const tuning = settings.get().gamepadTuning
+    if (view.phase !== 'running' || view.sessionId === null) return
+    if (!evenIfDefault && isDefaultTuning(tuning)) return
+    void backend
+      .request('setTuning', { sessionId: view.sessionId, ...toHelperTuning(tuning) })
+      .catch((error: unknown) => logger.warn(`Controller tuning: ${String(error)}`))
+  }
   const gameBar = new GameBarGuard(
     windowsGameBarSetting,
     join(userData, 'gamebar-restore.json'),
@@ -283,8 +293,10 @@ async function main(): Promise<void> {
         .catch((error: unknown) => logger.warn(`Play time: ${String(error)}`))
     }
     if (view.phase !== previousView.phase) {
-      if (view.phase === 'running') rumble(feedbackSlot(view), 'on')
-      else if (view.phase === 'ended') rumble(feedbackSlot(previousView), 'off')
+      if (view.phase === 'running') {
+        rumble(feedbackSlot(view), 'on')
+        sendTuning(view, false)
+      } else if (view.phase === 'ended') rumble(feedbackSlot(previousView), 'off')
     }
     previousViews[seat] = view
     void syncGameBar()
@@ -345,6 +357,9 @@ async function main(): Promise<void> {
     if (next.overlayHotkeyEnabled !== previousSettings.overlayHotkeyEnabled) {
       setOverlayHotkey(next.overlayHotkeyEnabled)
       if (!next.overlayHotkeyEnabled) overlay.closeAll()
+    }
+    if (JSON.stringify(next.gamepadTuning) !== JSON.stringify(previousSettings.gamepadTuning)) {
+      for (const view of seats.all()) sendTuning(view, true)
     }
     if (next.blockGameBarButton !== previousSettings.blockGameBarButton) void syncGameBar()
     if (next.launchAtLogin !== previousSettings.launchAtLogin) applyLoginItem(next.launchAtLogin)

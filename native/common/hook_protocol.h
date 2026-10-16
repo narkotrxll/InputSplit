@@ -16,7 +16,8 @@
 namespace inputsplit::proto {
 
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
-constexpr uint16_t kProtocolVersion = 3;  // 2: DirectInput / Raw Input counters, 3: frame stats
+constexpr uint16_t kProtocolVersion = 4;  // 2: DirectInput / Raw Input counters, 3: frame stats,
+                                          // 4: tuning (dead zones, button remapping)
 
 // Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
@@ -28,6 +29,7 @@ enum class MessageType : uint16_t {
   Status = 4,     // DLL -> helper, after every Configure/Disable and every second
   Log = 5,        // DLL -> helper, diagnostic text
   FrameStats = 6, // helper -> DLL, start or stop measuring frames (the FPS overlay)
+  Tuning = 7,     // helper -> DLL, stick/trigger dead zones and button remapping (XInput)
 };
 
 // Features that the helper can request. Bit flags, combine with |.
@@ -102,6 +104,21 @@ struct FrameStatsMessage {
   uint32_t reserved;
 };
 
+// Applied to what the game reads through XInput. All zeros in the dead zones and an
+// identity map (buttonMap[i] == i) mean "unchanged".
+struct TuningMessage {
+  Header header;
+  uint16_t leftDeadzone;    // radial, 0..32766 (thumb units)
+  uint16_t rightDeadzone;
+  uint8_t triggerDeadzone;  // 0..254
+  uint8_t reserved[3];
+  // For each XInput button bit i (XINPUT_GAMEPAD_* == 1 << i): the bit the game sees
+  // instead, or kButtonOff to hide the button.
+  uint8_t buttonMap[16];
+  uint32_t reserved2[2];
+};
+constexpr uint8_t kButtonOff = 0xFF;
+
 struct StatusMessage {
   Header header;
   uint32_t requested;  // Feature bits currently requested
@@ -144,6 +161,7 @@ static_assert(sizeof(Header) == 16, "Header layout changed");
 static_assert(sizeof(HelloMessage) == 40, "HelloMessage layout changed");
 static_assert(sizeof(ConfigureMessage) == 32, "ConfigureMessage layout changed");
 static_assert(sizeof(FrameStatsMessage) == 24, "FrameStatsMessage layout changed");
+static_assert(sizeof(TuningMessage) == 48, "TuningMessage layout changed");
 static_assert(sizeof(StatusMessage) == 160, "StatusMessage layout changed");
 static_assert(sizeof(LogMessage) == 504, "LogMessage layout changed");
 
@@ -173,6 +191,7 @@ inline uint16_t ValidateMessage(const void* data, uint32_t bytes) {
     case MessageType::Status: return bytes == sizeof(StatusMessage) ? header->type : 0;
     case MessageType::Log: return bytes == sizeof(LogMessage) ? header->type : 0;
     case MessageType::FrameStats: return bytes == sizeof(FrameStatsMessage) ? header->type : 0;
+    case MessageType::Tuning: return bytes == sizeof(TuningMessage) ? header->type : 0;
   }
   return 0;
 }

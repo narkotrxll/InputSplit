@@ -51,6 +51,11 @@ void FrameStatsTick();             // hooks a renderer the game loaded later
 void OnControllerRead(DWORD physicalSlot, const XINPUT_STATE* state);  // after a game read
 void FillFrameStats(proto::StatusMessage& status);
 
+// tuning.cpp (dead zones and button remapping, XInput only)
+void SetTuning(const proto::TuningMessage& tuning);
+void ClearTuning();
+void ApplyTuning(XINPUT_STATE* state);  // no-op unless a tuning is set
+
 // detection.cpp
 uint32_t DetectApis();  // proto::DetectedApi bits
 

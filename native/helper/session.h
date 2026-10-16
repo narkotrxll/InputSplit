@@ -51,6 +51,8 @@ class SessionManager {
   Json RouteAudio(int sessionId, const std::wstring& displayId);
   // Starts or stops the hook's frame counter (FPS overlay).
   bool SetFrameStats(int sessionId, bool enabled);
+  // Dead zones and button remapping for what the game reads through XInput.
+  bool SetTuning(int sessionId, const proto::TuningMessage& tuning);
   // Stops every session; waits up to `waitMs` for them to finish.
   int StopAll(const std::string& reason, DWORD waitMs);
 
