@@ -328,6 +328,11 @@ export const ru: Messages = {
     wired: 'Проводной',
     use: 'Для игры',
     inUse: 'Выбран',
+    bridge: {
+      title: 'Геймпады PlayStation и Switch как Xbox-геймпад',
+      hint: 'DualShock 4, DualSense и Switch Pro видны изолированным играм как Xbox-геймпад в свободном слоте, без драйверов. Вибрация работает по USB. Включайте для игр, которые эти геймпады не видят; игра, которая их уже поддерживает, может реагировать дважды.',
+      badge: 'Через InputSplit',
+    },
     tuning: {
       title: 'Стики, курки и кнопки',
       description:

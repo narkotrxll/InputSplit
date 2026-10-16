@@ -337,6 +337,11 @@ export const es: Messages = {
     wired: 'Con cable',
     use: 'Usar en el juego',
     inUse: 'Elegido',
+    bridge: {
+      title: 'Mandos de PlayStation y Switch como mando de Xbox',
+      hint: 'DualShock 4, DualSense y Switch Pro aparecen en los juegos aislados como un mando de Xbox en una ranura libre, sin controladores. La vibración funciona por USB. Actívalo para juegos que no ven estos mandos; un juego que ya los admite puede reaccionar dos veces.',
+      badge: 'Vía InputSplit',
+    },
     tuning: {
       title: 'Sticks, gatillos y botones',
       description:

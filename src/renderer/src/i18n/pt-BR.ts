@@ -333,6 +333,11 @@ export const ptBR: Messages = {
     wired: 'Com fio',
     use: 'Usar no jogo',
     inUse: 'Escolhido',
+    bridge: {
+      title: 'Controles de PlayStation e Switch como controle Xbox',
+      hint: 'DualShock 4, DualSense e Switch Pro aparecem nos jogos isolados como um controle Xbox num slot livre, sem drivers. A vibração funciona por USB. Ative para jogos que não veem esses controles; um jogo que já os suporta pode reagir duas vezes.',
+      badge: 'Via InputSplit',
+    },
     tuning: {
       title: 'Analógicos, gatilhos e botões',
       description:

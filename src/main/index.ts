@@ -198,8 +198,17 @@ async function main(): Promise<void> {
         .catch((error: unknown) => logger.warn(`Emergency hotkey: ${String(error)}`))
       setGamepadHotkey(settings.get().gamepadHotkeyEnabled)
       setOverlayHotkey(settings.get().overlayHotkeyEnabled)
+      setPadBridge(settings.get().padBridge)
     }
   })
+
+  // PlayStation and Switch controllers as Xbox controllers for isolated games.
+  const setPadBridge = (enabled: boolean) => {
+    if (backend.getState().status !== 'ready') return
+    void backend
+      .request('setPadBridge', { enabled })
+      .catch((error: unknown) => logger.warn(`Pad bridge: ${String(error)}`))
+  }
 
   // Controller shortcut (LB + RB + View held): start or stop from the couch.
   const setGamepadHotkey = (enabled: boolean) => {
@@ -362,6 +371,7 @@ async function main(): Promise<void> {
       for (const view of seats.all()) sendTuning(view, true)
     }
     if (next.blockGameBarButton !== previousSettings.blockGameBarButton) void syncGameBar()
+    if (next.padBridge !== previousSettings.padBridge) setPadBridge(next.padBridge)
     if (next.launchAtLogin !== previousSettings.launchAtLogin) applyLoginItem(next.launchAtLogin)
     if (next.checkForUpdates !== previousSettings.checkForUpdates) {
       updates.setAutomatic(app.isPackaged && next.checkForUpdates)

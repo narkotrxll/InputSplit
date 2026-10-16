@@ -111,6 +111,8 @@ export const ControllerSchema = z.object({
    * also read the physical pad see it twice. Filled in by the main process.
    */
   doubled: z.boolean().optional(),
+  /** A PlayStation or Switch controller that InputSplit shows to isolated games here. */
+  bridged: z.boolean().optional(),
 })
 export type Controller = z.infer<typeof ControllerSchema>
 
@@ -120,6 +122,13 @@ export const HidGamepadSchema = z.object({
   productId: z.number().int(),
 })
 export type HidGamepad = z.infer<typeof HidGamepadSchema>
+
+export const BridgedPadSchema = z.object({
+  slot: z.number().int().min(0).max(3),
+  vendorId: z.number().int(),
+  productId: z.number().int(),
+})
+export type BridgedPad = z.infer<typeof BridgedPadSchema>
 
 export const ControllerStateSchema = z.object({
   slot: z.number().int().min(0).max(3),
@@ -442,6 +451,8 @@ const ADDED_SETTINGS_FIELDS = {
   gamepadTuning: GamepadTuningSchema,
   /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
   blockGameBarButton: z.boolean(),
+  /** Show PlayStation and Switch controllers to isolated games as Xbox controllers. */
+  padBridge: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -463,6 +474,7 @@ export const SettingsSchema = z.object({
     remap: {},
   }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
+  padBridge: ADDED_SETTINGS_FIELDS.padBridge.default(false),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -580,6 +592,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'gameAudioToDisplay',
   'gamepadTuning',
   'blockGameBarButton',
+  'padBridge',
   'showAllWindows',
   'verboseLogging',
   'theme',

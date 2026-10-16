@@ -337,6 +337,11 @@ export const fr: Messages = {
     wired: 'Filaire',
     use: 'Utiliser pour le jeu',
     inUse: 'Choisie',
+    bridge: {
+      title: 'Manettes PlayStation et Switch comme manette Xbox',
+      hint: 'Les DualShock 4, DualSense et Switch Pro apparaissent aux jeux isolés comme une manette Xbox sur un emplacement libre, sans pilote. La vibration fonctionne en USB. Activez-le pour les jeux qui ne voient pas ces manettes ; un jeu qui les prend déjà en charge peut réagir deux fois.',
+      badge: 'Via InputSplit',
+    },
     tuning: {
       title: 'Sticks, gâchettes et boutons',
       description:

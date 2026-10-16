@@ -16,6 +16,8 @@ extern "C" {
 #include <thread>
 #include <vector>
 
+#include "pad_bridge.h"
+
 namespace inputsplit::helper {
 namespace {
 
@@ -246,13 +248,16 @@ Json SnapshotLocked() {
   for (const HidPad& pad : g_hidPads) {
     pads.push_back(Json{{"vendorId", pad.vendorId}, {"productId", pad.productId}});
   }
-  return Json{{"controllers", list}, {"hidGamepads", pads}};
+  return Json{{"controllers", list},
+              {"hidGamepads", pads},
+              {"bridged", PadBridge::Instance().List()}};
 }
 
 void EmitTestState(int slot, DWORD& lastPacket, bool& wasConnected) {
   XINPUT_STATE state{};
   GetStateFn read = g_api.getStateEx != nullptr ? g_api.getStateEx : g_api.getState;
-  bool connected = read(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS;
+  bool connected = read(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS ||
+                   PadBridge::Instance().Read(slot, state);
   if (!connected) {
     if (wasConnected) SendEvent("controllerState", Json{{"slot", slot}, {"connected", false}});
     wasConnected = false;
@@ -284,8 +289,9 @@ void PollHotkey(const bool connected[XUSER_MAX_COUNT], const bool enabled[kShort
   const auto now = std::chrono::steady_clock::now();
   for (int slot = 0; slot < XUSER_MAX_COUNT; ++slot) {
     XINPUT_STATE state{};
-    bool read = connected[slot] &&
-                g_api.getState(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS;
+    bool read = connected[slot]
+                    ? g_api.getState(static_cast<DWORD>(slot), &state) == ERROR_SUCCESS
+                    : PadBridge::Instance().Read(slot, state);
     for (size_t i = 0; i < kShortcutCount; ++i) {
       HotkeyTracker& tracker = trackers[slot][i];
       bool pressed = enabled[i] && read &&
@@ -445,6 +451,16 @@ void ControllerMonitor::StartTest(int slot) {
     g_testSlot = (slot >= 0 && slot < XUSER_MAX_COUNT) ? slot : -1;
   }
   g_wake.notify_all();
+}
+
+bool ControllerMonitor::SlotConnected(int slot) {
+  std::lock_guard<std::mutex> lock(g_mutex);
+  return slot >= 0 && slot < XUSER_MAX_COUNT && g_slots[slot].connected;
+}
+
+void ControllerMonitor::MarkChanged() {
+  std::lock_guard<std::mutex> lock(g_mutex);
+  SendEvent("controllersChanged", SnapshotLocked());
 }
 
 void ControllerMonitor::StopTest() {

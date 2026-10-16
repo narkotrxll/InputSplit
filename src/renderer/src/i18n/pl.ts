@@ -331,6 +331,11 @@ export const pl: Messages = {
     wired: 'Przewodowy',
     use: 'Użyj w grze',
     inUse: 'Wybrany',
+    bridge: {
+      title: 'Kontrolery PlayStation i Switch jako kontroler Xbox',
+      hint: 'DualShock 4, DualSense i Switch Pro są widoczne dla izolowanych gier jako kontroler Xbox w wolnym gnieździe, bez sterowników. Wibracje działają przez USB. Włącz dla gier, które nie widzą tych kontrolerów; gra, która już je obsługuje, może reagować podwójnie.',
+      badge: 'Przez InputSplit',
+    },
     tuning: {
       title: 'Gałki, spusty i przyciski',
       description:

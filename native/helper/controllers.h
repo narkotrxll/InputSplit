@@ -31,6 +31,10 @@ class ControllerMonitor {
   // Short vibration as feedback ("on" one pulse, "off" two, "error" three). Returns false
   // when XInput cannot vibrate.
   bool Rumble(int slot, const std::string& pattern);
+  // A real XInput controller is in `slot` (as of the last presence check).
+  bool SlotConnected(int slot);
+  // Sends a fresh "controllersChanged" (the pad bridge took or released a slot).
+  void MarkChanged();
 
  private:
   ControllerMonitor() = default;

@@ -6,7 +6,13 @@
  * which shows up as a virtual Xbox controller; for those slots the helper also lists the
  * physical HID game controllers that are not XInput devices, and they are matched in order.
  */
-import { GamepadModelSchema, type Controller, type GamepadModel, type HidGamepad } from './domain'
+import {
+  GamepadModelSchema,
+  type BridgedPad,
+  type Controller,
+  type GamepadModel,
+  type HidGamepad,
+} from './domain'
 
 export const GAMEPAD_MODELS = GamepadModelSchema.options
 export type { GamepadModel }
@@ -40,12 +46,38 @@ function maybeVirtual(c: Controller): boolean {
 }
 
 /** Adds `model` to every connected gamepad slot. */
-export function resolveModels(controllers: Controller[], hidGamepads: HidGamepad[]): Controller[] {
-  // Physical pads XInput cannot see directly: the ones a translator stands in for.
-  const hidden = hidGamepads
+export function resolveModels(
+  controllers: Controller[],
+  hidGamepads: HidGamepad[],
+  bridged: BridgedPad[] = [],
+): Controller[] {
+  // Physical pads XInput cannot see directly: the ones a translator stands in for. Pads
+  // InputSplit's own bridge holds are shown in their slot instead.
+  const unbridged = [...hidGamepads]
+  for (const pad of bridged) {
+    const i = unbridged.findIndex(
+      (h) => h.vendorId === pad.vendorId && h.productId === pad.productId,
+    )
+    if (i !== -1) unbridged.splice(i, 1)
+  }
+  const hidden = unbridged
     .map((pad) => modelFromIds(pad.vendorId, pad.productId))
     .filter((model): model is GamepadModel => model !== null && model !== 'xbox')
   return controllers.map((c) => {
+    const bridge = bridged.find((pad) => pad.slot === c.slot)
+    if (!c.connected && bridge !== undefined) {
+      return {
+        ...c,
+        connected: true,
+        kind: 'gamepad',
+        wireless: null,
+        battery: null,
+        vendorId: bridge.vendorId,
+        productId: bridge.productId,
+        model: modelFromIds(bridge.vendorId, bridge.productId) ?? 'generic',
+        bridged: true,
+      }
+    }
     if (!c.connected || c.kind !== 'gamepad') return { ...c, model: undefined }
     if (maybeVirtual(c) && hidden.length > 0) return { ...c, model: hidden.shift(), doubled: true }
     const fromIds =

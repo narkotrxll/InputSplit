@@ -333,6 +333,11 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    bridge: {
+      title: 'PlayStation and Switch controllers as an Xbox controller',
+      hint: 'DualShock 4, DualSense and Switch Pro controllers appear to isolated games as an Xbox controller in a free slot, without drivers. Vibration works over USB. Turn it on for games that do not see these controllers; a game that already supports them may react twice.',
+      badge: 'Via InputSplit',
+    },
     tuning: {
       title: 'Sticks, triggers and buttons',
       description:
