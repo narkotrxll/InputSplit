@@ -88,7 +88,30 @@ Once a game has a profile, it gets even simpler:
   with the details filled in.
 - **Two players:** turn on Settings → Controllers → **Two players** to isolate two games at
   once, each locked to its own controller. The dashboard gets a tab per player, and each
-  player's controller shortcut starts or stops their own game.
+  player's controller shortcut starts or stops their own game. For the **same game on both
+  screens**, press **Play** on its profile again: InputSplit starts a second copy for the other
+  player with a free controller and screen (if the game allows two copies).
+
+### Controller problems it fixes
+
+The **Controllers** page also helps with the usual gamepad trouble on Windows. Everything
+below applies only inside isolated games; the controller and other programs stay unchanged.
+
+- **Double input:** warns when a controller reaches games twice (Steam Input, DS4Windows,
+  reWASD and similar) and says what to turn off.
+- **Stick drift:** dead zones for each stick and the triggers, with a live readout of how far a
+  released stick rests off-centre.
+- **Button remapping:** any button can act as another or be turned off (swap A and B in one
+  click). **Player order** fixes games that number the controllers the wrong way round.
+- **PlayStation and Switch Pro controllers:** DualShock 4, DualSense and Switch Pro
+  controllers appear to isolated games as an Xbox controller, without drivers (vibration over
+  USB). Off by default.
+- **Controller as keyboard:** for games without controller support, buttons, triggers and the
+  left stick press keys inside the game (WASD preset in one click), while the shared keyboard
+  stays blocked.
+- **Warnings on the TV** when the controller disconnects or its battery runs low.
+- **Xbox button:** does not open Game Bar over an isolated game (Settings, on by default).
+- **Polling rate:** measures how many updates per second the controller sends.
 
 <table>
 <tr>
@@ -162,6 +185,10 @@ issue yourself.
   fewer games than XInput controllers in 64-bit games (see the [roadmap](docs/ROADMAP.md)).
 - Windows has one keyboard focus; InputSplit makes the game not *need* it, it cannot create a
   second one.
+- **Controller as keyboard** works in games that read keys from window messages or key-state
+  queries, not in games that read the keyboard through Raw Input or DirectInput.
+- A **second copy of the same game** starts only if the game allows it; InputSplit does not
+  change the game to make it.
 
 ## Install
 
