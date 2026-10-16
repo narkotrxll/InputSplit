@@ -4,10 +4,12 @@ import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { GamepadModel } from '@shared/domain'
 import { GAMEPAD_MODELS } from '@shared/gamepad-models'
+import { INPUT_TOOLS } from '@shared/input-tools'
 import ControllerSlotCard from '../components/ControllerSlotCard.vue'
 import GamepadVisualizer from '../components/GamepadVisualizer.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
+import UiCallout from '../components/ui/UiCallout.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiEmptyState from '../components/ui/UiEmptyState.vue'
 import UiSelect from '../components/ui/UiSelect.vue'
@@ -40,6 +42,14 @@ const look = computed<GamepadModel | 'auto'>({
   },
 })
 
+// Programs between the controller and games, and pads a game may see twice.
+const runningTools = computed(() =>
+  INPUT_TOOLS.filter((tool) => devices.inputTools.includes(tool.id)),
+)
+const doubledSlots = computed(() =>
+  devices.controllers.filter((c) => c.connected && c.doubled).map((c) => c.slot + 1),
+)
+
 async function toggleTest(slot: number): Promise<void> {
   if (devices.testSlot === slot) await devices.stopTest()
   else await devices.startTest(slot)
@@ -47,6 +57,7 @@ async function toggleTest(slot: number): Promise<void> {
 
 onMounted(() => {
   void devices.refresh().catch(() => {})
+  void devices.refreshInputTools().catch(() => {})
   const first = devices.connected[0]
   const preferred = isolation.selection.controllerSlot ?? first?.slot
   if (preferred !== undefined && backend.state?.status === 'ready')
@@ -66,6 +77,26 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
       <Info class="mt-0.5 size-4 shrink-0 text-text-faint" aria-hidden="true" />
       {{ $t('controllers.slotNote') }}
     </div>
+
+    <UiCallout
+      v-if="doubledSlots.length > 0 || runningTools.length > 0"
+      class="mb-4"
+      tone="warning"
+      :title="$t('controllers.tools.title')"
+    >
+      <p v-if="doubledSlots.length > 0">
+        {{ $t('controllers.tools.doubled', { slots: doubledSlots.join(', ') }) }}
+      </p>
+      <ul v-if="runningTools.length > 0" class="mt-1.5 list-disc space-y-1 pl-4">
+        <li v-for="tool in runningTools" :key="tool.id">
+          <span class="font-medium text-text">{{ tool.name }}</span
+          >{{ ': '
+          }}{{
+            tool.id === 'steam' ? $t('controllers.tools.steam') : $t('controllers.tools.other')
+          }}
+        </li>
+      </ul>
+    </UiCallout>
 
     <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
       <div

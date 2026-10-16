@@ -101,6 +101,15 @@ Json Handle(const std::string& method, const Json& params) {
   }
   if (method == "listControllers") return ControllerMonitor::Instance().List();
   if (method == "listDisplays") return ListDisplays();
+  if (method == "findProcesses") {
+    std::vector<std::wstring> names;
+    for (const Json& name : params.at("names")) {
+      names.push_back(ToLower(FromUtf8(name.get<std::string>())));
+    }
+    Json running = Json::array();
+    for (const std::wstring& name : RunningExeNames(names)) running.push_back(ToUtf8(name));
+    return Json{{"running", running}};
+  }
   if (method == "startControllerTest") {
     ControllerMonitor::Instance().StartTest(params.at("slot").get<int>());
     return Json::object();

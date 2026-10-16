@@ -51,6 +51,10 @@ export const helperMethods = {
   },
   listControllers: { params: empty, result: ControllerListSchema },
   listDisplays: { params: empty, result: z.object({ displays: z.array(DisplaySchema) }) },
+  findProcesses: {
+    params: z.object({ names: z.array(z.string()) }),
+    result: z.object({ running: z.array(z.string()) }),
+  },
   startControllerTest: { params: z.object({ slot: z.number().int() }), result: empty },
   stopControllerTest: { params: empty, result: empty },
   checkTarget: {

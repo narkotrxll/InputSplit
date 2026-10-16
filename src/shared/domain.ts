@@ -106,6 +106,11 @@ export const ControllerSchema = z.object({
   productId: z.number().int().nullable().optional(),
   /** Filled in by the main process from the ids above (see gamepad-models.ts). */
   model: GamepadModelSchema.optional(),
+  /**
+   * A virtual pad standing in for a physical one (Steam Input, DS4Windows, …): games that
+   * also read the physical pad see it twice. Filled in by the main process.
+   */
+  doubled: z.boolean().optional(),
 })
 export type Controller = z.infer<typeof ControllerSchema>
 

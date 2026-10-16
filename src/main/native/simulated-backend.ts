@@ -195,6 +195,8 @@ export class SimulatedBackend implements NativeBackend {
         }
       case 'listDisplays':
         return { displays: DISPLAYS }
+      case 'findProcesses':
+        return { running: ['steam.exe', 'ds4windows.exe'] }
       case 'checkTarget': {
         const target = WINDOWS.find((w) => w.pid === p['pid'])
         const antiCheat = target?.exeName.startsWith('Fortnite') ? 'Easy Anti-Cheat' : null

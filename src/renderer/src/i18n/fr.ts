@@ -337,6 +337,16 @@ export const fr: Messages = {
     wired: 'Filaire',
     use: 'Utiliser pour le jeu',
     inUse: 'Choisie',
+    doubled: 'Peut réagir deux fois dans les jeux',
+    tools: {
+      title: 'Programmes qui modifient l’entrée de la manette',
+      doubled:
+        'Emplacement {slots} : cette manette atteint les jeux via un programme qui crée une manette virtuelle. Un jeu qui lit aussi la vraie manette la voit deux fois : les boutons agissent deux fois ou une personne compte pour deux joueurs.',
+      steam:
+        'si un jeu réagit deux fois ou si la manette bouge la souris, ouvrez Propriétés du jeu → Manette dans Steam et désactivez Steam Input.',
+      other:
+        'crée une manette virtuelle ou transforme les boutons en touches. Si un jeu réagit deux fois ou bouge tout seul, fermez-le ou masquez la vraie manette dans ses réglages.',
+    },
     test: 'Tester',
     stopTest: 'Arrêter le test',
     testTitle: 'Test de la manette',

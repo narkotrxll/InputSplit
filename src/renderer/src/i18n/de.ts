@@ -338,6 +338,16 @@ export const de: Messages = {
     wired: 'Kabel',
     use: 'Für Spiel nutzen',
     inUse: 'Ausgewählt',
+    doubled: 'Kann in Spielen doppelt reagieren',
+    tools: {
+      title: 'Programme, die die Controller-Eingabe ändern',
+      doubled:
+        'Platz {slots}: Dieser Controller erreicht Spiele über ein Programm, das einen virtuellen Controller anlegt. Ein Spiel, das auch den echten Controller liest, sieht ihn doppelt: Tasten wirken zweimal oder eine Person zählt als zwei Spieler.',
+      steam:
+        'wenn ein Spiel doppelt reagiert oder der Controller die Maus bewegt, öffne in Steam Eigenschaften des Spiels → Controller und schalte Steam Input aus.',
+      other:
+        'legt einen virtuellen Controller an oder macht Tasten zu Tastaturtasten. Wenn ein Spiel doppelt reagiert oder sich von selbst bewegt, schließe es oder verstecke den echten Controller in seinen Einstellungen.',
+    },
     test: 'Testen',
     stopTest: 'Test beenden',
     testTitle: 'Controller-Test',
