@@ -357,6 +357,10 @@ export const es: Messages = {
       swapAB: 'Intercambiar A y B',
       off: 'Desactivado',
       dpad: 'Cruceta',
+      order: 'Orden de jugadores',
+      orderHint:
+        'Para juegos que leen todos los mandos (sin mando elegido para el juego): qué ranura juega como jugador 1, 2, 3 y 4.',
+      player: 'Jugador {n}',
     },
     doubled: 'Puede responder dos veces en los juegos',
     tools: {
@@ -601,6 +605,9 @@ export const es: Messages = {
     shortcut: 'Atajo del mando',
     shortcutHint:
       'Mantén estos botones 2 segundos para activar o detener el aislamiento desde el sofá. Si no hay nada en marcha, inicia el perfil usado más recientemente cuyo juego esté abierto.',
+    alerts: 'Avisos del mando en la pantalla del juego',
+    alertsHint:
+      'Si el mando del jugador se desconecta, vuelve o se queda sin batería, aparece un mensaje breve en la pantalla del juego y en una notificación de Windows.',
     rumble: 'Vibrar al activar y detener',
     rumbleHint:
       'Un pulso largo: aislamiento activado. Dos cortos: desactivado. Tres: nada que iniciar.',

@@ -333,6 +333,9 @@ export const zhCN: Messages = {
       swapAB: '交换 A 和 B',
       off: '关闭',
       dpad: '方向键',
+      order: '玩家顺序',
+      orderHint: '适用于读取所有手柄的游戏（未为游戏选择手柄）：哪个插槽作为玩家 1、2、3、4。',
+      player: '玩家 {n}',
     },
     doubled: '在游戏中可能触发两次',
     tools: {
@@ -568,6 +571,8 @@ export const zhCN: Messages = {
     shortcut: '手柄快捷键',
     shortcutHint:
       '按住这些按键 2 秒，即可在沙发上开始或停止隔离。如果没有正在运行的隔离，会启动游戏已打开的最近使用的配置。',
+    alerts: '在游戏画面上显示手柄提醒',
+    alertsHint: '玩家的手柄断开、重新连接或电量低时，游戏画面和 Windows 通知中会显示一条简短提示。',
     rumble: '开始和停止时振动',
     rumbleHint: '一次长振动：隔离已开启。两次短振动：已关闭。三次：没有可启动的内容。',
     overlay: '帧率和输入延迟',

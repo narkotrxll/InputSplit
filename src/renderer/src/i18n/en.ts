@@ -353,6 +353,10 @@ export const en = {
       swapAB: 'Swap A and B',
       off: 'Off',
       dpad: 'D-pad',
+      order: 'Player order',
+      orderHint:
+        'For games that read every controller (no controller chosen for the game): which slot plays as player 1, 2, 3 and 4.',
+      player: 'Player {n}',
     },
     doubled: 'May respond twice in games',
     tools: {
@@ -591,6 +595,9 @@ export const en = {
     shortcut: 'Controller shortcut',
     shortcutHint:
       'Hold these buttons for 2 seconds to start or stop isolation from the couch. With nothing running, it starts the most recently used profile whose game is open.',
+    alerts: "Controller warnings on the game's screen",
+    alertsHint:
+      "When the player's controller disconnects, comes back or its battery runs low, a short message appears on the game's screen and in a Windows notification.",
     rumble: 'Vibrate on start and stop',
     rumbleHint:
       'One long pulse: isolation is on. Two short pulses: it is off. Three: nothing to start.',

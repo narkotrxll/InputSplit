@@ -55,6 +55,8 @@ void FillFrameStats(proto::StatusMessage& status);
 void SetTuning(const proto::TuningMessage& tuning);
 void ClearTuning();
 void ApplyTuning(XINPUT_STATE* state);  // no-op unless a tuning is set
+// The physical slot for the game's user index when a player order is set; false otherwise.
+bool PlayerOrderSlot(DWORD userIndex, DWORD& physical);
 
 // detection.cpp
 uint32_t DetectApis();  // proto::DetectedApi bits

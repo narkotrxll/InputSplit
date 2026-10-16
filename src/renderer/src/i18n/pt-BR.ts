@@ -353,6 +353,10 @@ export const ptBR: Messages = {
       swapAB: 'Trocar A e B',
       off: 'Desligado',
       dpad: 'Direcional',
+      order: 'Ordem dos jogadores',
+      orderHint:
+        'Para jogos que leem todos os controles (nenhum controle escolhido para o jogo): qual slot joga como jogador 1, 2, 3 e 4.',
+      player: 'Jogador {n}',
     },
     doubled: 'Pode responder duas vezes nos jogos',
     tools: {
@@ -593,6 +597,9 @@ export const ptBR: Messages = {
     shortcut: 'Atalho do controle',
     shortcutHint:
       'Segure estes botões por 2 segundos para iniciar ou parar o isolamento do sofá. Se nada estiver rodando, inicia o perfil usado mais recentemente cujo jogo esteja aberto.',
+    alerts: 'Avisos do controle na tela do jogo',
+    alertsHint:
+      'Se o controle do jogador desconectar, voltar ou ficar com bateria fraca, uma mensagem curta aparece na tela do jogo e numa notificação do Windows.',
     rumble: 'Vibrar ao iniciar e parar',
     rumbleHint:
       'Um pulso longo: isolamento ativado. Dois curtos: desativado. Três: nada para iniciar.',

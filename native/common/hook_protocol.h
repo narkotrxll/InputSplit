@@ -18,6 +18,8 @@ namespace inputsplit::proto {
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
 constexpr uint16_t kProtocolVersion = 6;  // 2: DirectInput / Raw Input counters, 3: frame stats,
                                           // 4: tuning, 5: player order, 6: pad bridge
+
+// Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
 
 enum class MessageType : uint16_t {
@@ -113,7 +115,10 @@ struct TuningMessage {
   // For each XInput button bit i (XINPUT_GAMEPAD_* == 1 << i): the bit the game sees
   // instead, or kButtonOff to hide the button.
   uint8_t buttonMap[16];
-  uint32_t reserved2[2];
+  // Without slot lock (the game reads every controller): the physical slot behind the
+  // game's player 1..4. Identity (0, 1, 2, 3) = Windows' own order.
+  uint8_t playerSlots[4];
+  uint32_t reserved2;
 };
 constexpr uint8_t kButtonOff = 0xFF;
 

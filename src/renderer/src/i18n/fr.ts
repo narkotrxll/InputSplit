@@ -357,6 +357,10 @@ export const fr: Messages = {
       swapAB: 'Inverser A et B',
       off: 'Désactivé',
       dpad: 'Croix directionnelle',
+      order: 'Ordre des joueurs',
+      orderHint:
+        'Pour les jeux qui lisent toutes les manettes (aucune manette choisie pour le jeu) : quel emplacement joue en tant que joueur 1, 2, 3 et 4.',
+      player: 'Joueur {n}',
     },
     doubled: 'Peut réagir deux fois dans les jeux',
     tools: {
@@ -602,6 +606,9 @@ export const fr: Messages = {
     shortcut: 'Raccourci manette',
     shortcutHint:
       "Maintenez ces boutons 2 secondes pour démarrer ou arrêter l'isolation depuis le canapé. Si rien ne tourne, le profil utilisé le plus récemment dont le jeu est ouvert démarre.",
+    alerts: 'Alertes de manette sur l’écran du jeu',
+    alertsHint:
+      'Si la manette du joueur se déconnecte, revient ou a une batterie faible, un court message s’affiche sur l’écran du jeu et dans une notification Windows.',
     rumble: "Vibrer au démarrage et à l'arrêt",
     rumbleHint:
       'Une longue impulsion : isolation activée. Deux courtes : désactivée. Trois : rien à démarrer.',

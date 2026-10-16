@@ -71,8 +71,15 @@ export const DEFAULT_SETTINGS: Settings = {
   antiCheatProtection: true,
   gameAudioToDisplay: true,
   overlayHotkeyEnabled: true,
-  gamepadTuning: { leftDeadzone: 0, rightDeadzone: 0, triggerDeadzone: 0, remap: {} },
+  gamepadTuning: {
+    leftDeadzone: 0,
+    rightDeadzone: 0,
+    triggerDeadzone: 0,
+    remap: {},
+    playerOrder: [0, 1, 2, 3],
+  },
   blockGameBarButton: true,
+  controllerAlerts: true,
   padBridge: false,
 }
 

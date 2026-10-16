@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { GAMEPAD_BUTTONS, type GamepadButton } from '@shared/defaults'
 import type { GamepadTuning } from '@shared/domain'
-import { isDefaultTuning, stickPercent } from '@shared/tuning'
+import { isDefaultTuning, stickPercent, withPlayerSlot } from '@shared/tuning'
 import { useDevicesStore } from '../stores/devices'
 import { useSettingsStore } from '../stores/settings'
 import UiButton from './ui/UiButton.vue'
@@ -82,8 +82,21 @@ function swapAB(): void {
   save({ remap })
 }
 
+const slotOptions = computed(() =>
+  [0, 1, 2, 3].map((slot) => ({ value: slot, label: t('common.slot', { n: slot + 1 }) })),
+)
+function setPlayerSlot(player: number, slot: number): void {
+  save({ playerOrder: withPlayerSlot(tuning.value.playerOrder, player, slot) })
+}
+
 function reset(): void {
-  save({ leftDeadzone: 0, rightDeadzone: 0, triggerDeadzone: 0, remap: {} })
+  save({
+    leftDeadzone: 0,
+    rightDeadzone: 0,
+    triggerDeadzone: 0,
+    remap: {},
+    playerOrder: [0, 1, 2, 3],
+  })
 }
 </script>
 
@@ -138,6 +151,23 @@ function reset(): void {
           :options="targetOptions"
           :label="label(button)"
           @update:model-value="setTarget(button, $event)"
+        />
+      </div>
+    </div>
+
+    <p class="mt-5 text-[13px] font-medium text-text">{{ $t('controllers.tuning.order') }}</p>
+    <p class="mt-0.5 text-[12px] text-text-muted">{{ $t('controllers.tuning.orderHint') }}</p>
+    <div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-4">
+      <div v-for="player in [0, 1, 2, 3]" :key="player" class="flex flex-col gap-1">
+        <span class="text-[12px] text-text-muted">{{
+          $t('controllers.tuning.player', { n: player + 1 })
+        }}</span>
+        <UiSelect
+          :key="`${player}-${tuning.playerOrder.join()}`"
+          :model-value="tuning.playerOrder[player] ?? player"
+          :options="slotOptions"
+          :label="$t('controllers.tuning.player', { n: player + 1 })"
+          @update:model-value="setPlayerSlot(player, $event)"
         />
       </div>
     </div>
