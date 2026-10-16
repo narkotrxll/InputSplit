@@ -134,6 +134,7 @@ export function registerIpc(deps: IpcDependencies): void {
     return ok
   })
 
+  handle('controllers:inputTools', () => devices.listInputTools())
   handle('displays:list', () => devices.listDisplays())
 
   handle('isolation:get', () => seats.all())

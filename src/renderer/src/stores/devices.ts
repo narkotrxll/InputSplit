@@ -28,6 +28,8 @@ export const useDevicesStore = defineStore('devices', () => {
   const testState = ref<ControllerState | null>(null)
   const loaded = ref(false)
   const looks = ref<Record<number, GamepadModel>>(loadLooks())
+  /** Running programs that change controller input (ids from input-tools.ts). */
+  const inputTools = ref<string[]>([])
 
   /** What the test view draws for a slot: the hand-picked look, else the detected one. */
   function lookOf(slot: number): GamepadModel {
@@ -63,6 +65,10 @@ export const useDevicesStore = defineStore('devices', () => {
     loaded.value = true
   }
 
+  async function refreshInputTools(): Promise<void> {
+    inputTools.value = await call('controllers:inputTools')
+  }
+
   async function startTest(slot: number): Promise<void> {
     testSlot.value = slot
     testState.value = null
@@ -92,11 +98,13 @@ export const useDevicesStore = defineStore('devices', () => {
     testState,
     loaded,
     looks,
+    inputTools,
     connected,
     setControllers,
     setDisplays,
     setTestState,
     refresh,
+    refreshInputTools,
     startTest,
     stopTest,
     isConnected,

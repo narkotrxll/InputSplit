@@ -333,6 +333,16 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    doubled: 'May respond twice in games',
+    tools: {
+      title: 'Programs that change controller input',
+      doubled:
+        'Slot {slots}: this controller reaches games through a program that adds a virtual controller. A game that also reads the real controller sees it twice: buttons work twice or one person counts as two players.',
+      steam:
+        "if a game reacts twice or the controller moves the mouse, open the game's Properties → Controller in Steam and turn off Steam Input.",
+      other:
+        'adds a virtual controller or turns buttons into keys. If a game reacts twice or moves on its own, close it or hide the real controller in its settings.',
+    },
     test: 'Test',
     stopTest: 'Stop test',
     testTitle: 'Controller test',

@@ -43,4 +43,7 @@ struct GameGuess {
 };
 GameGuess GuessGame(const ProcessDetails& process, bool borderlessFullscreen);
 
+// Which of the given lower-case exe names have a running process.
+std::vector<std::wstring> RunningExeNames(const std::vector<std::wstring>& lowerExeNames);
+
 }  // namespace inputsplit::helper

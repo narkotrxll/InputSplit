@@ -331,6 +331,16 @@ export const pl: Messages = {
     wired: 'Przewodowy',
     use: 'Użyj w grze',
     inUse: 'Wybrany',
+    doubled: 'Może reagować podwójnie w grach',
+    tools: {
+      title: 'Programy, które zmieniają wejście kontrolera',
+      doubled:
+        'Gniazdo {slots}: ten kontroler trafia do gier przez program, który tworzy wirtualny kontroler. Gra, która czyta też prawdziwy kontroler, widzi go dwa razy: przyciski działają podwójnie albo jedna osoba liczy się jako dwóch graczy.',
+      steam:
+        'jeśli gra reaguje podwójnie albo kontroler porusza myszą, otwórz w Steam Właściwości gry → Kontroler i wyłącz Steam Input.',
+      other:
+        'tworzy wirtualny kontroler albo zamienia przyciski na klawisze. Jeśli gra reaguje podwójnie lub sama się porusza, zamknij program albo ukryj prawdziwy kontroler w jego ustawieniach.',
+    },
     test: 'Testuj',
     stopTest: 'Zatrzymaj test',
     testTitle: 'Test kontrolera',

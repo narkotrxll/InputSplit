@@ -3,6 +3,7 @@
  */
 import type { Controller, ControllerState, Display, HidGamepad } from '@shared/domain'
 import { resolveModels } from '@shared/gamepad-models'
+import { INPUT_TOOL_EXES, toolsFromProcesses } from '@shared/input-tools'
 import type { NativeBackend } from '../native/backend'
 import { Emitter } from '../util/emitter'
 
@@ -52,6 +53,19 @@ export class DeviceService {
     if (this.backend.getState().status !== 'ready') return []
     this.controllers = withModels(await this.backend.request('listControllers', {}))
     return this.controllers
+  }
+
+  /** Ids of the running programs from INPUT_TOOLS; empty with an older helper. */
+  async listInputTools(): Promise<string[]> {
+    if (this.backend.getState().status !== 'ready') return []
+    try {
+      const { running } = await this.backend.request('findProcesses', {
+        names: [...INPUT_TOOL_EXES],
+      })
+      return toolsFromProcesses(running).map((tool) => tool.id)
+    } catch {
+      return []
+    }
   }
 
   async listDisplays(): Promise<Display[]> {

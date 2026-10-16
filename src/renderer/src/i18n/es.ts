@@ -337,6 +337,16 @@ export const es: Messages = {
     wired: 'Con cable',
     use: 'Usar en el juego',
     inUse: 'Elegido',
+    doubled: 'Puede responder dos veces en los juegos',
+    tools: {
+      title: 'Programas que cambian la entrada del mando',
+      doubled:
+        'Ranura {slots}: este mando llega a los juegos a través de un programa que crea un mando virtual. Un juego que también lee el mando real lo ve dos veces: los botones actúan dos veces o una persona cuenta como dos jugadores.',
+      steam:
+        'si un juego reacciona dos veces o el mando mueve el ratón, abre Propiedades del juego → Mando en Steam y desactiva Steam Input.',
+      other:
+        'crea un mando virtual o convierte botones en teclas. Si un juego reacciona dos veces o se mueve solo, ciérralo u oculta el mando real en sus ajustes.',
+    },
     test: 'Probar',
     stopTest: 'Parar prueba',
     testTitle: 'Prueba del mando',

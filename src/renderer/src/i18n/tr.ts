@@ -329,6 +329,16 @@ export const tr: Messages = {
     wired: 'Kablolu',
     use: 'Oyun için kullan',
     inUse: 'Seçildi',
+    doubled: 'Oyunlarda iki kez tepki verebilir',
+    tools: {
+      title: 'Kumanda girişini değiştiren programlar',
+      doubled:
+        'Yuva {slots}: bu kumanda oyunlara sanal kumanda oluşturan bir program üzerinden ulaşıyor. Gerçek kumandayı da okuyan bir oyun onu iki kez görür: tuşlar iki kez çalışır ya da bir kişi iki oyuncu sayılır.',
+      steam:
+        "bir oyun iki kez tepki veriyorsa ya da kumanda fareyi oynatıyorsa, Steam'de oyunun Özellikler → Oyun Kumandası bölümünü açın ve Steam Input'u kapatın.",
+      other:
+        'sanal kumanda oluşturur ya da tuşları klavye tuşlarına çevirir. Bir oyun iki kez tepki veriyor ya da kendi kendine hareket ediyorsa programı kapatın veya gerçek kumandayı ayarlarından gizleyin.',
+    },
     test: 'Test et',
     stopTest: 'Testi durdur',
     testTitle: 'Kontrolcü testi',

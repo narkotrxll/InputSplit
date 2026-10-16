@@ -53,6 +53,8 @@ export const invokeContract = {
   'controllers:list': { input: none, output: z.array(ControllerSchema) },
   'controllers:startTest': { input: z.number().int().min(0).max(3), output: ok },
   'controllers:stopTest': { input: none, output: ok },
+  /** Running programs that change controller input (ids from input-tools.ts). */
+  'controllers:inputTools': { input: none, output: z.array(z.string()) },
 
   'displays:list': { input: none, output: z.array(DisplaySchema) },
 
