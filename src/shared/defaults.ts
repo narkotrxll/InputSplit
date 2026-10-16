@@ -71,6 +71,7 @@ export const DEFAULT_SETTINGS: Settings = {
   antiCheatProtection: true,
   gameAudioToDisplay: true,
   overlayHotkeyEnabled: true,
+  gamepadTuning: { leftDeadzone: 0, rightDeadzone: 0, triggerDeadzone: 0, remap: {} },
   blockGameBarButton: true,
   controllerAlerts: true,
 }
@@ -92,3 +93,22 @@ export const XInputButton = {
   x: 0x4000,
   y: 0x8000,
 } as const
+
+export type GamepadButton = keyof typeof XInputButton
+/** Buttons in the order the remapping table shows them. */
+export const GAMEPAD_BUTTONS = [
+  'a',
+  'b',
+  'x',
+  'y',
+  'leftShoulder',
+  'rightShoulder',
+  'back',
+  'start',
+  'leftThumb',
+  'rightThumb',
+  'dpadUp',
+  'dpadDown',
+  'dpadLeft',
+  'dpadRight',
+] as const satisfies readonly GamepadButton[]

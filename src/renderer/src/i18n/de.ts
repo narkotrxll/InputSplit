@@ -338,6 +338,22 @@ export const de: Messages = {
     wired: 'Kabel',
     use: 'Für Spiel nutzen',
     inUse: 'Ausgewählt',
+    tuning: {
+      title: 'Sticks, Trigger und Tasten',
+      description:
+        'Wird in isolierten Spielen auf das angewendet, was sie als Xbox-Controller lesen. Der Controller selbst und andere Programme bleiben unverändert.',
+      reset: 'Zurücksetzen',
+      leftDeadzone: 'Totzone linker Stick',
+      rightDeadzone: 'Totzone rechter Stick',
+      triggerDeadzone: 'Totzone der Trigger',
+      now: 'Jetzt: {n}%',
+      driftHint:
+        'Wenn sich eine Figur oder die Kamera von selbst bewegt, lass den Stick los und stelle die Totzone etwas über den hier angezeigten Wert (teste den Controller oben).',
+      buttons: 'Tasten',
+      swapAB: 'A und B tauschen',
+      off: 'Aus',
+      dpad: 'Steuerkreuz',
+    },
     doubled: 'Kann in Spielen doppelt reagieren',
     tools: {
       title: 'Programme, die die Controller-Eingabe ändern',

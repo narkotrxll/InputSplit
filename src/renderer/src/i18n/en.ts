@@ -333,6 +333,22 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    tuning: {
+      title: 'Sticks, triggers and buttons',
+      description:
+        'Applied inside isolated games to what they read as an Xbox controller. The controller itself and other programs are not changed.',
+      reset: 'Reset',
+      leftDeadzone: 'Left stick dead zone',
+      rightDeadzone: 'Right stick dead zone',
+      triggerDeadzone: 'Trigger dead zone',
+      now: 'Now: {n}%',
+      driftHint:
+        'If a character or the camera moves on its own, let go of the stick and set its dead zone a little above the value shown here (test the controller above).',
+      buttons: 'Buttons',
+      swapAB: 'Swap A and B',
+      off: 'Off',
+      dpad: 'D-pad',
+    },
     doubled: 'May respond twice in games',
     tools: {
       title: 'Programs that change controller input',
