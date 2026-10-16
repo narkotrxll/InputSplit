@@ -125,6 +125,7 @@ void DisableAll() {
   g_failed.store(0);
   SyncShield(false);
   SetFrameStats(false);
+  ClearTuning();
   if (previouslyActive & proto::kFeatureXInputBackground) {
     OnXInputBackgroundDisabled();
     SyncRawInputRegistrations();

@@ -8,7 +8,7 @@
  * This file must not import Electron or Node modules: the renderer bundles it too.
  */
 import { z } from 'zod'
-import { FEATURE_NAMES } from './defaults'
+import { FEATURE_NAMES, GAMEPAD_BUTTONS } from './defaults'
 import { LANGUAGE_SETTINGS } from './locales'
 import { SEAT_COUNT } from './seats'
 
@@ -394,6 +394,26 @@ export const ProfileInputSchema = ProfileSchema.omit({
 }).extend({ id: z.string().min(1).max(64).nullable() })
 export type ProfileInput = z.infer<typeof ProfileInputSchema>
 
+const GamepadButtonSchema = z.enum(GAMEPAD_BUTTONS)
+
+/**
+ * Applied inside isolated games to what they read through XInput: dead zones in percent of
+ * the full range, and buttons that act as another button ('off' hides one). Only changed
+ * buttons are listed.
+ */
+export const GamepadTuningSchema = z.object({
+  leftDeadzone: z.number().int().min(0).max(60),
+  rightDeadzone: z.number().int().min(0).max(60),
+  triggerDeadzone: z.number().int().min(0).max(60),
+  remap: z.partialRecord(GamepadButtonSchema, z.union([GamepadButtonSchema, z.literal('off')])),
+  /**
+   * For games that read every controller (no controller chosen): the slot behind player
+   * 1..4. [0, 1, 2, 3] keeps Windows' order.
+   */
+  playerOrder: z.array(z.number().int().min(0).max(3)).length(4).default([0, 1, 2, 3]),
+})
+export type GamepadTuning = z.infer<typeof GamepadTuningSchema>
+
 const SETTINGS_FIELDS = {
   version: z.literal(1),
   onboardingCompleted: z.boolean(),
@@ -431,8 +451,11 @@ const ADDED_SETTINGS_FIELDS = {
   gameAudioToDisplay: z.boolean(),
   /** LB + RB + Menu shows or hides FPS and input latency on the game's screen. */
   overlayHotkeyEnabled: z.boolean(),
+  gamepadTuning: GamepadTuningSchema,
   /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
   blockGameBarButton: z.boolean(),
+  /** Tell the player on the TV when their controller disconnects or its battery runs low. */
+  controllerAlerts: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -447,7 +470,15 @@ export const SettingsSchema = z.object({
   antiCheatProtection: ADDED_SETTINGS_FIELDS.antiCheatProtection.default(true),
   gameAudioToDisplay: ADDED_SETTINGS_FIELDS.gameAudioToDisplay.default(true),
   overlayHotkeyEnabled: ADDED_SETTINGS_FIELDS.overlayHotkeyEnabled.default(true),
+  gamepadTuning: ADDED_SETTINGS_FIELDS.gamepadTuning.default({
+    leftDeadzone: 0,
+    rightDeadzone: 0,
+    triggerDeadzone: 0,
+    remap: {},
+    playerOrder: [0, 1, 2, 3],
+  }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
+  controllerAlerts: ADDED_SETTINGS_FIELDS.controllerAlerts.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -563,7 +594,9 @@ export const BACKUP_SETTINGS_KEYS = [
   'moveWindowByDefault',
   'restoreOnExit',
   'gameAudioToDisplay',
+  'gamepadTuning',
   'blockGameBarButton',
+  'controllerAlerts',
   'showAllWindows',
   'verboseLogging',
   'theme',

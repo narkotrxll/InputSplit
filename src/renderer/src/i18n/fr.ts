@@ -348,6 +348,26 @@ export const fr: Messages = {
     },
     glyphsTip:
       'Le jeu affiche des boutons Xbox pour une manette PlayStation, ou l’inverse ? Le jeu choisit lui-même ses icônes. Il suffit souvent d’activer ou désactiver Steam Input pour ce jeu, de brancher la manette par câble ou de choisir le style des boutons dans les réglages du jeu.',
+    tuning: {
+      title: 'Sticks, gâchettes et boutons',
+      description:
+        'S’applique dans les jeux isolés à ce qu’ils lisent comme une manette Xbox. La manette elle-même et les autres programmes ne changent pas.',
+      reset: 'Réinitialiser',
+      leftDeadzone: 'Zone morte du stick gauche',
+      rightDeadzone: 'Zone morte du stick droit',
+      triggerDeadzone: 'Zone morte des gâchettes',
+      now: 'Maintenant : {n} %',
+      driftHint:
+        'Si un personnage ou la caméra bouge tout seul, relâchez le stick et réglez la zone morte un peu au-dessus de la valeur affichée ici (testez la manette ci-dessus).',
+      buttons: 'Boutons',
+      swapAB: 'Inverser A et B',
+      off: 'Désactivé',
+      dpad: 'Croix directionnelle',
+      order: 'Ordre des joueurs',
+      orderHint:
+        'Pour les jeux qui lisent toutes les manettes (aucune manette choisie pour le jeu) : quel emplacement joue en tant que joueur 1, 2, 3 et 4.',
+      player: 'Joueur {n}',
+    },
     doubled: 'Peut réagir deux fois dans les jeux',
     tools: {
       title: 'Programmes qui modifient l’entrée de la manette',
@@ -592,6 +612,9 @@ export const fr: Messages = {
     shortcut: 'Raccourci manette',
     shortcutHint:
       "Maintenez ces boutons 2 secondes pour démarrer ou arrêter l'isolation depuis le canapé. Si rien ne tourne, le profil utilisé le plus récemment dont le jeu est ouvert démarre.",
+    alerts: 'Alertes de manette sur l’écran du jeu',
+    alertsHint:
+      'Si la manette du joueur se déconnecte, revient ou a une batterie faible, un court message s’affiche sur l’écran du jeu et dans une notification Windows.',
     rumble: "Vibrer au démarrage et à l'arrêt",
     rumbleHint:
       'Une longue impulsion : isolation activée. Deux courtes : désactivée. Trois : rien à démarrer.',

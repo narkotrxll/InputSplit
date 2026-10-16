@@ -340,6 +340,26 @@ export const tr: Messages = {
     },
     glyphsTip:
       "Oyun PlayStation kumandası için Xbox tuşlarını mı gösteriyor, ya da tersi? Tuş simgelerini oyunun kendisi seçer. Genellikle o oyun için Steam Input'u açıp kapatmak, kumandayı kabloyla bağlamak ya da oyun ayarlarından tuş stilini seçmek işe yarar.",
+    tuning: {
+      title: 'Çubuklar, tetikler ve tuşlar',
+      description:
+        'Yalıtılmış oyunlarda Xbox kumandası olarak okunan girişe uygulanır. Kumandanın kendisi ve diğer programlar değişmez.',
+      reset: 'Sıfırla',
+      leftDeadzone: 'Sol çubuk ölü bölgesi',
+      rightDeadzone: 'Sağ çubuk ölü bölgesi',
+      triggerDeadzone: 'Tetik ölü bölgesi',
+      now: 'Şu an: %{n}',
+      driftHint:
+        'Karakter ya da kamera kendi kendine hareket ediyorsa çubuğu bırakın ve ölü bölgeyi burada gösterilen değerin biraz üstüne ayarlayın (yukarıdan kumandayı test edin).',
+      buttons: 'Tuşlar',
+      swapAB: "A ile B'yi değiştir",
+      off: 'Kapalı',
+      dpad: 'Yön tuşları',
+      order: 'Oyuncu sırası',
+      orderHint:
+        'Tüm kumandaları okuyan oyunlar için (oyuna kumanda seçilmemişse): hangi yuvanın 1, 2, 3 ve 4. oyuncu olarak oynayacağı.',
+      player: 'Oyuncu {n}',
+    },
     doubled: 'Oyunlarda iki kez tepki verebilir',
     tools: {
       title: 'Kumanda girişini değiştiren programlar',
@@ -580,6 +600,9 @@ export const tr: Messages = {
     shortcut: 'Kumanda kısayolu',
     shortcutHint:
       'Yalıtımı koltuktan başlatmak veya durdurmak için bu düğmeleri 2 saniye basılı tutun. Hiçbir şey çalışmıyorsa, oyunu açık olan en son kullanılan profil başlar.',
+    alerts: 'Oyun ekranında kumanda uyarıları',
+    alertsHint:
+      'Oyuncunun kumandası koparsa, yeniden bağlanırsa ya da pili azalırsa oyun ekranında ve Windows bildiriminde kısa bir mesaj görünür.',
     rumble: 'Başlatırken ve durdururken titreş',
     rumbleHint: 'Bir uzun titreşim: yalıtım açık. İki kısa: kapalı. Üç: başlatılacak bir şey yok.',
     overlay: 'FPS ve giriş gecikmesi',

@@ -344,6 +344,26 @@ export const ptBR: Messages = {
     },
     glyphsTip:
       'O jogo mostra botões de Xbox para um controle de PlayStation ou o contrário? O próprio jogo escolhe os ícones. Costuma ajudar ligar ou desligar o Steam Input para o jogo, conectar o controle por cabo ou escolher o estilo dos botões nas configurações do jogo.',
+    tuning: {
+      title: 'Analógicos, gatilhos e botões',
+      description:
+        'Aplicado dentro dos jogos isolados ao que eles leem como controle Xbox. O controle e os outros programas não mudam.',
+      reset: 'Redefinir',
+      leftDeadzone: 'Zona morta do analógico esquerdo',
+      rightDeadzone: 'Zona morta do analógico direito',
+      triggerDeadzone: 'Zona morta dos gatilhos',
+      now: 'Agora: {n}%',
+      driftHint:
+        'Se um personagem ou a câmera se mexer sozinho, solte o analógico e ponha a zona morta um pouco acima do valor mostrado aqui (teste o controle acima).',
+      buttons: 'Botões',
+      swapAB: 'Trocar A e B',
+      off: 'Desligado',
+      dpad: 'Direcional',
+      order: 'Ordem dos jogadores',
+      orderHint:
+        'Para jogos que leem todos os controles (nenhum controle escolhido para o jogo): qual slot joga como jogador 1, 2, 3 e 4.',
+      player: 'Jogador {n}',
+    },
     doubled: 'Pode responder duas vezes nos jogos',
     tools: {
       title: 'Programas que mudam a entrada do controle',
@@ -583,6 +603,9 @@ export const ptBR: Messages = {
     shortcut: 'Atalho do controle',
     shortcutHint:
       'Segure estes botões por 2 segundos para iniciar ou parar o isolamento do sofá. Se nada estiver rodando, inicia o perfil usado mais recentemente cujo jogo esteja aberto.',
+    alerts: 'Avisos do controle na tela do jogo',
+    alertsHint:
+      'Se o controle do jogador desconectar, voltar ou ficar com bateria fraca, uma mensagem curta aparece na tela do jogo e numa notificação do Windows.',
     rumble: 'Vibrar ao iniciar e parar',
     rumbleHint:
       'Um pulso longo: isolamento ativado. Dois curtos: desativado. Três: nada para iniciar.',

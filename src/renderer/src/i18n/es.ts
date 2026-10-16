@@ -348,6 +348,26 @@ export const es: Messages = {
     },
     glyphsTip:
       '¿El juego muestra botones de Xbox con un mando de PlayStation o al revés? El juego elige sus iconos. Suele ayudar activar o desactivar Steam Input para ese juego, conectar el mando por cable o elegir el estilo de botones en los ajustes del juego.',
+    tuning: {
+      title: 'Sticks, gatillos y botones',
+      description:
+        'Se aplica dentro de los juegos aislados a lo que leen como mando de Xbox. El mando y los demás programas no cambian.',
+      reset: 'Restablecer',
+      leftDeadzone: 'Zona muerta del stick izquierdo',
+      rightDeadzone: 'Zona muerta del stick derecho',
+      triggerDeadzone: 'Zona muerta de los gatillos',
+      now: 'Ahora: {n}%',
+      driftHint:
+        'Si un personaje o la cámara se mueven solos, suelta el stick y pon la zona muerta un poco por encima del valor que se muestra aquí (prueba el mando arriba).',
+      buttons: 'Botones',
+      swapAB: 'Intercambiar A y B',
+      off: 'Desactivado',
+      dpad: 'Cruceta',
+      order: 'Orden de jugadores',
+      orderHint:
+        'Para juegos que leen todos los mandos (sin mando elegido para el juego): qué ranura juega como jugador 1, 2, 3 y 4.',
+      player: 'Jugador {n}',
+    },
     doubled: 'Puede responder dos veces en los juegos',
     tools: {
       title: 'Programas que cambian la entrada del mando',
@@ -591,6 +611,9 @@ export const es: Messages = {
     shortcut: 'Atajo del mando',
     shortcutHint:
       'Mantén estos botones 2 segundos para activar o detener el aislamiento desde el sofá. Si no hay nada en marcha, inicia el perfil usado más recientemente cuyo juego esté abierto.',
+    alerts: 'Avisos del mando en la pantalla del juego',
+    alertsHint:
+      'Si el mando del jugador se desconecta, vuelve o se queda sin batería, aparece un mensaje breve en la pantalla del juego y en una notificación de Windows.',
     rumble: 'Vibrar al activar y detener',
     rumbleHint:
       'Un pulso largo: aislamiento activado. Dos cortos: desactivado. Tres: nada que iniciar.',

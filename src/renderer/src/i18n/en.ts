@@ -344,6 +344,26 @@ export const en = {
     },
     glyphsTip:
       "Game shows Xbox buttons for a PlayStation controller, or the other way round? The game picks its button pictures itself. Usually it helps to turn Steam Input on or off for that game, connect the controller by cable, or choose the button style in the game's settings.",
+    tuning: {
+      title: 'Sticks, triggers and buttons',
+      description:
+        'Applied inside isolated games to what they read as an Xbox controller. The controller itself and other programs are not changed.',
+      reset: 'Reset',
+      leftDeadzone: 'Left stick dead zone',
+      rightDeadzone: 'Right stick dead zone',
+      triggerDeadzone: 'Trigger dead zone',
+      now: 'Now: {n}%',
+      driftHint:
+        'If a character or the camera moves on its own, let go of the stick and set its dead zone a little above the value shown here (test the controller above).',
+      buttons: 'Buttons',
+      swapAB: 'Swap A and B',
+      off: 'Off',
+      dpad: 'D-pad',
+      order: 'Player order',
+      orderHint:
+        'For games that read every controller (no controller chosen for the game): which slot plays as player 1, 2, 3 and 4.',
+      player: 'Player {n}',
+    },
     doubled: 'May respond twice in games',
     tools: {
       title: 'Programs that change controller input',
@@ -581,6 +601,9 @@ export const en = {
     shortcut: 'Controller shortcut',
     shortcutHint:
       'Hold these buttons for 2 seconds to start or stop isolation from the couch. With nothing running, it starts the most recently used profile whose game is open.',
+    alerts: "Controller warnings on the game's screen",
+    alertsHint:
+      "When the player's controller disconnects, comes back or its battery runs low, a short message appears on the game's screen and in a Windows notification.",
     rumble: 'Vibrate on start and stop',
     rumbleHint:
       'One long pulse: isolation is on. Two short pulses: it is off. Three: nothing to start.',

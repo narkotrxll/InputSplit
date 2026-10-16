@@ -83,6 +83,17 @@ export const helperMethods = {
   },
   stopIsolation: { params: z.object({ sessionId: z.number().int() }), result: empty },
   /** Starts or stops the hook's frame counter (FPS overlay); hooks Present on first use. */
+  setTuning: {
+    params: z.object({
+      sessionId: z.number().int(),
+      leftDeadzone: z.number().int(),
+      rightDeadzone: z.number().int(),
+      triggerDeadzone: z.number().int(),
+      buttonMap: z.array(z.number().int()),
+      playerSlots: z.array(z.number().int()).optional(),
+    }),
+    result: empty,
+  },
   setFrameStats: {
     params: z.object({ sessionId: z.number().int(), enabled: z.boolean() }),
     result: empty,

@@ -325,6 +325,24 @@ export const zhCN: Messages = {
     },
     glyphsTip:
       '游戏为 PlayStation 手柄显示 Xbox 按键图标，或者反过来？按键图标由游戏自己决定。通常可以为该游戏开启或关闭 Steam 输入、用线连接手柄，或在游戏设置中选择按键样式。',
+    tuning: {
+      title: '摇杆、扳机和按键',
+      description: '在隔离的游戏中，对游戏读取的 Xbox 手柄输入生效。手柄本身和其他程序不受影响。',
+      reset: '重置',
+      leftDeadzone: '左摇杆死区',
+      rightDeadzone: '右摇杆死区',
+      triggerDeadzone: '扳机死区',
+      now: '当前：{n}%',
+      driftHint:
+        '如果角色或镜头自己移动，请松开摇杆，并把死区设置得比这里显示的数值略大（先在上方测试手柄）。',
+      buttons: '按键',
+      swapAB: '交换 A 和 B',
+      off: '关闭',
+      dpad: '方向键',
+      order: '玩家顺序',
+      orderHint: '适用于读取所有手柄的游戏（未为游戏选择手柄）：哪个插槽作为玩家 1、2、3、4。',
+      player: '玩家 {n}',
+    },
     doubled: '在游戏中可能触发两次',
     tools: {
       title: '会改变手柄输入的程序',
@@ -559,6 +577,8 @@ export const zhCN: Messages = {
     shortcut: '手柄快捷键',
     shortcutHint:
       '按住这些按键 2 秒，即可在沙发上开始或停止隔离。如果没有正在运行的隔离，会启动游戏已打开的最近使用的配置。',
+    alerts: '在游戏画面上显示手柄提醒',
+    alertsHint: '玩家的手柄断开、重新连接或电量低时，游戏画面和 Windows 通知中会显示一条简短提示。',
     rumble: '开始和停止时振动',
     rumbleHint: '一次长振动：隔离已开启。两次短振动：已关闭。三次：没有可启动的内容。',
     overlay: '帧率和输入延迟',

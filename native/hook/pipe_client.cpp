@@ -142,6 +142,12 @@ bool HandleMessage(Pipe& pipe, const uint8_t* data, DWORD bytes) {
       SetFrameStats(message.enabled != 0);
       return SendStatusAndLogs(pipe);
     }
+    case proto::MessageType::Tuning: {
+      proto::TuningMessage message;
+      memcpy(&message, data, sizeof(message));
+      SetTuning(message);
+      return SendStatusAndLogs(pipe);
+    }
     default:
       Log(LogLevel::Warn, "Ignoring an invalid message (%lu bytes)", bytes);
       return true;

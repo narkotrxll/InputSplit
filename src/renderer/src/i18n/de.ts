@@ -349,6 +349,26 @@ export const de: Messages = {
     },
     glyphsTip:
       'Das Spiel zeigt Xbox-Tasten für einen PlayStation-Controller oder umgekehrt? Die Tastensymbole wählt das Spiel selbst. Meist hilft es, Steam Input für das Spiel ein- oder auszuschalten, den Controller per Kabel anzuschließen oder den Tastenstil in den Spieleinstellungen zu wählen.',
+    tuning: {
+      title: 'Sticks, Trigger und Tasten',
+      description:
+        'Wird in isolierten Spielen auf das angewendet, was sie als Xbox-Controller lesen. Der Controller selbst und andere Programme bleiben unverändert.',
+      reset: 'Zurücksetzen',
+      leftDeadzone: 'Totzone linker Stick',
+      rightDeadzone: 'Totzone rechter Stick',
+      triggerDeadzone: 'Totzone der Trigger',
+      now: 'Jetzt: {n}%',
+      driftHint:
+        'Wenn sich eine Figur oder die Kamera von selbst bewegt, lass den Stick los und stelle die Totzone etwas über den hier angezeigten Wert (teste den Controller oben).',
+      buttons: 'Tasten',
+      swapAB: 'A und B tauschen',
+      off: 'Aus',
+      dpad: 'Steuerkreuz',
+      order: 'Spielerreihenfolge',
+      orderHint:
+        'Für Spiele, die alle Controller lesen (kein Controller für das Spiel gewählt): welcher Platz als Spieler 1, 2, 3 und 4 spielt.',
+      player: 'Spieler {n}',
+    },
     doubled: 'Kann in Spielen doppelt reagieren',
     tools: {
       title: 'Programme, die die Controller-Eingabe ändern',
@@ -589,6 +609,9 @@ export const de: Messages = {
     shortcut: 'Controller-Tastenkombination',
     shortcutHint:
       'Halte diese Tasten 2 Sekunden lang, um die Isolierung vom Sofa aus zu starten oder zu beenden. Läuft nichts, startet das zuletzt verwendete Profil, dessen Spiel geöffnet ist.',
+    alerts: 'Controller-Hinweise auf dem Spielbildschirm',
+    alertsHint:
+      'Wenn der Controller des Spielers getrennt wird, wieder da ist oder der Akku fast leer ist, erscheint eine kurze Meldung auf dem Spielbildschirm und als Windows-Benachrichtigung.',
     rumble: 'Beim Starten und Beenden vibrieren',
     rumbleHint:
       'Ein langer Impuls: Isolierung aktiv. Zwei kurze: beendet. Drei: nichts zu starten.',

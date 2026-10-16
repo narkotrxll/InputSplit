@@ -41,6 +41,11 @@ export class Notifier {
     }
   }
 
+  /** Something about a player's controller (also shown on the game's screen). */
+  controllerAlert(title: string, view: IsolationView): void {
+    this.show(title, gameName(view))
+  }
+
   nothingToStart(): void {
     const text = this.options.texts()
     this.show(text.notifyNothingTitle, text.notifyNothingBody, true)

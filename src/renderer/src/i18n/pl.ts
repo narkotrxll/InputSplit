@@ -342,6 +342,26 @@ export const pl: Messages = {
     },
     glyphsTip:
       'Gra pokazuje przyciski Xbox dla kontrolera PlayStation albo odwrotnie? Ikony przycisków wybiera sama gra. Zwykle pomaga włączyć lub wyłączyć dla niej Steam Input, podłączyć kontroler kablem albo wybrać styl przycisków w ustawieniach gry.',
+    tuning: {
+      title: 'Gałki, spusty i przyciski',
+      description:
+        'Stosowane w izolowanych grach do tego, co odczytują jako kontroler Xbox. Sam kontroler i inne programy się nie zmieniają.',
+      reset: 'Resetuj',
+      leftDeadzone: 'Martwa strefa lewej gałki',
+      rightDeadzone: 'Martwa strefa prawej gałki',
+      triggerDeadzone: 'Martwa strefa spustów',
+      now: 'Teraz: {n}%',
+      driftHint:
+        'Jeśli postać lub kamera porusza się sama, puść gałkę i ustaw martwą strefę trochę powyżej pokazanej tu wartości (włącz test kontrolera powyżej).',
+      buttons: 'Przyciski',
+      swapAB: 'Zamień A i B',
+      off: 'Wyłączony',
+      dpad: 'Krzyżak',
+      order: 'Kolejność graczy',
+      orderHint:
+        'Dla gier, które czytają wszystkie kontrolery (nie wybrano kontrolera dla gry): które gniazdo gra jako gracz 1, 2, 3 i 4.',
+      player: 'Gracz {n}',
+    },
     doubled: 'Może reagować podwójnie w grach',
     tools: {
       title: 'Programy, które zmieniają wejście kontrolera',
@@ -580,6 +600,9 @@ export const pl: Messages = {
     shortcut: 'Skrót na kontrolerze',
     shortcutHint:
       'Przytrzymaj te przyciski przez 2 sekundy, aby włączyć lub wyłączyć izolację prosto z kanapy. Gdy nic nie działa, uruchamia ostatnio używany profil, którego gra jest otwarta.',
+    alerts: 'Ostrzeżenia o kontrolerze na ekranie gry',
+    alertsHint:
+      'Gdy kontroler gracza się rozłączy, wróci albo ma słabą baterię, na ekranie gry i w powiadomieniu Windows pojawi się krótki komunikat.',
     rumble: 'Wibracja przy włączaniu i wyłączaniu',
     rumbleHint:
       'Jeden długi impuls: izolacja włączona. Dwa krótkie: wyłączona. Trzy: nie ma czego uruchomić.',

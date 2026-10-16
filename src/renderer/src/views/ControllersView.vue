@@ -6,6 +6,7 @@ import type { GamepadModel } from '@shared/domain'
 import { GAMEPAD_MODELS } from '@shared/gamepad-models'
 import { INPUT_TOOLS } from '@shared/input-tools'
 import ControllerSlotCard from '../components/ControllerSlotCard.vue'
+import ControllerTuningCard from '../components/ControllerTuningCard.vue'
 import GamepadVisualizer from '../components/GamepadVisualizer.vue'
 import PageHeader from '../components/PageHeader.vue'
 import UiButton from '../components/ui/UiButton.vue'
@@ -168,6 +169,8 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
       <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.rate.hint') }}</p>
       <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.glyphsTip') }}</p>
     </UiCard>
+
+    <ControllerTuningCard v-if="devices.connected.length > 0" class="mt-5" />
 
     <UiEmptyState
       v-if="devices.loaded && devices.connected.length === 0"

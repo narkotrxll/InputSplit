@@ -147,6 +147,28 @@ Json Handle(const std::string& method, const Json& params) {
     }
     return Json::object();
   }
+  if (method == "setTuning") {
+    auto tuning = proto::MakeMessage<proto::TuningMessage>(proto::MessageType::Tuning);
+    tuning.leftDeadzone = params.at("leftDeadzone").get<uint16_t>();
+    tuning.rightDeadzone = params.at("rightDeadzone").get<uint16_t>();
+    tuning.triggerDeadzone = params.at("triggerDeadzone").get<uint8_t>();
+    const Json& map = params.at("buttonMap");
+    for (int i = 0; i < 16; ++i) {
+      tuning.buttonMap[i] = i < static_cast<int>(map.size()) ? map[i].get<uint8_t>()
+                                                             : static_cast<uint8_t>(i);
+    }
+    for (int i = 0; i < 4; ++i) tuning.playerSlots[i] = static_cast<uint8_t>(i);
+    if (params.contains("playerSlots")) {
+      const Json& slots = params["playerSlots"];
+      for (int i = 0; i < 4 && i < static_cast<int>(slots.size()); ++i) {
+        tuning.playerSlots[i] = slots[i].get<uint8_t>();
+      }
+    }
+    if (!SessionManager::Instance().SetTuning(params.at("sessionId").get<int>(), tuning)) {
+      throw HelperError{"sessionNotFound", "No such session."};
+    }
+    return Json::object();
+  }
   if (method == "setFrameStats") {
     if (!SessionManager::Instance().SetFrameStats(params.at("sessionId").get<int>(),
                                                   params.at("enabled").get<bool>())) {
