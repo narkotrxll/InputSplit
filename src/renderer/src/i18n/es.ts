@@ -13,7 +13,7 @@ export const es: Messages = {
     settings: 'Ajustes',
     about: 'Acerca de',
     diagnostics: 'Diagnóstico',
-    coffee: 'Invitar a un café',
+    donate: 'Apoyar al autor',
   },
   status: {
     notConfigured: 'Sin configurar',

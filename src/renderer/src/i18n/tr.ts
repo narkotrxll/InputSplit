@@ -13,7 +13,7 @@ export const tr: Messages = {
     settings: 'Ayarlar',
     about: 'Hakkında',
     diagnostics: 'Tanılama',
-    coffee: 'Bir kahve ısmarla',
+    donate: 'Geliştiriciyi destekle',
   },
   status: {
     notConfigured: 'Ayarlanmadı',

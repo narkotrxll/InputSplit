@@ -62,7 +62,7 @@ const EXTERNAL_LINKS = {
   issues: 'https://github.com/narkotrxll/InputSplit/issues',
   license: 'https://github.com/narkotrxll/InputSplit/blob/main/LICENSE',
   docs: 'https://github.com/narkotrxll/InputSplit/tree/main/docs',
-  coffee: 'https://buymeacoffee.com/narkotrxll',
+  donate: 'https://donatello.to/narkotrxll',
 } as const
 
 export function registerIpc(deps: IpcDependencies): void {

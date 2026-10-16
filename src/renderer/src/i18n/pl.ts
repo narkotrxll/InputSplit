@@ -13,7 +13,7 @@ export const pl: Messages = {
     settings: 'Ustawienia',
     about: 'Informacje',
     diagnostics: 'Diagnostyka',
-    coffee: 'Postaw kawę',
+    donate: 'Wesprzyj autora',
   },
   status: {
     notConfigured: 'Nieskonfigurowane',
