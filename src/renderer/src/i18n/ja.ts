@@ -13,7 +13,7 @@ export const ja: Messages = {
     settings: '設定',
     about: 'アプリ情報',
     diagnostics: '診断',
-    coffee: 'コーヒーをおごる',
+    donate: '作者を支援する',
   },
   status: {
     notConfigured: '未設定',

@@ -13,7 +13,7 @@ export const uk: Messages = {
     settings: 'Налаштування',
     about: 'Про програму',
     diagnostics: 'Діагностика',
-    coffee: 'Пригостити кавою',
+    donate: 'Підтримати автора',
   },
   status: {
     notConfigured: 'Не налаштовано',

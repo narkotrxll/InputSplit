@@ -13,7 +13,7 @@ export const ptBR: Messages = {
     settings: 'Configurações',
     about: 'Sobre',
     diagnostics: 'Diagnóstico',
-    coffee: 'Pagar um café',
+    donate: 'Apoiar o autor',
   },
   status: {
     notConfigured: 'Não configurado',

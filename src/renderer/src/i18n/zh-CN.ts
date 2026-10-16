@@ -13,7 +13,7 @@ export const zhCN: Messages = {
     settings: '设置',
     about: '关于',
     diagnostics: '诊断',
-    coffee: '请作者喝杯咖啡',
+    donate: '支持作者',
   },
   status: {
     notConfigured: '未设置',

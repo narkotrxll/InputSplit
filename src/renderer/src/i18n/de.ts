@@ -13,7 +13,7 @@ export const de: Messages = {
     settings: 'Einstellungen',
     about: 'Info',
     diagnostics: 'Diagnose',
-    coffee: 'Einen Kaffee spendieren',
+    donate: 'Autor unterstützen',
   },
   status: {
     notConfigured: 'Nicht eingerichtet',

@@ -17,7 +17,7 @@ export const en = {
     settings: 'Settings',
     about: 'About',
     diagnostics: 'Diagnostics',
-    coffee: 'Buy me a coffee',
+    donate: 'Support the author',
   },
   status: {
     notConfigured: 'Not set up',

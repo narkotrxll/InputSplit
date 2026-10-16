@@ -13,7 +13,7 @@ export const ru: Messages = {
     settings: 'Настройки',
     about: 'О программе',
     diagnostics: 'Диагностика',
-    coffee: 'Угостить кофе',
+    donate: 'Поддержать автора',
   },
   status: {
     notConfigured: 'Не настроено',

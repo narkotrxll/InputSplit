@@ -9,7 +9,8 @@
 Free and open source · Windows 10/11 · MIT License
 
 [**Download InputSplit.exe**](https://github.com/narkotrxll/InputSplit/releases/latest) ·
-[Website](https://narkotrxll.github.io/InputSplit/)
+[Website](https://narkotrxll.github.io/InputSplit/) ·
+[Support the author ❤](https://donatello.to/Narkotroll)
 
 </div>
 
@@ -230,6 +231,12 @@ and [ProtoInput](https://github.com/Ilyaki/ProtoInput) (input redirection techni
 and uses [MinHook](https://github.com/TsudaKageyu/minhook) and
 [nlohmann/json](https://github.com/nlohmann/json). See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Support
+
+InputSplit is free. If it saves your evenings on the couch, you can
+[support the author on Donatello ❤](https://donatello.to/Narkotroll). Cards from most countries work. There is also a
+**Support the author** button in the app's sidebar.
 
 ## License
 
