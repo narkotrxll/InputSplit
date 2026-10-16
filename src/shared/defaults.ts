@@ -71,6 +71,7 @@ export const DEFAULT_SETTINGS: Settings = {
   antiCheatProtection: true,
   gameAudioToDisplay: true,
   overlayHotkeyEnabled: true,
+  blockGameBarButton: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

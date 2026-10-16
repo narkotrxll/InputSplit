@@ -445,6 +445,9 @@ export const en = {
     defaults: 'Isolation defaults',
     defaultsHint: 'Used for new setups and new profiles.',
     moveWindowByDefault: 'Move the game to the selected screen',
+    blockGameBarButton: 'The Xbox button does not open Game Bar',
+    blockGameBarButtonHint:
+      "While a game is isolated, the controller's Xbox button no longer opens Game Bar on the other person's screen. Turned back on when isolation stops.",
     gameAudioToDisplay: "Play the game's sound on the screen's speakers",
     gameAudioToDisplayHint:
       "If the TV or monitor has speakers, the game plays through them while it is isolated. Only the game's sound moves; everything else stays on your usual speakers.",

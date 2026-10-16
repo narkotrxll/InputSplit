@@ -443,6 +443,9 @@ export const pl: Messages = {
     defaults: 'Domyślna izolacja',
     defaultsHint: 'Używane dla nowych ustawień i nowych profili.',
     moveWindowByDefault: 'Przenoś grę na wybrany ekran',
+    blockGameBarButton: 'Przycisk Xbox nie otwiera Game Bar',
+    blockGameBarButtonHint:
+      'Gdy gra jest izolowana, przycisk Xbox na kontrolerze nie otwiera Game Bar na ekranie drugiej osoby. Po zatrzymaniu wszystko wraca do poprzedniego stanu.',
     gameAudioToDisplay: 'Dźwięk gry z głośników ekranu',
     gameAudioToDisplayHint:
       'Jeśli telewizor lub monitor ma głośniki, dźwięk gry leci z nich podczas izolacji. Zmienia się tylko dźwięk gry, reszta zostaje na zwykłych głośnikach.',

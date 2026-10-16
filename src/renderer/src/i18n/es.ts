@@ -451,6 +451,9 @@ export const es: Messages = {
     defaults: 'Aislamiento predeterminado',
     defaultsHint: 'Se usa en nuevas configuraciones y nuevos perfiles.',
     moveWindowByDefault: 'Mover el juego a la pantalla elegida',
+    blockGameBarButton: 'El botón Xbox no abre Game Bar',
+    blockGameBarButtonHint:
+      'Mientras un juego está aislado, el botón Xbox del mando ya no abre Game Bar en la pantalla de la otra persona. Se reactiva al detener el aislamiento.',
     gameAudioToDisplay: 'Sonido del juego en los altavoces de la pantalla',
     gameAudioToDisplayHint:
       'Si la TV o el monitor tiene altavoces, el juego suena por ellos durante el aislamiento. Solo cambia el sonido del juego; lo demás sigue en tus altavoces habituales.',

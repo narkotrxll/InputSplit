@@ -10,6 +10,7 @@ import { join } from 'node:path'
 import { app, dialog, nativeTheme, net, type BrowserWindow } from 'electron'
 import type { IsolationView } from '@shared/domain'
 import { resolveLocale } from '@shared/locales'
+import { isSessionLive } from '@shared/support'
 import { HelperClient } from './native/helper-client'
 import { SimulatedBackend } from './native/simulated-backend'
 import type { NativeBackend } from './native/backend'
@@ -32,6 +33,7 @@ import { mainTexts } from './i18n'
 import { Notifier } from './notifier'
 import { OverlayWindows } from './overlay-window'
 import { OverlayService } from './services/overlay-service'
+import { GameBarGuard, windowsGameBarSetting } from './services/game-bar-guard'
 import { AppTray } from './tray'
 import { createMainWindow, showWindow, titleBarColors } from './window'
 
@@ -251,6 +253,17 @@ async function main(): Promise<void> {
   const feedbackSlot = (view: IsolationView) =>
     view.controllerSlot ?? lastHotkeySlot ?? devices.connectedSlots()[0] ?? null
 
+  const gameBar = new GameBarGuard(
+    windowsGameBarSetting,
+    join(userData, 'gamebar-restore.json'),
+    (w) => logger.warn(w),
+  )
+  const syncGameBar = () => {
+    if (process.platform !== 'win32') return Promise.resolve()
+    return gameBar.set(settings.get().blockGameBarButton && seats.all().some(isSessionLive))
+  }
+  if (process.platform === 'win32') void gameBar.recover()
+
   const previousViews = seats.all()
   const updateTray = () => tray?.update(seats.all(), seats.freeSeat() !== null)
   seats.changes.on(({ seat, view }) => {
@@ -274,6 +287,7 @@ async function main(): Promise<void> {
       else if (view.phase === 'ended') rumble(feedbackSlot(previousView), 'off')
     }
     previousViews[seat] = view
+    void syncGameBar()
   })
   seats.outcomes.on(({ exeName, outcome }) => {
     void compat
@@ -332,6 +346,7 @@ async function main(): Promise<void> {
       setOverlayHotkey(next.overlayHotkeyEnabled)
       if (!next.overlayHotkeyEnabled) overlay.closeAll()
     }
+    if (next.blockGameBarButton !== previousSettings.blockGameBarButton) void syncGameBar()
     if (next.launchAtLogin !== previousSettings.launchAtLogin) applyLoginItem(next.launchAtLogin)
     if (next.checkForUpdates !== previousSettings.checkForUpdates) {
       updates.setAutomatic(app.isPackaged && next.checkForUpdates)
@@ -389,6 +404,7 @@ async function main(): Promise<void> {
         updates.dispose()
         overlay.closeAll()
         await seats.stopAll()
+        await syncGameBar()
         await backend.stop()
       } catch (error) {
         logger.error(`Shutdown problem: ${String(error)}`)
