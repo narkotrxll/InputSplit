@@ -328,6 +328,9 @@ export const zhCN: Messages = {
       swapAB: '交换 A 和 B',
       off: '关闭',
       dpad: '方向键',
+      order: '玩家顺序',
+      orderHint: '适用于读取所有手柄的游戏（未为游戏选择手柄）：哪个插槽作为玩家 1、2、3、4。',
+      player: '玩家 {n}',
     },
     doubled: '在游戏中可能触发两次',
     tools: {
