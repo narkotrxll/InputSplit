@@ -238,6 +238,33 @@ describe('AutomationService', () => {
     expect(await t.automation.toggle(3)).toBe('stopped')
   })
 
+  it('starts a second copy of the same game for the other player', async () => {
+    const t = await setup([win(50, 'hollow_knight.exe')], true)
+    t.backend.handlers.listControllers = () => ({
+      controllers: [0, 1, 2].map((slot) => ({ slot, connected: slot !== 1 })),
+    })
+    t.backend.handlers.listDisplays = () => ({
+      displays: [
+        { id: '\\\\.\\DISPLAY1', isPrimary: true },
+        { id: '\\\\.\\DISPLAY3', isPrimary: false },
+        { id: '\\\\.\\DISPLAY4', isPrimary: false },
+      ],
+    })
+    const knight = await t.profiles.save({ ...profileInput, controllerSlot: 0 })
+    await t.automation.play(knight.id, false)
+    t.launch.mockImplementation(async () => {
+      t.state.windows = [...t.state.windows, win(70, 'hollow_knight.exe')]
+    })
+    await t.automation.play(knight.id, true)
+    expect(t.launch).toHaveBeenCalledTimes(1)
+    expect(t.seats.get(1)).toMatchObject({
+      phase: 'running',
+      target: { pid: 70 },
+      controllerSlot: 2,
+      displayId: '\\\\.\\DISPLAY4',
+    })
+  })
+
   it('refuses two games on the same controller', async () => {
     const t = await setup([win(50, 'hollow_knight.exe'), win(60, 'celeste.exe')], true)
     const knight = await t.profiles.save({ ...profileInput, controllerSlot: 0 })

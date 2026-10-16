@@ -271,6 +271,9 @@ export const en = {
     noExePath: 'This profile does not know where the game is. Choose the game file in the profile.',
     launchFailed: 'The game could not be started. Check the game file in the profile.',
     launchTimeout: 'The game window did not appear in time.',
+    secondCopyTimeout:
+      'The game did not open a second copy. Some games allow only one copy at a time.',
+    noFreeController: 'No free controller for the second player. Connect another controller.',
     updateUnavailable: 'No update is ready to install.',
     updateDevBuild: 'Updates install only in the installed app.',
     updateFailed: 'The update could not be downloaded. Try again later.',
@@ -695,6 +698,8 @@ export const en = {
     player: 'Player {n}',
     noGame: 'No game chosen',
     twoPlayers: 'Two players',
+    sameGameHint:
+      'Same game for both: press Play on its profile again. InputSplit starts a second copy for the other player, with a free controller and screen (if the game allows two copies).',
     twoPlayersHint:
       'Two games at once, each with its own controller. The dashboard shows a tab for each player.',
   },

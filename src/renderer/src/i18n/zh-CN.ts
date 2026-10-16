@@ -253,6 +253,8 @@ export const zhCN: Messages = {
     noExePath: '此配置不知道游戏的位置。请在配置中选择游戏文件。',
     launchFailed: '无法启动游戏。请检查配置中的游戏文件。',
     launchTimeout: '游戏窗口未能及时出现。',
+    secondCopyTimeout: '游戏没有打开第二个副本。有些游戏同一时间只允许运行一个。',
+    noFreeController: '没有空闲的手柄给第二位玩家。请再连接一个。',
     updateUnavailable: '没有可安装的更新。',
     updateDevBuild: '更新只能在已安装的应用中安装。',
     updateFailed: '无法下载更新，请稍后重试。',
@@ -663,6 +665,8 @@ export const zhCN: Messages = {
     player: '玩家 {n}',
     noGame: '未选择游戏',
     twoPlayers: '双人模式',
+    sameGameHint:
+      '两人玩同一个游戏：在它的配置中再次点击“开始游戏”。InputSplit 会为另一位玩家启动第二个副本，并使用空闲的手柄和屏幕（前提是游戏允许运行两个）。',
     twoPlayersHint: '同时运行两个游戏，各用自己的手柄。主页会为每位玩家显示一个标签页。',
   },
   library: {
