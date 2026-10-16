@@ -8,7 +8,8 @@
 import { spawn } from 'node:child_process'
 import { join } from 'node:path'
 import { app, dialog, nativeTheme, net, type BrowserWindow } from 'electron'
-import type { IsolationView } from '@shared/domain'
+import { controllerAlerts, type ControllerAlert } from '@shared/controller-alerts'
+import type { Controller, IsolationView } from '@shared/domain'
 import { resolveLocale } from '@shared/locales'
 import { isSessionLive } from '@shared/support'
 import { HelperClient } from './native/helper-client'
@@ -31,6 +32,7 @@ import { SettingsService } from './services/settings-service'
 import { UpdateService } from './services/update-service'
 import { mainTexts } from './i18n'
 import { Notifier } from './notifier'
+import { NoticeWindows } from './notice-window'
 import { OverlayWindows } from './overlay-window'
 import { OverlayService } from './services/overlay-service'
 import { GameBarGuard, windowsGameBarSetting } from './services/game-bar-guard'
@@ -306,6 +308,45 @@ async function main(): Promise<void> {
     ready ? notifier.updateReady(version) : notifier.updateAvailable(version),
   )
   devices.controllersChanged.on((list) => broadcast('controllers:changed', list))
+
+  // A controller of a running game disconnects, comes back or runs low: say so on the game's
+  // screen (the player there does not look at the PC) and in a Windows notification.
+  const notices = new NoticeWindows()
+  let lastControllers: Controller[] = []
+  const showControllerAlert = async (view: IsolationView, alert: ControllerAlert) => {
+    const t = texts()
+    const template = {
+      disconnected: t.noticeDisconnected,
+      reconnected: t.noticeReconnected,
+      lowBattery: t.noticeLowBattery,
+    }[alert.kind]
+    const text = template.replace('{n}', String(alert.slot + 1))
+    let monitor = null
+    if (view.target !== null) {
+      monitor = await backend
+        .request('windowMonitor', { hwnd: view.target.hwnd })
+        .then((r) => r.bounds)
+        .catch(() => null)
+    }
+    notices.show(monitor, text, alert.kind === 'reconnected' ? 'good' : 'warn')
+    notifier.controllerAlert(text, view)
+  }
+  devices.controllersChanged.on((list) => {
+    const previous = lastControllers
+    lastControllers = list
+    if (!settings.get().controllerAlerts) return
+    const running = seats.all().filter((view) => view.phase === 'running')
+    if (running.length === 0) return
+    const watched = new Set<number>()
+    for (const view of running) {
+      if (view.controllerSlot !== null) watched.add(view.controllerSlot)
+      else for (const c of previous) if (c.connected) watched.add(c.slot)
+    }
+    for (const alert of controllerAlerts(previous, list, watched)) {
+      const view = running.find((v) => v.controllerSlot === alert.slot) ?? running[0]!
+      void showControllerAlert(view, alert)
+    }
+  })
   devices.displaysChanged.on((list) => broadcast('displays:changed', list))
   devices.controllerState.on((state) => broadcast('controllers:state', state))
   logger.onEntry((entry) => broadcast('log:entry', entry))
@@ -403,6 +444,7 @@ async function main(): Promise<void> {
         automation.cancel()
         updates.dispose()
         overlay.closeAll()
+        notices.close()
         await seats.stopAll()
         await syncGameBar()
         await backend.stop()

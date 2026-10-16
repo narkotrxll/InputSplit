@@ -426,6 +426,8 @@ const ADDED_SETTINGS_FIELDS = {
   overlayHotkeyEnabled: z.boolean(),
   /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
   blockGameBarButton: z.boolean(),
+  /** Tell the player on the TV when their controller disconnects or its battery runs low. */
+  controllerAlerts: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -441,6 +443,7 @@ export const SettingsSchema = z.object({
   gameAudioToDisplay: ADDED_SETTINGS_FIELDS.gameAudioToDisplay.default(true),
   overlayHotkeyEnabled: ADDED_SETTINGS_FIELDS.overlayHotkeyEnabled.default(true),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
+  controllerAlerts: ADDED_SETTINGS_FIELDS.controllerAlerts.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -557,6 +560,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'restoreOnExit',
   'gameAudioToDisplay',
   'blockGameBarButton',
+  'controllerAlerts',
   'showAllWindows',
   'verboseLogging',
   'theme',

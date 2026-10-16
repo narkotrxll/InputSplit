@@ -446,6 +446,19 @@ function showOnboarding(): void {
           </label>
           <label class="flex items-center justify-between gap-6 px-5 py-3.5">
             <span>
+              <span class="block text-[13.5px] text-text">{{ $t('gamepadHotkey.alerts') }}</span>
+              <span class="block text-[12.5px] text-text-muted">{{
+                $t('gamepadHotkey.alertsHint')
+              }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.controllerAlerts"
+              :label="$t('gamepadHotkey.alerts')"
+              @update:model-value="store.update({ controllerAlerts: $event })"
+            />
+          </label>
+          <label class="flex items-center justify-between gap-6 px-5 py-3.5">
+            <span>
               <span class="block text-[13.5px] text-text">{{ $t('seats.twoPlayers') }}</span>
               <span class="block text-[12.5px] text-text-muted">{{
                 $t('seats.twoPlayersHint')

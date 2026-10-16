@@ -72,6 +72,7 @@ export const DEFAULT_SETTINGS: Settings = {
   gameAudioToDisplay: true,
   overlayHotkeyEnabled: true,
   blockGameBarButton: true,
+  controllerAlerts: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

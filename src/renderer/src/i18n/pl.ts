@@ -569,6 +569,9 @@ export const pl: Messages = {
     shortcut: 'Skrót na kontrolerze',
     shortcutHint:
       'Przytrzymaj te przyciski przez 2 sekundy, aby włączyć lub wyłączyć izolację prosto z kanapy. Gdy nic nie działa, uruchamia ostatnio używany profil, którego gra jest otwarta.',
+    alerts: 'Ostrzeżenia o kontrolerze na ekranie gry',
+    alertsHint:
+      'Gdy kontroler gracza się rozłączy, wróci albo ma słabą baterię, na ekranie gry i w powiadomieniu Windows pojawi się krótki komunikat.',
     rumble: 'Wibracja przy włączaniu i wyłączaniu',
     rumbleHint:
       'Jeden długi impuls: izolacja włączona. Dwa krótkie: wyłączona. Trzy: nie ma czego uruchomić.',
