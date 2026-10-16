@@ -334,6 +334,17 @@ export const tr: Messages = {
       hint: 'DualShock 4, DualSense ve Switch Pro, yalıtılmış oyunlara boş bir yuvada Xbox kumandası olarak görünür, sürücü gerekmez. Titreşim USB ile çalışır. Bu kumandaları görmeyen oyunlar için açın; onları zaten destekleyen bir oyun iki kez tepki verebilir.',
       badge: 'InputSplit üzerinden',
     },
+    rate: {
+      measure: 'Yoklama hızını ölç',
+      measuring: 'Bir çubuğu 2 saniye daire çizerek çevirin…',
+      result: 'Saniyede yaklaşık {n} güncelleme',
+      slow: 'Saniyede yaklaşık {n} güncelleme: yavaş, kabloyla ya da daha iyi bir alıcıyla tepki daha hızlı olur',
+      still: 'Çok az güncelleme: ölçüm sırasında çubuğu çevirin',
+      lost: 'Ölçüm sırasında kumandanın bağlantısı kesildi',
+      hint: 'Çoğu kumanda Bluetooth ile saniyede 125–250, USB ile 250–1000 güncelleme gönderir. Ne kadar çok olursa el ile oyun arasındaki gecikme o kadar azalır.',
+    },
+    glyphsTip:
+      "Oyun PlayStation kumandası için Xbox tuşlarını mı gösteriyor, ya da tersi? Tuş simgelerini oyunun kendisi seçer. Genellikle o oyun için Steam Input'u açıp kapatmak, kumandayı kabloyla bağlamak ya da oyun ayarlarından tuş stilini seçmek işe yarar.",
     tuning: {
       title: 'Çubuklar, tetikler ve tuşlar',
       description:

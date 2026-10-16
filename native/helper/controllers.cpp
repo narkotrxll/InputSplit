@@ -463,6 +463,44 @@ void ControllerMonitor::MarkChanged() {
   SendEvent("controllersChanged", SnapshotLocked());
 }
 
+void ControllerMonitor::MeasurePollingRate(int slot) {
+  static std::atomic<bool> busy{false};
+  if (slot < 0 || slot >= XUSER_MAX_COUNT || g_api.getState == nullptr || busy.exchange(true)) {
+    return;
+  }
+  std::thread([slot] {
+    // XInput's packet number changes with every report that differs from the previous one,
+    // so while a stick moves it counts the controller's reports. Polled far faster than any
+    // controller reports (up to 1000 Hz), yielding the core between reads.
+    LARGE_INTEGER frequency, start, now;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&start);
+    const LONGLONG duration = frequency.QuadPart * 2;
+    DWORD lastPacket = 0;
+    bool first = true;
+    bool connected = true;
+    int64_t changes = 0;
+    do {
+      XINPUT_STATE state{};
+      if (g_api.getState(static_cast<DWORD>(slot), &state) != ERROR_SUCCESS) {
+        connected = false;
+        break;
+      }
+      if (!first && state.dwPacketNumber != lastPacket) ++changes;
+      lastPacket = state.dwPacketNumber;
+      first = false;
+      SwitchToThread();
+      QueryPerformanceCounter(&now);
+    } while (now.QuadPart - start.QuadPart < duration);
+    const double seconds = static_cast<double>(now.QuadPart - start.QuadPart) /
+                           static_cast<double>(frequency.QuadPart);
+    Json rate = nullptr;
+    if (connected && seconds > 0) rate = static_cast<int>(changes / seconds + 0.5);
+    SendEvent("pollingRate", Json{{"slot", slot}, {"updatesPerSecond", rate}});
+    busy = false;
+  }).detach();
+}
+
 void ControllerMonitor::StopTest() {
   {
     std::lock_guard<std::mutex> lock(g_mutex);

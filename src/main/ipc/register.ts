@@ -129,6 +129,10 @@ export function registerIpc(deps: IpcDependencies): void {
     await backend.request('startControllerTest', { slot })
     return ok
   })
+  handle('controllers:measureRate', async (slot) => {
+    await devices.measurePollingRate(slot)
+    return ok
+  })
   handle('controllers:stopTest', async () => {
     if (backend.getState().status === 'ready') await backend.request('stopControllerTest', {})
     return ok

@@ -319,6 +319,17 @@ export const zhCN: Messages = {
       hint: 'DualShock 4、DualSense 和 Switch Pro 会以空闲插槽中的 Xbox 手柄出现在隔离的游戏中，无需驱动。通过 USB 连接时支持震动。请为识别不到这些手柄的游戏开启；已支持它们的游戏可能会触发两次。',
       badge: '通过 InputSplit',
     },
+    rate: {
+      measure: '测量轮询率',
+      measuring: '转动摇杆 2 秒…',
+      result: '每秒约 {n} 次更新',
+      slow: '每秒约 {n} 次更新：偏慢，使用有线或更好的接收器响应会更快',
+      still: '更新太少：测量时请转动摇杆',
+      lost: '测量期间手柄断开了',
+      hint: '大多数手柄通过蓝牙每秒发送 125–250 次更新，通过 USB 为 250–1000 次。更新越多，手到游戏之间的延迟越小。',
+    },
+    glyphsTip:
+      '游戏为 PlayStation 手柄显示 Xbox 按键图标，或者反过来？按键图标由游戏自己决定。通常可以为该游戏开启或关闭 Steam 输入、用线连接手柄，或在游戏设置中选择按键样式。',
     tuning: {
       title: '摇杆、扳机和按键',
       description: '在隔离的游戏中，对游戏读取的 Xbox 手柄输入生效。手柄本身和其他程序不受影响。',

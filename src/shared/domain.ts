@@ -129,6 +129,12 @@ export const BridgedPadSchema = z.object({
   productId: z.number().int(),
 })
 export type BridgedPad = z.infer<typeof BridgedPadSchema>
+/** Controller test: how often the controller sent new data (null: it disconnected). */
+export const PollingRateSchema = z.object({
+  slot: z.number().int().min(0).max(3),
+  updatesPerSecond: z.number().int().nullable(),
+})
+export type PollingRate = z.infer<typeof PollingRateSchema>
 
 export const ControllerStateSchema = z.object({
   slot: z.number().int().min(0).max(3),

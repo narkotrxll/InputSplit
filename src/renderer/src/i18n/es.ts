@@ -342,6 +342,17 @@ export const es: Messages = {
       hint: 'DualShock 4, DualSense y Switch Pro aparecen en los juegos aislados como un mando de Xbox en una ranura libre, sin controladores. La vibración funciona por USB. Actívalo para juegos que no ven estos mandos; un juego que ya los admite puede reaccionar dos veces.',
       badge: 'Vía InputSplit',
     },
+    rate: {
+      measure: 'Medir la frecuencia de sondeo',
+      measuring: 'Mueve un stick en círculos durante 2 segundos…',
+      result: 'Unas {n} actualizaciones por segundo',
+      slow: 'Unas {n} actualizaciones por segundo: lento; con cable o un receptor mejor responderá antes',
+      still: 'Muy pocas actualizaciones: mueve un stick en círculos mientras se mide',
+      lost: 'El mando se desconectó durante la medición',
+      hint: 'La mayoría de los mandos envían 125–250 actualizaciones por segundo por Bluetooth y 250–1000 por USB. Cuantas más, menos retraso entre tu mano y el juego.',
+    },
+    glyphsTip:
+      '¿El juego muestra botones de Xbox con un mando de PlayStation o al revés? El juego elige sus iconos. Suele ayudar activar o desactivar Steam Input para ese juego, conectar el mando por cable o elegir el estilo de botones en los ajustes del juego.',
     tuning: {
       title: 'Sticks, gatillos y botones',
       description:

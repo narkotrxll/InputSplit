@@ -13,6 +13,7 @@ import {
   HidGamepadSchema,
   BridgedPadSchema,
   LogLevelSchema,
+  PollingRateSchema,
   RectSchema,
   SessionEndReasonSchema,
   SessionStatusSchema,
@@ -64,6 +65,7 @@ export const helperMethods = {
   },
   startControllerTest: { params: z.object({ slot: z.number().int() }), result: empty },
   stopControllerTest: { params: empty, result: empty },
+  measurePollingRate: { params: z.object({ slot: z.number().int() }), result: empty },
   checkTarget: {
     params: z.object({ pid: z.number().int(), allowAntiCheat: z.boolean().optional() }),
     result: TargetCheckSchema,
@@ -159,6 +161,7 @@ export const helperEvents = {
   }),
   controllersChanged: ControllerListSchema,
   controllerState: ControllerStateSchema,
+  pollingRate: PollingRateSchema,
   displaysChanged: z.object({ displays: z.array(DisplaySchema) }),
   sessionStatus: SessionStatusSchema,
   sessionEnded: z.object({

@@ -119,6 +119,10 @@ Json Handle(const std::string& method, const Json& params) {
     PadBridge::Instance().SetEnabled(params.at("enabled").get<bool>());
     return Json{{"enabled", PadBridge::Instance().enabled()}};
   }
+  if (method == "measurePollingRate") {
+    ControllerMonitor::Instance().MeasurePollingRate(params.at("slot").get<int>());
+    return Json::object();
+  }
   if (method == "stopControllerTest") {
     ControllerMonitor::Instance().StopTest();
     return Json::object();

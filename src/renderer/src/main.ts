@@ -38,6 +38,7 @@ async function bootstrap(): Promise<void> {
   subscribe('controllers:changed', devices.setControllers)
   subscribe('displays:changed', devices.setDisplays)
   subscribe('controllers:state', devices.setTestState)
+  subscribe('controllers:pollingRate', devices.setPollingRate)
 
   const [info] = await Promise.all([call('app:getInfo').catch(() => null), settings.load()])
   if (info) setSystemLanguages(info.systemLanguages)

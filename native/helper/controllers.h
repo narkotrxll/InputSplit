@@ -21,6 +21,9 @@ class ControllerMonitor {
   Json List();                // current snapshot of the four slots
   void StartTest(int slot);   // stream "controllerState" events for one slot (~60 Hz)
   void StopTest();
+  // Counts how often the controller in `slot` sends new data while the user moves a stick,
+  // for about two seconds, then emits "pollingRate" {slot, updatesPerSecond}. Returns at once.
+  void MeasurePollingRate(int slot);
 
   // Controller shortcut: emits "gamepadHotkey" {slot} when LB + RB + View are held for two
   // seconds on any connected controller.
