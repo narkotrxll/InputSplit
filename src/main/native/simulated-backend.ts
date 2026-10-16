@@ -193,6 +193,8 @@ export class SimulatedBackend implements NativeBackend {
           controllers: this.controllers,
           hidGamepads: [{ vendorId: 0x054c, productId: 0x0ce6 }],
         }
+      case 'setPadBridge':
+        return { enabled: p['enabled'] === true }
       case 'listDisplays':
         return { displays: DISPLAYS }
       case 'findProcesses':

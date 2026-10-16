@@ -1,14 +1,25 @@
 /**
  * Controllers and displays: cached lists kept fresh by helper events (no polling here).
  */
-import type { Controller, ControllerState, Display, HidGamepad, PollingRate } from '@shared/domain'
+import type {
+  BridgedPad,
+  Controller,
+  ControllerState,
+  Display,
+  HidGamepad,
+  PollingRate,
+} from '@shared/domain'
 import { resolveModels } from '@shared/gamepad-models'
 import { INPUT_TOOL_EXES, toolsFromProcesses } from '@shared/input-tools'
 import type { NativeBackend } from '../native/backend'
 import { Emitter } from '../util/emitter'
 
-function withModels(list: { controllers: Controller[]; hidGamepads?: HidGamepad[] }): Controller[] {
-  return resolveModels(list.controllers, list.hidGamepads ?? [])
+function withModels(list: {
+  controllers: Controller[]
+  hidGamepads?: HidGamepad[]
+  bridged?: BridgedPad[]
+}): Controller[] {
+  return resolveModels(list.controllers, list.hidGamepads ?? [], list.bridged ?? [])
 }
 
 export class DeviceService {

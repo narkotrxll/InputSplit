@@ -63,6 +63,9 @@ defineEmits<{ select: [] }>()
           {{ controller.wireless ? $t('controllers.wireless') : $t('controllers.wired') }}
         </span>
         <BatteryIndicator v-if="controller.wireless" :battery="controller.battery" />
+        <span v-if="controller.bridged" class="text-accent">{{
+          $t('controllers.bridge.badge')
+        }}</span>
         <span v-if="controller.doubled" class="text-warning">{{ $t('controllers.doubled') }}</span>
       </template>
     </div>

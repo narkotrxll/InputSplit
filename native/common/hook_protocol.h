@@ -16,9 +16,8 @@
 namespace inputsplit::proto {
 
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
-constexpr uint16_t kProtocolVersion = 5;  // 2: DirectInput / Raw Input counters, 3: frame stats,
-                                          // 4: tuning (dead zones, button remapping),
-                                          // 5: player order in tuning
+constexpr uint16_t kProtocolVersion = 6;  // 2: DirectInput / Raw Input counters, 3: frame stats,
+                                          // 4: tuning, 5: player order, 6: pad bridge
 
 // Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
@@ -159,6 +158,39 @@ struct LogMessage {
   char text[480];  // UTF-8, zero-terminated
 };
 
+// Pad bridge: PlayStation and Nintendo controllers shown to isolated games as XInput
+// controllers. The helper reads the controller (HID) and writes its state into a shared
+// memory section; the hook answers XInputGetState for that slot from it and writes
+// vibration requests back. One entry per XInput slot.
+constexpr wchar_t kPadBridgeName[] = L"Local\\InputSplit.PadBridge";
+constexpr uint32_t kPadBridgeMagic = 0x44415042;  // "BPAD"
+
+struct BridgedPad {
+  uint32_t sequence;   // odd while the helper writes (read again if it changed or is odd)
+  uint32_t connected;  // 1 while a bridged controller holds this slot
+  uint32_t packet;     // XINPUT_STATE::dwPacketNumber
+  uint16_t buttons;    // XINPUT_GAMEPAD layout (plus 0x0400 Guide)
+  uint8_t leftTrigger;
+  uint8_t rightTrigger;
+  int16_t thumbLX;
+  int16_t thumbLY;
+  int16_t thumbRX;
+  int16_t thumbRY;
+  uint16_t vendorId;
+  uint16_t productId;
+  // Written by the hook (XInputSetState), read by the helper.
+  uint32_t rumbleSequence;
+  uint16_t rumbleLeft;   // low-frequency (strong) motor
+  uint16_t rumbleRight;  // high-frequency (weak) motor
+  uint32_t reserved;
+};
+
+struct PadBridgeMemory {
+  uint32_t magic;
+  uint32_t version;  // kProtocolVersion
+  BridgedPad slots[4];
+};
+
 #pragma pack(pop)
 
 static_assert(sizeof(Header) == 16, "Header layout changed");
@@ -166,6 +198,8 @@ static_assert(sizeof(HelloMessage) == 40, "HelloMessage layout changed");
 static_assert(sizeof(ConfigureMessage) == 32, "ConfigureMessage layout changed");
 static_assert(sizeof(FrameStatsMessage) == 24, "FrameStatsMessage layout changed");
 static_assert(sizeof(TuningMessage) == 48, "TuningMessage layout changed");
+static_assert(sizeof(BridgedPad) == 40, "BridgedPad layout changed");
+static_assert(sizeof(PadBridgeMemory) == 168, "PadBridgeMemory layout changed");
 static_assert(sizeof(StatusMessage) == 160, "StatusMessage layout changed");
 static_assert(sizeof(LogMessage) == 504, "LogMessage layout changed");
 

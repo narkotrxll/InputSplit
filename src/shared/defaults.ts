@@ -80,6 +80,7 @@ export const DEFAULT_SETTINGS: Settings = {
   },
   blockGameBarButton: true,
   controllerAlerts: true,
+  padBridge: false,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */

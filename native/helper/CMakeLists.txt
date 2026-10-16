@@ -6,6 +6,7 @@ add_executable(inputsplit-helper
   windows_enum.cpp
   safety.cpp
   controllers.cpp
+  pad_bridge.cpp
   displays.cpp
   audio.cpp
   injector.cpp

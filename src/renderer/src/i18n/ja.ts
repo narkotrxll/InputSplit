@@ -341,6 +341,11 @@ export const ja: Messages = {
     wired: '有線',
     use: 'ゲームで使う',
     inUse: '選択済み',
+    bridge: {
+      title: 'PlayStation と Switch のコントローラーを Xbox コントローラーとして使う',
+      hint: 'DualShock 4、DualSense、Switch Pro が、分離中のゲームには空きスロットの Xbox コントローラーとして見えます。ドライバーは不要です。振動は USB 接続で動作します。これらのコントローラーを認識しないゲームで有効にしてください。すでに対応しているゲームでは二重に反応することがあります。',
+      badge: 'InputSplit 経由',
+    },
     rate: {
       measure: 'ポーリングレートを測定',
       measuring: 'スティックを 2 秒間回してください…',

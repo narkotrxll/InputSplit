@@ -111,6 +111,8 @@ export const ControllerSchema = z.object({
    * also read the physical pad see it twice. Filled in by the main process.
    */
   doubled: z.boolean().optional(),
+  /** A PlayStation or Switch controller that InputSplit shows to isolated games here. */
+  bridged: z.boolean().optional(),
 })
 export type Controller = z.infer<typeof ControllerSchema>
 
@@ -121,6 +123,12 @@ export const HidGamepadSchema = z.object({
 })
 export type HidGamepad = z.infer<typeof HidGamepadSchema>
 
+export const BridgedPadSchema = z.object({
+  slot: z.number().int().min(0).max(3),
+  vendorId: z.number().int(),
+  productId: z.number().int(),
+})
+export type BridgedPad = z.infer<typeof BridgedPadSchema>
 /** Controller test: how often the controller sent new data (null: it disconnected). */
 export const PollingRateSchema = z.object({
   slot: z.number().int().min(0).max(3),
@@ -456,6 +464,8 @@ const ADDED_SETTINGS_FIELDS = {
   blockGameBarButton: z.boolean(),
   /** Tell the player on the TV when their controller disconnects or its battery runs low. */
   controllerAlerts: z.boolean(),
+  /** Show PlayStation and Switch controllers to isolated games as Xbox controllers. */
+  padBridge: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -479,6 +489,7 @@ export const SettingsSchema = z.object({
   }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
   controllerAlerts: ADDED_SETTINGS_FIELDS.controllerAlerts.default(true),
+  padBridge: ADDED_SETTINGS_FIELDS.padBridge.default(false),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -597,6 +608,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'gamepadTuning',
   'blockGameBarButton',
   'controllerAlerts',
+  'padBridge',
   'showAllWindows',
   'verboseLogging',
   'theme',

@@ -57,3 +57,17 @@ describe('resolveModels', () => {
     expect(result.map((c) => c.model)).toEqual([undefined, undefined])
   })
 })
+
+describe('resolveModels with the pad bridge', () => {
+  it('shows a bridged pad in its slot and keeps it out of translator matching', () => {
+    const empty = { ...pad(1, null, null), connected: false }
+    const result = resolveModels(
+      [pad(0, 0x28de, 0x11ff), empty],
+      [{ vendorId: 0x054c, productId: 0x0ce6 }],
+      [{ slot: 1, vendorId: 0x054c, productId: 0x0ce6 }],
+    )
+    expect(result[1]).toMatchObject({ connected: true, model: 'dualsense', bridged: true })
+    expect(result[0]!.model).toBe('generic')
+    expect(result[0]!.doubled).toBeUndefined()
+  })
+})

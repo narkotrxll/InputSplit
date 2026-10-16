@@ -14,11 +14,14 @@ import UiCallout from '../components/ui/UiCallout.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiEmptyState from '../components/ui/UiEmptyState.vue'
 import UiSelect from '../components/ui/UiSelect.vue'
+import UiSwitch from '../components/ui/UiSwitch.vue'
+import { useSettingsStore } from '../stores/settings'
 import { useBackendStore } from '../stores/backend'
 import { useDevicesStore } from '../stores/devices'
 import { useIsolationStore } from '../stores/isolation'
 
 const devices = useDevicesStore()
+const settings = useSettingsStore()
 const isolation = useIsolationStore()
 const backend = useBackendStore()
 
@@ -168,6 +171,24 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
       </div>
       <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.rate.hint') }}</p>
       <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.glyphsTip') }}</p>
+    </UiCard>
+
+    <UiCard class="mt-5" :padded="false">
+      <label class="flex items-center justify-between gap-6 px-5 py-4">
+        <span>
+          <span class="block text-[13.5px] font-medium text-text">{{
+            $t('controllers.bridge.title')
+          }}</span>
+          <span class="mt-0.5 block text-[12.5px] text-text-muted">{{
+            $t('controllers.bridge.hint')
+          }}</span>
+        </span>
+        <UiSwitch
+          :model-value="settings.settings.padBridge"
+          :label="$t('controllers.bridge.title')"
+          @update:model-value="settings.update({ padBridge: $event })"
+        />
+      </label>
     </UiCard>
 
     <ControllerTuningCard v-if="devices.connected.length > 0" class="mt-5" />

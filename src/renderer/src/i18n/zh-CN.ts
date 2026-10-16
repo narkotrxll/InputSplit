@@ -314,6 +314,11 @@ export const zhCN: Messages = {
     wired: '有线',
     use: '用于游戏',
     inUse: '已选择',
+    bridge: {
+      title: '将 PlayStation 和 Switch 手柄作为 Xbox 手柄',
+      hint: 'DualShock 4、DualSense 和 Switch Pro 会以空闲插槽中的 Xbox 手柄出现在隔离的游戏中，无需驱动。通过 USB 连接时支持震动。请为识别不到这些手柄的游戏开启；已支持它们的游戏可能会触发两次。',
+      badge: '通过 InputSplit',
+    },
     rate: {
       measure: '测量轮询率',
       measuring: '转动摇杆 2 秒…',

@@ -329,6 +329,11 @@ export const tr: Messages = {
     wired: 'Kablolu',
     use: 'Oyun için kullan',
     inUse: 'Seçildi',
+    bridge: {
+      title: 'PlayStation ve Switch kumandaları Xbox kumandası olarak',
+      hint: 'DualShock 4, DualSense ve Switch Pro, yalıtılmış oyunlara boş bir yuvada Xbox kumandası olarak görünür, sürücü gerekmez. Titreşim USB ile çalışır. Bu kumandaları görmeyen oyunlar için açın; onları zaten destekleyen bir oyun iki kez tepki verebilir.',
+      badge: 'InputSplit üzerinden',
+    },
     rate: {
       measure: 'Yoklama hızını ölç',
       measuring: 'Bir çubuğu 2 saniye daire çizerek çevirin…',

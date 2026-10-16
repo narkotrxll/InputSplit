@@ -328,6 +328,11 @@ export const uk: Messages = {
     wired: 'Дротовий',
     use: 'Для гри',
     inUse: 'Вибрано',
+    bridge: {
+      title: 'Геймпади PlayStation і Switch як Xbox-геймпад',
+      hint: 'DualShock 4, DualSense і Switch Pro видно ізольованим іграм як Xbox-геймпад у вільному слоті, без драйверів. Вібрація працює через USB. Вмикайте для ігор, які цих геймпадів не бачать; гра, що вже їх підтримує, може реагувати двічі.',
+      badge: 'Через InputSplit',
+    },
     rate: {
       measure: 'Виміряти частоту опитування',
       measuring: 'Покрутіть стік 2 секунди…',

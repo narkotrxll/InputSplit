@@ -338,6 +338,11 @@ export const de: Messages = {
     wired: 'Kabel',
     use: 'Für Spiel nutzen',
     inUse: 'Ausgewählt',
+    bridge: {
+      title: 'PlayStation- und Switch-Controller als Xbox-Controller',
+      hint: 'DualShock 4, DualSense und Switch Pro erscheinen isolierten Spielen als Xbox-Controller auf einem freien Platz, ohne Treiber. Vibration funktioniert über USB. Schalte es für Spiele ein, die diese Controller nicht erkennen; ein Spiel, das sie bereits unterstützt, kann doppelt reagieren.',
+      badge: 'Über InputSplit',
+    },
     rate: {
       measure: 'Abfragerate messen',
       measuring: 'Bewege einen Stick 2 Sekunden lang im Kreis…',
