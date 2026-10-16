@@ -11,7 +11,9 @@ import {
   ControllerStateSchema,
   DisplaySchema,
   HidGamepadSchema,
+  BridgedPadSchema,
   LogLevelSchema,
+  PollingRateSchema,
   RectSchema,
   SessionEndReasonSchema,
   SessionStatusSchema,
@@ -27,6 +29,8 @@ const empty = z.object({}).passthrough()
 const ControllerListSchema = z.object({
   controllers: z.array(ControllerSchema),
   hidGamepads: z.array(HidGamepadSchema).optional(),
+  /** PlayStation / Switch controllers the pad bridge shows to isolated games in a slot. */
+  bridged: z.array(BridgedPadSchema).optional(),
 })
 
 export const helperMethods = {
@@ -50,6 +54,10 @@ export const helperMethods = {
     result: z.object({ windows: z.array(WindowInfoSchema) }),
   },
   listControllers: { params: empty, result: ControllerListSchema },
+  setPadBridge: {
+    params: z.object({ enabled: z.boolean() }),
+    result: z.object({ enabled: z.boolean() }),
+  },
   listDisplays: { params: empty, result: z.object({ displays: z.array(DisplaySchema) }) },
   findProcesses: {
     params: z.object({ names: z.array(z.string()) }),
@@ -57,6 +65,7 @@ export const helperMethods = {
   },
   startControllerTest: { params: z.object({ slot: z.number().int() }), result: empty },
   stopControllerTest: { params: empty, result: empty },
+  measurePollingRate: { params: z.object({ slot: z.number().int() }), result: empty },
   checkTarget: {
     params: z.object({ pid: z.number().int(), allowAntiCheat: z.boolean().optional() }),
     result: TargetCheckSchema,
@@ -153,6 +162,7 @@ export const helperEvents = {
   }),
   controllersChanged: ControllerListSchema,
   controllerState: ControllerStateSchema,
+  pollingRate: PollingRateSchema,
   displaysChanged: z.object({ displays: z.array(DisplaySchema) }),
   sessionStatus: SessionStatusSchema,
   sessionEnded: z.object({

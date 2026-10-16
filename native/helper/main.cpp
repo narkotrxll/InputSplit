@@ -25,6 +25,7 @@
 #include "../common/hook_protocol.h"
 #include "../common/version.h"
 #include "controllers.h"
+#include "pad_bridge.h"
 #include "displays.h"
 #include "process_info.h"
 #include "rpc.h"
@@ -112,6 +113,14 @@ Json Handle(const std::string& method, const Json& params) {
   }
   if (method == "startControllerTest") {
     ControllerMonitor::Instance().StartTest(params.at("slot").get<int>());
+    return Json::object();
+  }
+  if (method == "setPadBridge") {
+    PadBridge::Instance().SetEnabled(params.at("enabled").get<bool>());
+    return Json{{"enabled", PadBridge::Instance().enabled()}};
+  }
+  if (method == "measurePollingRate") {
+    ControllerMonitor::Instance().MeasurePollingRate(params.at("slot").get<int>());
     return Json::object();
   }
   if (method == "stopControllerTest") {
@@ -306,6 +315,7 @@ int wmain(int argc, wchar_t** argv) {
   // stdin closed or shutdown requested: leave every game in its normal state.
   SessionManager::Instance().StopAll("helperShutdown", 2000);
   StopSystemWindow();
+  PadBridge::Instance().Shutdown();
   ControllerMonitor::Instance().Stop();
   fflush(stdout);
   // Detached request threads may still be running; ExitProcess ends them cleanly.

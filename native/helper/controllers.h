@@ -21,6 +21,9 @@ class ControllerMonitor {
   Json List();                // current snapshot of the four slots
   void StartTest(int slot);   // stream "controllerState" events for one slot (~60 Hz)
   void StopTest();
+  // Counts how often the controller in `slot` sends new data while the user moves a stick,
+  // for about two seconds, then emits "pollingRate" {slot, updatesPerSecond}. Returns at once.
+  void MeasurePollingRate(int slot);
 
   // Controller shortcut: emits "gamepadHotkey" {slot} when LB + RB + View are held for two
   // seconds on any connected controller.
@@ -31,6 +34,10 @@ class ControllerMonitor {
   // Short vibration as feedback ("on" one pulse, "off" two, "error" three). Returns false
   // when XInput cannot vibrate.
   bool Rumble(int slot, const std::string& pattern);
+  // A real XInput controller is in `slot` (as of the last presence check).
+  bool SlotConnected(int slot);
+  // Sends a fresh "controllersChanged" (the pad bridge took or released a slot).
+  void MarkChanged();
 
  private:
   ControllerMonitor() = default;

@@ -342,6 +342,22 @@ export const ptBR: Messages = {
       press: 'Pressione uma tecla…',
       stick: 'Analógico',
     },
+    bridge: {
+      title: 'Controles de PlayStation e Switch como controle Xbox',
+      hint: 'DualShock 4, DualSense e Switch Pro aparecem nos jogos isolados como um controle Xbox num slot livre, sem drivers. A vibração funciona por USB. Ative para jogos que não veem esses controles; um jogo que já os suporta pode reagir duas vezes.',
+      badge: 'Via InputSplit',
+    },
+    rate: {
+      measure: 'Medir a taxa de atualização',
+      measuring: 'Gire um analógico por 2 segundos…',
+      result: 'Cerca de {n} atualizações por segundo',
+      slow: 'Cerca de {n} atualizações por segundo: lento; com cabo ou um receptor melhor a resposta será mais rápida',
+      still: 'Poucas atualizações: gire um analógico durante a medição',
+      lost: 'O controle desconectou durante a medição',
+      hint: 'A maioria dos controles envia 125–250 atualizações por segundo por Bluetooth e 250–1000 por USB. Quanto mais, menor o atraso entre sua mão e o jogo.',
+    },
+    glyphsTip:
+      'O jogo mostra botões de Xbox para um controle de PlayStation ou o contrário? O próprio jogo escolhe os ícones. Costuma ajudar ligar ou desligar o Steam Input para o jogo, conectar o controle por cabo ou escolher o estilo dos botões nas configurações do jogo.',
     tuning: {
       title: 'Analógicos, gatilhos e botões',
       description:

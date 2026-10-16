@@ -347,6 +347,22 @@ export const de: Messages = {
       press: 'Taste drücken…',
       stick: 'Stick',
     },
+    bridge: {
+      title: 'PlayStation- und Switch-Controller als Xbox-Controller',
+      hint: 'DualShock 4, DualSense und Switch Pro erscheinen isolierten Spielen als Xbox-Controller auf einem freien Platz, ohne Treiber. Vibration funktioniert über USB. Schalte es für Spiele ein, die diese Controller nicht erkennen; ein Spiel, das sie bereits unterstützt, kann doppelt reagieren.',
+      badge: 'Über InputSplit',
+    },
+    rate: {
+      measure: 'Abfragerate messen',
+      measuring: 'Bewege einen Stick 2 Sekunden lang im Kreis…',
+      result: 'Etwa {n} Updates pro Sekunde',
+      slow: 'Etwa {n} Updates pro Sekunde: langsam, per Kabel oder mit besserem Empfänger reagiert es schneller',
+      still: 'Zu wenige Updates: Bewege beim Messen einen Stick im Kreis',
+      lost: 'Der Controller wurde während der Messung getrennt',
+      hint: 'Die meisten Controller senden 125–250 Updates pro Sekunde über Bluetooth und 250–1000 über USB. Mehr Updates bedeuten weniger Verzögerung zwischen Hand und Spiel.',
+    },
+    glyphsTip:
+      'Das Spiel zeigt Xbox-Tasten für einen PlayStation-Controller oder umgekehrt? Die Tastensymbole wählt das Spiel selbst. Meist hilft es, Steam Input für das Spiel ein- oder auszuschalten, den Controller per Kabel anzuschließen oder den Tastenstil in den Spieleinstellungen zu wählen.',
     tuning: {
       title: 'Sticks, Trigger und Tasten',
       description:

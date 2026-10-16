@@ -15,11 +15,14 @@ import UiCallout from '../components/ui/UiCallout.vue'
 import UiCard from '../components/ui/UiCard.vue'
 import UiEmptyState from '../components/ui/UiEmptyState.vue'
 import UiSelect from '../components/ui/UiSelect.vue'
+import UiSwitch from '../components/ui/UiSwitch.vue'
+import { useSettingsStore } from '../stores/settings'
 import { useBackendStore } from '../stores/backend'
 import { useDevicesStore } from '../stores/devices'
 import { useIsolationStore } from '../stores/isolation'
 
 const devices = useDevicesStore()
+const settings = useSettingsStore()
 const isolation = useIsolationStore()
 const backend = useBackendStore()
 
@@ -51,6 +54,19 @@ const runningTools = computed(() =>
 const doubledSlots = computed(() =>
   devices.controllers.filter((c) => c.connected && c.doubled).map((c) => c.slot + 1),
 )
+
+// Polling rate of the controller under test.
+const rate = computed(() =>
+  devices.pollingRate?.slot === testSlot.value ? devices.pollingRate : null,
+)
+const rateText = computed(() => {
+  const value = rate.value?.value
+  if (value === undefined) return ''
+  if (value === 'measuring') return t('controllers.rate.measuring')
+  if (value === null) return t('controllers.rate.lost')
+  if (value < 20) return t('controllers.rate.still')
+  return t(value < 100 ? 'controllers.rate.slow' : 'controllers.rate.result', { n: value })
+})
 
 async function toggleTest(slot: number): Promise<void> {
   if (devices.testSlot === slot) await devices.stopTest()
@@ -143,6 +159,37 @@ onBeforeUnmount(() => void devices.stopTest().catch(() => {}))
         </div>
       </template>
       <GamepadVisualizer :state="devices.testState" :model="devices.lookOf(testSlot)" />
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-4">
+        <UiButton
+          size="sm"
+          variant="subtle"
+          :disabled="rate?.value === 'measuring'"
+          @click="devices.measurePollingRate(testSlot)"
+        >
+          {{ $t('controllers.rate.measure') }}
+        </UiButton>
+        <span class="text-[12.5px] text-text-muted tabular">{{ rateText }}</span>
+      </div>
+      <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.rate.hint') }}</p>
+      <p class="mt-2 text-[12px] text-text-faint">{{ $t('controllers.glyphsTip') }}</p>
+    </UiCard>
+
+    <UiCard class="mt-5" :padded="false">
+      <label class="flex items-center justify-between gap-6 px-5 py-4">
+        <span>
+          <span class="block text-[13.5px] font-medium text-text">{{
+            $t('controllers.bridge.title')
+          }}</span>
+          <span class="mt-0.5 block text-[12.5px] text-text-muted">{{
+            $t('controllers.bridge.hint')
+          }}</span>
+        </span>
+        <UiSwitch
+          :model-value="settings.settings.padBridge"
+          :label="$t('controllers.bridge.title')"
+          @update:model-value="settings.update({ padBridge: $event })"
+        />
+      </label>
     </UiCard>
 
     <ControllerTuningCard v-if="devices.connected.length > 0" class="mt-5" />

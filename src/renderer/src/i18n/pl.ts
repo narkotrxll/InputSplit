@@ -340,6 +340,22 @@ export const pl: Messages = {
       press: 'Naciśnij klawisz…',
       stick: 'Gałka',
     },
+    bridge: {
+      title: 'Kontrolery PlayStation i Switch jako kontroler Xbox',
+      hint: 'DualShock 4, DualSense i Switch Pro są widoczne dla izolowanych gier jako kontroler Xbox w wolnym gnieździe, bez sterowników. Wibracje działają przez USB. Włącz dla gier, które nie widzą tych kontrolerów; gra, która już je obsługuje, może reagować podwójnie.',
+      badge: 'Przez InputSplit',
+    },
+    rate: {
+      measure: 'Zmierz częstotliwość odpytywania',
+      measuring: 'Kręć gałką przez 2 sekundy…',
+      result: 'Około {n} aktualizacji na sekundę',
+      slow: 'Około {n} aktualizacji na sekundę: wolno, przez kabel lub z lepszym odbiornikiem reakcja będzie szybsza',
+      still: 'Za mało aktualizacji: kręć gałką podczas pomiaru',
+      lost: 'Kontroler rozłączył się podczas pomiaru',
+      hint: 'Większość kontrolerów wysyła 125–250 aktualizacji na sekundę przez Bluetooth i 250–1000 przez USB. Im więcej, tym mniejsze opóźnienie między ręką a grą.',
+    },
+    glyphsTip:
+      'Gra pokazuje przyciski Xbox dla kontrolera PlayStation albo odwrotnie? Ikony przycisków wybiera sama gra. Zwykle pomaga włączyć lub wyłączyć dla niej Steam Input, podłączyć kontroler kablem albo wybrać styl przycisków w ustawieniach gry.',
     tuning: {
       title: 'Gałki, spusty i przyciski',
       description:

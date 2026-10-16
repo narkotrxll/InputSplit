@@ -346,6 +346,22 @@ export const fr: Messages = {
       press: 'Appuyez sur une touche…',
       stick: 'Stick',
     },
+    bridge: {
+      title: 'Manettes PlayStation et Switch comme manette Xbox',
+      hint: 'Les DualShock 4, DualSense et Switch Pro apparaissent aux jeux isolés comme une manette Xbox sur un emplacement libre, sans pilote. La vibration fonctionne en USB. Activez-le pour les jeux qui ne voient pas ces manettes ; un jeu qui les prend déjà en charge peut réagir deux fois.',
+      badge: 'Via InputSplit',
+    },
+    rate: {
+      measure: 'Mesurer la fréquence d’interrogation',
+      measuring: 'Faites tourner un stick pendant 2 secondes…',
+      result: 'Environ {n} mises à jour par seconde',
+      slow: 'Environ {n} mises à jour par seconde : lent, un câble ou un meilleur récepteur réagira plus vite',
+      still: 'Trop peu de mises à jour : faites tourner un stick pendant la mesure',
+      lost: 'La manette s’est déconnectée pendant la mesure',
+      hint: 'La plupart des manettes envoient 125 à 250 mises à jour par seconde en Bluetooth et 250 à 1000 en USB. Plus il y en a, moins il y a de délai entre votre main et le jeu.',
+    },
+    glyphsTip:
+      'Le jeu affiche des boutons Xbox pour une manette PlayStation, ou l’inverse ? Le jeu choisit lui-même ses icônes. Il suffit souvent d’activer ou désactiver Steam Input pour ce jeu, de brancher la manette par câble ou de choisir le style des boutons dans les réglages du jeu.',
     tuning: {
       title: 'Sticks, gâchettes et boutons',
       description:
