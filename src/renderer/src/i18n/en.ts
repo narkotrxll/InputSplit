@@ -333,6 +333,15 @@ export const en = {
     wired: 'Wired',
     use: 'Use for game',
     inUse: 'Selected',
+    keys: {
+      title: 'Controller as keyboard',
+      description:
+        "For games without controller support: buttons, triggers and the left stick press keys inside the isolated game. The shared keyboard stays blocked; only these keys reach the game. Works in games that read keys from window messages; games that read the keyboard through Raw Input or DirectInput won't see them.",
+      preset: 'WASD preset',
+      clear: 'Clear',
+      press: 'Press a key…',
+      stick: 'Stick',
+    },
     tuning: {
       title: 'Sticks, triggers and buttons',
       description:

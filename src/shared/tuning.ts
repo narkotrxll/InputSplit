@@ -1,7 +1,7 @@
 /**
  * Dead zones and button remapping (Controllers page) in the form the hook DLL takes.
  */
-import { XInputButton, type GamepadButton } from './defaults'
+import { XInputButton, type GamepadButton, type KeyBinding } from './defaults'
 import type { GamepadTuning } from './domain'
 
 /** What the helper's setTuning request carries (see TuningMessage in hook_protocol.h). */
@@ -13,6 +13,24 @@ export interface HelperTuning {
   buttonMap: number[]
   /** Physical slot behind the game's player 1..4 (games that read every controller). */
   playerSlots: number[]
+  /** Virtual-key code per input (see KeyBinding in hook_protocol.h), 0 = none. */
+  keyMap: number[]
+}
+
+/** Index of each non-button input in keyMap; buttons use their XInput bit. */
+const KEY_SLOTS: Record<Exclude<KeyBinding, GamepadButton>, number> = {
+  leftTrigger: 16,
+  rightTrigger: 17,
+  stickUp: 18,
+  stickDown: 19,
+  stickLeft: 20,
+  stickRight: 21,
+}
+
+function keySlot(binding: KeyBinding): number {
+  return binding in KEY_SLOTS
+    ? KEY_SLOTS[binding as keyof typeof KEY_SLOTS]
+    : bitOf(binding as GamepadButton)
 }
 
 const BUTTON_OFF = 255
@@ -33,7 +51,16 @@ export function toHelperTuning(tuning: GamepadTuning): HelperTuning {
     triggerDeadzone: Math.round((tuning.triggerDeadzone / 100) * 255),
     buttonMap,
     playerSlots: [...tuning.playerOrder],
+    keyMap: toKeyMap(tuning.keys),
   }
+}
+
+export function toKeyMap(keys: GamepadTuning['keys']): number[] {
+  const keyMap = Array.from({ length: 22 }, () => 0)
+  for (const [binding, vk] of Object.entries(keys) as [KeyBinding, number][]) {
+    keyMap[keySlot(binding)] = vk
+  }
+  return keyMap
 }
 
 export function isDefaultTuning(tuning: GamepadTuning): boolean {
@@ -42,7 +69,8 @@ export function isDefaultTuning(tuning: GamepadTuning): boolean {
     tuning.rightDeadzone === 0 &&
     tuning.triggerDeadzone === 0 &&
     Object.entries(tuning.remap).every(([from, to]) => from === to) &&
-    tuning.playerOrder.every((slot, player) => slot === player)
+    tuning.playerOrder.every((slot, player) => slot === player) &&
+    Object.keys(tuning.keys).length === 0
   )
 }
 

@@ -329,6 +329,15 @@ export const tr: Messages = {
     wired: 'Kablolu',
     use: 'Oyun için kullan',
     inUse: 'Seçildi',
+    keys: {
+      title: 'Kumanda klavye olarak',
+      description:
+        'Kumanda desteği olmayan oyunlar için: düğmeler, tetikler ve sol çubuk izole oyunun içinde tuşlara basar. Paylaşılan klavye engelli kalır; oyuna yalnızca bu tuşlar ulaşır. Tuşları pencere mesajlarından okuyan oyunlarda çalışır; klavyeyi Raw Input veya DirectInput ile okuyan oyunlar bunları görmez.',
+      preset: 'WASD düzeni',
+      clear: 'Temizle',
+      press: 'Bir tuşa basın…',
+      stick: 'Çubuk',
+    },
     tuning: {
       title: 'Çubuklar, tetikler ve tuşlar',
       description:

@@ -338,6 +338,15 @@ export const de: Messages = {
     wired: 'Kabel',
     use: 'Für Spiel nutzen',
     inUse: 'Ausgewählt',
+    keys: {
+      title: 'Controller als Tastatur',
+      description:
+        'Für Spiele ohne Controller-Unterstützung: Tasten, Trigger und linker Stick drücken Tasten im isolierten Spiel. Die gemeinsame Tastatur bleibt gesperrt, nur diese Tasten erreichen das Spiel. Funktioniert in Spielen, die Tasten aus Fensternachrichten lesen; Spiele, die die Tastatur über Raw Input oder DirectInput lesen, sehen sie nicht.',
+      preset: 'WASD-Vorlage',
+      clear: 'Leeren',
+      press: 'Taste drücken…',
+      stick: 'Stick',
+    },
     tuning: {
       title: 'Sticks, Trigger und Tasten',
       description:

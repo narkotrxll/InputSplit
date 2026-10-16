@@ -77,6 +77,7 @@ export const DEFAULT_SETTINGS: Settings = {
     triggerDeadzone: 0,
     remap: {},
     playerOrder: [0, 1, 2, 3],
+    keys: {},
   },
   blockGameBarButton: true,
   controllerAlerts: true,
@@ -118,3 +119,15 @@ export const GAMEPAD_BUTTONS = [
   'dpadLeft',
   'dpadRight',
 ] as const satisfies readonly GamepadButton[]
+
+/** Everything that can press a key in the game (Controllers → Controller as keyboard). */
+export const KEY_BINDINGS = [
+  ...GAMEPAD_BUTTONS,
+  'leftTrigger',
+  'rightTrigger',
+  'stickUp',
+  'stickDown',
+  'stickLeft',
+  'stickRight',
+] as const
+export type KeyBinding = (typeof KEY_BINDINGS)[number]

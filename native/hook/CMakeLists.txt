@@ -12,6 +12,7 @@ add_library(InputSplitHook SHARED
   detection.cpp
   frame_stats.cpp
   tuning.cpp
+  key_emulation.cpp
   minhook_util.cpp
   log.cpp
   hook.def)

@@ -160,6 +160,12 @@ Json Handle(const std::string& method, const Json& params) {
         tuning.playerSlots[i] = slots[i].get<uint8_t>();
       }
     }
+    if (params.contains("keyMap")) {
+      const Json& keys = params["keyMap"];
+      for (int i = 0; i < proto::kKeyBindings && i < static_cast<int>(keys.size()); ++i) {
+        tuning.keyMap[i] = keys[i].get<uint8_t>();
+      }
+    }
     if (!SessionManager::Instance().SetTuning(params.at("sessionId").get<int>(), tuning)) {
       throw HelperError{"sessionNotFound", "No such session."};
     }

@@ -337,6 +337,15 @@ export const es: Messages = {
     wired: 'Con cable',
     use: 'Usar en el juego',
     inUse: 'Elegido',
+    keys: {
+      title: 'Mando como teclado',
+      description:
+        'Para juegos sin soporte de mando: los botones, gatillos y el stick izquierdo pulsan teclas dentro del juego aislado. El teclado compartido sigue bloqueado; solo estas teclas llegan al juego. Funciona en juegos que leen las teclas de los mensajes de ventana; los que leen el teclado con Raw Input o DirectInput no las verán.',
+      preset: 'Plantilla WASD',
+      clear: 'Borrar',
+      press: 'Pulsa una tecla…',
+      stick: 'Stick',
+    },
     tuning: {
       title: 'Sticks, gatillos y botones',
       description:

@@ -8,7 +8,7 @@
  * This file must not import Electron or Node modules: the renderer bundles it too.
  */
 import { z } from 'zod'
-import { FEATURE_NAMES, GAMEPAD_BUTTONS } from './defaults'
+import { FEATURE_NAMES, GAMEPAD_BUTTONS, KEY_BINDINGS } from './defaults'
 import { LANGUAGE_SETTINGS } from './locales'
 import { SEAT_COUNT } from './seats'
 
@@ -404,6 +404,8 @@ export const GamepadTuningSchema = z.object({
    * 1..4. [0, 1, 2, 3] keeps Windows' order.
    */
   playerOrder: z.array(z.number().int().min(0).max(3)).length(4).default([0, 1, 2, 3]),
+  /** For games without controller support: the Windows virtual-key code each input presses. */
+  keys: z.partialRecord(z.enum(KEY_BINDINGS), z.number().int().min(1).max(254)).default({}),
 })
 export type GamepadTuning = z.infer<typeof GamepadTuningSchema>
 
@@ -469,6 +471,7 @@ export const SettingsSchema = z.object({
     triggerDeadzone: 0,
     remap: {},
     playerOrder: [0, 1, 2, 3],
+    keys: {},
   }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
   controllerAlerts: ADDED_SETTINGS_FIELDS.controllerAlerts.default(true),

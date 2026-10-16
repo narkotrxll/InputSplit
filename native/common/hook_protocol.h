@@ -16,9 +16,9 @@
 namespace inputsplit::proto {
 
 constexpr uint32_t kMagic = 0x4C505349;  // "ISPL" in little-endian
-constexpr uint16_t kProtocolVersion = 5;  // 2: DirectInput / Raw Input counters, 3: frame stats,
+constexpr uint16_t kProtocolVersion = 7;  // 2: DirectInput / Raw Input counters, 3: frame stats,
                                           // 4: tuning (dead zones, button remapping),
-                                          // 5: player order in tuning
+                                          // 5: player order in tuning, 7: keys in tuning
 
 // Pipe name prefix; the game PID (decimal) is appended.
 constexpr wchar_t kPipePrefix[] = L"\\\\.\\pipe\\InputSplit.Hook.";
@@ -119,9 +119,27 @@ struct TuningMessage {
   // Without slot lock (the game reads every controller): the physical slot behind the
   // game's player 1..4. Identity (0, 1, 2, 3) = Windows' own order.
   uint8_t playerSlots[4];
+  // Keys pressed in the game by the controller (games without controller support): a
+  // virtual-key code per KeyBinding, 0 = none. All zeros = off.
+  uint8_t keyMap[24];
   uint32_t reserved2;
 };
 constexpr uint8_t kButtonOff = 0xFF;
+
+// Indexes into TuningMessage::keyMap: 0..15 are the XInput button bits, then these.
+enum KeyBinding : uint8_t {
+  kKeyLeftTrigger = 16,
+  kKeyRightTrigger = 17,
+  kKeyStickUp = 18,
+  kKeyStickDown = 19,
+  kKeyStickLeft = 20,
+  kKeyStickRight = 21,
+  kKeyBindings = 22,
+};
+
+// Set in lParam of the keyboard messages InputSplit posts for those keys (a bit Windows
+// leaves reserved), so the keyboard block lets them through.
+constexpr uint32_t kSyntheticKeyBit = 1u << 25;
 
 struct StatusMessage {
   Header header;
@@ -165,7 +183,7 @@ static_assert(sizeof(Header) == 16, "Header layout changed");
 static_assert(sizeof(HelloMessage) == 40, "HelloMessage layout changed");
 static_assert(sizeof(ConfigureMessage) == 32, "ConfigureMessage layout changed");
 static_assert(sizeof(FrameStatsMessage) == 24, "FrameStatsMessage layout changed");
-static_assert(sizeof(TuningMessage) == 48, "TuningMessage layout changed");
+static_assert(sizeof(TuningMessage) == 72, "TuningMessage layout changed");
 static_assert(sizeof(StatusMessage) == 160, "StatusMessage layout changed");
 static_assert(sizeof(LogMessage) == 504, "LogMessage layout changed");
 

@@ -333,6 +333,15 @@ export const ptBR: Messages = {
     wired: 'Com fio',
     use: 'Usar no jogo',
     inUse: 'Escolhido',
+    keys: {
+      title: 'Controle como teclado',
+      description:
+        'Para jogos sem suporte a controle: botões, gatilhos e o analógico esquerdo pressionam teclas dentro do jogo isolado. O teclado compartilhado continua bloqueado; só essas teclas chegam ao jogo. Funciona em jogos que leem teclas das mensagens da janela; jogos que leem o teclado via Raw Input ou DirectInput não as verão.',
+      preset: 'Modelo WASD',
+      clear: 'Limpar',
+      press: 'Pressione uma tecla…',
+      stick: 'Analógico',
+    },
     tuning: {
       title: 'Analógicos, gatilhos e botões',
       description:

@@ -58,6 +58,9 @@ void FilterMessage(MSG* msg) {
   if (msg == nullptr) return;
   bool hide = false;
   if (IsKeyboardMessage(msg->message)) {
+    // Keys from the controller (key_emulation.cpp) pass; the window procedure removes the
+    // marker. TranslateMessage copies it into the WM_CHAR it makes, so those pass too.
+    if (msg->lParam & proto::kSyntheticKeyBit) return;
     hide = IsActive(proto::kFeatureBlockKeyboard);
     if (hide) Count(g_counters.blockedKeyboard);
   } else if (IsMouseMessage(msg->message)) {
@@ -101,6 +104,7 @@ BOOL WINAPI DetourPeekMessageA(LPMSG msg, HWND hwnd, UINT min, UINT max, UINT re
 // --- 2. Key state polling ---------------------------------------------------------------
 
 SHORT WINAPI DetourGetAsyncKeyState(int vk) {
+  if (SyntheticKeyDown(vk)) return static_cast<SHORT>(0x8000);
   SHORT real = g_realGetAsyncKeyState(vk);
   if (real != 0 && ShouldHideKey(vk)) {
     Count(IsMouseButtonKey(vk) ? g_counters.blockedMouse : g_counters.blockedKeyboard);
@@ -110,6 +114,7 @@ SHORT WINAPI DetourGetAsyncKeyState(int vk) {
 }
 
 SHORT WINAPI DetourGetKeyState(int vk) {
+  if (SyntheticKeyDown(vk)) return static_cast<SHORT>(0x8000);
   SHORT real = g_realGetKeyState(vk);
   if (real != 0 && ShouldHideKey(vk)) {
     return 0;  // not counted: GetAsyncKeyState already counts real presses
@@ -126,6 +131,9 @@ BOOL WINAPI DetourGetKeyboardState(PBYTE keys) {
       for (int vk = 0; vk < 256; ++vk) {
         if (IsMouseButtonKey(vk) ? hideMouse : hideKeyboard) keys[vk] = 0;
       }
+    }
+    for (int vk = 1; vk < 256; ++vk) {
+      if (SyntheticKeyDown(vk)) keys[vk] |= 0x80;
     }
   }
   return result;
