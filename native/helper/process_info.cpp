@@ -1,6 +1,7 @@
 #include "process_info.h"
 
 #include <psapi.h>
+#include <tlhelp32.h>
 
 #include <algorithm>
 #include <iterator>
@@ -197,6 +198,23 @@ GameGuess GuessGame(const ProcessDetails& process, bool borderlessFullscreen) {
 
   guess.likelyGame = guess.score >= 3;
   return guess;
+}
+
+std::vector<std::wstring> RunningExeNames(const std::vector<std::wstring>& lowerExeNames) {
+  std::vector<std::wstring> running;
+  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if (snapshot == INVALID_HANDLE_VALUE) return running;
+  PROCESSENTRY32W entry{};
+  entry.dwSize = sizeof(entry);
+  for (BOOL ok = Process32FirstW(snapshot, &entry); ok; ok = Process32NextW(snapshot, &entry)) {
+    std::wstring name = ToLower(entry.szExeFile);
+    bool wanted =
+        std::find(lowerExeNames.begin(), lowerExeNames.end(), name) != lowerExeNames.end();
+    if (wanted && std::find(running.begin(), running.end(), name) == running.end())
+      running.push_back(name);
+  }
+  CloseHandle(snapshot);
+  return running;
 }
 
 }  // namespace inputsplit::helper

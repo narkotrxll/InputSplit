@@ -13,7 +13,7 @@ export const pl: Messages = {
     settings: 'Ustawienia',
     about: 'Informacje',
     diagnostics: 'Diagnostyka',
-    coffee: 'Postaw kawę',
+    donate: 'Wesprzyj autora',
   },
   status: {
     notConfigured: 'Nieskonfigurowane',
@@ -347,6 +347,16 @@ export const pl: Messages = {
       off: 'Wyłączony',
       dpad: 'Krzyżak',
     },
+    doubled: 'Może reagować podwójnie w grach',
+    tools: {
+      title: 'Programy, które zmieniają wejście kontrolera',
+      doubled:
+        'Gniazdo {slots}: ten kontroler trafia do gier przez program, który tworzy wirtualny kontroler. Gra, która czyta też prawdziwy kontroler, widzi go dwa razy: przyciski działają podwójnie albo jedna osoba liczy się jako dwóch graczy.',
+      steam:
+        'jeśli gra reaguje podwójnie albo kontroler porusza myszą, otwórz w Steam Właściwości gry → Kontroler i wyłącz Steam Input.',
+      other:
+        'tworzy wirtualny kontroler albo zamienia przyciski na klawisze. Jeśli gra reaguje podwójnie lub sama się porusza, zamknij program albo ukryj prawdziwy kontroler w jego ustawieniach.',
+    },
     test: 'Testuj',
     stopTest: 'Zatrzymaj test',
     testTitle: 'Test kontrolera',
@@ -449,6 +459,9 @@ export const pl: Messages = {
     defaults: 'Domyślna izolacja',
     defaultsHint: 'Używane dla nowych ustawień i nowych profili.',
     moveWindowByDefault: 'Przenoś grę na wybrany ekran',
+    blockGameBarButton: 'Przycisk Xbox nie otwiera Game Bar',
+    blockGameBarButtonHint:
+      'Gdy gra jest izolowana, przycisk Xbox na kontrolerze nie otwiera Game Bar na ekranie drugiej osoby. Po zatrzymaniu wszystko wraca do poprzedniego stanu.',
     gameAudioToDisplay: 'Dźwięk gry z głośników ekranu',
     gameAudioToDisplayHint:
       'Jeśli telewizor lub monitor ma głośniki, dźwięk gry leci z nich podczas izolacji. Zmienia się tylko dźwięk gry, reszta zostaje na zwykłych głośnikach.',

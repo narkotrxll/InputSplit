@@ -106,6 +106,11 @@ export const ControllerSchema = z.object({
   productId: z.number().int().nullable().optional(),
   /** Filled in by the main process from the ids above (see gamepad-models.ts). */
   model: GamepadModelSchema.optional(),
+  /**
+   * A virtual pad standing in for a physical one (Steam Input, DS4Windows, …): games that
+   * also read the physical pad see it twice. Filled in by the main process.
+   */
+  doubled: z.boolean().optional(),
 })
 export type Controller = z.infer<typeof ControllerSchema>
 
@@ -435,6 +440,8 @@ const ADDED_SETTINGS_FIELDS = {
   /** LB + RB + Menu shows or hides FPS and input latency on the game's screen. */
   overlayHotkeyEnabled: z.boolean(),
   gamepadTuning: GamepadTuningSchema,
+  /** While a game is isolated, the controller's Xbox button does not open Game Bar. */
+  blockGameBarButton: z.boolean(),
 }
 
 export const SettingsSchema = z.object({
@@ -455,6 +462,7 @@ export const SettingsSchema = z.object({
     triggerDeadzone: 0,
     remap: {},
   }),
+  blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
 })
 export type Settings = z.infer<typeof SettingsSchema>
 
@@ -571,6 +579,7 @@ export const BACKUP_SETTINGS_KEYS = [
   'restoreOnExit',
   'gameAudioToDisplay',
   'gamepadTuning',
+  'blockGameBarButton',
   'showAllWindows',
   'verboseLogging',
   'theme',

@@ -17,7 +17,7 @@ export const en = {
     settings: 'Settings',
     about: 'About',
     diagnostics: 'Diagnostics',
-    coffee: 'Buy me a coffee',
+    donate: 'Support the author',
   },
   status: {
     notConfigured: 'Not set up',
@@ -349,6 +349,16 @@ export const en = {
       off: 'Off',
       dpad: 'D-pad',
     },
+    doubled: 'May respond twice in games',
+    tools: {
+      title: 'Programs that change controller input',
+      doubled:
+        'Slot {slots}: this controller reaches games through a program that adds a virtual controller. A game that also reads the real controller sees it twice: buttons work twice or one person counts as two players.',
+      steam:
+        "if a game reacts twice or the controller moves the mouse, open the game's Properties → Controller in Steam and turn off Steam Input.",
+      other:
+        'adds a virtual controller or turns buttons into keys. If a game reacts twice or moves on its own, close it or hide the real controller in its settings.',
+    },
     test: 'Test',
     stopTest: 'Stop test',
     testTitle: 'Controller test',
@@ -451,6 +461,9 @@ export const en = {
     defaults: 'Isolation defaults',
     defaultsHint: 'Used for new setups and new profiles.',
     moveWindowByDefault: 'Move the game to the selected screen',
+    blockGameBarButton: 'The Xbox button does not open Game Bar',
+    blockGameBarButtonHint:
+      "While a game is isolated, the controller's Xbox button no longer opens Game Bar on the other person's screen. Turned back on when isolation stops.",
     gameAudioToDisplay: "Play the game's sound on the screen's speakers",
     gameAudioToDisplayHint:
       "If the TV or monitor has speakers, the game plays through them while it is isolated. Only the game's sound moves; everything else stays on your usual speakers.",

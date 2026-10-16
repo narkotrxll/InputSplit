@@ -13,7 +13,7 @@ export const tr: Messages = {
     settings: 'Ayarlar',
     about: 'Hakkında',
     diagnostics: 'Tanılama',
-    coffee: 'Bir kahve ısmarla',
+    donate: 'Geliştiriciyi destekle',
   },
   status: {
     notConfigured: 'Ayarlanmadı',
@@ -345,6 +345,16 @@ export const tr: Messages = {
       off: 'Kapalı',
       dpad: 'Yön tuşları',
     },
+    doubled: 'Oyunlarda iki kez tepki verebilir',
+    tools: {
+      title: 'Kumanda girişini değiştiren programlar',
+      doubled:
+        'Yuva {slots}: bu kumanda oyunlara sanal kumanda oluşturan bir program üzerinden ulaşıyor. Gerçek kumandayı da okuyan bir oyun onu iki kez görür: tuşlar iki kez çalışır ya da bir kişi iki oyuncu sayılır.',
+      steam:
+        "bir oyun iki kez tepki veriyorsa ya da kumanda fareyi oynatıyorsa, Steam'de oyunun Özellikler → Oyun Kumandası bölümünü açın ve Steam Input'u kapatın.",
+      other:
+        'sanal kumanda oluşturur ya da tuşları klavye tuşlarına çevirir. Bir oyun iki kez tepki veriyor ya da kendi kendine hareket ediyorsa programı kapatın veya gerçek kumandayı ayarlarından gizleyin.',
+    },
     test: 'Test et',
     stopTest: 'Testi durdur',
     testTitle: 'Kontrolcü testi',
@@ -447,6 +457,9 @@ export const tr: Messages = {
     defaults: 'Yalıtım varsayılanları',
     defaultsHint: 'Yeni kurulumlar ve yeni profiller için kullanılır.',
     moveWindowByDefault: 'Oyunu seçilen ekrana taşı',
+    blockGameBarButton: "Xbox tuşu Game Bar'ı açmaz",
+    blockGameBarButtonHint:
+      "Bir oyun yalıtılmışken kumandanın Xbox tuşu diğer kişinin ekranında Game Bar'ı açmaz. Yalıtım durunca her şey eski haline döner.",
     gameAudioToDisplay: 'Oyun sesini ekranın hoparlörlerinden çal',
     gameAudioToDisplayHint:
       'TV veya monitörde hoparlör varsa oyun, yalıtım sürerken onlardan çalar. Yalnızca oyunun sesi değişir; geri kalan her şey olağan hoparlörlerde kalır.',

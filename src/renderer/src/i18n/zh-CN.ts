@@ -13,7 +13,7 @@ export const zhCN: Messages = {
     settings: '设置',
     about: '关于',
     diagnostics: '诊断',
-    coffee: '请作者喝杯咖啡',
+    donate: '支持作者',
   },
   status: {
     notConfigured: '未设置',
@@ -329,6 +329,16 @@ export const zhCN: Messages = {
       off: '关闭',
       dpad: '方向键',
     },
+    doubled: '在游戏中可能触发两次',
+    tools: {
+      title: '会改变手柄输入的程序',
+      doubled:
+        '插槽 {slots}：这个手柄通过一个创建虚拟手柄的程序进入游戏。同时读取真实手柄的游戏会看到两个：按键触发两次，或一个人被算作两名玩家。',
+      steam:
+        '如果游戏反应两次或手柄在移动鼠标，请在 Steam 中打开游戏的属性 → 控制器并关闭 Steam 输入。',
+      other:
+        '会创建虚拟手柄或把按键转换成键盘按键。如果游戏反应两次或自己移动，请关闭该程序，或在其设置中隐藏真实手柄。',
+    },
     test: '测试',
     stopTest: '停止测试',
     testTitle: '手柄测试',
@@ -431,6 +441,9 @@ export const zhCN: Messages = {
     defaults: '隔离默认设置',
     defaultsHint: '用于新的设置和新的配置文件。',
     moveWindowByDefault: '将游戏移到所选屏幕',
+    blockGameBarButton: 'Xbox 键不打开 Game Bar',
+    blockGameBarButtonHint:
+      '游戏隔离期间，手柄上的 Xbox 键不会在另一个人的屏幕上打开 Game Bar。停止隔离后恢复原样。',
     gameAudioToDisplay: '用屏幕的扬声器播放游戏声音',
     gameAudioToDisplayHint:
       '如果电视或显示器带扬声器，隔离期间游戏声音将从它播放。只切换游戏的声音，其他声音仍在原来的音箱上。',

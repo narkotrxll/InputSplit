@@ -372,6 +372,21 @@ function showOnboarding(): void {
               @update:model-value="store.update({ gameAudioToDisplay: $event })"
             />
           </label>
+          <label class="flex items-center justify-between gap-6 px-4 py-3">
+            <span>
+              <span class="block text-[13px] text-text">{{
+                $t('settings.blockGameBarButton')
+              }}</span>
+              <span class="block text-[12px] text-text-muted">{{
+                $t('settings.blockGameBarButtonHint')
+              }}</span>
+            </span>
+            <UiSwitch
+              :model-value="s.blockGameBarButton"
+              :label="$t('settings.blockGameBarButton')"
+              @update:model-value="store.update({ blockGameBarButton: $event })"
+            />
+          </label>
         </div>
       </UiCard>
 

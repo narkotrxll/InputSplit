@@ -47,7 +47,7 @@ export function resolveModels(controllers: Controller[], hidGamepads: HidGamepad
     .filter((model): model is GamepadModel => model !== null && model !== 'xbox')
   return controllers.map((c) => {
     if (!c.connected || c.kind !== 'gamepad') return { ...c, model: undefined }
-    if (maybeVirtual(c) && hidden.length > 0) return { ...c, model: hidden.shift() }
+    if (maybeVirtual(c) && hidden.length > 0) return { ...c, model: hidden.shift(), doubled: true }
     const fromIds =
       c.vendorId != null && c.productId != null && c.vendorId !== VALVE
         ? modelFromIds(c.vendorId, c.productId)

@@ -39,6 +39,7 @@ describe('resolveModels', () => {
       ],
     )
     expect(result.map((c) => c.model)).toEqual(['dualsense', 'xbox', 'switchPro'])
+    expect(result.map((c) => c.doubled ?? false)).toEqual([true, false, true])
   })
 
   it('treats a lone Xbox 360 id as an Xbox controller and a lone Steam pad as generic', () => {

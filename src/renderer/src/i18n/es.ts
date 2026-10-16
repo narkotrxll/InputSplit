@@ -13,7 +13,7 @@ export const es: Messages = {
     settings: 'Ajustes',
     about: 'Acerca de',
     diagnostics: 'Diagnóstico',
-    coffee: 'Invitar a un café',
+    donate: 'Apoyar al autor',
   },
   status: {
     notConfigured: 'Sin configurar',
@@ -353,6 +353,16 @@ export const es: Messages = {
       off: 'Desactivado',
       dpad: 'Cruceta',
     },
+    doubled: 'Puede responder dos veces en los juegos',
+    tools: {
+      title: 'Programas que cambian la entrada del mando',
+      doubled:
+        'Ranura {slots}: este mando llega a los juegos a través de un programa que crea un mando virtual. Un juego que también lee el mando real lo ve dos veces: los botones actúan dos veces o una persona cuenta como dos jugadores.',
+      steam:
+        'si un juego reacciona dos veces o el mando mueve el ratón, abre Propiedades del juego → Mando en Steam y desactiva Steam Input.',
+      other:
+        'crea un mando virtual o convierte botones en teclas. Si un juego reacciona dos veces o se mueve solo, ciérralo u oculta el mando real en sus ajustes.',
+    },
     test: 'Probar',
     stopTest: 'Parar prueba',
     testTitle: 'Prueba del mando',
@@ -457,6 +467,9 @@ export const es: Messages = {
     defaults: 'Aislamiento predeterminado',
     defaultsHint: 'Se usa en nuevas configuraciones y nuevos perfiles.',
     moveWindowByDefault: 'Mover el juego a la pantalla elegida',
+    blockGameBarButton: 'El botón Xbox no abre Game Bar',
+    blockGameBarButtonHint:
+      'Mientras un juego está aislado, el botón Xbox del mando ya no abre Game Bar en la pantalla de la otra persona. Se reactiva al detener el aislamiento.',
     gameAudioToDisplay: 'Sonido del juego en los altavoces de la pantalla',
     gameAudioToDisplayHint:
       'Si la TV o el monitor tiene altavoces, el juego suena por ellos durante el aislamiento. Solo cambia el sonido del juego; lo demás sigue en tus altavoces habituales.',

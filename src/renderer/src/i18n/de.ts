@@ -13,7 +13,7 @@ export const de: Messages = {
     settings: 'Einstellungen',
     about: 'Info',
     diagnostics: 'Diagnose',
-    coffee: 'Einen Kaffee spendieren',
+    donate: 'Autor unterstützen',
   },
   status: {
     notConfigured: 'Nicht eingerichtet',
@@ -354,6 +354,16 @@ export const de: Messages = {
       off: 'Aus',
       dpad: 'Steuerkreuz',
     },
+    doubled: 'Kann in Spielen doppelt reagieren',
+    tools: {
+      title: 'Programme, die die Controller-Eingabe ändern',
+      doubled:
+        'Platz {slots}: Dieser Controller erreicht Spiele über ein Programm, das einen virtuellen Controller anlegt. Ein Spiel, das auch den echten Controller liest, sieht ihn doppelt: Tasten wirken zweimal oder eine Person zählt als zwei Spieler.',
+      steam:
+        'wenn ein Spiel doppelt reagiert oder der Controller die Maus bewegt, öffne in Steam Eigenschaften des Spiels → Controller und schalte Steam Input aus.',
+      other:
+        'legt einen virtuellen Controller an oder macht Tasten zu Tastaturtasten. Wenn ein Spiel doppelt reagiert oder sich von selbst bewegt, schließe es oder verstecke den echten Controller in seinen Einstellungen.',
+    },
     test: 'Testen',
     stopTest: 'Test beenden',
     testTitle: 'Controller-Test',
@@ -456,6 +466,9 @@ export const de: Messages = {
     defaults: 'Standard für die Isolierung',
     defaultsHint: 'Gilt für neue Setups und neue Profile.',
     moveWindowByDefault: 'Spiel auf den gewählten Bildschirm verschieben',
+    blockGameBarButton: 'Die Xbox-Taste öffnet keine Game Bar',
+    blockGameBarButtonHint:
+      'Während ein Spiel isoliert ist, öffnet die Xbox-Taste des Controllers die Game Bar nicht mehr auf dem Bildschirm der anderen Person. Nach dem Stoppen ist alles wie vorher.',
     gameAudioToDisplay: 'Spielton über die Lautsprecher des Bildschirms',
     gameAudioToDisplayHint:
       'Hat der Fernseher oder Monitor Lautsprecher, läuft der Spielton während der Isolierung darüber. Nur der Ton des Spiels wechselt, alles andere bleibt auf den üblichen Lautsprechern.',

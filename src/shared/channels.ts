@@ -13,6 +13,7 @@ export const INVOKE_CHANNEL_NAMES = [
   'controllers:list',
   'controllers:startTest',
   'controllers:stopTest',
+  'controllers:inputTools',
   'displays:list',
   'isolation:get',
   'isolation:start',

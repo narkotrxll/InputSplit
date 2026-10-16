@@ -13,7 +13,7 @@ export const ptBR: Messages = {
     settings: 'Configurações',
     about: 'Sobre',
     diagnostics: 'Diagnóstico',
-    coffee: 'Pagar um café',
+    donate: 'Apoiar o autor',
   },
   status: {
     notConfigured: 'Não configurado',
@@ -349,6 +349,16 @@ export const ptBR: Messages = {
       off: 'Desligado',
       dpad: 'Direcional',
     },
+    doubled: 'Pode responder duas vezes nos jogos',
+    tools: {
+      title: 'Programas que mudam a entrada do controle',
+      doubled:
+        'Slot {slots}: este controle chega aos jogos por um programa que cria um controle virtual. Um jogo que também lê o controle real o vê duas vezes: os botões agem duas vezes ou uma pessoa conta como dois jogadores.',
+      steam:
+        'se um jogo reagir duas vezes ou o controle mover o mouse, abra Propriedades do jogo → Controle na Steam e desative o Steam Input.',
+      other:
+        'cria um controle virtual ou transforma botões em teclas. Se um jogo reagir duas vezes ou se mover sozinho, feche-o ou esconda o controle real nas configurações dele.',
+    },
     test: 'Testar',
     stopTest: 'Parar teste',
     testTitle: 'Teste do controle',
@@ -451,6 +461,9 @@ export const ptBR: Messages = {
     defaults: 'Padrões de isolamento',
     defaultsHint: 'Usados em novas configurações e novos perfis.',
     moveWindowByDefault: 'Mover o jogo para a tela escolhida',
+    blockGameBarButton: 'O botão Xbox não abre a Game Bar',
+    blockGameBarButtonHint:
+      'Enquanto um jogo está isolado, o botão Xbox do controle não abre mais a Game Bar na tela da outra pessoa. Tudo volta ao normal quando o isolamento para.',
     gameAudioToDisplay: 'Som do jogo nos alto-falantes da tela',
     gameAudioToDisplayHint:
       'Se a TV ou o monitor tiver alto-falantes, o jogo toca por eles durante o isolamento. Só o som do jogo muda; o resto continua nos alto-falantes de sempre.',

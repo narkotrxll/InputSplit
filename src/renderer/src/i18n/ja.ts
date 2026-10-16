@@ -13,7 +13,7 @@ export const ja: Messages = {
     settings: '設定',
     about: 'アプリ情報',
     diagnostics: '診断',
-    coffee: 'コーヒーをおごる',
+    donate: '作者を支援する',
   },
   status: {
     notConfigured: '未設定',
@@ -357,6 +357,16 @@ export const ja: Messages = {
       off: 'オフ',
       dpad: '十字キー',
     },
+    doubled: 'ゲームで二重に反応することがあります',
+    tools: {
+      title: 'コントローラー入力を変えるプログラム',
+      doubled:
+        'スロット {slots}：このコントローラーは仮想コントローラーを作るプログラムを経由してゲームに届いています。実物のコントローラーも読むゲームでは二重に見え、ボタンが二回反応したり、一人が二人のプレイヤーとして扱われたりします。',
+      steam:
+        'ゲームが二重に反応したりコントローラーでマウスが動いたりする場合は、Steam でゲームのプロパティ → コントローラーを開き、Steam Input をオフにしてください。',
+      other:
+        '仮想コントローラーを作るか、ボタンをキーに変換します。ゲームが二重に反応したり勝手に動いたりする場合は、プログラムを閉じるか、その設定で実物のコントローラーを隠してください。',
+    },
     test: 'テスト',
     stopTest: 'テストを停止',
     testTitle: 'コントローラーのテスト',
@@ -460,6 +470,9 @@ export const ja: Messages = {
     defaults: '分離の既定値',
     defaultsHint: '新しい設定とプロファイルに使われます。',
     moveWindowByDefault: 'ゲームを選択した画面に移動',
+    blockGameBarButton: 'Xbox ボタンで Game Bar を開かない',
+    blockGameBarButtonHint:
+      'ゲームを分離している間、コントローラーの Xbox ボタンで相手の画面に Game Bar が開かなくなります。分離を止めると元に戻ります。',
     gameAudioToDisplay: 'ゲームの音声を画面のスピーカーで再生',
     gameAudioToDisplayHint:
       'テレビやモニターにスピーカーがある場合、分離中はゲームの音声をそこから再生します。切り替わるのはゲームの音声だけで、ほかの音はいつものスピーカーのままです。',

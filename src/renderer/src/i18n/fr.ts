@@ -13,7 +13,7 @@ export const fr: Messages = {
     settings: 'Paramètres',
     about: 'À propos',
     diagnostics: 'Diagnostic',
-    coffee: 'Offrir un café',
+    donate: "Soutenir l'auteur",
   },
   status: {
     notConfigured: 'Non configuré',
@@ -353,6 +353,16 @@ export const fr: Messages = {
       off: 'Désactivé',
       dpad: 'Croix directionnelle',
     },
+    doubled: 'Peut réagir deux fois dans les jeux',
+    tools: {
+      title: 'Programmes qui modifient l’entrée de la manette',
+      doubled:
+        'Emplacement {slots} : cette manette atteint les jeux via un programme qui crée une manette virtuelle. Un jeu qui lit aussi la vraie manette la voit deux fois : les boutons agissent deux fois ou une personne compte pour deux joueurs.',
+      steam:
+        'si un jeu réagit deux fois ou si la manette bouge la souris, ouvrez Propriétés du jeu → Manette dans Steam et désactivez Steam Input.',
+      other:
+        'crée une manette virtuelle ou transforme les boutons en touches. Si un jeu réagit deux fois ou bouge tout seul, fermez-le ou masquez la vraie manette dans ses réglages.',
+    },
     test: 'Tester',
     stopTest: 'Arrêter le test',
     testTitle: 'Test de la manette',
@@ -457,6 +467,9 @@ export const fr: Messages = {
     defaults: 'Isolation par défaut',
     defaultsHint: 'Utilisé pour les nouvelles configurations et les nouveaux profils.',
     moveWindowByDefault: 'Déplacer le jeu sur l’écran choisi',
+    blockGameBarButton: 'Le bouton Xbox n’ouvre pas la Game Bar',
+    blockGameBarButtonHint:
+      'Pendant l’isolation d’un jeu, le bouton Xbox de la manette n’ouvre plus la Game Bar sur l’écran de l’autre personne. Tout revient comme avant à l’arrêt.',
     gameAudioToDisplay: 'Son du jeu sur les haut-parleurs de l’écran',
     gameAudioToDisplayHint:
       'Si la télé ou le moniteur a des haut-parleurs, le jeu les utilise pendant l’isolation. Seul le son du jeu change ; le reste reste sur vos haut-parleurs habituels.',

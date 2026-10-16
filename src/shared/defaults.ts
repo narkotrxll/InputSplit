@@ -4,8 +4,8 @@
  */
 import type { FeatureFlags, IsolationView, Settings } from './domain'
 
-/** Shows the "Buy me a coffee" button in the sidebar. Hidden until the donation page is ready. */
-export const SHOW_COFFEE_BUTTON = false
+/** Shows the "Support the author" button (Donatello donation page) in the sidebar. */
+export const SHOW_DONATE_BUTTON = true
 
 export const FEATURE_NAMES = [
   'activationShield',
@@ -72,6 +72,7 @@ export const DEFAULT_SETTINGS: Settings = {
   gameAudioToDisplay: true,
   overlayHotkeyEnabled: true,
   gamepadTuning: { leftDeadzone: 0, rightDeadzone: 0, triggerDeadzone: 0, remap: {} },
+  blockGameBarButton: true,
 }
 
 /** XInput button bit masks (XINPUT_GAMEPAD_*). */
