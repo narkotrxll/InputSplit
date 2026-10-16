@@ -344,6 +344,10 @@ export const tr: Messages = {
       swapAB: "A ile B'yi değiştir",
       off: 'Kapalı',
       dpad: 'Yön tuşları',
+      order: 'Oyuncu sırası',
+      orderHint:
+        'Tüm kumandaları okuyan oyunlar için (oyuna kumanda seçilmemişse): hangi yuvanın 1, 2, 3 ve 4. oyuncu olarak oynayacağı.',
+      player: 'Oyuncu {n}',
     },
     doubled: 'Oyunlarda iki kez tepki verebilir',
     tools: {

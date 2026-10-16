@@ -348,6 +348,10 @@ export const ptBR: Messages = {
       swapAB: 'Trocar A e B',
       off: 'Desligado',
       dpad: 'Direcional',
+      order: 'Ordem dos jogadores',
+      orderHint:
+        'Para jogos que leem todos os controles (nenhum controle escolhido para o jogo): qual slot joga como jogador 1, 2, 3 e 4.',
+      player: 'Jogador {n}',
     },
     doubled: 'Pode responder duas vezes nos jogos',
     tools: {

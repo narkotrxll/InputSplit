@@ -54,7 +54,7 @@ std::atomic<bool> g_gameWantsEnabled{true};  // last value the game passed to XI
 // "no controller" for this index.
 bool MapUserIndex(DWORD userIndex, DWORD& physical) {
   if (!IsActive(proto::kFeatureXInputSlotLock)) {
-    physical = userIndex;
+    if (!PlayerOrderSlot(userIndex, physical)) physical = userIndex;
     return true;
   }
   DWORD slot = g_xinputSlot.load(std::memory_order_relaxed);
@@ -117,7 +117,7 @@ DWORD WINAPI DetourGetKeystroke(DWORD userIndex, DWORD reserved, XINPUT_KEYSTROK
   DWORD result = g_real.getKeystroke(physical, reserved, keystroke);
   // Report the index the game asked for, not the physical slot.
   if (result == ERROR_SUCCESS && keystroke != nullptr && userIndex != kUserIndexAny &&
-      IsActive(proto::kFeatureXInputSlotLock)) {
+      physical != userIndex) {
     keystroke->UserIndex = static_cast<BYTE>(userIndex);
   }
   return result;

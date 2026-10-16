@@ -353,6 +353,10 @@ export const de: Messages = {
       swapAB: 'A und B tauschen',
       off: 'Aus',
       dpad: 'Steuerkreuz',
+      order: 'Spielerreihenfolge',
+      orderHint:
+        'Für Spiele, die alle Controller lesen (kein Controller für das Spiel gewählt): welcher Platz als Spieler 1, 2, 3 und 4 spielt.',
+      player: 'Spieler {n}',
     },
     doubled: 'Kann in Spielen doppelt reagieren',
     tools: {

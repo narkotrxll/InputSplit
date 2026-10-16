@@ -346,6 +346,10 @@ export const pl: Messages = {
       swapAB: 'Zamień A i B',
       off: 'Wyłączony',
       dpad: 'Krzyżak',
+      order: 'Kolejność graczy',
+      orderHint:
+        'Dla gier, które czytają wszystkie kontrolery (nie wybrano kontrolera dla gry): które gniazdo gra jako gracz 1, 2, 3 i 4.',
+      player: 'Gracz {n}',
     },
     doubled: 'Może reagować podwójnie w grach',
     tools: {

@@ -88,6 +88,7 @@ export const helperMethods = {
       rightDeadzone: z.number().int(),
       triggerDeadzone: z.number().int(),
       buttonMap: z.array(z.number().int()),
+      playerSlots: z.array(z.number().int()).optional(),
     }),
     result: empty,
   },

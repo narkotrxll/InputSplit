@@ -348,6 +348,10 @@ export const en = {
       swapAB: 'Swap A and B',
       off: 'Off',
       dpad: 'D-pad',
+      order: 'Player order',
+      orderHint:
+        'For games that read every controller (no controller chosen for the game): which slot plays as player 1, 2, 3 and 4.',
+      player: 'Player {n}',
     },
     doubled: 'May respond twice in games',
     tools: {

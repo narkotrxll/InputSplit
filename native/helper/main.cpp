@@ -153,6 +153,13 @@ Json Handle(const std::string& method, const Json& params) {
       tuning.buttonMap[i] = i < static_cast<int>(map.size()) ? map[i].get<uint8_t>()
                                                              : static_cast<uint8_t>(i);
     }
+    for (int i = 0; i < 4; ++i) tuning.playerSlots[i] = static_cast<uint8_t>(i);
+    if (params.contains("playerSlots")) {
+      const Json& slots = params["playerSlots"];
+      for (int i = 0; i < 4 && i < static_cast<int>(slots.size()); ++i) {
+        tuning.playerSlots[i] = slots[i].get<uint8_t>();
+      }
+    }
     if (!SessionManager::Instance().SetTuning(params.at("sessionId").get<int>(), tuning)) {
       throw HelperError{"sessionNotFound", "No such session."};
     }

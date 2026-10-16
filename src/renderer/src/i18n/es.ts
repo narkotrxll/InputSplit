@@ -352,6 +352,10 @@ export const es: Messages = {
       swapAB: 'Intercambiar A y B',
       off: 'Desactivado',
       dpad: 'Cruceta',
+      order: 'Orden de jugadores',
+      orderHint:
+        'Para juegos que leen todos los mandos (sin mando elegido para el juego): qué ranura juega como jugador 1, 2, 3 y 4.',
+      player: 'Jugador {n}',
     },
     doubled: 'Puede responder dos veces en los juegos',
     tools: {

@@ -21,6 +21,8 @@ std::atomic<int> g_leftDeadzone{0};
 std::atomic<int> g_rightDeadzone{0};
 std::atomic<int> g_triggerDeadzone{0};
 std::atomic<uint8_t> g_buttonMap[16];
+std::atomic<bool> g_orderEnabled{false};
+std::atomic<uint8_t> g_playerSlots[4];
 
 constexpr double kStickMax = 32767.0;
 
@@ -69,11 +71,32 @@ void SetTuning(const proto::TuningMessage& tuning) {
   g_triggerDeadzone.store(trigger, std::memory_order_relaxed);
   const bool enabled = !identity || left > 0 || right > 0 || trigger > 0;
   g_enabled.store(enabled, std::memory_order_release);
+  bool order = false;
+  for (int i = 0; i < 4; ++i) {
+    uint8_t slot = tuning.playerSlots[i];
+    if (slot > 3) slot = static_cast<uint8_t>(i);
+    g_playerSlots[i].store(slot, std::memory_order_relaxed);
+    order = order || slot != i;
+  }
+  g_orderEnabled.store(order, std::memory_order_release);
+  if (order) {
+    Log(LogLevel::Info, "Player order: slots %u %u %u %u", tuning.playerSlots[0] + 1u,
+        tuning.playerSlots[1] + 1u, tuning.playerSlots[2] + 1u, tuning.playerSlots[3] + 1u);
+  }
   Log(LogLevel::Info, "Tuning %s: dead zones L=%d R=%d triggers=%d, buttons %s",
       enabled ? "on" : "off", left, right, trigger, identity ? "unchanged" : "remapped");
 }
 
-void ClearTuning() { g_enabled.store(false, std::memory_order_release); }
+void ClearTuning() {
+  g_enabled.store(false, std::memory_order_release);
+  g_orderEnabled.store(false, std::memory_order_release);
+}
+
+bool PlayerOrderSlot(DWORD userIndex, DWORD& physical) {
+  if (userIndex > 3 || !g_orderEnabled.load(std::memory_order_acquire)) return false;
+  physical = g_playerSlots[userIndex].load(std::memory_order_relaxed);
+  return true;
+}
 
 void ApplyTuning(XINPUT_STATE* state) {
   if (state == nullptr || !g_enabled.load(std::memory_order_acquire)) return;

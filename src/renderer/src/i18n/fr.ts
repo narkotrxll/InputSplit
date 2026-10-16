@@ -352,6 +352,10 @@ export const fr: Messages = {
       swapAB: 'Inverser A et B',
       off: 'Désactivé',
       dpad: 'Croix directionnelle',
+      order: 'Ordre des joueurs',
+      orderHint:
+        'Pour les jeux qui lisent toutes les manettes (aucune manette choisie pour le jeu) : quel emplacement joue en tant que joueur 1, 2, 3 et 4.',
+      player: 'Joueur {n}',
     },
     doubled: 'Peut réagir deux fois dans les jeux',
     tools: {

@@ -399,6 +399,11 @@ export const GamepadTuningSchema = z.object({
   rightDeadzone: z.number().int().min(0).max(60),
   triggerDeadzone: z.number().int().min(0).max(60),
   remap: z.partialRecord(GamepadButtonSchema, z.union([GamepadButtonSchema, z.literal('off')])),
+  /**
+   * For games that read every controller (no controller chosen): the slot behind player
+   * 1..4. [0, 1, 2, 3] keeps Windows' order.
+   */
+  playerOrder: z.array(z.number().int().min(0).max(3)).length(4).default([0, 1, 2, 3]),
 })
 export type GamepadTuning = z.infer<typeof GamepadTuningSchema>
 
@@ -461,6 +466,7 @@ export const SettingsSchema = z.object({
     rightDeadzone: 0,
     triggerDeadzone: 0,
     remap: {},
+    playerOrder: [0, 1, 2, 3],
   }),
   blockGameBarButton: ADDED_SETTINGS_FIELDS.blockGameBarButton.default(true),
 })
